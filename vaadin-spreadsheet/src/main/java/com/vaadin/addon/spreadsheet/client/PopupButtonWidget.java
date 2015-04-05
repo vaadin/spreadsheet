@@ -39,8 +39,6 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         HasCloseHandlers<PopupPanel> {
 
     protected static final String BUTTON_CLASSNAME = "popupbutton";
-    protected static final String BUTTON_ARROW_CLASSNAME = BUTTON_CLASSNAME
-            + "-arrow";
     protected static final String POPUP_OVERLAY_CLASSNAME = "v-spreadsheet-"
             + BUTTON_CLASSNAME + "-overlay";
     protected static final String POPUP_OVERLAY_LAYOUT_CLASSNAME = "overlay-layout";
@@ -55,10 +53,7 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
             Element parentElement = root.getParentElement();
             final int absoluteBottom = parentElement.getAbsoluteBottom();
             final int absoluteRight = parentElement.getAbsoluteRight();
-            int left = absoluteRight;
-            if ((absoluteRight + offsetWidth) > sheet.getAbsoluteRight()) {
-                left = parentElement.getAbsoluteLeft() - offsetWidth;
-            }
+            int left = absoluteRight - offsetWidth;
             if (left < sheet.getAbsoluteLeft()) {
                 left = absoluteRight;
             }

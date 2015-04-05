@@ -8,10 +8,10 @@ package com.vaadin.addon.spreadsheet.client;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- * 
+ *
  * See the file license.html distributed with this software for more
  * information about licensing.
- * 
+ *
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -35,7 +35,7 @@ import com.google.gwt.user.client.ui.TextArea;
  * moving focus to a hidden textfield. In the textfield we can listen to oncopy
  * and oncut events, and put our string into the HTML clipboard instead of the
  * normal one.
- * 
+ *
  * @author Thomas Mattsson / Vaadin Ltd.
  */
 public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
@@ -43,7 +43,7 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     /**
      * Handler interface for dealing with the data that is transferred in copy,
      * cut and paste operations.
-     * 
+     *
      * @author Thomas Mattsson / Vaadin Ltd.
      */
     public interface CopyPasteHandler {
@@ -60,7 +60,7 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
         /**
          * Called when the user has performed a paste operation.
-         * 
+         *
          * @param text
          *            the pasted text
          */
@@ -84,12 +84,12 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
         Event.addNativePreviewHandler(this);
 
-        this.getElement().getStyle().setPosition(Position.ABSOLUTE);
-        this.getElement().getStyle().setZIndex(100);
-        this.getElement().getStyle().setLeft(-1000, Unit.PX);
+        getElement().getStyle().setPosition(Position.ABSOLUTE);
+        getElement().getStyle().setZIndex(100);
+        getElement().getStyle().setLeft(-1000, Unit.PX);
 
         // gets round browser security (field must be 'visible' when copying)
-        this.getElement().getStyle().setOpacity(0);
+        getElement().getStyle().setOpacity(0);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
         final NativeEvent nativeEvent = event.getNativeEvent();
         switch (Event.getTypeInt(nativeEvent.getType())) {
         case Event.ONKEYDOWN:
-            this.onKeyDown(nativeEvent);
+            onKeyDown(nativeEvent);
             break;
 
         default:
@@ -106,7 +106,8 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     }
 
     private void onKeyDown(final NativeEvent event) {
-        boolean metaOrCtrlPressed = event.getCtrlKey() || event.getMetaKey();
+        boolean metaOrCtrlPressed = (!widget.isMac() && event.getCtrlKey())
+                || event.getMetaKey();
         Element cast = event.getEventTarget().cast();
         boolean sheetFocused = widget.isSheetElement(cast);
         if (!metaOrCtrlPressed || !sheetFocused) {
@@ -118,20 +119,20 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
             // before copy goes through, move the focus and selection to this
             // field
-            this.setFocus(true);
+            setFocus(true);
             this.setValue(handler.getClipboardText());
-            this.selectAll();
+            selectAll();
 
             // also, we need to move the field into the visible area of the
             // browser
-            this.getElement().getStyle().setLeft(100, Unit.PX);
+            getElement().getStyle().setLeft(100, Unit.PX);
 
             Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
                 @Override
                 public boolean execute() {
 
                     // after copy, move focus back
-                    widget.getElement().focus();
+                    widget.focusSheet();
 
                     // hide element
                     getElement().getStyle().setLeft(-1000, Unit.PX);
@@ -150,8 +151,8 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
         // paste
         if (event.getKeyCode() == 86) {// V
-            this.setText("");
-            this.setFocus(true);
+            setText("");
+            setFocus(true);
 
             Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
                 @Override
@@ -162,7 +163,7 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
                     handler.onPaste(data);
 
                     // .. and move focus back
-                    widget.getElement().focus();
+                    widget.focusSheet();
 
                     return false;
                 }

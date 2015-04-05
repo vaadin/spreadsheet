@@ -37,7 +37,6 @@ import com.vaadin.addon.spreadsheet.client.SpreadsheetWidget.SheetContextMenuHan
 import com.vaadin.client.ApplicationConnection;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
-import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractHasComponentsConnector;
 import com.vaadin.client.ui.Action;
@@ -77,8 +76,10 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         public void showSelectedCellRange(int firstColumn, int lastColumn,
                 int firstRow, int lastRow, String value, boolean formula,
                 boolean locked) {
-            getWidget().selectCellRange(firstColumn, firstRow, firstColumn,
-                    lastColumn, firstRow, lastRow, value, formula, locked);
+            getWidget()
+                    .selectCellRange(firstColumn, firstRow, firstColumn,
+                            lastColumn, firstRow, lastRow, value, formula,
+                            locked, true);
         }
 
         @Override
@@ -87,14 +88,14 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
             int left;
             int top;
             if (latestCellContextMenuEvent != null) {
-                left = WidgetUtil
+                left = SpreadsheetWidget
                         .getTouchOrMouseClientX(latestCellContextMenuEvent);
-                top = WidgetUtil
+                top = SpreadsheetWidget
                         .getTouchOrMouseClientY(latestCellContextMenuEvent);
             } else {
-                left = WidgetUtil
+                left = SpreadsheetWidget
                         .getTouchOrMouseClientX(latestHeaderContextMenuEvent);
-                top = WidgetUtil
+                top = SpreadsheetWidget
                         .getTouchOrMouseClientY(latestHeaderContextMenuEvent);
             }
             top += Window.getScrollTop();
@@ -133,9 +134,9 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         @Override
         public void setSelectedCellAndRange(int col, int row, int c1, int c2,
                 int r1, int r2, String value, boolean formula,
-                boolean cellLocked) {
+                boolean cellLocked, boolean scroll) {
             getWidget().selectCellRange(col, row, c1, c2, r1, r2, value,
-                    formula, cellLocked);
+                    formula, cellLocked, scroll);
         }
 
         @Override
@@ -195,6 +196,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     @Override
     protected void init() {
         super.init();
+        getWidget().setId(getConnectorId());
         registerRpc(SpreadsheetClientRpc.class, clientRPC);
         getWidget().setCommsTrigger(new CommsTrigger() {
 
@@ -339,7 +341,8 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 stateChangeEvent.hasPropertyChanged("workbookChangeToggle"));
         widget.setSheetProtected(state.sheetProtected);
         widget.load();
-        getWidget().updateMergedRegions(getState().mergedRegions);
+        widget.updateMergedRegions(state.mergedRegions);
+
     }
 
     private void loadStateChangeDataToWidget(StateChangeEvent stateChangeEvent) {

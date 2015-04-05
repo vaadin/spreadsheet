@@ -32,7 +32,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SheetChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SheetChangeListener;
 import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
 import com.vaadin.addon.spreadsheet.SpreadsheetFactory;
-import com.vaadin.addon.spreadsheet.action.SpreadsheetDefaultActionHandler;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -160,8 +159,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     .addSelectionChangeListener(selectionChangeListener);
                             spreadsheet
                                     .addSheetChangeListener(selectedSheetChangeListener);
-                            spreadsheet
-                                    .addActionHandler(new SpreadsheetDefaultActionHandler());
                             layout.addComponent(spreadsheet);
                             layout.setExpandRatio(spreadsheet, 1.0f);
                         } else {
@@ -174,7 +171,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                         gridlines.setValue(spreadsheet.isGridlinesVisible());
                         rowColHeadings.setValue(spreadsheet
                                 .isRowColHeadingsVisible());
-                        spreadsheet.createFreezePane(3, 3);
                     }
                 });
 
@@ -270,8 +266,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     .setSpreadsheetComponentFactory(spreadsheetFieldFactory);
                             layout.addComponent(spreadsheet);
                             layout.setExpandRatio(spreadsheet, 1.0F);
-                            spreadsheet
-                                    .addActionHandler(new SpreadsheetDefaultActionHandler());
                         } else {
                             spreadsheet
                                     .setWorkbook(((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
@@ -491,6 +485,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         private final ComboBox comboBox;
 
+        private boolean initializingComboBoxValue;
+
         private Button button;
 
         private Button button2;
@@ -592,17 +588,20 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
                 @Override
                 public void valueChange(ValueChangeEvent event) {
-                    String s = (String) comboBox.getValue();
-                    CellReference cr = spreadsheet.getSelectedCellReference();
-                    Cell cell = spreadsheet.getCell(cr.getRow(), cr.getCol());
-                    if (cell != null) {
-                        cell.setCellValue(s);
-                        spreadsheet.refreshCells(cell);
+                    if (!initializingComboBoxValue) {
+                        String s = (String) comboBox.getValue();
+                        CellReference cr = spreadsheet
+                                .getSelectedCellReference();
+                        Cell cell = spreadsheet.getCell(cr.getRow(),
+                                cr.getCol());
+                        if (cell != null) {
+                            cell.setCellValue(s);
+                            spreadsheet.refreshCells(cell);
+                        }
                     }
                 }
             });
             comboBox.setWidth("100%");
-            // comboBox.setWidth("100px");
 
             dateField.setImmediate(true);
             dateField.addValueChangeListener(new ValueChangeListener() {
@@ -697,11 +696,12 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 return;
             }
             if (customEditor.equals(comboBox)) {
-
+                initializingComboBoxValue = true;
                 String stringCellValue = cell != null ? cell
                         .getStringCellValue() : null;
                 comboBox.setValue(stringCellValue);
                 comboBox.setWidth("100%");
+                initializingComboBoxValue = false;
             }
 
             if (cell != null) {
@@ -917,19 +917,13 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
             final TextField hSplitTF = new TextField(
                     "Horizontal Split Position");
+            hSplitTF.setValue("6");
             hSplitTF.setConverter(Integer.class);
             final TextField vSplitTF = new TextField("Vertical Split Position");
             vSplitTF.setConverter(Integer.class);
-            final TextField hSplitTRTF = new TextField(
-                    "Horizontal Split Top Row");
-            hSplitTRTF.setConverter(Integer.class);
-            final TextField vSplitLCTF = new TextField(
-                    "Vertical Split Left Column");
-            vSplitLCTF.setConverter(Integer.class);
+            vSplitTF.setValue("6");
             l.addComponent(vSplitTF);
             l.addComponent(hSplitTF);
-            // l.addComponent(vSplitLCTF);
-            // l.addComponent(hSplitTRTF);
             l.addComponent(new Button("Submit values",
                     new Button.ClickListener() {
 

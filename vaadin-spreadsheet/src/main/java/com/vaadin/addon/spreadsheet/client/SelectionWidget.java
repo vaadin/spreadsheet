@@ -23,6 +23,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.Display;
+import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -533,6 +534,16 @@ public class SelectionWidget extends Composite {
             this.minColumn = minColumn;
             this.maxColumn = maxColumn;
         }
+
+        @Override
+        public void setVisible(boolean visible) {
+            super.setVisible(visible);
+            if (visible) {
+                getElement().getStyle().clearOverflow();
+            } else {
+                getElement().getStyle().setOverflow(Overflow.HIDDEN);
+            }
+        }
     }
 
     private final SelectionOutlineWidget bottomRight;
@@ -873,22 +884,79 @@ public class SelectionWidget extends Composite {
                                 public void setPosition(int offsetWidth,
                                         int offsetHeight) {
                                     // above top border
-                                    int top = bottomRight.top.getAbsoluteTop();
-                                    int left = bottomRight.top
-                                            .getAbsoluteLeft();
-                                    int width = bottomRight.top
-                                            .getClientWidth();
+                                    int top = 0;
+                                    int left = 0;
+                                    int bottom = 0;
+                                    int width = 0;
+                                    int parentTop = 0;
+                                    if (topRight != null
+                                            && topRight.isVisible()) {
+                                        top = topRight.top.getAbsoluteTop();
+                                        left = topRight.top.getAbsoluteLeft();
+                                        width = topRight.top.getClientWidth();
+                                        bottom = topRight.bottom
+                                                .getAbsoluteBottom() + 5;
+                                        if (topLeft.isVisible()) {
+                                            width += topLeft.top
+                                                    .getClientWidth();
+                                        }
+                                        if (bottomRight.isVisible()) {
+                                            bottom = bottomRight.bottom
+                                                    .getAbsoluteBottom() + 5;
+                                        }
+                                    } else if (topLeft != null
+                                            && topLeft.isVisible()) {
+                                        top = topLeft.top.getAbsoluteTop();
+                                        left = topLeft.top.getAbsoluteLeft();
+                                        width = topLeft.top.getClientWidth();
+                                        bottom = topLeft.bottom
+                                                .getAbsoluteBottom() + 5;
+                                        if (bottomLeft.isVisible()) {
+                                            bottom = bottomLeft.bottom
+                                                    .getAbsoluteBottom() + 5;
+                                        }
+                                    } else if (bottomLeft != null
+                                            && bottomLeft.isVisible()) {
+                                        top = bottomLeft.top.getAbsoluteTop();
+                                        left = bottomLeft.top.getAbsoluteLeft();
+                                        width = bottomLeft.top.getClientWidth();
+                                        bottom = bottomLeft.bottom
+                                                .getAbsoluteBottom() + 5;
+                                        if (bottomRight.isVisible()) {
+                                            width += bottomRight.top
+                                                    .getClientWidth();
+                                        }
+                                    } else {
+                                        top = bottomRight.top.getAbsoluteTop();
+                                        left = bottomRight.top
+                                                .getAbsoluteLeft();
+                                        width = bottomRight.top
+                                                .getClientWidth();
+                                        bottom = bottomRight.bottom
+                                                .getAbsoluteBottom() + 5;
+                                    }
+                                    if (width > sheetWidget.getElement()
+                                            .getClientWidth()) {
+                                        width = sheetWidget.getElement()
+                                                .getClientWidth();
+                                    }
+
+                                    if (sheetWidget.hasFrozenRows()) {
+                                        parentTop = sheetWidget
+                                                .getTopRightPane()
+                                                .getAbsoluteTop();
+                                    } else {
+                                        parentTop = sheetWidget
+                                                .getBottomRightPane()
+                                                .getAbsoluteTop();
+                                    }
 
                                     top -= offsetHeight + 5;
                                     left += (width / 2) - (offsetWidth / 2);
 
-                                    Element parent = sheetWidget
-                                            .getBottomRightPane();
-                                    int parentTop = parent.getAbsoluteTop();
                                     if (parentTop > top) {
                                         // put under instead
-                                        top = bottomRight.bottom
-                                                .getAbsoluteBottom() + 5;
+                                        top = bottom + 5;
                                     }
                                     touchActions.setPopupPosition(left, top);
 
@@ -913,6 +981,9 @@ public class SelectionWidget extends Composite {
 
     @Override
     public void setVisible(boolean visible) {
+        if (visible == isVisible()) {
+            return;
+        }
         super.setVisible(visible);
         if (topLeft != null) {
             topLeft.setVisible(visible);
@@ -926,6 +997,9 @@ public class SelectionWidget extends Composite {
     }
 
     public void setPaintVisible(boolean visible) {
+        if (visible == isPaintVisible()) {
+            return;
+        }
         paintBottomRight.setVisible(visible);
         if (paintTopLeft != null) {
             paintTopLeft.setVisible(visible);
@@ -937,6 +1011,13 @@ public class SelectionWidget extends Composite {
             paintBottomLeft.setVisible(visible);
         }
         setSelectionWidgetSquaresVisible(!visible);
+    }
+
+    private boolean isPaintVisible() {
+        return paintBottomRight.isVisible() || paintBottomLeft != null
+                && paintBottomLeft.isVisible() || paintTopRight != null
+                && paintTopRight.isVisible() || paintTopLeft != null
+                && paintTopLeft.isVisible();
     }
 
     @Override
@@ -979,13 +1060,14 @@ public class SelectionWidget extends Composite {
      * @param cursorPosition
      *            the position of the cursor relative to startIndex. Can be
      *            negative
+     * @param forSelection
+     *            true if the result is used for touch selection, false if it's
+     *            used for painting cells
      * @return
      */
     public int closestCellEdgeIndexToCursor(int cellSizes[], int startIndex,
-            int cursorPosition) {
-
-        // TODO Completely broken when zoomed in on touch device
-        // See http://dev.vaadin.com/ticket/16820
+            int cursorPosition, boolean forSelection) {
+        int result = 0;
         int pos = 0;
         if (cursorPosition < 0) {
             if (startIndex > 1) {
@@ -993,9 +1075,12 @@ public class SelectionWidget extends Composite {
                     startIndex--;
                     pos -= cellSizes[startIndex - 1];
                 }
-                return startIndex;
+                if (forSelection && pos < cursorPosition) {
+                    startIndex++;
+                }
+                result = startIndex;
             } else {
-                return 1;
+                result = 1;
             }
         } else {
             if (startIndex < cellSizes.length) {
@@ -1003,11 +1088,12 @@ public class SelectionWidget extends Composite {
                     pos += cellSizes[startIndex - 1];
                     startIndex++;
                 }
-                return startIndex;
+                result = startIndex;
             } else {
-                return cellSizes.length;
+                result = cellSizes.length;
             }
         }
+        return forSelection ? result : result - 1;
     }
 
     private void beginPaintingCells(Event event) {
@@ -1020,11 +1106,13 @@ public class SelectionWidget extends Composite {
         crossedLeft = !startCellTopLeft && !startCellBottomLeft;
         initialScrollLeft = sheetWidget.sheet.getScrollLeft();
         initialScrollTop = sheetWidget.sheet.getScrollTop();
-        clientX = WidgetUtil.getTouchOrMouseClientX(event);
-        clientY = WidgetUtil.getTouchOrMouseClientY(event);
+        clientX = SpreadsheetWidget.getTouchOrMouseClientX(event);
+        clientY = SpreadsheetWidget.getTouchOrMouseClientY(event);
         tempCol = col2;
         tempRow = row2;
         paintMode = true;
+        decreaseSelection = false;
+        increaseSelection = false;
         storeEventPos(event);
         DOM.setCapture(getElement());
         event.preventDefault();
@@ -1088,8 +1176,8 @@ public class SelectionWidget extends Composite {
         crossedLeft = !startCellTopLeft && !startCellBottomLeft;
         initialScrollLeft = sheetWidget.sheet.getScrollLeft();
         initialScrollTop = sheetWidget.sheet.getScrollTop();
-        clientX = WidgetUtil.getTouchOrMouseClientX(event);
-        clientY = WidgetUtil.getTouchOrMouseClientY(event);
+        clientX = SpreadsheetWidget.getTouchOrMouseClientX(event);
+        clientY = SpreadsheetWidget.getTouchOrMouseClientY(event);
         tempCol = col2;
         tempRow = row2;
         storeEventPos(event);
@@ -1098,8 +1186,8 @@ public class SelectionWidget extends Composite {
     private void selectCells(Event event) {
         dragging = true;
 
-        final int clientX = WidgetUtil.getTouchOrMouseClientX(event);
-        final int clientY = WidgetUtil.getTouchOrMouseClientY(event);
+        final int clientX = SpreadsheetWidget.getTouchOrMouseClientX(event);
+        final int clientY = SpreadsheetWidget.getTouchOrMouseClientY(event);
 
         // If we're scrolling, do not paint anything
         if (checkScrollWhilePainting(clientY, clientX)) {
@@ -1119,14 +1207,12 @@ public class SelectionWidget extends Composite {
 
         final int[] colWidths = handler.getColWidths();
         final int[] rowHeightsPX = handler.getRowHeightsPX();
-        final int colIndex = closestCellEdgeIndexToCursor(colWidths,
-                selectionStartCol, xMousePos);
-        final int rowIndex = closestCellEdgeIndexToCursor(rowHeightsPX,
-                selectionStartRow, yMousePos);
-        tempCol = colIndex;
-        tempRow = rowIndex;
-        sheetWidget.getSheetHandler().onSelectingCellsWithDrag(colIndex,
-                rowIndex);
+        tempCol = closestCellEdgeIndexToCursor(colWidths, selectionStartCol,
+                xMousePos, true);
+        tempRow = closestCellEdgeIndexToCursor(rowHeightsPX, selectionStartRow,
+                yMousePos, true);
+        sheetWidget.getSheetHandler()
+                .onSelectingCellsWithDrag(tempCol, tempRow);
     }
 
     private void stopSelectingCells(Event event) {
@@ -1363,8 +1449,8 @@ public class SelectionWidget extends Composite {
     private void paintCells(Event event) {
         decreaseSelection = false;
         increaseSelection = false;
-        final int clientX = WidgetUtil.getTouchOrMouseClientX(event);
-        final int clientY = WidgetUtil.getTouchOrMouseClientY(event);
+        final int clientX = SpreadsheetWidget.getTouchOrMouseClientX(event);
+        final int clientY = SpreadsheetWidget.getTouchOrMouseClientY(event);
 
         // If we're scrolling, do not paint anything
         if (checkScrollWhilePainting(clientY, clientX)) {
@@ -1379,8 +1465,10 @@ public class SelectionWidget extends Composite {
 
         final int[] colWidths = handler.getColWidths();
         final int[] rowHeightsPX = handler.getRowHeightsPX();
-        int col = closestCellEdgeIndexToCursor(colWidths, col1, xMousePos) - 1;
-        int row = closestCellEdgeIndexToCursor(rowHeightsPX, row1, yMousePos) - 1;
+        int col = closestCellEdgeIndexToCursor(colWidths, col1, xMousePos,
+                false);
+        int row = closestCellEdgeIndexToCursor(rowHeightsPX, row1, yMousePos,
+                false);
 
         if (col >= 0 && row >= 0) {
             updatePaintRectangle(clientX, clientY, col, row);

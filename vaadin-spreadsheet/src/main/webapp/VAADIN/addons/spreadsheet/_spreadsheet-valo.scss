@@ -500,6 +500,15 @@
 			}
 		}
 		
+		&.protected {
+			.rh, .ch {
+				.header-resize-dnd-first, 
+				.header-resize-dnd-second {
+					cursor: default;
+				}
+			}
+		}
+		
 		&.noheaders {
 			padding-left: 0px;
 			padding-top: $spreadsheet-toolbar-height + $spreadsheet-border-width;
@@ -650,6 +659,10 @@
 			&.col0.row0 {
 				display: none;
 			}
+		}
+		
+		&.notfocused .sheet-selection {
+			opacity: 0.6;
 		}
 		
 		.sheet-selection {
@@ -966,7 +979,7 @@
 		@include valo-overlay-style;
 		padding: round($spreadsheet-base-font-size / 2);
 		overflow-y: auto !important;
-		overflow-x: hidden;
+		overflow-x: hidden !important;
 		
 		.popupContent {
 			overflow: visible;
