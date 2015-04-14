@@ -121,12 +121,25 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 if (!inputFullFocus) {
                     handler.onCellInputTab(input.getValue(), true);
                     event.preventDefault();
+                } else if (inputFullFocus) {
+
+                    // prevent scrolling
+                    if (widget.getInlineEditor().getCursorPos() == 0) {
+                        event.preventDefault();
+                    }
                 }
                 break;
             case KeyCodes.KEY_RIGHT:
                 if (!inputFullFocus) {
                     handler.onCellInputTab(input.getValue(), false);
                     event.preventDefault();
+                } else if (inputFullFocus) {
+                    // prevent scrolling
+                    int cursorPos = widget.getInlineEditor().getCursorPos();
+                    int length = widget.getInlineEditor().getValue().length();
+                    if (cursorPos == length) {
+                        event.preventDefault();
+                    }
                 }
                 break;
             default:
