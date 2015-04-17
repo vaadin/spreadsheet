@@ -514,58 +514,13 @@
     </table>
 
     <h2 id="changelog">Change log for Vaadin Spreadsheet @version@</h3>
-    <p>This release includes the following enhancements and fixes. Please see <a href="http://dev.vaadin.com/query?status=closed&status=pending-release&status=released&milestone=Spreadsheet+1.0.1&group=status&order=priority">dev.vaadin.com</a> for a detailed listing.</p>
+    <p>This release includes the following enhancements and fixes. Please see <a href="http://dev.vaadin.com/query?status=closed&status=pending-release&status=released&milestone=Spreadsheet+1.0.2&group=status&order=priority">dev.vaadin.com</a> for a detailed listing.</p>
 
     <ul>
-      <li><a href="http://dev.vaadin.com/ticket/17264">#17264</a> Enable the default actions by default</li>
-      <li><a href="http://dev.vaadin.com/ticket/17124">#17124</a> Merging cells loses the contents of the cells</li>
-      <li><a href="http://dev.vaadin.com/ticket/17178">#17178</a> The contents of merged cells disappears after resizing said cells</li>
-      <li><a href="http://dev.vaadin.com/ticket/17217">#17217</a> No history command created for cut and paste</li>
-      <li><a href="http://dev.vaadin.com/ticket/17226">#17226</a> Add sheet fails with merged cells in freeze panes</li>
-      <li><a href="http://dev.vaadin.com/ticket/17242">#17242</a> duplicates after adding row</li>
-      <li><a href="http://dev.vaadin.com/ticket/17304">#17304</a> Multiple spreadsheets FreezePane issue</li>
-      <li><a href="http://dev.vaadin.com/ticket/17305">#17305</a> Multiple spreadsheets CellStyles issue</li>
-      <li><a href="http://dev.vaadin.com/ticket/17306">#17306</a> Multiple spreadsheets lazy loading/refreshing the cells</li>
-      <li><a href="http://dev.vaadin.com/ticket/17307">#17307</a> Multiple spreadsheets events issue</li>
-      <li><a href="http://dev.vaadin.com/ticket/15517">#15517</a> Overflowing content overlaps empty cells</li>
-      <li><a href="http://dev.vaadin.com/ticket/16882">#16882</a> Clicking on the "Value 1" cell in the components demo flashes the combobox</li>
-      <li><a href="http://dev.vaadin.com/ticket/17094">#17094</a> fill indicator position is incorrect in spreadsheet with freeze panes on mobile</li>
-      <li><a href="http://dev.vaadin.com/ticket/17122">#17122</a> Focus is lost after copy or cut</li>
-      <li><a href="http://dev.vaadin.com/ticket/17191">#17191</a> When creating a new sheet, the sheet tabs should scroll to show it</li>
-      <li><a href="http://dev.vaadin.com/ticket/17192">#17192</a> Indicate focus somehow</li>
-      <li><a href="http://dev.vaadin.com/ticket/17201">#17201</a> NPE when registering table before showing spreadsheet</li>
-      <li><a href="http://dev.vaadin.com/ticket/17216">#17216</a> go to first/previous sheet actions should be disabled on spreadsheet.reset</li>
-      <li><a href="http://dev.vaadin.com/ticket/17225">#17225</a> Add/Remove freeze panes fails with merged cells</li>
-      <li><a href="http://dev.vaadin.com/ticket/17237">#17237</a> paste in region should overwrite the full region</li>
-      <li><a href="http://dev.vaadin.com/ticket/17243">#17243</a> Merged cells position not updated after add/remove rows</li>
-      <li><a href="http://dev.vaadin.com/ticket/17245">#17245</a> spreadsheet setlocale throws IOOBE</li>
-      <li><a href="http://dev.vaadin.com/ticket/17263">#17263</a> Selection on mobile is faulty</li>
-      <li><a href="http://dev.vaadin.com/ticket/17282">#17282</a> IllegalArgumentException when pasting empty string</li>
-      <li><a href="http://dev.vaadin.com/ticket/17283">#17283</a> ctrl + v in osx causes paste with empty string</li>
-      <li><a href="http://dev.vaadin.com/ticket/17322">#17322</a> Render formulas even though they contain an error</li>
-      <li><a href="http://dev.vaadin.com/ticket/16820">#16820</a> Touch support is broken when spreadsheet is zoomed</li>
-      <li><a href="http://dev.vaadin.com/ticket/16927">#16927</a> Value of partially-hidden merged cells is not shown</li>
-      <li><a href="http://dev.vaadin.com/ticket/17084">#17084</a> Col/row resize indication shown even for locked cells/sheets</li>
-      <li><a href="http://dev.vaadin.com/ticket/17120">#17120</a> Delete rows affects row default height</li>
-      <li><a href="http://dev.vaadin.com/ticket/17153">#17153</a> Questionable scroll after cell shift</li>
-      <li><a href="http://dev.vaadin.com/ticket/17228">#17228</a> Last cell of row overflows outside sheet</li>
-      <li><a href="http://dev.vaadin.com/ticket/17236">#17236</a> Green box show on region after cell shifting</li>
-      <li><a href="http://dev.vaadin.com/ticket/17246">#17246</a> comments do not show in some workbooks</li>
-      <li><a href="http://dev.vaadin.com/ticket/17298">#17298</a> click on green shift indicator makes strange selection</li>
-      <li><a href="http://dev.vaadin.com/ticket/15520">#15520</a> Invalid scroll event handling</li>
-      <li><a href="http://dev.vaadin.com/ticket/15521">#15521</a> PopupButtons open at wrong location</li>
-      <li><a href="http://dev.vaadin.com/ticket/17176">#17176</a> Sheet tab scroll position miscalculated on Firefox</li>
-      <li><a href="http://dev.vaadin.com/ticket/17239">#17239</a> Spreadsheet overrides existing percentage formatting when user enters number</li>
-      <li><a href="http://dev.vaadin.com/ticket/17257">#17257</a> Calling refreshCells before Spreadsheet is rendered throws exception in comments are present</li>
-      <li><a href="http://dev.vaadin.com/ticket/17310">#17310</a> client side exception in Spreadsheet with components</li>
-      <li><a href="http://dev.vaadin.com/ticket/17311">#17311</a> Client side id is randomly generated</li>
-      <li><a href="http://dev.vaadin.com/ticket/17316">#17316</a> Enter shouldn't open input if in selection</li>
-      <li><a href="http://dev.vaadin.com/ticket/17321">#17321</a> 'no gridlines' style disables border styles</li>
-      <li><a href="http://dev.vaadin.com/ticket/17265">#17265</a> Null cells are editable in protected sheet</li>
-      <li><a href="http://dev.vaadin.com/ticket/17400">#17400</a> Unnecessary overflow in numeric cell</li>
-      <li><a href="http://dev.vaadin.com/ticket/17401">#17401</a> custom components not working</li>
-      <li><a href="http://dev.vaadin.com/ticket/17402">#17402</a> client side exception in Spreadsheet with custom editor open</li>
-  </ul>
+      <li><a href="http://dev.vaadin.com/ticket/17095">#17095</a> Merged cells do not get selection styles</li>
+      <li><a href="http://dev.vaadin.com/ticket/17417">#17417</a> enter doesn't show input in FF</li>
+      <li><a href="http://dev.vaadin.com/ticket/17468">#17468</a> Some numbers are wrongly aligned</li>
+    </ul>
     
     <h2 id="limitations">Limitations</h2>
     <p>Vaadin Spreadsheet ${project.version} has the following limitations:</p>
