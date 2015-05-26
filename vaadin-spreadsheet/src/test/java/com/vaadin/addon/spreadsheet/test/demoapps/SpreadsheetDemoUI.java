@@ -86,7 +86,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
     private SheetChangeListener selectedSheetChangeListener;
 
-    private Button update;
+    private Button updateButton;
 
     private CheckBox gridlines, hideTop, hideBottom, hideBoth;
 
@@ -205,7 +205,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         openTestSheetSelect.setItemCaptionPropertyId("Name");
         openTestSheetSelect.setPageLength(30);
 
-        update = new Button("Update", new Button.ClickListener() {
+        updateButton = new Button("Update", new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -215,7 +215,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 }
             }
         });
-        update.setId("update");
+        updateButton.setId("update");
 
         save = new Button("Save", new Button.ClickListener() {
 
@@ -335,13 +335,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         checkBoxLayout.addComponents(gridlines, rowColHeadings, hideTop,
                 hideBottom, hideBoth);
-        options.addComponent(checkBoxLayout);
-        options.addComponent(newSpreadsheetButton);
-        options.addComponent(freezePanesButton);
-        options.addComponent(customComponentTest);
-        options.addComponent(openTestSheetSelect);
-        options.addComponent(update);
-        options.addComponent(new Button("Close", new Button.ClickListener() {
+
+        Button closeButton = new Button("Close", new Button.ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -352,8 +347,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     SpreadsheetFactory.logMemoryUsage();
                 }
             }
-        }));
-        options.addComponent(upload);
+        });
+
         Button downloadButton = new Button("Download");
         new FileDownloader(new StreamResource(new StreamSource() {
 
@@ -371,7 +366,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
         }, "testsheet.xlsx")).extend(downloadButton);
         ;
-        options.addComponent(downloadButton);
 
         HorizontalLayout sheetOptions = new HorizontalLayout();
         sheetOptions.setSpacing(true);
@@ -412,6 +406,26 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         spreadsheetFieldFactory = new SpreadsheetEditorComponentFactoryTest();
 
+        VerticalLayout createAndFreeze = new VerticalLayout();
+        createAndFreeze.setSpacing(true);
+        createAndFreeze.addComponents(newSpreadsheetButton,
+                customComponentTest, freezePanesButton);
+
+        HorizontalLayout updateLayout = new HorizontalLayout();
+        updateLayout.setSpacing(true);
+        updateLayout.addComponents(openTestSheetSelect, updateButton);
+        VerticalLayout updateUpload = new VerticalLayout();
+        updateUpload.setSpacing(true);
+        updateUpload.addComponents(updateLayout, upload);
+
+        VerticalLayout closeDownload = new VerticalLayout();
+        closeDownload.setSpacing(true);
+        closeDownload.addComponents(closeButton, downloadButton);
+
+        options.addComponent(checkBoxLayout);
+        options.addComponent(createAndFreeze);
+        options.addComponent(updateUpload);
+        options.addComponent(closeDownload);
     }
 
     private void printSelectionChangeEventContents(SelectionChangeEvent event) {

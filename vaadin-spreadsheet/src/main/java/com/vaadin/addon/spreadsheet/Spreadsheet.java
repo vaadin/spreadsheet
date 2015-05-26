@@ -119,6 +119,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             .getName());
 
     /**
+     * A common formula evaluator for this Spreadsheet
+     */
+    private FormulaEvaluator formulaEvaluator;
+
+    /**
      * An interface for handling the edited cell value from user input.
      */
     public interface CellValueHandler extends Serializable {
@@ -128,7 +133,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
          * default cell editor. Use
          * {@link Spreadsheet#setCellValueHandler(CellValueHandler)} to enable
          * it for the spreadsheet.
-         * 
+         *
          * @param cell
          *            The cell that has been edited, may be <code>null</code> if
          *            the cell doesn't yet exists
@@ -1493,7 +1498,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void refreshAllCellValues() {
 
-        valueManager.clearEvaluatorCache();
+        getFormulaEvaluator().clearAllCachedResultValues();
         valueManager.clearCachedContent();
 
         // only reload if the cells have been loaded once previously
@@ -1792,6 +1797,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                         selectedCellReference.formatAsString(), false);
             }
         }
+    }
+
+    /**
+     * Get the common {@link FormulaEvaluator} instance.
+     */
+    public FormulaEvaluator getFormulaEvaluator() {
+        return formulaEvaluator;
     }
 
     private int getLastNonBlankRow(Sheet sheet) {
@@ -2340,7 +2352,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     void setInternalWorkbook(Workbook workbook) {
         this.workbook = workbook;
-        valueManager.updateEvaluator();
+        formulaEvaluator = workbook.getCreationHelper()
+                .createFormulaEvaluator();
         styler = createSpreadsheetStyleFactory();
 
         reloadActiveSheetData();
