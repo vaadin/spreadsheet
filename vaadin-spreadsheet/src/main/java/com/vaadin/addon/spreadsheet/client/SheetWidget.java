@@ -61,6 +61,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.PopupPanel.PositionCallback;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.addon.spreadsheet.client.CopyPasteTextBox.CopyPasteHandler;
 import com.vaadin.client.BrowserInfo;
@@ -3077,6 +3078,11 @@ public class SheetWidget extends Panel {
                 rowHeaders.remove(0).removeFromParent();
             }
         }
+    }
+
+    public TextBox getInlineEditor() {
+        // FIXME setter for operations instead?
+        return input;
     }
 
     private void handleVerticalScrollUp(int scrollTop) {
