@@ -513,13 +513,15 @@
         </tr>
     </table>
 
-    <h2 id="changelog">Change log for Vaadin Spreadsheet @version@</h3>
+    <h2 id="changelog">Change log for Vaadin Spreadsheet @version@</h2>
     <p>This release includes the following enhancements and fixes. Please see <a href="http://dev.vaadin.com/query?status=closed&status=pending-release&status=released&milestone=Spreadsheet+1.0.2&group=status&order=priority">dev.vaadin.com</a> for a detailed listing.</p>
 
     <ul>
-      <li><a href="http://dev.vaadin.com/ticket/17095">#17095</a> Merged cells do not get selection styles</li>
-      <li><a href="http://dev.vaadin.com/ticket/17417">#17417</a> enter doesn't show input in FF</li>
-      <li><a href="http://dev.vaadin.com/ticket/17468">#17468</a> Some numbers are wrongly aligned</li>
+      <li><a href="http://dev.vaadin.com/ticket/17663">#17663</a> Immediately refreshing a Spreadsheet with frozen columns throws NPE</li>
+      <li><a href="http://dev.vaadin.com/ticket/17464">#17464</a> Entering a value in a cell and pressing right/left scrolls the sheet</li>
+      <li><a href="http://dev.vaadin.com/ticket/17601">#17601</a> Column overflow is broken with some combination of cellstyles</li>
+      <li><a href="http://dev.vaadin.com/ticket/17595">#17595</a> Conditional formatting fails in some cases</li>
+      <li><a href="http://dev.vaadin.com/ticket/17854">#17854</a> Spreadsheet conditional formatting appears with delay when using functions</li>
     </ul>
     
     <h2 id="limitations">Limitations</h2>
@@ -531,7 +533,7 @@
       <li>Vaadin Spreadsheet is heavily based on Apache POI and, as such, inherits all limitations of this library. See <a href="http://poi.apache.org/spreadsheet/limitations.html">Apache POI - HSSF and XSSF Limitations</a> for a partial list of these.</li>
       <li>There is only limited support for the older XLS format. Please use XLSX for a better experience.</li>
       <li>As Apache POI is used on the server-side, you should be aware that loading XLSX files will eat memory for each session where loaded. Normal cases are no problem, but make sure to take this into account if you allow users to upload Excel files.</li>
-      <li>Rendering performance is not too great on Mozilla Firefox.</li>
+      <li>Rendering performance is not optimal on Mozilla Firefox.</li>
     </ul>
     
     <h2 id="dependencies">Third Party Dependencies</h2>
@@ -567,7 +569,7 @@
 </div>
 
 <div id="footer">
-      <span class="slogan"><strong>vaadin <em>}&gt;</em> </strong> thinking of U and I<span>
+      <span class="slogan"><strong>vaadin <em>}&gt;</em> </strong> thinking of U and I</span>
       <a href="#top">&uarr; Back to top</a>
 </div>
 <!-- /footer -->
