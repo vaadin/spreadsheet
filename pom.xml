@@ -19,8 +19,8 @@
 
     <modules>
         <module>vaadin-spreadsheet</module>
-        <module>vaadin-spreadsheet-testbench-api</module>
-        <module>vaadin-spreadsheet-charts</module>
+        <!--<module>vaadin-spreadsheet-testbench-api</module>-->
+        <!--<module>vaadin-spreadsheet-charts</module>-->
     </modules>
 
     <organization>

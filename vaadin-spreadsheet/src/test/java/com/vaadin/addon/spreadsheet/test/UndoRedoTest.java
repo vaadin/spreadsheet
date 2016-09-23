@@ -1,10 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import com.google.common.base.Predicate;
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.By;
-import com.vaadin.testbench.parallel.Browser;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,9 +12,14 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
+import com.google.common.base.Predicate;
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.By;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.CHROME)
 public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Rule

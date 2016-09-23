@@ -78,10 +78,13 @@ public class CellComment extends VOverlay {
         label.setVisible(false);
         label.setStyleName(COMMENT_OVERLAY_LABEL_CLASSNAME);
         setStyleName(COMMENT_OVERLAY_CLASSNAME);
-        setShadowStyle(COMMENT_OVERLAY_SHADOW_CLASSNAME);
+        //FIX ME
+        //setShadowStyleName(COMMENT_OVERLAY_SHADOW_CLASSNAME);
+        setStyleName(COMMENT_OVERLAY_SHADOW_CLASSNAME);
         setOwner(owner);
         setAnimationEnabled(false);
-        setShadowEnabled(true);
+        //FIX ME
+        //setShadowEnabled(true);
         setVisible(false);
         setZIndex(30);
 
