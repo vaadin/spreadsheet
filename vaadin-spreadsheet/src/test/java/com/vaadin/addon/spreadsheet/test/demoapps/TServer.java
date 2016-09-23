@@ -4,8 +4,9 @@ import java.io.File;
 import java.util.Properties;
 
 import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 
@@ -38,8 +39,8 @@ public class TServer {
     public static Server startServer(int port) throws Exception {
         Server server = new Server();
 
-        final Connector connector = new SelectChannelConnector();
-
+        ServerConnector connector = new ServerConnector(server,
+                new HttpConnectionFactory());
         connector.setPort(port);
         server.setConnectors(new Connector[] { connector });
 
