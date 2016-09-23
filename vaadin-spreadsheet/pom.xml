@@ -19,8 +19,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>7.7.3</vaadin.version>
-        <testbench.api.version>7.7.3</testbench.api.version>
+        <jetty.version>9.3.9.v20160517</jetty.version>
+        <vaadin.version>8.0.0.alpha6</vaadin.version>
+        <testbench.api.version>7.5.7</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <poi.version>3.15</poi.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
@@ -61,8 +62,8 @@
                 <version>3.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -210,6 +211,7 @@
                         </goals>
                         <configuration>
                             <skip>${skipTests}</skip>
+                            <extraJvmArgs>-Xms1024M -Xmx8g -XX:-UseGCOverheadLimit -XX:+UseCompressedOops</extraJvmArgs>
                         </configuration>
                     </execution>
                 </executions>
@@ -270,16 +272,21 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.mortbay.jetty</groupId>
+                <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>8.1.16.v20140903</version>
+                <version>${jetty.version}</version>
                 <configuration>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>9998</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
+                    <httpConnector>
+                        <!--host>localhost</host-->
+                        <port>9998</port>
+                    </httpConnector>
+                    <!--<connectors>-->
+                        <!--<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">-->
+                            <!--<port>9998</port>-->
+                            <!--<maxIdleTime>60000</maxIdleTime>-->
+                        <!--</connector>-->
+                    <!--</connectors>-->
+
                     <useProvidedScope>true</useProvidedScope>
                     <useTestClasspath>true</useTestClasspath>
                     <stopKey>STOP</stopKey>
@@ -414,6 +421,12 @@
 
     <repositories>
         <repository>
+            <id>vaadin-prereleases</id>
+            <name>Vaadin Pre-releases</name>
+            <url>https://maven.vaadin.com/vaadin-prereleases</url>
+        </repository>
+
+        <repository>
             <id>Vaadin releases</id>
             <url>http://oss.sonatype.org/content/repositories/vaadin-releases</url>
         </repository>
@@ -450,6 +463,11 @@
 
     <pluginRepositories>
         <pluginRepository>
+            <id>vaadin-prereleases</id>
+            <name>Vaadin Pre-releases</name>
+            <url>https://maven.vaadin.com/vaadin-prereleases</url>
+        </pluginRepository>
+        <pluginRepository>
             <id>vaadin-snapshots</id>
             <url>http://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
             <releases>
@@ -466,19 +484,19 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
             <version>${vaadin.version}</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
             <version>${vaadin.version}</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
             <version>${vaadin.version}</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -488,11 +506,39 @@
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>8.1.13.v20130916</version>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiler</artifactId>
+            <version>${vaadin.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-server</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-client</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-shared</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-compatibility-themes</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -538,12 +584,6 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>xml-apis</artifactId>
-                    <groupId>xml-apis</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- poi-ooxml above is pulling in the xml-apis jar 1.0.b2 which
@@ -555,13 +595,6 @@
             <artifactId>ooxml-schemas</artifactId>
             <version>1.1</version>
         </dependency>
-
-        <dependency>
-            <groupId>xml-apis</groupId>
-            <artifactId>xml-apis</artifactId>
-            <version>1.4.01</version>
-        </dependency>
-
     </dependencies>
 
 
@@ -609,8 +642,9 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.mortbay.jetty</groupId>
+                        <groupId>org.eclipse.jetty</groupId>
                         <artifactId>jetty-maven-plugin</artifactId>
+                        <version>${jetty.version}</version>
                         <executions>
                             <!-- start and stop jetty (running our app) when running integration
                                  tests -->
@@ -622,7 +656,6 @@
                                     <goal>start</goal>
                                 </goals>
                                 <configuration>
-                                    <daemon>true</daemon>
                                     <scanIntervalSeconds>0</scanIntervalSeconds>
                                 </configuration>
                             </execution>
