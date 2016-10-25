@@ -17,59 +17,6 @@ package com.vaadin.addon.spreadsheet;
  * #L%
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.EventObject;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import org.apache.poi.hssf.converter.AbstractExcelUtils;
-import org.apache.poi.hssf.record.cf.CellRangeUtil;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.PaneInformation;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.DataFormatter;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Hyperlink;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.ss.util.WorkbookUtil;
-import org.apache.poi.xssf.usermodel.XSSFHyperlink;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
-import org.jsoup.nodes.Attributes;
-import org.jsoup.nodes.Element;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTWorksheet;
-
 import com.vaadin.addon.spreadsheet.SheetOverlayWrapper.OverlayChangeListener;
 import com.vaadin.addon.spreadsheet.action.SpreadsheetDefaultActionHandler;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
@@ -89,6 +36,34 @@ import com.vaadin.ui.HasComponents;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
 import com.vaadin.util.ReflectTools;
+import org.apache.poi.hssf.converter.AbstractExcelUtils;
+import org.apache.poi.hssf.record.cf.CellRangeUtil;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.PaneInformation;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.xssf.usermodel.XSSFHyperlink;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.values.XmlValueDisconnectedException;
+import org.jsoup.nodes.Attributes;
+import org.jsoup.nodes.Element;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTWorksheet;
+
+import java.io.*;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Vaadin Spreadsheet is a Vaadin Add-On Component which allows displaying and
@@ -101,12 +76,6 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class Spreadsheet extends AbstractComponent implements HasComponents,
         Action.Container, Focusable {
-
-    /**
-     * Minimum row height for rows containing components (in points).
-     */
-    private static final int MINIMUM_ROW_HEIGHT_FOR_COMPONENTS = 30;
-
     /**
      * This is a style which hides the top (address and formula) bar.
      */
@@ -379,6 +348,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     };
 
     private Set<Integer> rowsWithComponents;
+
+    /**
+     * Minimum row height for rows containing components (in points).
+     */
+    private int minimumRowHeightForComponents = 30;
 
     /**
      * Creates a new Spreadsheet component using the newer Excel version format
@@ -3578,8 +3552,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 continue;
             }
             float currentHeight = getState(false).rowH[row];
-            if (currentHeight < MINIMUM_ROW_HEIGHT_FOR_COMPONENTS) {
-                getState().rowH[row] = MINIMUM_ROW_HEIGHT_FOR_COMPONENTS;
+            if (currentHeight < getMinimumRowHeightForComponents()) {
+                getState().rowH[row] = getMinimumRowHeightForComponents();
             }
         }
         // Reset row height for rows which no longer have components
@@ -5052,4 +5026,22 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         sheetOverlays.add(image);
     }
 
+    /**
+     * Get the minimum row heigth in points for the rows that contain custom
+     * components
+     * @return the minimum row heigths in points
+     */
+    public int getMinimumRowHeightForComponents() {
+        return minimumRowHeightForComponents;
+    }
+
+    /***
+     * Set the minimum row heigth in points for the rows that contain custom
+     * components
+     * @param minimumRowHeightForComponents
+     */
+    public void setMinimumRowHeightForComponents(
+            final int minimumRowHeightForComponents) {
+        this.minimumRowHeightForComponents = minimumRowHeightForComponents;
+    }
 }
