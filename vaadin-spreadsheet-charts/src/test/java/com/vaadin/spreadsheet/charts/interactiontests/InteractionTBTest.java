@@ -108,6 +108,13 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
+    public void openFileWithNullCell_noExceptionRaised_ChartIsShown()
+            throws Exception {
+        headerPage.loadFile("ChartWithNullCell.xlsx", this);
+        compareScreen("nullCellsInChart");
+    }
+
+    @Test
     public void chartWithShowDataInHiddenCells_rowIsHidden_chartsAreDifferent()
             throws Exception {
         headerPage.loadFile("Data_On_Hidden_Rows.xlsx", this);
@@ -141,6 +148,12 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         marker.click();
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnCollapse");
+    }
+
+    @Test
+    public void openFile_fileHas3dChart_noExceptionsRaised() {
+        headerPage.loadFile("3DChart.xlsx", this);
+        assertNoErrorIndicatorDetected();
     }
 
     @Test
