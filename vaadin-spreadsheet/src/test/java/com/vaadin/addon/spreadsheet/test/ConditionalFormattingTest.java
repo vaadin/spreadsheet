@@ -2,9 +2,13 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.testbench.parallel.Browser;
 
 public class ConditionalFormattingTest extends AbstractSpreadsheetTestCase {
 
@@ -24,5 +28,14 @@ public class ConditionalFormattingTest extends AbstractSpreadsheetTestCase {
         assertEquals(value, spreadSheet.getCellAt("B1").getCssValue("background-color"));
     }
 
+    @Test
+    public void unsupportedFormula_parse_noErrorIndicator() {
+        assertNoErrorIndicatorDetected();
+    }
+
+    @Override
+    public List<DesiredCapabilities> getBrowsersToTest() {
+        return getBrowserCapabilities(Browser.PHANTOMJS);
+    }
 
 }
