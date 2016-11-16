@@ -291,6 +291,9 @@
                     <stopKey>STOP</stopKey>
                     <stopPort>8005</stopPort>
                     <webAppConfig>
+                        <webInfIncludeJarPattern>
+                            .*vaadin.*
+                        </webInfIncludeJarPattern>
                         <contextPath>/</contextPath>
                         <resourceBases>
                             <resourceBase>${project.build.directory}/testwebapp</resourceBase>
@@ -298,7 +301,6 @@
                             <resourceBase>${project.build.outputDirectory}</resourceBase>
                         </resourceBases>
                     </webAppConfig>
-                    <contextXml>${basedir}/src/test/resources/jetty-context.xml</contextXml>
                 </configuration>
             </plugin>
 
