@@ -4,6 +4,6 @@
 <Configure class="org.eclipse.jetty.webapp.WebAppContext">
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
-        <Arg>^$</Arg>
+        <Arg>.*</Arg>
     </Call>
 </Configure>
