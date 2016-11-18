@@ -286,7 +286,6 @@
                     <httpConnector>
                         <port>9998</port>
                     </httpConnector>
-                    <useProvidedScope>true</useProvidedScope>
                     <useTestClasspath>true</useTestClasspath>
                     <stopKey>STOP</stopKey>
                     <stopPort>8005</stopPort>
