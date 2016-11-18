@@ -14,6 +14,7 @@ import java.text.Format;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -46,9 +47,11 @@ import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.data.ListDataSource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractSingleSelect;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -57,6 +60,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
@@ -69,9 +73,7 @@ import com.vaadin.v7.data.Property.ValueChangeEvent;
 import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.v7.data.util.FilesystemContainer;
 import com.vaadin.v7.data.util.converter.Converter.ConversionException;
-import com.vaadin.v7.ui.AbstractSelect;
 import com.vaadin.v7.ui.ComboBox;
-import com.vaadin.v7.ui.NativeSelect;
 import com.vaadin.v7.ui.TextField;
 
 @SuppressWarnings("serial")
@@ -107,9 +109,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
     private HorizontalLayout options;
 
-    private AbstractSelect localeSelect;
+    private AbstractSingleSelect<Locale> localeSelect;
     private Button loadFixtureBtn;
-    private NativeSelect fixtureSelect;
+    private NativeSelect<TestFixtures> fixtureSelect;
 
     public SpreadsheetDemoUI() {
         super();
@@ -276,12 +278,10 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 return o1.getDisplayName().compareTo(o2.getDisplayName());
             }
         });
+        localeSelect.setDataSource(new ListDataSource<Locale>(locales));
 
-        for (Locale locale : locales) {
-            localeSelect.addItem(locale);
-            localeSelect.setItemCaption(locale, locale.getDisplayName());
-        }
         localeSelect.addValueChangeListener(e-> {
+                localeSelect.setCaption(e.getValue().getDisplayName());
                 updateLocale();
         });
 
@@ -303,20 +303,21 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         fixtureSelect = new NativeSelect();
         fixtureSelect.setId("fixtureSelect");
-        fixtureSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
-        for (TestFixtures fixture : TestFixtures.values()) {
-            fixtureSelect.addItems(fixture.toString());
-        }
+        List<TestFixtures> fixtures = Arrays.asList(TestFixtures.values());
+        fixtureSelect.setDataSource(new ListDataSource<>(fixtures));
+//        fixtureSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
+//        for (TestFixtures fixture : TestFixtures.values()) {
+//            fixtureSelect.addItems(fixture.toString());
+//        }
 
         loadFixtureBtn = new Button("Load");
         loadFixtureBtn.addClickListener(event -> {
-                if (spreadsheet == null) {
-                    return;
-                }
+            if (spreadsheet == null) {
+                return;
+            }
 
-                String fixtureName = (String) fixtureSelect.getValue();
-                TestFixtures fixture = TestFixtures.valueOf(fixtureName);
-                fixture.factory.create().loadFixture(spreadsheet);
+            TestFixtures fixture = fixtureSelect.getValue();
+            fixture.factory.create().loadFixture(spreadsheet);
         });
 
         loadFixtureBtn.setId("loadFixtureBtn");
@@ -513,7 +514,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     }
 
                     if (fixture != null) {
-                        fixtureSelect.setValue(fixture.toString());
+                        fixtureSelect.setValue(fixture);
                         loadFixtureBtn.click();
                     }
 
@@ -600,10 +601,20 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         private Button button5;
 
         private boolean hidden = false;
-
-        private NativeSelect nativeSelect;
+        private NativeSelect<String> nativeSelect;
 
         private ComboBox comboBox2;
+
+        private NativeSelect<String> createNativeSelect() {
+            if (nativeSelect == null) {
+                List<String> items = new ArrayList<>();
+                items.add("JEE");
+                nativeSelect = new NativeSelect<>();
+                nativeSelect.setDataSource(new ListDataSource(items));
+                nativeSelect.setWidth("100%");
+            }
+            return nativeSelect;
+        }
 
         public SpreadsheetEditorComponentFactoryTest() {
             testWorkbook = new XSSFWorkbook();
@@ -944,12 +955,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 }
             } else if (!hidden && rowIndex == 6) {
                 if (columnIndex == 1) {
-                    if (nativeSelect == null) {
-                        nativeSelect = new NativeSelect();
-                        nativeSelect.addItem("JEE");
-                        nativeSelect.setWidth("100%");
-                    }
-                    return nativeSelect;
+                    return createNativeSelect();
                 } else if (columnIndex == 2) {
                     if (comboBox2 == null) {
                         comboBox2 = new ComboBox();
