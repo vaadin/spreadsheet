@@ -714,8 +714,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                             selectedCellReference.getCol());
                     try {
                         Date oldValue = cell.getDateCellValue();
-
-                        //TODO change to use LocalDate
                         Date value = Date.from(dateField.getValue().atStartOfDay().toInstant(ZoneOffset.UTC));
                         if (oldValue != null && !oldValue.equals(value)) {
                             cell.setCellValue(value);
@@ -816,8 +814,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                         ((DateField) customEditor)
                                 .setResolution(Resolution.YEAR);
                     }
-                    // TODO change to use LocalDate
-                    // cell.getDateCellValue() should return localDate so you don't nee this hack
+
                     LocalDate date = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                     ((DateField) customEditor).setValue(date);
                     ((DateField) customEditor).setWidth("100%");
