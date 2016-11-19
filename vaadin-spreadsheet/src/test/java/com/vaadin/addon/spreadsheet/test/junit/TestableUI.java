@@ -13,6 +13,13 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
+/**
+ * UI with a VaadinSession which is always locked.
+ * <p>
+ * Useful for writing unit tests where you attach components to the UI and need
+ * the whole chain with connector ids, etc to work.
+ */
+
 public class TestableUI extends UI {
 
     private DeploymentConfiguration deploymentConfiguration;

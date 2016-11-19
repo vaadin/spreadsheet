@@ -31,6 +31,8 @@ public class SpreadsheetCustomEditorsTest {
 
     @Test
     public void cellAfterMergedRegion() throws Exception {
+        // Test sheet setup:
+        // X means non merged cell, m/M/mm are merged cell blocks
         // X M M X
         // m M M mm
         // m M M mm
