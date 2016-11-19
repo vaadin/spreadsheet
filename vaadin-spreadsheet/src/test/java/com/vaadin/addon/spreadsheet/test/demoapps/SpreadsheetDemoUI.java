@@ -65,6 +65,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
@@ -72,8 +73,6 @@ import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.v7.data.util.converter.Converter.ConversionException;
-import com.vaadin.v7.ui.TextField;
 
 @SuppressWarnings("serial")
 @Theme("demo")
@@ -967,30 +966,25 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             final TextField hSplitTF = new TextField(
                     "Horizontal Split Position");
             hSplitTF.setValue("6");
-            hSplitTF.setConverter(Integer.class);
             final TextField vSplitTF = new TextField("Vertical Split Position");
-            vSplitTF.setConverter(Integer.class);
             vSplitTF.setValue("6");
             l.addComponent(vSplitTF);
             l.addComponent(hSplitTF);
-            l.addComponent(new Button("Submit values",
-                    new Button.ClickListener() {
+            Button button = new Button("Submit values");
+            button.addClickListener(event -> {
+                try {
+                    int vSprlit = Integer.parseInt(vSplitTF.getValue());
+                    int hSprlit = Integer.parseInt(hSplitTF.getValue());
 
-                        @Override
-                        public void buttonClick(ClickEvent event) {
-                            try {
-                                if (spreadsheet != null) {
-                                    spreadsheet.createFreezePane(
-                                            (Integer) vSplitTF
-                                                    .getConvertedValue(),
-                                            (Integer) hSplitTF
-                                                    .getConvertedValue());
-                                }
-                            } catch (ConversionException e) {
-                            }
-                            close();
-                        }
-                    }));
+                    spreadsheet.createFreezePane(vSprlit, hSprlit);
+                } catch (NumberFormatException e) {
+
+                }
+
+                close();
+            });
+            l.addComponent(button);
+
         }
     }
 }
