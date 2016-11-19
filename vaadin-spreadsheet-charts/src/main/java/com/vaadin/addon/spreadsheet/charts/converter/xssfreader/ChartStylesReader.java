@@ -310,7 +310,7 @@ class ChartStylesReader {
     private Map<String, byte[]> getColorMap() {
         if (colorMap == null) {
             if (getThemeElements() == null) {
-                return new HashMap<>();
+                return new HashMap<String, byte[]>();
             }
             colorMap = ColorUtils
                     .createColorMap(getThemeElements().getClrScheme());
