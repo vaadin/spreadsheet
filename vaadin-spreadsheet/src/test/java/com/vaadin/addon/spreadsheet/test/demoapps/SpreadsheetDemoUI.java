@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -78,7 +79,8 @@ import com.vaadin.ui.Window;
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
 public class SpreadsheetDemoUI extends UI implements Receiver {
-
+    private static final Logger LOGGER = Logger
+            .getLogger(SpreadsheetDemoUI.class.getName());
     VerticalLayout layout = new VerticalLayout();
 
     Spreadsheet spreadsheet;
@@ -144,7 +146,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         }
         if (uri != null) {
             String excelFilesRegex = ".*\\.xls|.*\\.xlsx|.*\\.xlsm";
-            fileDataSource = FileDataSource.create(uri, excelFilesRegex);
+            fileDataSource = FileDataSource.create(uri, excelFilesRegex, LOGGER);
 
             openTestSheetSelect = createTestSheetCombobox(fileDataSource);
         }
@@ -260,6 +262,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
         });
         localeSelect.setDataSource(new ListDataSource<>(locales));
+        //TODO Vaadin8
+        //Use setItemCaptionGenerator when this is done
+        //https://github.com/vaadin/framework8-issues/issues/477
         localeSelect.addValueChangeListener(e-> updateLocale());
 
         HorizontalLayout sheetOptions = new HorizontalLayout();
