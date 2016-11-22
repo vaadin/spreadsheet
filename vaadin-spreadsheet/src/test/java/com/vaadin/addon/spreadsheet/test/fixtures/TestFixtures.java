@@ -18,7 +18,9 @@ public enum TestFixtures {
             LargeSpreadsheet(LargeSpreadsheetFixture.class),
             ColumnToggle(ColumnToggleFixture.class),
             RowToggle(RowToggleFixture.class),
-            DeletionHandler(DeletionHandlerFixture.class);
+            DeletionHandler(DeletionHandlerFixture.class),
+            Selection(SelectionFixture.class),
+            MergeCells(CellMergeFixture.class);
 
     public final SpreadsheetFixtureFactory factory;
 

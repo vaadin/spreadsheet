@@ -20,6 +20,7 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
     @Before
     public void setUp() throws Exception {
         super.setUp();
+        headerPage.createNewSpreadsheet();
         ctrl = new ModifierController(driver, Keys.CONTROL,
                 testBench(getDriver()), getDesiredCapabilities());
         shift = new ModifierController(driver, Keys.SHIFT,
