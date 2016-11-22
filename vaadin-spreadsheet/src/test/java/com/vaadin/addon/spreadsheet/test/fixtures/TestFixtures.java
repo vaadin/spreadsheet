@@ -20,7 +20,11 @@ public enum TestFixtures {
             RowToggle(RowToggleFixture.class),
             DeletionHandler(DeletionHandlerFixture.class),
             Selection(SelectionFixture.class),
-            MergeCells(CellMergeFixture.class);
+            MergeCells(CellMergeFixture.class),
+            ValueChangeHandler(ValueHandlerFixture.class),
+            Rename(RenameFixture.class),
+            CreateSheet(SheetsFixture.class)
+    ;
 
     public final SpreadsheetFixtureFactory factory;
 
