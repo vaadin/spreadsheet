@@ -75,8 +75,6 @@ public class TestexcelsheetUI extends UI {
             put("SHEETS", new ClassFixtureFactory(SheetsFixture.class));
             put("LOCK_SELECTED_CELLS", new EagerFixtureFactory(
                     new LockCellFixture(TestexcelsheetUI.this)));
-            put("SHEET_RENAME_1", new ClassFixtureFactory(
-                    SheetsFixture.Rename1.class));
             put("CELL_VALUE_HANDLER", new ClassFixtureFactory(
                     ValueHandlerFixture.class));
             put("CUSTOM_COMPONENTS", new ClassFixtureFactory(

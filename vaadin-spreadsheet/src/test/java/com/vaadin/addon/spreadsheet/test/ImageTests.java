@@ -7,8 +7,6 @@ public class ImageTests extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testFromUpload() {
-        headerPage.createNewSpreadsheet();
-
         headerPage.loadFile("picture_sheet.xlsx", this);
 
         assertInRange(200, imageWidth("C2"), 260);
