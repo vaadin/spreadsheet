@@ -17,10 +17,7 @@ import com.vaadin.addon.spreadsheet.test.testutil.ContextMenuHelper;
 import com.vaadin.addon.spreadsheet.test.testutil.ModifierController;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.annotations.BrowserConfiguration;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.CHROME)
 public class ContextMenuTest extends AbstractSpreadsheetTestCase {
 
     private ContextMenuHelper contextMenu;

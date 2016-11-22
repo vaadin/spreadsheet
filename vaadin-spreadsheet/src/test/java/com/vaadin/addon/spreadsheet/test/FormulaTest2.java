@@ -9,10 +9,8 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.annotations.BrowserConfiguration;
-import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.CHROME)
 public class FormulaTest2 extends AbstractSpreadsheetTestCase {
 
     private final String[] integerColumn = { "1", "2", "3", "4" };
