@@ -24,7 +24,6 @@ import com.vaadin.addon.spreadsheet.test.fixtures.CustomComponentFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.EagerFixtureFactory;
 import com.vaadin.addon.spreadsheet.test.fixtures.FormatsFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.HyperLinkFixture;
-import com.vaadin.addon.spreadsheet.test.fixtures.LockCellFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.PopupButtonFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SheetsFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ShiftFixture;
@@ -73,8 +72,6 @@ public class TestexcelsheetUI extends UI {
             put("FORMATS", new ClassFixtureFactory(FormatsFixture.class));
             put("STYLES", new ClassFixtureFactory(StylesFixture.class));
             put("SHEETS", new ClassFixtureFactory(SheetsFixture.class));
-            put("LOCK_SELECTED_CELLS", new EagerFixtureFactory(
-                    new LockCellFixture(TestexcelsheetUI.this)));
             put("CELL_VALUE_HANDLER", new ClassFixtureFactory(
                     ValueHandlerFixture.class));
             put("CUSTOM_COMPONENTS", new ClassFixtureFactory(
