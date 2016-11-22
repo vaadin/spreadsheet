@@ -18,7 +18,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeListener;
 import com.vaadin.addon.spreadsheet.test.fixtures.ActionFixture;
-import com.vaadin.addon.spreadsheet.test.fixtures.CellMergeFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ClassFixtureFactory;
 import com.vaadin.addon.spreadsheet.test.fixtures.CommentFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.CustomComponentFixture;
@@ -30,7 +29,6 @@ import com.vaadin.addon.spreadsheet.test.fixtures.PopupButtonFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SheetsFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ShiftFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SimpleCustomEditorFixture;
-import com.vaadin.addon.spreadsheet.test.fixtures.SpreadsheetFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SpreadsheetFixtureFactory;
 import com.vaadin.addon.spreadsheet.test.fixtures.StylesFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ValueHandlerFixture;
@@ -74,7 +72,6 @@ public class TestexcelsheetUI extends UI {
         {
             put("FORMATS", new ClassFixtureFactory(FormatsFixture.class));
             put("STYLES", new ClassFixtureFactory(StylesFixture.class));
-            put("SELECTION", new SelectionFixtureFactory());
             put("SHEETS", new ClassFixtureFactory(SheetsFixture.class));
             put("LOCK_SELECTED_CELLS", new EagerFixtureFactory(
                     new LockCellFixture(TestexcelsheetUI.this)));
@@ -91,8 +88,6 @@ public class TestexcelsheetUI extends UI {
                     ShiftFixture.InsertRow.class));
             put("DELETE_ROW", new ClassFixtureFactory(
                     ShiftFixture.DeleteRow.class));
-            put("MERGE_CELLS", new EagerFixtureFactory(new CellMergeFixture(
-                    TestexcelsheetUI.this)));
             put("POPUPBUTTON",
                     new EagerFixtureFactory(new PopupButtonFixture()));
             put("SIMPLE_CUSTOM_EDITOR", new ClassFixtureFactory(
@@ -363,24 +358,6 @@ public class TestexcelsheetUI extends UI {
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-    }
-
-    public class SelectionFixture implements SpreadsheetFixture {
-        @Override
-        public void loadFixture(Spreadsheet spreadsheet) {
-            for (CellReference cellRef : currentSelection) {
-                spreadsheet.createCell(cellRef.getRow(), cellRef.getCol(),
-                        "SELECTED");
-            }
-            spreadsheet.refreshAllCellValues();
-        }
-    }
-
-    class SelectionFixtureFactory implements SpreadsheetFixtureFactory {
-        @Override
-        public SpreadsheetFixture create() {
-            return TestexcelsheetUI.this.new SelectionFixture();
         }
     }
 
