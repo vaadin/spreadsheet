@@ -28,7 +28,7 @@ public class TablePopupButtonFixture implements SpreadsheetFixture {
                     int columnWidth = (int) spreadsheet.getActiveSheet().getColumnWidthInPixels(columnIndex);
 
                     content.setWidth(columnWidth, Sizeable.Unit.PIXELS);
-                    content.addColumn(ItemThing::getValue).setCaption("foo");
+                    content.addColumn(ItemThing::getValue).setCaption("Foo");
                     PopupButton popupButton = new PopupButton(content);
                     spreadsheet.setPopup(
                             spreadsheet.getSelectedCellReference(),
