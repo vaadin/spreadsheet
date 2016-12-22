@@ -5037,8 +5037,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /***
      * Set the minimum row heigth in points for the rows that contain custom
-     * components
-     * @param minimumRowHeightForComponents
+     * components. If set to a small value, it might cause some components
+     * like checkboxes to be cut off
+     * @param minimumRowHeightForComponents the minimum row height in points
      */
     public void setMinimumRowHeightForComponents(
             final int minimumRowHeightForComponents) {
