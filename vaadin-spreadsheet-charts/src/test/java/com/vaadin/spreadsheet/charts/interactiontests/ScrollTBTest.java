@@ -7,6 +7,7 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.AbstractSpreadsheetTestCase;
 import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetChartsDemoUI;
+import com.vaadin.testbench.annotations.RunLocally;
 
 public class ScrollTBTest extends AbstractSpreadsheetTestCase {
 
@@ -17,6 +18,20 @@ public class ScrollTBTest extends AbstractSpreadsheetTestCase {
         spreadsheetElement.scroll(850);
         compareScreen("overlayScroll");
     }
+
+    @Test
+    public void testHiddenColumnHeaderScrollingFix() throws IOException {
+    	headerPage.loadFile("hidden.xlsx",this);
+    	SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class).first();
+        spreadsheetElement.scroll(128);
+        spreadsheetElement.scroll(128);
+        spreadsheetElement.scroll(512);
+        spreadsheetElement.scroll(-256);
+        spreadsheetElement.scroll(512);
+        spreadsheetElement.scroll(-1024);
+        compareScreen("hiddenColumnScroll");
+    }
+
     @Override
     public Class<?> getUIClass() {
         return SpreadsheetChartsDemoUI.class;
