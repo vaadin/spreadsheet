@@ -2909,6 +2909,8 @@ public class SheetWidget extends Panel {
         resetRowAndColumnStyles();
         updateCells(vScrollDiff, hScrollDiff);
         ensureCellSelectionStyles();
+        resetRowHeaders();
+        resetColHeaders();
     }
 
     private void ensureCellSelectionStyles() {
