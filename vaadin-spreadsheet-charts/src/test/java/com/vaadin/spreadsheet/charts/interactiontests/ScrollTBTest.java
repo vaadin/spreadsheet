@@ -7,7 +7,6 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.AbstractSpreadsheetTestCase;
 import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetChartsDemoUI;
-import com.vaadin.testbench.annotations.RunLocally;
 
 public class ScrollTBTest extends AbstractSpreadsheetTestCase {
 
