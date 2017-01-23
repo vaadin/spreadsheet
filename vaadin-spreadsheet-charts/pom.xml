@@ -5,7 +5,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>8.0.0.beta1</vaadin.version>
+        <vaadin.version>8.0-SNAPSHOT</vaadin.version>
         <charts.version>4.0.0-beta1</charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <testbench.version>5.0.0.beta1</testbench.version>
@@ -41,6 +41,12 @@
             <id>vaadin-snapshots</id>
             <name>Vaadin addons snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -49,6 +55,16 @@
             <id>vaadin-prereleases</id>
             <name>Vaadin Pre-releases</name>
             <url>https://maven.vaadin.com/vaadin-prereleases</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>vaadin-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
