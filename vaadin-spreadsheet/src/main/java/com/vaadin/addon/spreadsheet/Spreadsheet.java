@@ -3586,19 +3586,20 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         if (this.rowsWithComponents != null) {
             Sheet activeSheet = getActiveSheet();
             for (Integer row : this.rowsWithComponents) {
+              if (getState().rowH.length > row) {
                 if (!rowsWithComponents.contains(row)) {
-                    if (isRowHidden(row)) {
-                        getState().rowH[row] = 0;
+                  if (isRowHidden(row)) {
+                    getState().rowH[row] = 0;
+                  } else {
+                    Row r = activeSheet.getRow(row);
+                    if (r == null) {
+                      getState().rowH[row] = activeSheet.getDefaultRowHeightInPoints();
                     } else {
-                        Row r = activeSheet.getRow(row);
-                        if (r == null) {
-                            getState().rowH[row] = activeSheet
-                                    .getDefaultRowHeightInPoints();
-                        } else {
-                            getState().rowH[row] = r.getHeightInPoints();
-                        }
+                      getState().rowH[row] = r.getHeightInPoints();
                     }
+                  }
                 }
+              }
             }
         }
 
