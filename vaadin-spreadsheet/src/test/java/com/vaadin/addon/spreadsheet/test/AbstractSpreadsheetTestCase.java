@@ -9,11 +9,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.testbench.annotations.BrowserConfiguration;
+import com.vaadin.testbench.parallel.Browser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -27,6 +30,15 @@ import com.vaadin.testbench.elements.NativeSelectElement;
 public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
 
     protected HeaderPage headerPage;
+
+    @BrowserConfiguration
+    public List<DesiredCapabilities> getBrowsersToTest() {
+        return getBrowserCapabilities(
+                //Browser.IE11,
+                //Browser.FIREFOX,
+                //Browser.CHROME,
+                Browser.PHANTOMJS);
+    }
 
     @Before
     public void setUp() throws Exception {
