@@ -1,6 +1,6 @@
 # Vaadin Spreadsheet
 
-Vaadin Spreadsheet is a UI component add-on for Vaadin 7 which provides means to view and edit Excel spreadsheets in Vaadin applications.
+Vaadin Spreadsheet is a component UI add-on for Vaadin 7 which provides means to view and edit Excel spreadsheets in Vaadin applications.
 
 ## License & Author
 
