@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+// FIXME REMOVE
 @RunLocally(Browser.PHANTOMJS)
 public class CellShiftingTest extends AbstractSpreadsheetTestCase {
 
