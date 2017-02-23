@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+// ALESSANDRO HAS CHANGED THIS LINE
 @RunLocally(Browser.PHANTOMJS)
 public class CellShiftingTest extends AbstractSpreadsheetTestCase {
 
