@@ -15,7 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
-// FIXME REMOVE BEFORE PULL REQUEST 12
+// FIXME REMOVE BEFORE PULL REQUEST 12 asdfasdf test
 @RunLocally(Browser.PHANTOMJS)
 public class CellShiftingTest extends AbstractSpreadsheetTestCase {
 
