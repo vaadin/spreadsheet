@@ -13,8 +13,7 @@ public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
                 "show-zero-cells.xlsx", this);
 
-        SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
-        spreadsheet.selectSheetAt(0);
+        spreadsheetPage.selectSheetAt(0);
 
         assertEquals("2", spreadsheetPage.getCellValue("B2"));
         assertEquals("0", spreadsheetPage.getCellValue("B3"));
@@ -27,8 +26,7 @@ public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
                 "show-zero-cells.xlsx", this);
 
-        SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
-        spreadsheet.selectSheetAt(1);
+        spreadsheetPage.selectSheetAt(1);
 
         assertEquals("2", spreadsheetPage.getCellValue("B2"));
         assertEquals("", spreadsheetPage.getCellValue("B3"));
