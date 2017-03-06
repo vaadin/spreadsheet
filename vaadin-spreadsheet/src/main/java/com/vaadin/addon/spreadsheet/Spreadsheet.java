@@ -1835,6 +1835,21 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
     }
 
+    public void autofitRow(int rowIndex) {
+        final Sheet activeSheet = getActiveSheet();
+        RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex);
+        getState().rowH[rowIndex] = activeSheet.getRow(rowIndex)
+            .getHeightInPoints();
+        getCellValueManager().clearCacheForRow(rowIndex + 1);
+        getCellValueManager().loadCellData(rowIndex + 1, firstColumn,
+                rowIndex + 1, lastColumn);
+
+        if (hasSheetOverlays()) {
+            reloadImageSizesFromPOI = true;
+            loadOrUpdateOverlays();
+        }
+    }
+
     /**
      * Shifts rows between startRow and endRow n number of rows. If you use a
      * negative number for n, the rows will be shifted upwards. This method
