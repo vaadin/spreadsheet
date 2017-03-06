@@ -1,10 +1,13 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import static org.junit.Assert.assertEquals;
+import java.io.IOException;
+
 import org.junit.Test;
 
-import java.io.IOException;
+import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
@@ -37,5 +40,22 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         a1.setValue("<span>Foo</span>");
 
         compareScreen("htmlText");
+    }
+
+    @Test
+    public void cellWithLongText_inputWrapped_noVerticalOverflow()
+        throws IOException {
+        headerPage.loadFile("TestWrapNoVerticalOverflow.xlsx", this);
+
+        compareScreen("WrapNoVerticalOverflow");
+    }
+
+    @Test
+    public void cellWithLongText_inputWrapped_overflowHidden() {
+        String value = "hidden";
+        SpreadsheetPage spreadsheetPage = headerPage
+            .loadFile("TestWrapNoVerticalOverflow.xlsx", this);
+        assertEquals(value,
+            spreadsheetPage.getCellAt(2, 3).getCssValue("overflow"));
     }
 }
