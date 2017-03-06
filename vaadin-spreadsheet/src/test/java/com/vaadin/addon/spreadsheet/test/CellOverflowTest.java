@@ -8,7 +8,10 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
     @Test
@@ -56,6 +59,6 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         SpreadsheetPage spreadsheetPage = headerPage
             .loadFile("TestWrapNoVerticalOverflow.xlsx", this);
         assertEquals(value,
-            spreadsheetPage.getCellAt(2, 3).getCssValue("overflow"));
+            spreadsheetPage.getCellAt(3, 4).getCssValue("overflow"));
     }
 }
