@@ -245,6 +245,16 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         checkBoxLayout.addComponents(gridlines, rowColHeadings, hideTop,
                 hideBottom, hideBoth);
 
+        Button autofitRowsButton = new Button("Autofit row", new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent clickEvent) {
+                if (spreadsheet != null) {
+                    int row = spreadsheet.getSelectedCellReference().getRow();
+                    spreadsheet.autofitRow(row);
+                }
+            }
+        });
+
         Button closeButton = new Button("Close", new Button.ClickListener() {
 
             @Override
@@ -357,7 +367,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         VerticalLayout closeDownload = new VerticalLayout();
         closeDownload.setSpacing(true);
-        closeDownload.addComponents(closeButton, downloadButton, loadFixture);
+        closeDownload.addComponents(autofitRowsButton, closeButton, downloadButton, loadFixture);
 
         checkBoxLayout.setWidth(null);
         createAndFreeze.setWidth(null);

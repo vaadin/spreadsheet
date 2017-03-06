@@ -1392,4 +1392,28 @@ public class CellValueManager implements Serializable {
         }
     }
 
+    /**
+     * Clears data cache for the row at the given index
+     *
+     * @param indexRow
+     *            Index of target row, 1-based
+     */
+    public void clearCacheForRow(int indexRow) {
+        final String rowKey = "row" + indexRow;
+        for (Iterator<String> iterator = sentCells.iterator(); iterator
+            .hasNext();) {
+            String key = iterator.next();
+            if (key.endsWith(rowKey)) {
+                iterator.remove();
+            }
+        }
+        for (Iterator<String> iterator = sentFormulaCells.iterator(); iterator
+            .hasNext();) {
+            String key = iterator.next();
+            if (key.endsWith(rowKey)) {
+                iterator.remove();
+            }
+        }
+    }
+
 }
