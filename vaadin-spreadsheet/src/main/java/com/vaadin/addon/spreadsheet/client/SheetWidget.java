@@ -1655,7 +1655,16 @@ public class SheetWidget extends Panel {
                                                 .getAttribute("class");
                                         int i = jsniUtil.isHeader(className);
                                         if (i == 1) { // row
-                                            // autofit row ???
+                                            i = jsniUtil
+                                                .parseHeaderIndex(className) - 1;
+                                            while (actionHandler
+                                                .isRowHidden(i) && i > 0) {
+                                                i--;
+                                            }
+                                            if (i > 0) {
+                                                actionHandler
+                                                    .onRowHeaderResizeDoubleClick(i);
+                                            }
                                         } else if (i == 2) { // col
                                             i = jsniUtil
                                                     .parseHeaderIndex(className) - 1;
@@ -1675,7 +1684,16 @@ public class SheetWidget extends Panel {
                                                 .getAttribute("class");
                                         int i = jsniUtil.isHeader(className);
                                         if (i == 1) { // row
-                                            // autofit row ???
+                                            i = jsniUtil
+                                                .parseHeaderIndex(className);
+                                            while (actionHandler
+                                                .isRowHidden(i) && i > 0) {
+                                                i--;
+                                            }
+                                            if (i > 0) {
+                                                actionHandler
+                                                    .onRowHeaderResizeDoubleClick(i);
+                                            }
                                         } else if (i == 2) { // col
                                             i = jsniUtil
                                                     .parseHeaderIndex(className);
