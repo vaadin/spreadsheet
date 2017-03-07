@@ -18,10 +18,12 @@ package com.vaadin.addon.spreadsheet;
  */
 
 import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
 import java.awt.font.TextLayout;
 import java.text.AttributedString;
 
+import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -37,6 +39,10 @@ import org.apache.poi.ss.usermodel.Sheet;
 class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
+    // Since calculation of wrapped text is not so accurate
+    // this amount of additional rows is taken into account to calculate
+    // cell height
+    public static final int SAFETY_ADDITIONAL_ROWS = 1;
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
     // Minimum height (in points) of rows refitted by Excel
@@ -54,20 +60,45 @@ class RowsAutofitUtil {
 
         float height = MINIMUM_HEIGHT;
         for (Cell cell : sheetRow) {
-
-            // Autofit with wrapped text is not supported at the moment
-            if (isWrapText(cell)) {
-                return;
-            }
-
             Font font = getCellFont(cell);
             if (font != null) {
-                height = Math
-                    .max(height, getRequiredHeight(font, EXAMPLE_TEXT));
+                height = Math.max(height,
+                    getRequiredHeight(font, EXAMPLE_TEXT) * getLineCount(cell));
             }
         }
 
         sheetRow.setHeightInPoints(height);
+    }
+
+    private static int getLineCount(Cell cell) {
+        if (!isWrapText(cell)) {
+            return 1;
+        }
+
+        // TODO Suppport formula strings
+        String cellValue;
+        try {
+            cellValue = cell.getStringCellValue();
+        } catch (Exception e) {
+            return 1;
+        }
+
+        AttributedString str = new AttributedString(cellValue);
+        LineBreakMeasurer measurer = new LineBreakMeasurer(str.getIterator(),
+            fontRenderContext);
+
+        int nextPos = 0;
+        int lineCnt = 0;
+
+        // TODO Support Merged columns
+        int columnWidth = AbstractExcelUtils.getColumnWidthInPx(
+            cell.getSheet().getColumnWidth(cell.getColumnIndex()));
+        while (measurer.getPosition() < cellValue.length()) {
+            nextPos = measurer.nextOffset(columnWidth);
+            lineCnt++;
+            measurer.setPosition(nextPos);
+        }
+        return lineCnt + SAFETY_ADDITIONAL_ROWS;
     }
 
     private static boolean isWrapText(Cell cell) {
