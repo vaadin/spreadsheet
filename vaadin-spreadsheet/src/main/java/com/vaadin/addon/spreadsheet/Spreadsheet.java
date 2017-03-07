@@ -1795,6 +1795,20 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
+     * This method is called when row auto-fit has been initiated from the
+     * browser by double-clicking the border of the target row header.
+     *
+     * @param rowIndex
+     *     Index of the target row, 0-based
+     */
+    public void onRowAutofit(int rowIndex) {
+        SizeChangeCommand command = new SizeChangeCommand(this, Type.ROW);
+        command.captureValues(new Integer[] { rowIndex + 1 });
+        autofitRow(rowIndex);
+        historyManager.addCommand(command);
+    }
+
+    /**
      * This method is called when column auto-fit has been initiated from the
      * browser by double-clicking the border of the target column header.
      * 

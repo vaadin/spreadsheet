@@ -192,6 +192,12 @@ public interface SheetHandler extends GroupingHandler {
     void onColumnsResized(Map<Integer, Integer> newSizes);
 
     /**
+     * @param rowIndex
+     *     1-based
+     */
+    void onRowHeaderResizeDoubleClick(int rowIndex);
+
+    /**
      *
      * @param columnIndex
      *            1-based
@@ -249,5 +255,4 @@ public interface SheetHandler extends GroupingHandler {
     boolean isColProtected(int col);
 
     boolean isRowProtected(int row);
-
 }
