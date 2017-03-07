@@ -1835,6 +1835,16 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
     }
 
+    /**
+     * Sets the row to automatically adjust the row height to fit the
+     * highest cell content within the column.
+     * <p>
+     * This does not take into account cells that have custom Vaadin components
+     * inside them and merged cells
+     *
+     * @param rowIndex
+     *            Index of the target row, 0-based
+     */
     public void autofitRow(int rowIndex) {
         final Sheet activeSheet = getActiveSheet();
         RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex);
