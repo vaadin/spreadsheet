@@ -5120,7 +5120,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * 
      * @return version of workbook
      */
-    public SpreadsheetVersion getSpreadsheetVersion() {
+    SpreadsheetVersion getSpreadsheetVersion() {
         if (getWorkbook() != null) {
             return workbook.getSpreadsheetVersion();
         }
@@ -5133,7 +5133,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @param sheetName
      *            name of the sheet to switch to
      */
-    public void switchSheet(String sheetName) {
+    void switchSheet(String sheetName) {
         int sheetIndex = getWorkbook().getSheetIndex(sheetName);
         if (sheetIndex != -1) {
             Sheet oldSheet = getActiveSheet();
