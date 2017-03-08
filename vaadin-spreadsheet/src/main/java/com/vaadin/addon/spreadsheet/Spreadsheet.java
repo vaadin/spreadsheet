@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -5112,5 +5113,33 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public void setMinimumRowHeightForComponents(
             final int minimumRowHeightForComponents) {
         this.minimumRowHeightForComponents = minimumRowHeightForComponents;
+
+    /**
+     * Get version of currently presented workbook
+     * 
+     * @return version of workbook
+     */
+    public SpreadsheetVersion getSpreadsheetVersion() {
+        if (getWorkbook() != null) {
+            return workbook.getSpreadsheetVersion();
+        }
+        return null;
+    }
+
+    /**
+     * Switch to another sheet
+     * 
+     * @param sheetName
+     *            name of the sheet to switch to
+     */
+    public void switchSheet(String sheetName) {
+        int sheetIndex = getWorkbook().getSheetIndex(sheetName);
+        if (sheetIndex != -1) {
+            Sheet oldSheet = getActiveSheet();
+            setActiveSheetIndex(sheetIndex);
+            Sheet newSheet = getActiveSheet();
+            fireSheetChangeEvent(oldSheet, newSheet);
+            reloadVisibleCellContents();// ??????
+        }
     }
 }
