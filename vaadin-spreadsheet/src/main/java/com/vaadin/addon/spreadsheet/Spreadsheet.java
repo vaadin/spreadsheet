@@ -5113,6 +5113,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public void setMinimumRowHeightForComponents(
             final int minimumRowHeightForComponents) {
         this.minimumRowHeightForComponents = minimumRowHeightForComponents;
+    }
 
     /**
      * Get version of currently presented workbook
