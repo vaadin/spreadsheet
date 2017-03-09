@@ -42,7 +42,7 @@ class RowsAutofitUtil {
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
     // cell height
-    public static final int SAFETY_ADDITIONAL_ROWS = 1;
+    public static final int SAFETY_ADDITIONAL_ROWS = 0;
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
     // Minimum height (in points) of rows refitted by Excel
