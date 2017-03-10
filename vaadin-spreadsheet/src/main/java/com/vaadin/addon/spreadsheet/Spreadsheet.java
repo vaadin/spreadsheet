@@ -1867,6 +1867,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public void autofitRow(int rowIndex) {
         final Sheet activeSheet = getActiveSheet();
         RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex);
+
+        // Once the user autofit a row
+        // the row becomes "autoresizable"
+        RowsAutofitUtil.setCustomHeight(activeSheet, rowIndex, false);
+
         getState().rowH[rowIndex] = activeSheet.getRow(rowIndex)
             .getHeightInPoints();
         getCellValueManager().clearCacheForRow(rowIndex + 1);
