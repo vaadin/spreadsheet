@@ -76,8 +76,8 @@ import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.MergedRegionUtil.MergedRegionContainer;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc;
-import com.vaadin.addon.spreadsheet.command.SizeChangeCommand;
-import com.vaadin.addon.spreadsheet.command.SizeChangeCommand.Type;
+import com.vaadin.addon.spreadsheet.command.ColumnSizeChangeCommand;
+import com.vaadin.addon.spreadsheet.command.RowSizeChangeCommand;
 import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
@@ -1807,7 +1807,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *     Index of the target row, 0-based
      */
     public void onRowAutofit(int rowIndex) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.ROW);
+        RowSizeChangeCommand command = new RowSizeChangeCommand(this);
         command.captureValues(new Integer[] { rowIndex + 1 });
         autofitRow(rowIndex);
         historyManager.addCommand(command);
@@ -1816,12 +1816,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * This method is called when column auto-fit has been initiated from the
      * browser by double-clicking the border of the target column header.
-     * 
+     *
      * @param columnIndex
-     *            Index of the target column, 0-based
+     *     Index of the target column, 0-based
      */
     protected void onColumnAutofit(int columnIndex) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
+        ColumnSizeChangeCommand command = new ColumnSizeChangeCommand(this);
         command.captureValues(new Integer[] { columnIndex + 1 });
         autofitColumn(columnIndex);
         historyManager.addCommand(command);
@@ -3055,7 +3055,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     void onRowResized(Map<Integer, Float> newRowSizes, int row1, int col1,
             int row2, int col2) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.ROW);
+        RowSizeChangeCommand command = new RowSizeChangeCommand(this);
         command.captureValues(newRowSizes.keySet().toArray(
                 new Integer[newRowSizes.size()]));
         historyManager.addCommand(command);
@@ -3116,7 +3116,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     void onColumnResized(Map<Integer, Integer> newColumnSizes, int row1,
             int col1, int row2, int col2) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
+        ColumnSizeChangeCommand command = new ColumnSizeChangeCommand(this);
         command.captureValues(newColumnSizes.keySet().toArray(
                 new Integer[newColumnSizes.size()]));
         historyManager.addCommand(command);

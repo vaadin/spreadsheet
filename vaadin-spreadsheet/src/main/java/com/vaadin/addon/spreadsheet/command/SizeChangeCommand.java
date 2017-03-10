@@ -30,7 +30,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
  * @author Vaadin Ltd.
  * @since 1.0
  */
-public class SizeChangeCommand extends SpreadsheetCommand {
+abstract class SizeChangeCommand extends SpreadsheetCommand {
 
     /**
      * Determines whether this command applies to a row or to a column.
@@ -43,7 +43,7 @@ public class SizeChangeCommand extends SpreadsheetCommand {
     private Object[] values;
     private Integer[] indexes;
 
-    public SizeChangeCommand(Spreadsheet spreadsheet, Type type) {
+    SizeChangeCommand(Spreadsheet spreadsheet, Type type) {
         super(spreadsheet);
         this.type = type;
     }
