@@ -29,7 +29,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
  */
 public class ColumnSizeChangeCommand extends SizeChangeCommand {
     public ColumnSizeChangeCommand(Spreadsheet spreadsheet) {
-        super(spreadsheet, Type.COLUMN);
+        super(spreadsheet);
     }
 
     @Override
