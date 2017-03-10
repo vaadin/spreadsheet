@@ -37,7 +37,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
  *
  * @author Vaadin Ltd.
  */
-class RowsAutofitUtil {
+public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
     // Since calculation of wrapped text is not so accurate
