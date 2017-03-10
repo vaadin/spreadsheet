@@ -55,6 +55,9 @@ public class RowsAutofitUtil {
         }
 
         if (sheetRow.getFirstCellNum() == -1) {
+            // When no font information is available,
+            // "autofitting" a row means set its height to the default
+            sheetRow.setHeightInPoints(sheet.getDefaultRowHeightInPoints());
             return;
         }
 
