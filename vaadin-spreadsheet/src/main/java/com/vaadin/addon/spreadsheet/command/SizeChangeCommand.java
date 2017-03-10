@@ -99,7 +99,7 @@ public class SizeChangeCommand extends SpreadsheetCommand {
      *            new height/width
      * @return Previous height/width of the row/column
      */
-    private Object updateValue(int index, Object value) {
+    protected Object updateValue(int index, Object value) {
         if (type == Type.COLUMN) {
             Object columnWidth = getCurrentValue(index);
             spreadsheet.setColumnWidth(index, (Integer) value);
@@ -115,6 +115,7 @@ public class SizeChangeCommand extends SpreadsheetCommand {
                         spreadsheet.getDefaultRowHeight());
             } else if (value != null) {
                 spreadsheet.setRowHeight(index, (Float) value);
+
             } // if both are null, then default is applied already (shouldn't)
             return oldHeight;
         }
@@ -128,7 +129,7 @@ public class SizeChangeCommand extends SpreadsheetCommand {
      *            row/column index, 0-based
      * @return current height for row OR width for column
      */
-    private Object getCurrentValue(int index) {
+    protected Object getCurrentValue(int index) {
         if (type == Type.COLUMN) {
             if (getSheet().isColumnHidden(index)) {
                 return 0;
