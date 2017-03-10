@@ -32,29 +32,11 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
  */
 abstract class SizeChangeCommand extends SpreadsheetCommand {
 
-    /**
-     * Determines whether this command applies to a row or to a column.
-     */
-    public enum Type {
-        COLUMN, ROW
-    };
-
-    private final Type type;
     private Object[] values;
     private Integer[] indexes;
 
-    SizeChangeCommand(Spreadsheet spreadsheet, Type type) {
+    SizeChangeCommand(Spreadsheet spreadsheet) {
         super(spreadsheet);
-        this.type = type;
-    }
-
-    /**
-     * Returns the type of size change this represents.
-     * 
-     * @return size change type
-     */
-    public Type getType() {
-        return type;
     }
 
     /**
