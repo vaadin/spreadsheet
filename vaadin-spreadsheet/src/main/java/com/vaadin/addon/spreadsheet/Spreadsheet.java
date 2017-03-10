@@ -3063,6 +3063,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             int index = entry.getKey();
             float height = entry.getValue();
             setRowHeight(index - 1, height);
+
+            // When the user manually sizes the row height
+            // then the row is marked with customHeight=true
+            // and is not auto-resizable anymore
+            RowsAutofitUtil.setCustomHeight(getActiveSheet(), index - 1, true);
         }
 
         if (hasSheetOverlays()) {
