@@ -3100,6 +3100,20 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
     }
 
+    /**
+     * Activates or deactivates the "customHeight" attribute
+     * for the specified row in currently active sheet.
+     *
+     * @param index
+     *     Index of target row, 0-based
+     * @param customHeight
+     *     True if the specified row must have a fixed height,
+     *     False if it has to be auto-resizable depending on its content.
+     */
+    public void setRowCustomHeight(int index, boolean customHeight) {
+        RowsAutofitUtil.setCustomHeight(getActiveSheet(), index, customHeight);
+    }
+
     void onColumnResized(Map<Integer, Integer> newColumnSizes, int row1,
             int col1, int row2, int col2) {
         SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
