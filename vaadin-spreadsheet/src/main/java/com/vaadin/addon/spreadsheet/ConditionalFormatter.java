@@ -669,9 +669,27 @@ public class ConditionalFormatter implements Serializable {
             return false;
         }
 
+        ValueEval eval;
+        try {
+            eval = getValueEvalFromFormula(booleanFormula, cell, deltaColumn, deltaRow);
+        } catch (NotImplementedException e) {
+            LOGGER.log(Level.FINEST, e.getMessage(), e);
+            return false;
+        }
+        if (eval instanceof BoolEval) {
+            return eval == null ? false : ((BoolEval) eval).getBooleanValue();
+        } else {
+            return false;
+        }
+
+    }
+
+    private ValueEval getValueEvalFromFormula(String formula, Cell cell,
+        int deltaColumn, int deltaRow) {
         // Parse formula and use deltas to get relative cell references to work
         // (#18702)
-        Ptg[] ptgs = FormulaParser.parse(booleanFormula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
+        Ptg[] ptgs = FormulaParser
+            .parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
                 FormulaType.CELL, spreadsheet.getActiveSheetIndex());
 
         for (Ptg ptg : ptgs) {
@@ -687,20 +705,7 @@ public class ConditionalFormatter implements Serializable {
                 }
             }
         }
-
-        ValueEval eval;
-        try {
-            eval = WorkbookEvaluatorUtil.evaluate(spreadsheet, ptgs, cell);
-        } catch (NotImplementedException e) {
-            LOGGER.log(Level.FINEST, e.getMessage(), e);
-            return false;
-        }
-        if (eval instanceof BoolEval) {
-            return eval == null ? false : ((BoolEval) eval).getBooleanValue();
-        } else {
-            return false;
-        }
-
+        return WorkbookEvaluatorUtil.evaluate(spreadsheet, ptgs, cell);
     }
 
     /**
