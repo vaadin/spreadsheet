@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
-public class ConditionalFormattingCellIsType extends AbstractSpreadsheetTestCase {
+public class ConditionalFormattingCellValueIs extends AbstractSpreadsheetTestCase {
 
     private static final String VALUE = "'Foo";
     private static final String FALSE_CONDITION_COLOR = "rgba(255, 255, 255, 1)";
