@@ -17,6 +17,8 @@ package com.vaadin.addon.spreadsheet.command;
  * #L%
  */
 
+import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
+
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
@@ -28,5 +30,21 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 public class ColumnSizeChangeCommand extends SizeChangeCommand {
     public ColumnSizeChangeCommand(Spreadsheet spreadsheet) {
         super(spreadsheet, Type.COLUMN);
+    }
+
+    @Override
+    protected Object updateValue(int index, Object value) {
+        Object columnWidth = getCurrentValue(index);
+        spreadsheet.setColumnWidth(index, (Integer) value);
+        return columnWidth;
+    }
+
+    @Override
+    protected Object getCurrentValue(int index) {
+        if (getSheet().isColumnHidden(index)) {
+            return 0;
+        }
+        return ExcelToHtmlUtils
+            .getColumnWidthInPx(getSheet().getColumnWidth(index));
     }
 }
