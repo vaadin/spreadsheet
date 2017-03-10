@@ -17,8 +17,6 @@ package com.vaadin.addon.spreadsheet.command;
  * #L%
  */
 
-import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 
@@ -33,7 +31,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 abstract class SizeChangeCommand extends SpreadsheetCommand {
 
     private Object[] values;
-    private Integer[] indexes;
+    protected Integer[] indexes;
 
     SizeChangeCommand(Spreadsheet spreadsheet) {
         super(spreadsheet);
@@ -42,7 +40,7 @@ abstract class SizeChangeCommand extends SpreadsheetCommand {
     /**
      * Captures the current row heights or column widths (depending on the type
      * set to this command) for the row/column indexes given.
-     * 
+     *
      * @param indexes
      *            Row /column indexes, 1-based
      */
