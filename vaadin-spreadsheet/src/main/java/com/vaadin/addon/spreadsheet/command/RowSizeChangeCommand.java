@@ -18,7 +18,9 @@ package com.vaadin.addon.spreadsheet.command;
  */
 
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 
+import com.vaadin.addon.spreadsheet.RowsAutofitUtil;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
@@ -28,8 +30,35 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
  * @since 1.0
  */
 public class RowSizeChangeCommand extends SizeChangeCommand {
+
+    private boolean[] customHeightRows;
+
     public RowSizeChangeCommand(Spreadsheet spreadsheet) {
         super(spreadsheet);
+    }
+
+    @Override
+    public void captureValues(Integer[] indexes) {
+        super.captureValues(indexes);
+
+        // Also stores the previous customHeight attribute
+        Sheet sheet = spreadsheet.getActiveSheet();
+        customHeightRows = new boolean[indexes.length];
+        for (int i = 0; i < indexes.length; i++) {
+            customHeightRows[i] = RowsAutofitUtil
+                .isCustomHeight(sheet, indexes[i] - 1);
+        }
+    }
+
+    @Override
+    public void execute() {
+        super.execute();
+
+        // Also update the customHeight attribute
+        for (int i = 0; i < indexes.length; i++) {
+            customHeightRows[i] = updateCustomHeight(indexes[i] - 1,
+                customHeightRows[i]);
+        }
     }
 
     @Override
@@ -46,6 +75,13 @@ public class RowSizeChangeCommand extends SizeChangeCommand {
 
         } // if both are null, then default is applied already (shouldn't)
         return oldHeight;
+    }
+
+    private boolean updateCustomHeight(int index, boolean customHeight) {
+        Sheet sheet = spreadsheet.getActiveSheet();
+        boolean oldCustomHeight = RowsAutofitUtil.isCustomHeight(sheet, index);
+        RowsAutofitUtil.setCustomHeight(sheet, index, customHeight);
+        return oldCustomHeight;
     }
 
     @Override
