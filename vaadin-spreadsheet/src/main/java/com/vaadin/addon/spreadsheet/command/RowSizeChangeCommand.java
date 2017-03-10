@@ -17,6 +17,8 @@ package com.vaadin.addon.spreadsheet.command;
  * #L%
  */
 
+import org.apache.poi.ss.usermodel.Row;
+
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
@@ -28,5 +30,31 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 public class RowSizeChangeCommand extends SizeChangeCommand {
     public RowSizeChangeCommand(Spreadsheet spreadsheet) {
         super(spreadsheet, Type.ROW);
+    }
+
+    @Override
+    protected Object updateValue(int index, Object value) {
+        Row row = spreadsheet.getActiveSheet().getRow(index);
+        // null rows use default row height
+        // null height marks default height
+        Object oldHeight = getCurrentValue(index);
+
+        if (value == null && row != null) {
+            spreadsheet.setRowHeight(index, spreadsheet.getDefaultRowHeight());
+        } else if (value != null) {
+            spreadsheet.setRowHeight(index, (Float) value);
+
+        } // if both are null, then default is applied already (shouldn't)
+        return oldHeight;
+    }
+
+    @Override
+    protected Object getCurrentValue(int index) {
+        Row row = getSheet().getRow(index);
+        // null rows use default row height
+        // null height marks default height
+        return row == null ?
+            null :
+            row.getZeroHeight() ? 0.0F : row.getHeightInPoints();
     }
 }

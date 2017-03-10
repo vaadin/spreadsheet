@@ -25,7 +25,7 @@ import org.apache.poi.ss.util.CellReference;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
- * Command for changing the height of row(s) or the width of column(s).
+ * Abstract class for changing the height of row(s) or the width of column(s).
  * 
  * @author Vaadin Ltd.
  * @since 1.0
@@ -92,59 +92,22 @@ abstract class SizeChangeCommand extends SpreadsheetCommand {
     /**
      * Sets the height/width of the target row/column (found by the given index)
      * to the given value.
-     * 
+     *
      * @param index
      *            row/column index, 0-based
      * @param value
      *            new height/width
      * @return Previous height/width of the row/column
      */
-    protected Object updateValue(int index, Object value) {
-        if (type == Type.COLUMN) {
-            Object columnWidth = getCurrentValue(index);
-            spreadsheet.setColumnWidth(index, (Integer) value);
-            return columnWidth;
-        } else if (type == Type.ROW) {
-            Row row = spreadsheet.getActiveSheet().getRow(index);
-            // null rows use default row height
-            // null height marks default height
-            Object oldHeight = getCurrentValue(index);
-
-            if (value == null && row != null) {
-                spreadsheet.setRowHeight(index,
-                        spreadsheet.getDefaultRowHeight());
-            } else if (value != null) {
-                spreadsheet.setRowHeight(index, (Float) value);
-
-            } // if both are null, then default is applied already (shouldn't)
-            return oldHeight;
-        }
-        return null;
-    }
+    protected abstract Object updateValue(int index, Object value);
 
     /**
      * Returns the current height/width of the target row/column.
-     * 
+     *
      * @param index
      *            row/column index, 0-based
      * @return current height for row OR width for column
      */
-    protected Object getCurrentValue(int index) {
-        if (type == Type.COLUMN) {
-            if (getSheet().isColumnHidden(index)) {
-                return 0;
-            } else {
-                return ExcelToHtmlUtils.getColumnWidthInPx(getSheet()
-                        .getColumnWidth(index));
-            }
-        } else if (type == Type.ROW) {
-            Row row = getSheet().getRow(index);
-            // null rows use default row height
-            // null height marks default height
-            return row == null ? null : row.getZeroHeight() ? 0.0F : row
-                    .getHeightInPoints();
-        }
-        return null;
-    }
+    protected abstract Object getCurrentValue(int index);
 
 }
