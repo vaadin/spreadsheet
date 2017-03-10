@@ -29,6 +29,7 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFRow;
 
 /**
  * RowsAutofitUtil is an utility class of the Spreadsheet component used
@@ -67,6 +68,32 @@ class RowsAutofitUtil {
         }
 
         sheetRow.setHeightInPoints(height);
+    }
+
+    public static void setCustomHeight(Sheet sheet, int row,
+        boolean customHeight) {
+        Row sheetRow = sheet.getRow(row);
+        if (sheetRow == null) {
+            sheetRow = sheet.createRow(row);
+        }
+
+        // autofit works only with XSSF
+        if (!(sheetRow instanceof XSSFRow)) {
+            return;
+        }
+
+        ((XSSFRow) sheetRow).getCTRow().setCustomHeight(customHeight);
+    }
+
+    public static boolean isCustomHeight(Sheet sheet, int row) {
+        Row sheetRow = sheet.getRow(row);
+
+        // autofit works only with XSSF
+        if (!(sheetRow instanceof XSSFRow)) {
+            return false;
+        }
+
+        return ((XSSFRow) sheetRow).getCTRow().isSetCustomHeight();
     }
 
     private static int getLineCount(Cell cell) {
