@@ -37,6 +37,11 @@
   // text seems to be more accurate
   $spreadsheet-cell-line-height: 1.1;
 
+  // After having set line-height to 1.1, text will appear higher within a cell
+  // than before. We add a 10%  bottom padding adjustment to restore the same
+  // position and keep screenshot tests running without changing them
+  $spreadsheet-cell-padding-bottom: 0.1em;
+
   // These colors should be derived from valo theme colors.
   // Unfortunately due to a bug in the sass compiler,
   // we can not call any sass color functions (like scale-color,
@@ -265,6 +270,7 @@
         flex-direction: column;
         justify-content: flex-end;
         line-height: $spreadsheet-cell-line-height;
+        padding-bottom: $spreadsheet-cell-padding-bottom;
 
         &.selected-cell-highlight {
           outline: solid $spreadsheet-sheet-selection-highlight-outline-color 1px;
