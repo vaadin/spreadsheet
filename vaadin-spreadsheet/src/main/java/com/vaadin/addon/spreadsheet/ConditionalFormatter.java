@@ -746,7 +746,7 @@ public class ConditionalFormatter implements Serializable {
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell,
             0, 0);
-        if (!areHomogeneous(eval, cell.getCellType())) {
+        if (!hasCoherentType(eval, cell.getCellType())) {
             // Comparison between different types (e.g. Bool vs String)
             return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
         }
@@ -825,9 +825,9 @@ public class ConditionalFormatter implements Serializable {
     /**
      * @param eval
      * @param cellType
-     * @return true if eval has a value coherent with cellType
+     * @return true if eval is coherent with cellType, false otherwise
      */
-    private boolean areHomogeneous(ValueEval eval, int cellType) {
+    private boolean hasCoherentType(ValueEval eval, int cellType) {
         switch (cellType) {
             case Cell.CELL_TYPE_STRING:
                 return eval instanceof StringEval;

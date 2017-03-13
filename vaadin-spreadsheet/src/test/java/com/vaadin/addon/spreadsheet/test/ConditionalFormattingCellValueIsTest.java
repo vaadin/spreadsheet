@@ -97,7 +97,7 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
     }
 
     @Test
-    public void loadSpreadsheetWithNotEqualConditionFormattingInB4_insertInhomogeneousValue_CellB4FilledRed()
+    public void loadSpreadsheetWithNotEqualConditionFormattingInB4_insertIncoherentValue_CellB4FilledRed()
         throws IOException {
 
         b2.setValue(STRING_VALUE);
