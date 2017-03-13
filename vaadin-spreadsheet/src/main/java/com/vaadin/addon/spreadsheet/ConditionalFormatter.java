@@ -822,6 +822,11 @@ public class ConditionalFormatter implements Serializable {
         return false;
     }
 
+    /**
+     * @param eval
+     * @param cellType
+     * @return true if eval has a value coherent with cellType
+     */
     private boolean areHomogeneous(ValueEval eval, int cellType) {
         switch (cellType) {
             case Cell.CELL_TYPE_STRING:
