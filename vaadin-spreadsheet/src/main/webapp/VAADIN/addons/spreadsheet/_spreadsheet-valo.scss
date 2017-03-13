@@ -32,6 +32,11 @@
 
   $spreadsheet-cell-invalidformula-triangle-color: $v-error-indicator-color !default;
 
+  // cell line height set to 1.1 seems more similar to Excel than "normal"
+  // and with this setting, the line count calculation in case of wrapping
+  // text seems to be more accurate
+  $spreadsheet-cell-line-height: 1.1;
+
   // These colors should be derived from valo theme colors.
   // Unfortunately due to a bug in the sass compiler,
   // we can not call any sass color functions (like scale-color,
@@ -259,7 +264,7 @@
         white-space: nowrap;
         flex-direction: column;
         justify-content: flex-end;
-        line-height: 1.1;
+        line-height: $spreadsheet-cell-line-height;
 
         &.selected-cell-highlight {
           outline: solid $spreadsheet-sheet-selection-highlight-outline-color 1px;
