@@ -654,6 +654,7 @@ public class ConditionalFormatter implements Serializable {
      * @param rule
      *            Conditional formatting rule to get the formula from
      * @param cell
+     *            Cell containing the formula
      * @return True if the formula in the given rule is of boolean formula type
      *         and evaluates to <code>true</code>, false otherwise
      */
@@ -690,8 +691,7 @@ public class ConditionalFormatter implements Serializable {
         int deltaColumn, int deltaRow) {
         // Parse formula and use deltas to get relative cell references to work
         // (#18702)
-        Ptg[] ptgs = FormulaParser
-            .parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
+        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
                 FormulaType.CELL, spreadsheet.getActiveSheetIndex());
 
         for (Ptg ptg : ptgs) {
@@ -824,7 +824,9 @@ public class ConditionalFormatter implements Serializable {
 
     /**
      * @param eval
+     *            Value of a formula
      * @param cellType
+     *            Type of a cell
      * @return true if eval is coherent with cellType, false otherwise
      */
     private boolean hasCoherentType(ValueEval eval, int cellType) {
