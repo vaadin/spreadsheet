@@ -743,10 +743,13 @@ public class ConditionalFormatter implements Serializable {
         }
 
         String formula = rule.getFormula1();
+        byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell,
             0, 0);
-        if (!areHomogeneous(eval, cell.getCellType()))
-            return false;
+        if (!areHomogeneous(eval, cell.getCellType())) {
+            // Comparison between different types (e.g. Bool vs String)
+            return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
+        }
 
         // other than numerical types
         if (cell.getCellType() == Cell.CELL_TYPE_STRING || isFormulaStringType) {
@@ -758,7 +761,7 @@ public class ConditionalFormatter implements Serializable {
             String quotedStringValue = cell.getStringCellValue();
 
             // Excel string comparison ignores case
-            switch (rule.getComparisonOperation()) {
+            switch (comparisonOperation) {
             case ComparisonOperator.EQUAL:
                 return quotedStringValue.equalsIgnoreCase(formulaValue);
             case ComparisonOperator.NOT_EQUAL:
@@ -772,7 +775,7 @@ public class ConditionalFormatter implements Serializable {
 
             boolean formulaVal = ((BoolEval)eval).getBooleanValue();
 
-            switch (rule.getComparisonOperation()) {
+            switch (comparisonOperation) {
             case ComparisonOperator.EQUAL:
                 return cell.getBooleanCellValue() == formulaVal;
             case ComparisonOperator.NOT_EQUAL:
@@ -786,7 +789,7 @@ public class ConditionalFormatter implements Serializable {
 
             double formula1Val = ((NumericValueEval)eval).getNumberValue();
 
-            switch (rule.getComparisonOperation()) {
+            switch (comparisonOperation) {
 
             case ComparisonOperator.EQUAL:
                 return cell.getNumericCellValue() == formula1Val;
