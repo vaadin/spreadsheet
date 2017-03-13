@@ -11,10 +11,10 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTestCase {
 
     private static final String STRING_VALUE = "'Foo";
-    public static final String NUMBER_VALUE = "1";
-    public static final String DIFFERENT_NUMBER_VALUE = "2";
-    public static final String TRUE_VALUE = "TRUE";
-    public static final String FALSE_VALUE = "FALSE";
+    private static final String NUMBER_VALUE = "1";
+    private static final String DIFFERENT_NUMBER_VALUE = "2";
+    private static final String TRUE_VALUE = "TRUE";
+    private static final String FALSE_VALUE = "FALSE";
     private static final String FALSE_CONDITION_COLOR = "rgba(255, 255, 255, 1)";
     private static final String TRUE_CONDITION_COLOR = "rgba(255, 0, 0, 1)";
 
