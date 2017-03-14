@@ -92,9 +92,9 @@ public class RowsAutofitUtilTest {
 
     @Test
     public void rowsAutofit_rowWithWrapTextAndNumericValues_heightSetIntoAcceptableRangeForSingleRowOfText() {
-        checkRowFitsFontSizeAfterAutofit(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE, HUGE_FONT_SIZE);
+        checkRowFitsFontSizeAfterAutofit(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE,
+            HUGE_FONT_SIZE);
     }
-
 
     @Test
     public void rowsAutofit_rowWithSmallFontAndVerySmallHeight_autoFitExpandsRowHeightToDefault() {
