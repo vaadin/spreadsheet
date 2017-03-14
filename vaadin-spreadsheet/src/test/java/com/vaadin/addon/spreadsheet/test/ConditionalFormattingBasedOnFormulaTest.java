@@ -7,7 +7,10 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -32,10 +35,10 @@ public class ConditionalFormattingBasedOnFormulaTest
         throws IOException {
 
         final SheetCellElement a1 = spreadSheet.getCellAt("A1");
-        final SheetCellElement b1 = spreadSheet.getCellAt("A2");
+        final SheetCellElement a2 = spreadSheet.getCellAt("A2");
 
         a1.setValue(VALUE);
-        b1.setValue("'Not" + VALUE);
+        a2.setValue("'Not" + VALUE);
 
         String cellColor = spreadSheet.getCellAt("A2")
             .getCssValue("background-color");
@@ -48,10 +51,10 @@ public class ConditionalFormattingBasedOnFormulaTest
         throws IOException {
 
         final SheetCellElement a1 = spreadSheet.getCellAt("A1");
-        final SheetCellElement b1 = spreadSheet.getCellAt("A2");
+        final SheetCellElement a2 = spreadSheet.getCellAt("A2");
 
         a1.setValue(VALUE);
-        b1.setValue(VALUE);
+        a2.setValue(VALUE);
 
         String cellColor = spreadSheet.getCellAt("A2")
             .getCssValue("background-color");

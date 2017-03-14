@@ -8,10 +8,10 @@ package com.vaadin.addon.spreadsheet;
  * %%
  * This program is available under Commercial Vaadin Add-On License 3.0
  * (CVALv3).
- *
+ * 
  * See the file license.html distributed with this software for more
  * information about licensing.
- *
+ * 
  * You should have received a copy of the CVALv3 along with this program.
  * If not, see <http://vaadin.com/license/cval-3>.
  * #L%
@@ -621,16 +621,16 @@ public class ConditionalFormatter implements Serializable {
             int deltaColumn, int deltaRow) {
         /*
          * Formula type is the default for most rules in modern excel files.
-         *
+         * 
          * There are a couple of issues with this.
-         *
+         * 
          * 1. the condition type seems to be '0' in all xlsx files, which is an
          * illegal value according to the API. The formula is still correct, and
          * can be accessed.
-         *
+         * 
          * 2. in xls-files the type is correct, but the formula is not: it
          * references the wrong cell.
-         *
+         * 
          * 3. the formula is a String. POIs FormulaEvaluation only takes Cell
          * arguments. So, to use it, we need to copy the formula to an existing
          * cell temporarily, and run the eval.
@@ -638,7 +638,7 @@ public class ConditionalFormatter implements Serializable {
         if (rule.getConditionType().equals(ConditionType.CELL_VALUE_IS)) {
             return matchesValue(cell, rule);
         } else {
-            return matchesFormula(rule, deltaColumn, deltaRow, cell);
+            return matchesFormula(cell, rule, deltaColumn, deltaRow);
         }
 
     }
@@ -649,14 +649,14 @@ public class ConditionalFormatter implements Serializable {
      *
      * NOTE: Does not support HSSF files currently.
      *
+     * @param cell
+     *            Cell containing the formula
      * @param rule
      *            Conditional formatting rule to get the formula from
-     * @param cell
      * @return True if the formula in the given rule is of boolean formula type
      *         and evaluates to <code>true</code>, false otherwise
      */
-    protected boolean matchesFormula(ConditionalFormattingRule rule,
-        int deltaColumn, int deltaRow, Cell cell) {
+    protected boolean matchesFormula(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
         if ( ! (rule instanceof XSSFConditionalFormattingRule)) {
             // TODO Does not support HSSF files for now, since HSSF does not
             // read cell references in the file correctly.Since HSSF formulas
