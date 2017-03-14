@@ -744,7 +744,8 @@ public class ConditionalFormatter implements Serializable {
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell,
             0, 0);
-        if (!hasCoherentType(eval, cell.getCellType())) {
+        if (!hasCoherentType(eval, cell.getCellType(), isFormulaStringType,
+            isFormulaBooleanType, isFormulaNumericType)) {
             // Comparison between different types (e.g. Bool vs String)
             return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
         }
@@ -825,17 +826,36 @@ public class ConditionalFormatter implements Serializable {
      *            Value of a formula
      * @param cellType
      *            Type of a cell
+     * @param isFormulaStringType
+     *            true if eval is a formula of type String, false otherwise
+     * @param isFormulaBooleanType
+     *            true if eval is a formula of type Boolean, false otherwise
+     * @param isFormulaNumericType
+     *            true if eval is a formula of type Numeric, false otherwise
      * @return true if eval is coherent with cellType, false otherwise
      */
-    private boolean hasCoherentType(ValueEval eval, int cellType) {
+    private boolean hasCoherentType(ValueEval eval, int cellType,
+        boolean isFormulaStringType, boolean isFormulaBooleanType,
+        boolean isFormulaNumericType) {
         switch (cellType) {
-            case Cell.CELL_TYPE_STRING:
-                return eval instanceof StringEval;
-            case Cell.CELL_TYPE_BOOLEAN:
-                return eval instanceof BoolEval;
-            case Cell.CELL_TYPE_NUMERIC:
-                return eval instanceof NumericValueEval;
+        case Cell.CELL_TYPE_STRING:
+            return eval instanceof StringEval;
+        case Cell.CELL_TYPE_BOOLEAN:
+            return eval instanceof BoolEval;
+        case Cell.CELL_TYPE_NUMERIC:
+            return eval instanceof NumericValueEval || isFormulaNumericType;
+        case Cell.CELL_TYPE_FORMULA:
+            return isCoherentTypeFormula(eval, isFormulaStringType,
+                isFormulaBooleanType, isFormulaNumericType);
         }
         return false;
+    }
+
+    private boolean isCoherentTypeFormula(ValueEval eval,
+        boolean isFormulaStringType, boolean isFormulaBooleanType,
+        boolean isFormulaNumericType) {
+        return (eval instanceof StringEval && isFormulaStringType) || (
+            eval instanceof BoolEval && isFormulaBooleanType) || (
+            eval instanceof NumericValueEval && isFormulaNumericType);
     }
 }
