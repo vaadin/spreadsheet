@@ -38,10 +38,10 @@ public class WorkbookEvaluatorUtil {
         Cell cell) {
         // allow for reuse of evaluation caches for performance - see POI #57840
         // for an example
-        int sheetIndex = getSheetIndex(cell);
         final WorkbookEvaluator workbookEvaluator = ((BaseXSSFFormulaEvaluator) spreadsheet.getFormulaEvaluator())._getWorkbookEvaluator();
         final OperationEvaluationContext ec = new OperationEvaluationContext(
-            workbookEvaluator, workbookEvaluator.getWorkbook(), sheetIndex,
+            workbookEvaluator, workbookEvaluator.getWorkbook(),
+            getSheetIndex(cell),
             cell.getRowIndex(), cell.getColumnIndex(),
             new EvaluationTracker(new EvaluationCache(null)));
         return workbookEvaluator.evaluateFormula(ec, ptgs);
