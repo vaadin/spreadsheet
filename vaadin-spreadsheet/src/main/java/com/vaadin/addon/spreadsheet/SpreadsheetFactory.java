@@ -60,11 +60,13 @@ import org.apache.poi.xssf.usermodel.XSSFPictureData;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTOneCellAnchor;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTTwoCellAnchor;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAutoFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTOutlinePr;
@@ -400,6 +402,7 @@ public class SpreadsheetFactory implements Serializable {
             setDefaultColumnWidth(spreadsheet, sheet);
             calculateSheetSizes(spreadsheet, sheet);
             loadSheetOverlays(spreadsheet);
+            loadSheetTables(spreadsheet);
             loadMergedRegions(spreadsheet);
             loadFreezePane(spreadsheet);
             loadGrouping(spreadsheet);
@@ -407,6 +410,37 @@ public class SpreadsheetFactory implements Serializable {
             LOGGER.log(Level.WARNING, npe.getMessage(), npe);
         }
         logMemoryUsage();
+    }
+
+    /**
+     * Load the sheet filter and tables in the given sheet
+     *
+     * @param spreadsheet
+     *            Target Spreadsheet
+     */
+     static void loadSheetTables(Spreadsheet spreadsheet) {
+         if (spreadsheet.getActiveSheet() instanceof HSSFSheet)
+             return;
+
+         // add the sheet filter as a SpreadsheetFilterTable
+         XSSFSheet sheet = (XSSFSheet) spreadsheet.getActiveSheet();
+         CTAutoFilter autoFilter = sheet.getCTWorksheet().getAutoFilter();
+
+         if (autoFilter != null) {
+             SpreadsheetTable sheetFilterTable = new SpreadsheetFilterTable(
+                 spreadsheet, CellRangeAddress.valueOf(autoFilter.getRef()));
+             spreadsheet.registerTable(sheetFilterTable);
+         }
+
+         //add all tables in the active sheet
+         List<XSSFTable> tables = sheet.getTables();
+         for (XSSFTable table : tables) {
+             SpreadsheetTable spreadsheetTable = new SpreadsheetFilterTable(
+                 spreadsheet,
+                 CellRangeAddress.valueOf(table.getCTTable().getRef()));
+
+             spreadsheet.registerTable(spreadsheetTable);
+         }
     }
 
     /**
