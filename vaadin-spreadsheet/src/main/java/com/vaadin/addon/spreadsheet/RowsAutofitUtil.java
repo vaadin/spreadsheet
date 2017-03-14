@@ -45,8 +45,6 @@ public class RowsAutofitUtil {
     // cell height
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
-    // Minimum height (in points) of rows refitted by Excel
-    private static final float MINIMUM_HEIGHT = 15.0f;
 
     public static void autoSizeRow(Sheet sheet, int row) {
         Row sheetRow = sheet.getRow(row);
@@ -61,7 +59,7 @@ public class RowsAutofitUtil {
             return;
         }
 
-        float height = MINIMUM_HEIGHT;
+        float height = sheet.getDefaultRowHeightInPoints();
         for (Cell cell : sheetRow) {
             Font font = getCellFont(cell);
             if (font != null) {
