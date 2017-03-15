@@ -36,6 +36,7 @@ import org.apache.poi.ss.formula.FormulaParser;
 import org.apache.poi.ss.formula.FormulaType;
 import org.apache.poi.ss.formula.WorkbookEvaluatorUtil;
 import org.apache.poi.ss.formula.eval.BoolEval;
+import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.apache.poi.ss.formula.eval.NumericValueEval;
 import org.apache.poi.ss.formula.eval.StringEval;
@@ -637,10 +638,15 @@ public class ConditionalFormatter implements Serializable {
          * arguments. So, to use it, we need to copy the formula to an existing
          * cell temporarily, and run the eval.
          */
-        if (rule.getConditionType().equals(ConditionType.CELL_VALUE_IS)) {
-            return matchesValue(cell, rule);
-        } else {
-            return matchesFormula(cell, rule, deltaColumn, deltaRow);
+        try {
+            if (rule.getConditionType().equals(ConditionType.CELL_VALUE_IS)) {
+                return matchesValue(cell, rule);
+            } else {
+                return matchesFormula(cell, rule, deltaColumn, deltaRow);
+            }
+        } catch (NotImplementedException e) {
+            LOGGER.log(Level.FINEST, e.getMessage(), e);
+            return false;
         }
 
     }
@@ -671,12 +677,10 @@ public class ConditionalFormatter implements Serializable {
             return false;
         }
 
-        ValueEval eval;
-        try {
-            eval = getValueEvalFromFormula(booleanFormula, cell, deltaColumn, deltaRow);
-        } catch (NotImplementedException e) {
-            LOGGER.log(Level.FINEST, e.getMessage(), e);
-            return false;
+        ValueEval eval = getValueEvalFromFormula(booleanFormula, cell, deltaColumn, deltaRow);
+        
+        if (eval instanceof ErrorEval){
+            LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
         }
         if (eval instanceof BoolEval) {
             return eval == null ? false : ((BoolEval) eval).getBooleanValue();
@@ -731,20 +735,22 @@ public class ConditionalFormatter implements Serializable {
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC;
 
         if (isFormulaType) {
-            try {
-                // make sure we have the latest value for formula cells
-                getFormulaEvaluator().evaluateFormulaCell(cell);
-            } catch (NotImplementedException e) {
-                LOGGER.log(Level.FINEST, e.getMessage(), e);
-                return false;
-            }
+            // make sure we have the latest value for formula cells
+            getFormulaEvaluator().evaluateFormulaCell(cell);
         }
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell,
             0, 0);
-        if (!hasCoherentType(eval, cell.getCellType())) {
+        
+        if (eval instanceof ErrorEval){
+            LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
+            return false;
+        }
+        
+        if (!hasCoherentType(eval, cell.getCellType(), isFormulaStringType,
+            isFormulaBooleanType, isFormulaNumericType)) {
             // Comparison between different types (e.g. Bool vs String)
             return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
         }
@@ -825,17 +831,36 @@ public class ConditionalFormatter implements Serializable {
      *            Value of a formula
      * @param cellType
      *            Type of a cell
+     * @param isFormulaStringType
+     *            true if eval is a formula of type String, false otherwise
+     * @param isFormulaBooleanType
+     *            true if eval is a formula of type Boolean, false otherwise
+     * @param isFormulaNumericType
+     *            true if eval is a formula of type Numeric, false otherwise
      * @return true if eval is coherent with cellType, false otherwise
      */
-    private boolean hasCoherentType(ValueEval eval, int cellType) {
+    private boolean hasCoherentType(ValueEval eval, int cellType,
+        boolean isFormulaStringType, boolean isFormulaBooleanType,
+        boolean isFormulaNumericType) {
         switch (cellType) {
-            case Cell.CELL_TYPE_STRING:
-                return eval instanceof StringEval;
-            case Cell.CELL_TYPE_BOOLEAN:
-                return eval instanceof BoolEval;
-            case Cell.CELL_TYPE_NUMERIC:
-                return eval instanceof NumericValueEval;
+        case Cell.CELL_TYPE_STRING:
+            return eval instanceof StringEval;
+        case Cell.CELL_TYPE_BOOLEAN:
+            return eval instanceof BoolEval;
+        case Cell.CELL_TYPE_NUMERIC:
+            return eval instanceof NumericValueEval || isFormulaNumericType;
+        case Cell.CELL_TYPE_FORMULA:
+            return isCoherentTypeFormula(eval, isFormulaStringType,
+                isFormulaBooleanType, isFormulaNumericType);
         }
         return false;
+    }
+
+    private boolean isCoherentTypeFormula(ValueEval eval,
+        boolean isFormulaStringType, boolean isFormulaBooleanType,
+        boolean isFormulaNumericType) {
+        return (eval instanceof StringEval && isFormulaStringType) || (
+            eval instanceof BoolEval && isFormulaBooleanType) || (
+            eval instanceof NumericValueEval && isFormulaNumericType);
     }
 }
