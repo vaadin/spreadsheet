@@ -1,9 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import static org.hamcrest.CoreMatchers.allOf;
+import static com.vaadin.addon.spreadsheet.test.testutil.TextLineHeightChecker.assertThatCellHeightIsAcceptable;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -22,10 +21,6 @@ import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetDemoUI;
 public class RowsAutofitUtilTest {
 
     public static final int A_NEW_ROW_NUMBER = 1000;
-    // Acceptable ranges for cell height after autofit for this test is
-    // 110% to 120% of the font size in case of single row of text
-    private static final float MINIMUM_PERCENTAGE_OF_FONT_SIZE = 1.1f;
-    private static final float MAXIMUM_PERCENTAGE_OF_FONT_SIZE = 1.2f;
     private static final int EMPTY_ROW = 0;
     private static final int ROW_WITH_NORMAL_FONT = 1;
     private static final int ROW_WITH_SMALL_FONT = 2;
@@ -47,18 +42,6 @@ public class RowsAutofitUtilTest {
         RowsAutofitUtil.autoSizeRow(sheet, row);
 
         assertThat(sheet.getRow(row).getHeightInPoints(), is(initialHeight));
-    }
-
-    private static void checkSingleTextLineHeight(float fontSize,
-        float expectedCellHeightInPoints, int expectedLines) {
-        float minimumRowHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
-        float maximumRowHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
-
-        // Row height must properly fit the font size with a "security" margin
-        float expectedSingleTextLineHeight =
-            expectedCellHeightInPoints / expectedLines;
-        assertThat(expectedSingleTextLineHeight,
-            allOf(greaterThan(minimumRowHeight), lessThan(maximumRowHeight)));
     }
 
     @Before
@@ -97,7 +80,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
             .getHeightInPoints();
 
-        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints, 1);
+        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, 1);
     }
 
     @Test
@@ -107,7 +90,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
 
-        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints, 1);
+        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, 1);
     }
 
     @Test
@@ -164,7 +147,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT).getHeightInPoints();
 
-        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 2);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 2);
     }
 
     @Test
@@ -175,7 +158,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT).getHeightInPoints();
 
-        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 3);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 3);
     }
 
     @Test
@@ -187,6 +170,6 @@ public class RowsAutofitUtilTest {
             .getRow(ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT)
             .getHeightInPoints();
 
-        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 3);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 3);
     }
 }
