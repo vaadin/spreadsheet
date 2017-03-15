@@ -662,7 +662,6 @@ public class CellValueManager implements Serializable {
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         cell.setCellValue(value);
                     }
-                    getFormulaEvaluator().notifyUpdateCell(cell);
                 }
 
             } catch (FormulaParseException fpe) {
@@ -688,6 +687,8 @@ public class CellValueManager implements Serializable {
             } catch (Exception e) {
                 exception = e;
                 cell.setCellValue(value);
+            } finally {
+                getFormulaEvaluator().notifyUpdateCell(cell);
             }
             if (cell != null) {
                 markCellForUpdate(cell);
