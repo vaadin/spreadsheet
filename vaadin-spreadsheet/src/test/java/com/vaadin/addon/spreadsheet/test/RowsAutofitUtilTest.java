@@ -32,6 +32,12 @@ public class RowsAutofitUtilTest {
     private static final int ROW_WITH_HUGE_FONT = 3;
     private static final int ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT = 5;
     private static final int ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE = 7;
+    private static final int ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT = 9;
+    private static final int ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT = 10;
+    private static final int ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT = 11;
+
+    private static final float DEFAULT_FONT_SIZE = 11;
+    private static final float MEDIUM_FONT_SIZE = DEFAULT_FONT_SIZE;
     private static final float HUGE_FONT_SIZE = 48;
     private static Sheet sheet;
 
@@ -44,12 +50,14 @@ public class RowsAutofitUtilTest {
     }
 
     private static void checkSingleTextLineHeight(float fontSize,
-        float expectedHeightInPoints) {
+        float expectedCellHeightInPoints, int expectedLines) {
         float minimumRowHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
         float maximumRowHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
 
         // Row height must properly fit the font size with a "security" margin
-        assertThat(expectedHeightInPoints,
+        float expectedSingleTextLineHeight =
+            expectedCellHeightInPoints / expectedLines;
+        assertThat(expectedSingleTextLineHeight,
             allOf(greaterThan(minimumRowHeight), lessThan(maximumRowHeight)));
     }
 
@@ -89,7 +97,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
             .getHeightInPoints();
 
-        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints);
+        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints, 1);
     }
 
     @Test
@@ -99,7 +107,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
 
-        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints);
+        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints, 1);
     }
 
     @Test
@@ -146,5 +154,39 @@ public class RowsAutofitUtilTest {
         assertTrue(RowsAutofitUtil.isCustomHeight(sheet, ROW_WITH_NORMAL_FONT));
         assertTrue(RowsAutofitUtil.isCustomHeight(sheet, EMPTY_ROW));
         assertTrue(RowsAutofitUtil.isCustomHeight(sheet, A_NEW_ROW_NUMBER));
+    }
+
+    @Test
+    public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToTwoLines() {
+        RowsAutofitUtil
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT);
+
+        float heightInPoints = sheet
+            .getRow(ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT).getHeightInPoints();
+
+        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 2);
+    }
+
+    @Test
+    public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToThreeLines() {
+        RowsAutofitUtil
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT);
+
+        float heightInPoints = sheet
+            .getRow(ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT).getHeightInPoints();
+
+        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 3);
+    }
+
+    @Test
+    public void rowsAutofit_severalCellsWithDifferentContentLenghtAndType_autofitExpandRowToThreeLines() {
+        RowsAutofitUtil.autoSizeRow(sheet,
+            ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT);
+
+        float heightInPoints = sheet
+            .getRow(ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT)
+            .getHeightInPoints();
+
+        checkSingleTextLineHeight(MEDIUM_FONT_SIZE, heightInPoints, 3);
     }
 }
