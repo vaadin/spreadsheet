@@ -260,6 +260,7 @@
         flex-direction: column;
         justify-content: flex-end;
         line-height: 1.1;
+        padding-bottom: -0.15em;
 
         &.selected-cell-highlight {
           outline: solid $spreadsheet-sheet-selection-highlight-outline-color 1px;
