@@ -623,16 +623,16 @@ public class ConditionalFormatter implements Serializable {
             int deltaColumn, int deltaRow) {
         /*
          * Formula type is the default for most rules in modern excel files.
-         *
+         * 
          * There are a couple of issues with this.
-         *
+         * 
          * 1. the condition type seems to be '0' in all xlsx files, which is an
          * illegal value according to the API. The formula is still correct, and
          * can be accessed.
-         *
+         * 
          * 2. in xls-files the type is correct, but the formula is not: it
          * references the wrong cell.
-         *
+         * 
          * 3. the formula is a String. POIs FormulaEvaluation only takes Cell
          * arguments. So, to use it, we need to copy the formula to an existing
          * cell temporarily, and run the eval.
@@ -686,12 +686,10 @@ public class ConditionalFormatter implements Serializable {
 
     }
 
-    private ValueEval getValueEvalFromFormula(String formula, Cell cell,
-        int deltaColumn, int deltaRow) {
+    private ValueEval getValueEvalFromFormula(String formula, Cell cell, int deltaColumn, int deltaRow) {
         // Parse formula and use deltas to get relative cell references to work
         // (#18702)
-        Ptg[] ptgs = FormulaParser
-            .parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
+        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
                 FormulaType.CELL, spreadsheet.getActiveSheetIndex());
 
         for (Ptg ptg : ptgs) {
@@ -746,7 +744,7 @@ public class ConditionalFormatter implements Serializable {
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell,
             0, 0);
-        if (!areHomogeneous(eval, cell.getCellType())) {
+        if (!hasCoherentType(eval, cell.getCellType())) {
             // Comparison between different types (e.g. Bool vs String)
             return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
         }
@@ -822,7 +820,14 @@ public class ConditionalFormatter implements Serializable {
         return false;
     }
 
-    private boolean areHomogeneous(ValueEval eval, int cellType) {
+    /**
+     * @param eval
+     *            Value of a formula
+     * @param cellType
+     *            Type of a cell
+     * @return true if eval is coherent with cellType, false otherwise
+     */
+    private boolean hasCoherentType(ValueEval eval, int cellType) {
         switch (cellType) {
             case Cell.CELL_TYPE_STRING:
                 return eval instanceof StringEval;
