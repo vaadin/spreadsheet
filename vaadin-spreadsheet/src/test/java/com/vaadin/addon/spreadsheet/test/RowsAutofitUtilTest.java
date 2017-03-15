@@ -43,16 +43,14 @@ public class RowsAutofitUtilTest {
         assertThat(sheet.getRow(row).getHeightInPoints(), is(initialHeight));
     }
 
-    private static void checkRowFitsFontSizeAfterAutofit(int row,
-        float fontSize) {
-        RowsAutofitUtil.autoSizeRow(sheet, row);
+    private static void checkSingleTextLineHeight(float fontSize,
+        float expectedHeightInPoints) {
         float minimumRowHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
         float maximumRowHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
 
         // Row height must properly fit the font size with a "security" margin
-        assertThat(sheet.getRow(row).getHeightInPoints(),
+        assertThat(expectedHeightInPoints,
             allOf(greaterThan(minimumRowHeight), lessThan(maximumRowHeight)));
-
     }
 
     @Before
@@ -87,13 +85,21 @@ public class RowsAutofitUtilTest {
 
     @Test
     public void rowsAutofit_rowWithHugeFontAndSmallHeight_heightSetIntoAcceptableRange() {
-        checkRowFitsFontSizeAfterAutofit(ROW_WITH_HUGE_FONT, HUGE_FONT_SIZE);
+        RowsAutofitUtil.autoSizeRow(sheet, ROW_WITH_HUGE_FONT);
+        float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
+            .getHeightInPoints();
+
+        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints);
     }
 
     @Test
     public void rowsAutofit_rowWithWrapTextAndNumericValues_heightSetIntoAcceptableRangeForSingleRowOfText() {
-        checkRowFitsFontSizeAfterAutofit(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE,
-            HUGE_FONT_SIZE);
+        RowsAutofitUtil
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE);
+        float heightInPoints = sheet
+            .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
+
+        checkSingleTextLineHeight(HUGE_FONT_SIZE, heightInPoints);
     }
 
     @Test
