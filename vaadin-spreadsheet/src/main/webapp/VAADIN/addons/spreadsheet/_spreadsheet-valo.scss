@@ -269,8 +269,9 @@
         white-space: nowrap;
         flex-direction: column;
         justify-content: flex-end;
+        //line-height: normal;
         line-height: $spreadsheet-cell-line-height;
-        padding-bottom: $spreadsheet-cell-padding-bottom;
+        //padding-bottom: $spreadsheet-cell-padding-bottom;
 
         &.selected-cell-highlight {
           outline: solid $spreadsheet-sheet-selection-highlight-outline-color 1px;
