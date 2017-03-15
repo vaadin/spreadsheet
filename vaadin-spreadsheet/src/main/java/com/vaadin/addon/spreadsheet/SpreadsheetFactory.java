@@ -418,7 +418,7 @@ public class SpreadsheetFactory implements Serializable {
      * @param spreadsheet
      *            Target Spreadsheet
      */
-     static void loadSheetTables(Spreadsheet spreadsheet) {
+    private static void loadSheetTables(Spreadsheet spreadsheet) {
          if (spreadsheet.getActiveSheet() instanceof HSSFSheet)
              return;
 
