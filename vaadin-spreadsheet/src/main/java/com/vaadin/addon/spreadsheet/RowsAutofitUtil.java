@@ -30,6 +30,7 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.w3c.dom.Element;
 
 /**
  * RowsAutofitUtil is an utility class of the Spreadsheet component used
@@ -40,6 +41,13 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
+
+    // The <row> attribute to set custom Height
+    public static final String CUSTOM_HEIGHT = "customHeight";
+
+    // The value for customHeight attribute that Excel actually uses for "true"
+    public static final String EXCEL_TRUE = "1";
+
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
     // cell height
@@ -83,7 +91,16 @@ public class RowsAutofitUtil {
             return;
         }
 
-        ((XSSFRow) sheetRow).getCTRow().setCustomHeight(customHeight);
+        // Due to this POI bug
+        // https://bz.apache.org/bugzilla/show_bug.cgi?id=60868
+        // customHeight must be set using very low-level APIs
+        Element element = (Element) ((XSSFRow) sheetRow).getCTRow()
+            .getDomNode();
+        if (customHeight) {
+            element.setAttribute(CUSTOM_HEIGHT, EXCEL_TRUE);
+        } else {
+            element.removeAttribute(CUSTOM_HEIGHT);
+        }
     }
 
     public static boolean isCustomHeight(Sheet sheet, int row) {
