@@ -41,8 +41,7 @@ public class WorkbookEvaluatorUtil {
         final WorkbookEvaluator workbookEvaluator = ((BaseXSSFFormulaEvaluator) spreadsheet.getFormulaEvaluator())._getWorkbookEvaluator();
         final OperationEvaluationContext ec = new OperationEvaluationContext(
             workbookEvaluator, workbookEvaluator.getWorkbook(),
-            getSheetIndex(cell),
-            cell.getRowIndex(), cell.getColumnIndex(),
+            getSheetIndex(cell), cell.getRowIndex(), cell.getColumnIndex(),
             new EvaluationTracker(new EvaluationCache(null)));
         return workbookEvaluator.evaluateFormula(ec, ptgs);
     }

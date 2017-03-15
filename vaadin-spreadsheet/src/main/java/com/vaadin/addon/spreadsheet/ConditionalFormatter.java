@@ -682,12 +682,12 @@ public class ConditionalFormatter implements Serializable {
         if (eval instanceof ErrorEval){
             LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
         }
+        
         if (eval instanceof BoolEval) {
             return eval == null ? false : ((BoolEval) eval).getBooleanValue();
         } else {
             return false;
         }
-
     }
 
     private ValueEval getValueEvalFromFormula(String formula, Cell cell, int deltaColumn, int deltaRow) {
@@ -741,8 +741,7 @@ public class ConditionalFormatter implements Serializable {
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
-        ValueEval eval = getValueEvalFromFormula(formula, cell,
-            0, 0);
+        ValueEval eval = getValueEvalFromFormula(formula, cell, 0, 0);
         
         if (eval instanceof ErrorEval){
             LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
@@ -759,17 +758,14 @@ public class ConditionalFormatter implements Serializable {
         if (cell.getCellType() == Cell.CELL_TYPE_STRING || isFormulaStringType) {
 
             String formulaValue = ((StringEval)eval).getStringValue();
-            // Excel stores conditional formatting strings surrounded with ", so
-            // we must surround the cell value. String cell value from POI is
-            // never null.
-            String quotedStringValue = cell.getStringCellValue();
+            String stringValue = cell.getStringCellValue();
 
             // Excel string comparison ignores case
             switch (comparisonOperation) {
             case ComparisonOperator.EQUAL:
-                return quotedStringValue.equalsIgnoreCase(formulaValue);
+                return stringValue.equalsIgnoreCase(formulaValue);
             case ComparisonOperator.NOT_EQUAL:
-                return !quotedStringValue.equalsIgnoreCase(formulaValue);
+                return !stringValue.equalsIgnoreCase(formulaValue);
             }
         }
         if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN
@@ -859,8 +855,9 @@ public class ConditionalFormatter implements Serializable {
     private boolean isCoherentTypeFormula(ValueEval eval,
         boolean isFormulaStringType, boolean isFormulaBooleanType,
         boolean isFormulaNumericType) {
-        return (eval instanceof StringEval && isFormulaStringType) || (
-            eval instanceof BoolEval && isFormulaBooleanType) || (
-            eval instanceof NumericValueEval && isFormulaNumericType);
+        boolean coherentString = eval instanceof StringEval && isFormulaStringType;
+        boolean coherentBoolean = eval instanceof BoolEval && isFormulaBooleanType;
+        boolean coherentNumeric = eval instanceof NumericValueEval && isFormulaNumericType;
+        return coherentString || coherentBoolean || coherentNumeric;
     }
 }
