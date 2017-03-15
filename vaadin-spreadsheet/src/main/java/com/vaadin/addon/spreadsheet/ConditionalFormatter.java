@@ -777,7 +777,7 @@ public class ConditionalFormatter implements Serializable {
             // not sure if this is used, since no boolean option exists in
             // Excel..
 
-            Boolean formulaVal = Boolean.parseBoolean(rule.getFormula1());
+            boolean formulaVal = ((BoolEval)eval).getBooleanValue();
 
             switch (comparisonOperation) {
             case ComparisonOperator.EQUAL:
