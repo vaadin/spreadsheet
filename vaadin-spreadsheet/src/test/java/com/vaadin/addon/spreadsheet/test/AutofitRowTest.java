@@ -1,38 +1,30 @@
 package com.vaadin.addon.spreadsheet.test;
 
+import static com.vaadin.addon.spreadsheet.test.testutil.TextLineHeightChecker.assertThatCellHeightIsAcceptable;
 import java.util.List;
 
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.testbench.TestBenchElement;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.FIREFOX)
 public class AutofitRowTest extends AbstractSpreadsheetTestCase {
 
+    public static final int HUGE_FONT_SIZE = 48;
     private static final int ROW_TOO_SMALL = 4;
 
     @Test
-    public void autoFitRow_doubleClickOnRowBoundaryWithTooSmall_rowIsAutofitted()
+    public void autoFitRow_doubleClickOnRowBoundaryOfATooSmallRow_rowIsAutofitted()
         throws InterruptedException {
         final SpreadsheetElement spreadsheet = loadImageFile();
 
-        TestBenchElement resizeHandle = spreadsheet.getRowHeader(ROW_TOO_SMALL)
-            .getResizeHandle();
+        spreadsheet.getRowHeader(ROW_TOO_SMALL).getResizeHandle().doubleClick();
 
-        System.out.println(
-            "---> ###### before " + spreadsheet.getCellAt(ROW_TOO_SMALL, 1)
-                .getSize().getHeight());
+        SheetCellElement cell = spreadsheet.getCellAt(ROW_TOO_SMALL, 1);
+        int height = cell.getSize().getHeight();
 
-        resizeHandle.doubleClick();
-
-        System.out.println(
-            "---> ###### after " + spreadsheet.getCellAt(ROW_TOO_SMALL, 1)
-                .getSize().getHeight());
-
+        assertThatCellHeightIsAcceptable(height, HUGE_FONT_SIZE, 1);
     }
 
     private SpreadsheetElement loadImageFile() {
