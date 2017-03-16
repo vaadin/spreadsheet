@@ -640,7 +640,7 @@ public class ConditionalFormatter implements Serializable {
          */
         try {
             if (rule.getConditionType().equals(ConditionType.CELL_VALUE_IS)) {
-                return matchesValue(cell, rule);
+                return matchesValue(cell, rule, deltaColumn, deltaRow);
             } else {
                 return matchesFormula(cell, rule, deltaColumn, deltaRow);
             }
@@ -721,10 +721,14 @@ public class ConditionalFormatter implements Serializable {
      *            Target cell
      * @param rule
      *            Conditional formatting rule to match against.
+     * @param deltaColumn
+     *            delta (on column axis) between cell and the origin cell 
+     * @param deltaRow
+     *            delta (on row axis) between cell and the origin cell 
      * @return True if the given cells value matches the given
      *         <code>VALUE_IS</code> rule, false otherwise
      */
-    protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule) {
+    protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
 
         boolean isFormulaType = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
         boolean isFormulaStringType = isFormulaType
@@ -741,7 +745,7 @@ public class ConditionalFormatter implements Serializable {
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
-        ValueEval eval = getValueEvalFromFormula(formula, cell, 0, 0);
+        ValueEval eval = getValueEvalFromFormula(formula, cell, deltaColumn, deltaRow);
         
         if (eval instanceof ErrorEval){
             LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
