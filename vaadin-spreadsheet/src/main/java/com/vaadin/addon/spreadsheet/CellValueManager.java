@@ -839,6 +839,7 @@ public class CellValueManager implements Serializable {
         updateMarkedCellValues();
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
+        spreadsheet.updateMarkedCells();
         spreadsheet.loadHyperLinks();
     }
 
