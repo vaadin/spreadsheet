@@ -13,6 +13,7 @@ import com.vaadin.testbench.By;
 
 public class SpreadsheetPage extends Page {
 
+    public static final String BACKGROUND_COLOR = "background-color";
     private final SheetSelection selection;
 
     public SpreadsheetPage(WebDriver driver) {
@@ -124,6 +125,10 @@ public class SpreadsheetPage extends Page {
         Point point = AddressUtil.addressToPoint(address);
         return getCellValue(point.getX(), point.getY());
     }
+    
+    public String getCellColor(int column, int row) {
+        return getCellAt(column, row).getCssValue(BACKGROUND_COLOR);
+    }
 
     public boolean isCellActiveWithinSelection(String address) {
         Point point = AddressUtil.addressToPoint(address);
@@ -164,6 +169,10 @@ public class SpreadsheetPage extends Page {
             actions.keyUp(modifier);
         }
         actions.build().perform();
+    }
+    
+    public void deleteCellValue(){
+        new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
     }
 
     public String getFormulaFieldValue() {
