@@ -42,12 +42,6 @@ public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
 
-    // The <row> attribute to set custom Height
-    public static final String CUSTOM_HEIGHT = "customHeight";
-
-    // The value for customHeight attribute that Excel actually uses for "true"
-    public static final String EXCEL_TRUE = "1";
-
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
     // cell height
@@ -91,16 +85,7 @@ public class RowsAutofitUtil {
             return;
         }
 
-        // Due to this POI bug
-        // https://bz.apache.org/bugzilla/show_bug.cgi?id=60868
-        // customHeight must be set using very low-level APIs
-        Element element = (Element) ((XSSFRow) sheetRow).getCTRow()
-            .getDomNode();
-        if (customHeight) {
-            element.setAttribute(CUSTOM_HEIGHT, EXCEL_TRUE);
-        } else {
-            element.removeAttribute(CUSTOM_HEIGHT);
-        }
+        ((XSSFRow) sheetRow).getCTRow().setCustomHeight(customHeight);
     }
 
     public static boolean isCustomHeight(Sheet sheet, int row) {
@@ -111,7 +96,7 @@ public class RowsAutofitUtil {
             return false;
         }
 
-        return ((XSSFRow) sheetRow).getCTRow().isSetCustomHeight();
+        return ((XSSFRow) sheetRow).getCTRow().getCustomHeight();
     }
 
     private static int getLineCount(Cell cell) {
