@@ -17,15 +17,6 @@ package com.vaadin.addon.spreadsheet;
  * #L%
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.RichTextString;
@@ -35,6 +26,14 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.ProtectedEditEvent;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetServerRpc;
