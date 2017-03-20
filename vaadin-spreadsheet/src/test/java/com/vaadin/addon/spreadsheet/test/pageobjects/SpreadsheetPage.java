@@ -171,7 +171,8 @@ public class SpreadsheetPage extends Page {
         actions.build().perform();
     }
     
-    public void deleteCellValue(){
+    public void deleteCellValue(int col, int row){
+        clickOnCell(col, row);
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
     }
 
