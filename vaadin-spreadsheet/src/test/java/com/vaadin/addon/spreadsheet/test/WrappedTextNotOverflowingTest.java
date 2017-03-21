@@ -61,6 +61,7 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         loadFile();
 
         // Cell A2 contains wrapped long text
+        // For some reason it works fine even if bug is not fixed
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 2);
 
         assertNoOverflow(cell);
@@ -71,8 +72,9 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         throws Exception {
         loadFile();
 
-        // Cell C2 contains wrapped long text and is on the right of 
-        // another cell with wrapped long text (A2)
+        // Cell C2 contains wrapped long text 
+        // For some reason it works, the bug shows up only if there is another
+        // wrapped cell on the left (A2)
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 5);
 
         assertNoOverflow(cell);
@@ -83,7 +85,7 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         throws Exception {
         loadFile();
 
-        // Cell A2 contains unwrapped long text 
+        // Cell A5 contains unwrapped long text 
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 5);
 
         assertOverflows(cell);
