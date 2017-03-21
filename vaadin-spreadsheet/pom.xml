@@ -519,7 +519,6 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-compatibility-themes</artifactId>
             <version>${vaadin.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
