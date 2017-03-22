@@ -215,6 +215,7 @@ public class CellValueManager implements Serializable {
         CellStyle cellStyle = cell.getCellStyle();
         cellData.cellStyle = "cs" + cellStyle.getIndex();
         cellData.locked = spreadsheet.isCellLocked(cell);
+        cellData.wrapText = cellStyle.getWrapText();
         try {
             if (!spreadsheet.isCellHidden(cell)) {
                 if (cell.getCellType() == Cell.CELL_TYPE_FORMULA) {

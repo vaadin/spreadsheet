@@ -31,6 +31,7 @@ public class CellData implements Serializable {
     public boolean locked = false;
     public boolean needsMeasure;
     public boolean isPercentage;
+    public boolean wrapText;
 
     @Override
     public int hashCode() {

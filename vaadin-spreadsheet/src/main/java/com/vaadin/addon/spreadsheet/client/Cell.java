@@ -47,6 +47,7 @@ public class Cell {
     private SheetWidget sheetWidget;
     private boolean overflowDirty = true;
     private boolean overflowing;
+    private boolean wrapText;
 
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
@@ -68,6 +69,7 @@ public class Cell {
             needsMeasure = cellData.needsMeasure;
             value = cellData.value;
             cellStyle = cellData.cellStyle;
+            wrapText = cellData.wrapText;
         }
         updateCellValues();
         updateInnerText();
@@ -82,6 +84,7 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
+        wrapText = cellData == null ? false : cellData.wrapText;
 
         updateInnerText();
         updateCellValues();
@@ -120,7 +123,7 @@ public class Cell {
             scrollW = measureOverflow();
         }
         int overflowPx = scrollW - columnWidth;
-        if (!rightAligned && overflowPx > 0) {
+        if (!rightAligned && !wrapText && overflowPx > 0) {
             // Increase overflow by cell left padding (2px)
             overflowPx += 2;
             int colIndex = col;
@@ -205,12 +208,17 @@ public class Cell {
         return value;
     }
 
-    public void setValue(String value, String cellStyle, boolean needsMeasure) {
+    public boolean isWrapText() {
+        return wrapText;
+    }
+
+    public void setValue(String value, String cellStyle, boolean needsMeasure, boolean wrapText) {
         if (!this.cellStyle.equals(cellStyle)) {
             this.cellStyle = cellStyle;
             updateClassName();
         }
         this.needsMeasure = needsMeasure;
+        this.wrapText = wrapText;
         setValue(value);
     }
 
