@@ -731,17 +731,18 @@ public class ConditionalFormatter implements Serializable {
     protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
 
         boolean isFormulaType = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
+
+        if (isFormulaType) {
+            // make sure we have the latest value for formula cells
+            getFormulaEvaluator().evaluateFormulaCell(cell);
+        }
+        
         boolean isFormulaStringType = isFormulaType
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING;
         boolean isFormulaBooleanType = isFormulaType
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_BOOLEAN;
         boolean isFormulaNumericType = isFormulaType
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC;
-
-        if (isFormulaType) {
-            // make sure we have the latest value for formula cells
-            getFormulaEvaluator().evaluateFormulaCell(cell);
-        }
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
