@@ -75,7 +75,7 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         // Cell C2 contains wrapped long text 
         // For some reason it works, the bug shows up only if there is another
         // wrapped cell on the left (A2)
-        SheetCellElement cell = spreadsheetPage.getCellAt(1, 5);
+        SheetCellElement cell = spreadsheetPage.getCellAt(3, 2);
 
         assertNoOverflow(cell);
     }
@@ -89,6 +89,17 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 5);
 
         assertOverflows(cell);
+    }
+
+    @Test
+    public void sheetWithOverflowingText_mergedCellsWordWrapAndLongText_textShouldNotOverflowTheMergedCell()
+        throws Exception {
+        loadFile();
+
+        // Cell G2 contains unwrapped long text and is merged with H2 
+        SheetCellElement cell = spreadsheetPage.getCellAt(7, 2);
+
+        assertNoOverflow(cell);
     }
 
     private void loadFile() {
