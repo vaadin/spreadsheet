@@ -23,18 +23,14 @@ public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheet
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellFailsWhenHandlerReturnsFalse() {
 
-        assertEquals(FALSE_CONDITION_COLOR, getA2CellColor());
+        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
         
-        spreadsheetPage.deleteCellValue(1,2);
+        spreadsheetPage.deleteCellValue("A2");
 
-        assertEquals(FALSE_CONDITION_COLOR, getA2CellColor());
+        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
         
-        spreadsheetPage.deleteCellValue(1,1);
+        spreadsheetPage.deleteCellValue("A1");
 
-        assertEquals(TRUE_CONDITION_COLOR, getA2CellColor());
-    }
-
-    private String getA2CellColor() {
-        return spreadsheetPage.getCellColor(1,2);
+        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
 }

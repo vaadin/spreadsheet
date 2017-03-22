@@ -60,8 +60,7 @@ public class SpreadsheetPage extends Page {
     }
 
     public void clickOnCell(String address, Keys... modifiers) {
-        Point point = AddressUtil.addressToPoint(address);
-        WebElement cell = getCellAt(point.getX(), point.getY());
+        WebElement cell = getCellAt(address);
         Actions actions = new Actions(driver);
         actions.moveToElement(cell, 1, 1);
         for (Keys modifier : modifiers) {
@@ -95,10 +94,8 @@ public class SpreadsheetPage extends Page {
     }
 
     public void dragFromCellToCell(String from, String to) {
-        Point fromPoint = AddressUtil.addressToPoint(from);
-        Point toPoint = AddressUtil.addressToPoint(to);
-        WebElement fromCell = getCellAt(fromPoint.getX(), fromPoint.getY());
-        WebElement toCell = getCellAt(toPoint.getX(), toPoint.getY());
+        WebElement fromCell = getCellAt(from);
+        WebElement toCell = getCellAt(to);
 
         new Actions(driver).dragAndDrop(fromCell, toCell).build().perform();
     }
@@ -126,13 +123,13 @@ public class SpreadsheetPage extends Page {
         return getCellValue(point.getX(), point.getY());
     }
     
-    public String getCellColor(int column, int row) {
-        return getCellAt(column, row).getCssValue(BACKGROUND_COLOR);
+    public String getCellColor(String cellAddress) {
+        SheetCellElement cellAt = getCellAt(cellAddress);
+        return cellAt.getCssValue(BACKGROUND_COLOR);
     }
 
     public boolean isCellActiveWithinSelection(String address) {
-        Point point = AddressUtil.addressToPoint(address);
-        SheetCellElement cell = getCellAt(point.getX(), point.getY());
+        SheetCellElement cell = getCellAt(address);
         return cell.isCellSelected()
                 && !cell.getAttribute("class").contains("cell-range");
     }
@@ -171,8 +168,8 @@ public class SpreadsheetPage extends Page {
         actions.build().perform();
     }
     
-    public void deleteCellValue(int col, int row){
-        clickOnCell(col, row);
+    public void deleteCellValue(String cellAddress){
+        clickOnCell(cellAddress);
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
     }
 
@@ -183,5 +180,10 @@ public class SpreadsheetPage extends Page {
     public void selectSheetAt(int sheetIndex) {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.selectSheetAt(sheetIndex);
+    }
+    
+    private SheetCellElement getCellAt(String address) {
+        Point point = AddressUtil.addressToPoint(address);
+        return getCellAt(point.getX(), point.getY());
     }
 }
