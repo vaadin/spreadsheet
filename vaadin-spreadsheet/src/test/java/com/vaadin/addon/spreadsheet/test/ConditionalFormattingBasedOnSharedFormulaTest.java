@@ -1,14 +1,13 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Test;
 
 import com.google.common.collect.Sets;
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 public class ConditionalFormattingBasedOnSharedFormulaTest
     extends AbstractSpreadsheetTestCase {
@@ -18,40 +17,26 @@ public class ConditionalFormattingBasedOnSharedFormulaTest
     
     private static final Set<String> cellWithTrueCondition = Sets.newHashSet("A2", "A3", "A4", "D1", "D3");
     private static final Set<String> cellWithFormattingCondition = getCells();
-
-    private SpreadsheetElement spreadSheet;
+    
+    private SpreadsheetPage spreadsheetPage;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        headerPage.loadFile(
-            "conditional_formatting_shared_formula.xlsx", this);
-        spreadSheet = $(SpreadsheetElement.class).first();
+        spreadsheetPage = headerPage
+            .loadFile("conditional_formatting_shared_formula.xlsx", this);
     }
 
     @Test
-    public void loadSpreadsheetWithConditionalFormattingInA1A2_A3B4_D1G5___CheckCellFormatting()
-        throws IOException {
+    public void loadSpreadsheetWithConditionalFormattingInA1A2_A3B4_D1G5___CheckCellFormatting() {
         for (String cellAddress : cellWithTrueCondition) {
-            hasRedColor(cellAddress);
+            assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor(cellAddress));
         }
         for (String cellAddress : cellWithFormattingCondition) {
             if (!cellWithTrueCondition.contains(cellAddress)) {
-                hasWitheColor(cellAddress);
+                assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor(cellAddress));
             }
         }
-    }
-
-    private void hasRedColor(String cellAddress) {
-        String cellColor = spreadSheet.getCellAt(cellAddress)
-            .getCssValue("background-color");
-        assertEquals(TRUE_CONDITION_COLOR, cellColor);
-    }
-
-    private void hasWitheColor(String cellAddress) {
-        String cellColor = spreadSheet.getCellAt(cellAddress)
-            .getCssValue("background-color");
-        assertEquals(FALSE_CONDITION_COLOR, cellColor);
     }
 
     private static Set<String> getCells() {
@@ -69,5 +54,4 @@ public class ConditionalFormattingBasedOnSharedFormulaTest
         union.addAll(thirdCellRange);
         return union;
     }
-
 }
