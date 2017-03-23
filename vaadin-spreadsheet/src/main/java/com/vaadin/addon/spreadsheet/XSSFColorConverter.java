@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.model.ThemesTable;
 import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -37,8 +38,10 @@ import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBorder;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
@@ -391,6 +394,11 @@ public class XSSFColorConverter implements ColorConverter {
         if (color == null || color.isAuto()) {
             return null;
         }
+        //the XSSFColor#getARGB() method returns wrong colors for custom indexed colors
+        // to be removed when bug # 60898 is resolved (https://bz.apache.org/bugzilla/show_bug.cgi?id=60898)
+        if (color.isIndexed() && hasCustomIndexedColors()) {
+            return getIndexedARGB(color);
+        }
 
         byte[] argb = color.getARGB();
         if (argb == null) {
@@ -480,5 +488,56 @@ public class XSSFColorConverter implements ColorConverter {
                 .getDxfArray((int) realRule.getDxfId());
 
         return dxf;
+    }
+
+    private String getIndexedARGB(XSSFColor color) {
+        if (!color.isIndexed())
+            return null;
+
+        StylesTable styleSource = workbook.getStylesSource();
+
+        CTRgbColor ctRgbColor = styleSource.getCTStylesheet().getColors()
+            .getIndexedColors().getRgbColorList().get(color.getIndexed());
+
+        String rgb = ctRgbColor.getDomNode().getAttributes().getNamedItem("rgb")
+            .getNodeValue();
+        return toRGBA(rgb);
+
+    }
+
+    private String toRGBA(String hexARGB) {
+        StringBuilder sb = new StringBuilder("rgba(");
+        int rgba[] = new int[3];
+
+        rgba[0] = Integer.parseInt(hexARGB.substring(2, 4), 16);
+        rgba[1] = Integer.parseInt(hexARGB.substring(4, 6), 16);
+        rgba[2] = Integer.parseInt(hexARGB.substring(6), 16);
+        float alpha = Integer.parseInt(hexARGB.substring(0, 2), 16);
+
+        if (alpha == 0.0) {
+            alpha = 1.0f;
+        }
+        sb.append(rgba[0]);
+        sb.append(",");
+        sb.append(rgba[1]);
+        sb.append(",");
+        sb.append(rgba[2]);
+        sb.append(",");
+        sb.append(alpha);
+        sb.append(");");
+
+        return sb.toString();
+    }
+
+    private boolean hasCustomIndexedColors() {
+        StylesTable stylesSource = workbook.getStylesSource();
+        CTColors ctColors = stylesSource.getCTStylesheet().getColors();
+        if (ctColors == null) {
+            return false;
+        }
+        if (ctColors.getIndexedColors() == null) {
+            return false;
+        }
+        return true;
     }
 }
