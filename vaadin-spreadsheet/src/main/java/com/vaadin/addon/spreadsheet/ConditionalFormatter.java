@@ -140,18 +140,6 @@ public class ConditionalFormatter implements Serializable {
      */
     public void createConditionalFormatterRules() {
 
-        // make sure old styles are cleared
-        if (cellToIndex != null) {
-            for (String key : cellToIndex.keySet()) {
-                int col = SpreadsheetUtil.getColumnIndexFromKey(key) - 1;
-                int row = SpreadsheetUtil.getRowFromKey(key) - 1;
-                Cell cell = spreadsheet.getCell(row, col);
-                if (cell != null) {
-                    spreadsheet.markCellAsUpdated(cell, true);
-                }
-            }
-        }
-
         cellToIndex.clear();
         topBorders.clear();
         leftBorders.clear();
@@ -374,13 +362,14 @@ public class ConditionalFormatter implements Serializable {
                     sb2.append(borderTop.getBorderAttributeValue());
                     sb2.append(colorConverter.getBorderColorCSS(BorderSide.TOP,
                             "border-bottom-color", borderFormatting));
-
-                    spreadsheet.getState().conditionalFormattingStyles.put(
-                            cssIndex, sb2.toString());
-                    topBorders.put(cf, cssIndex++);
                 } else {
-                    css.append(BORDER_STYLE_DEFAULT);
+                    sb2.append(BORDER_STYLE_DEFAULT);
                 }
+                
+                spreadsheet.getState().conditionalFormattingStyles.put(
+                    cssIndex, sb2.toString());
+                topBorders.put(cf, cssIndex++);
+                
             }
 
             if (isLeftSet) {
@@ -391,13 +380,13 @@ public class ConditionalFormatter implements Serializable {
                     sb2.append(colorConverter.getBorderColorCSS(
                             BorderSide.LEFT, "border-right-color",
                             borderFormatting));
-
-                    spreadsheet.getState().conditionalFormattingStyles.put(
-                            cssIndex, sb2.toString());
-                    leftBorders.put(cf, cssIndex++);
                 } else {
-                    css.append(BORDER_STYLE_DEFAULT);
+                    sb2.append(BORDER_STYLE_DEFAULT);
                 }
+                
+                spreadsheet.getState().conditionalFormattingStyles.put(
+                    cssIndex, sb2.toString());
+                leftBorders.put(cf, cssIndex++);
             }
         }
 
@@ -543,6 +532,9 @@ public class ConditionalFormatter implements Serializable {
                 for (int col = cra.getFirstColumn(); col <= cra.getLastColumn(); col++) {
 
                     Cell cell = spreadsheet.getCell(row, col);
+                    Cell cellToLeft = getCellToLeft(row, col);
+                    Cell cellOnTop = getCellOnTop(row, col);
+
                     if (cell != null
                             && matches(cell, rule, col - firstColumn, row
                                     - firstRow)) {
@@ -561,12 +553,6 @@ public class ConditionalFormatter implements Serializable {
 
                             // left border for col 0 isn't rendered
                             if (col != 0) {
-                                Cell cellToLeft = spreadsheet.getCell(row,
-                                        col - 1);
-                                if (cellToLeft == null) {
-                                    cellToLeft = spreadsheet.createCell(row,
-                                            col - 1, "");
-                                }
                                 list = cellToIndex.get(SpreadsheetUtil
                                         .toKey(cellToLeft));
                                 if (list == null) {
@@ -583,12 +569,6 @@ public class ConditionalFormatter implements Serializable {
 
                             // top border for row 0 isn't rendered
                             if (row != 0) {
-                                Cell cellOnTop = spreadsheet.getCell(row - 1,
-                                        col);
-                                if (cellOnTop == null) {
-                                    cellOnTop = spreadsheet.createCell(row - 1,
-                                            col, "");
-                                }
                                 list = cellToIndex.get(SpreadsheetUtil
                                         .toKey(cellOnTop));
                                 if (list == null) {
@@ -600,10 +580,50 @@ public class ConditionalFormatter implements Serializable {
                                 list.add(ruleIndex);
                             }
                         }
+                    } else {
+                        // if the rule contains borders, we need to update styles
+                        // to other cells too (cell on top and cell on left) 
+                        if (rule.getBorderFormatting() != null){
+                            if (cellToLeft != null) {
+                                spreadsheet.markCellForUpdate(cellToLeft);
+                            }
+                            if (cellOnTop != null) {
+                                spreadsheet.markCellForUpdate(cellOnTop);
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+
+    private Cell getCellOnTop(int row, int col) {
+        Cell cellOnTop;
+        if (row != 0){
+            cellOnTop = spreadsheet.getCell(row - 1, col);
+           
+            if (cellOnTop == null) {
+                cellOnTop = spreadsheet.createCell(row - 1,
+                    col, "");
+            }
+        } else {
+            cellOnTop = null;
+        }
+        return cellOnTop;
+    }
+
+    private Cell getCellToLeft(int row, int col) {
+        Cell cellToLeft;
+        if (col != 0) {
+            cellToLeft = spreadsheet.getCell(row,col - 1);
+            if (cellToLeft == null) {
+                cellToLeft = spreadsheet.createCell(row,
+                    col - 1, "");
+            }
+        } else {
+            cellToLeft = null;
+        }
+        return cellToLeft;
     }
 
     /**
