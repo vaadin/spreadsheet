@@ -199,6 +199,9 @@ public class SheetWidget extends Panel {
     private StyleElement shiftedBorderCellStyle = Document.get()
             .createStyleElement();
 
+    /** Stylesheet element for holding the conditional formatting styles */
+    private StyleElement conditionalFormattingStyle = Document.get().createStyleElement();
+
     /**
      * Stylesheet element for holding the edited cell style (for convenience
      * reasons, not actually visible). The selector is updated to the edited
@@ -945,6 +948,12 @@ public class SheetWidget extends Panel {
         cellSizeAndPositionStyle.getParentElement().appendChild(
                 shiftedBorderCellStyle);
 
+        // Conditional formatting styles (with highest priority)
+        conditionalFormattingStyle.setType("text/css");
+        conditionalFormattingStyle.setId(sheetId + "-conditionalFormattingStyle");
+        cellSizeAndPositionStyle.getParentElement().appendChild(
+            conditionalFormattingStyle);
+
         // style for "hiding" the edited cell
         editedCellFreezeColumnStyle.setType("text/css");
         editedCellFreezeColumnStyle.setId(sheetId + "-editedCellStyle");
@@ -996,6 +1005,7 @@ public class SheetWidget extends Panel {
         cellSizeAndPositionStyle.removeFromParent();
         sheetStyle.removeFromParent();
         shiftedBorderCellStyle.removeFromParent();
+        conditionalFormattingStyle.removeFromParent();
         editedCellFreezeColumnStyle.removeFromParent();
         resizeStyle.removeFromParent();
         mergedRegionStyle.removeFromParent();
@@ -2422,7 +2432,7 @@ public class SheetWidget extends Panel {
                 Collections.sort(list);
 
                 final int listSize = list.size();
-                final StringBuilder sb = new StringBuilder(getRules(sheetStyle));
+                final StringBuilder sb = new StringBuilder(getRules(conditionalFormattingStyle));
 
                 for (int i = 0; i < listSize; i++) {
                     Integer key = list.get(i);
@@ -2430,8 +2440,8 @@ public class SheetWidget extends Panel {
                     sb.append(".v-spreadsheet." + sheetId + " .sheet .cell.cf"
                             + key + " {" + val + "}");
                 }
-                sheetStyle.removeAllChildren();
-                sheetStyle.appendChild(Document.get().createTextNode(
+                conditionalFormattingStyle.removeAllChildren();
+                conditionalFormattingStyle.appendChild(Document.get().createTextNode(
                         sb.toString()));
             } catch (Exception e) {
                 debugConsole
@@ -4343,7 +4353,7 @@ public class SheetWidget extends Panel {
         clearPositionStyles();
         clearCellRangeStyles();
         clearSelectedCellStyle();
-        clearBasicCellStyles();
+        clearCellStyles();
         clearMergedCells();
         clearCellCommentsAndInvalidFormulas();
         if (removed) {
@@ -4355,7 +4365,7 @@ public class SheetWidget extends Panel {
             }
         }
     }
-
+    
     public String getSelectedCellKey() {
         return toKey(selectedCellCol, selectedCellRow);
     }
@@ -4561,6 +4571,15 @@ public class SheetWidget extends Panel {
 
     protected void clearShiftedBorderCellStyles() {
         jsniUtil.clearCSSRules(shiftedBorderCellStyle);
+    }
+
+    protected void clearConditionalFormattingStyles() {
+        jsniUtil.clearCSSRules(conditionalFormattingStyle);
+    }
+
+    private void clearCellStyles() {
+        clearBasicCellStyles();
+        clearConditionalFormattingStyles();
     }
 
     protected void clearMergedCells() {
@@ -5960,7 +5979,7 @@ public class SheetWidget extends Panel {
     }
 
     public void refreshCellStyles() {
-        clearBasicCellStyles();
+        clearCellStyles();
         updateCellStyles();
         updateConditionalFormattingStyles();
         ensureCellSelectionStyles();
