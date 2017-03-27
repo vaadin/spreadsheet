@@ -118,7 +118,8 @@ public class Utils {
             // Filter out hidden cells of rows that are hidden (Excel spec)
             ArrayList<CellReference> visibleCells = new ArrayList<CellReference>();
             for (CellReference cr : cellRefs) {
-                if (!spreadsheet.isRowHidden(cr.getRow())) {
+                if (!spreadsheet.isRowHidden(cr.getRow()) && !spreadsheet
+                    .isColumnHidden(cr.getCol())) {
                     visibleCells.add(cr);
                 }
             }
