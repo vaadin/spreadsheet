@@ -38,6 +38,7 @@ import org.apache.poi.ss.formula.WorkbookEvaluatorUtil;
 import org.apache.poi.ss.formula.eval.BoolEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.NotImplementedException;
+import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.NumericValueEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
@@ -546,7 +547,7 @@ public class ConditionalFormatter implements Serializable {
                 for (int col = cra.getFirstColumn(); col <= cra.getLastColumn(); col++) {
 
                     Cell cell = spreadsheet.getCell(row, col);
-                    if (cell != null
+                        if (cell != null
                             && matches(cell, rule, col - firstColumn, row
                                     - firstRow)) {
                         Set<Integer> list = cellToIndex.get(SpreadsheetUtil
@@ -658,11 +659,12 @@ public class ConditionalFormatter implements Serializable {
      * NOTE: Does not support HSSF files currently.
      *
      * @param cell
-     *            Cell containing the formula
+     *            Cell with conditional formatting
      * @param rule
-     *            Conditional formatting rule to get the formula from
-     * @return True if the formula in the given rule is of boolean formula type
-     *         and evaluates to <code>true</code>, false otherwise
+     *            Conditional formatting rule based on formula
+     * @return Formula value, if the formula is of boolean formula type
+     *         Formula value != 0, if the formula is of numeric formula type
+     *         and false otherwise
      */
     protected boolean matchesFormula(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
         if ( ! (rule instanceof XSSFConditionalFormattingRule)) {
@@ -686,7 +688,11 @@ public class ConditionalFormatter implements Serializable {
         if (eval instanceof BoolEval) {
             return eval == null ? false : ((BoolEval) eval).getBooleanValue();
         } else {
-            return false;
+            if (eval instanceof NumericValueEval) {
+                return  ((NumberEval) eval).getNumberValue() != 0;
+            } else {
+                return false;
+            }
         }
     }
 
