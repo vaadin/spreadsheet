@@ -54,6 +54,7 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
@@ -4543,9 +4544,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *            The wanted range, e.g. "A3" or "B3:C5"
      */
     public void setSelection(String selectionRange) {
-        CellRangeAddress cra = CellRangeAddress.valueOf(selectionRange);
-        setSelectionRange(cra.getFirstRow(), cra.getFirstColumn(),
-                cra.getLastRow(), cra.getLastColumn());
+        if(selectionRange.startsWith("(") && selectionRange.endsWith(")")){
+            selectionRange= selectionRange.substring(1,selectionRange.length()-1);
+        }
+        AreaReference[] arr$ = AreaReference.generateContiguous(selectionRange);
+        this.setSelectionRange(
+            arr$[0].getFirstCell().getRow(),
+            arr$[0].getFirstCell().getCol(),
+            arr$[arr$.length - 1].getLastCell().getRow(),
+            arr$[arr$.length - 1].getLastCell().getCol());
     }
 
     /**
