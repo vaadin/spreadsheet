@@ -547,8 +547,10 @@ public class ConditionalFormatter implements Serializable {
                 for (int col = cra.getFirstColumn(); col <= cra.getLastColumn(); col++) {
 
                     Cell cell = spreadsheet.getCell(row, col);
-                        if (cell != null
-                            && matches(cell, rule, col - firstColumn, row
+                    if (cell == null) {
+                        cell = spreadsheet.createCell(row, col, "");
+                    }
+                    if (matches(cell, rule, col - firstColumn, row
                                     - firstRow)) {
                         Set<Integer> list = cellToIndex.get(SpreadsheetUtil
                                 .toKey(cell));
