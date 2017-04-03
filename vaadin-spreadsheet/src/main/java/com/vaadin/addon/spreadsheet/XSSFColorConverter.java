@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.xssf.model.StylesTable;
 import org.apache.poi.xssf.model.ThemesTable;
 import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -38,10 +37,8 @@ import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBorder;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
@@ -125,6 +122,11 @@ public class XSSFColorConverter implements ColorConverter {
 
         sb.append(attr);
         sb.append(":");
+        if (color.isIndexed() && ColorConverterUtil
+            .hasCustomIndexedColors(workbook)) {
+            sb.append(ColorConverterUtil.getIndexedARGB(workbook,color));
+            return sb.toString();
+        }
         if (color == null || color.isAuto()) {
             sb.append("#000;");
             return sb.toString();
@@ -144,7 +146,7 @@ public class XSSFColorConverter implements ColorConverter {
         }
 
         try {
-            String temp = toRGBA(argb);
+            String temp = ColorConverterUtil.toRGBA(argb);
             sb.append(temp);
         } catch (NumberFormatException nfe) {
             LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
@@ -196,7 +198,7 @@ public class XSSFColorConverter implements ColorConverter {
         }
 
         try {
-            String temp = toRGBA(argb);
+            String temp = ColorConverterUtil.toRGBA(argb);
             sb.append(temp);
         } catch (NumberFormatException nfe) {
             LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
@@ -326,7 +328,7 @@ public class XSSFColorConverter implements ColorConverter {
             return styleColor(themeColor, bgColor.getTint());
         } else {
             byte[] rgb = bgColor.getRgb();
-            return rgb == null ? null : toRGBA(rgb);
+            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
         }
 
     }
@@ -353,7 +355,7 @@ public class XSSFColorConverter implements ColorConverter {
             return styleColor(themeColor, ctColor.getTint());
         } else {
             byte[] rgb = ctColor.getRgb();
-            return rgb == null ? null : toRGBA(rgb);
+            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
         }
 
     }
@@ -396,8 +398,9 @@ public class XSSFColorConverter implements ColorConverter {
         }
         //the XSSFColor#getARGB() method returns wrong colors for custom indexed colors
         // to be removed when bug # 60898 is resolved (https://bz.apache.org/bugzilla/show_bug.cgi?id=60898)
-        if (color.isIndexed() && hasCustomIndexedColors()) {
-            return getIndexedARGB(color);
+        if (color.isIndexed() && ColorConverterUtil
+            .hasCustomIndexedColors(workbook)) {
+            return ColorConverterUtil.getIndexedARGB(workbook, color);
         }
 
         byte[] argb = color.getARGB();
@@ -412,42 +415,12 @@ public class XSSFColorConverter implements ColorConverter {
         }
 
         try {
-            String temp = toRGBA(argb);
+            String temp = ColorConverterUtil.toRGBA(argb);
             return temp;
         } catch (NumberFormatException nfe) {
             LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
             return String.format("#%02x%02x%02x;", argb[1], argb[2], argb[3]);
         }
-    }
-
-    private String toRGBA(byte[] argb) {
-        StringBuilder sb = new StringBuilder("rgba(");
-        int rgba[] = new int[3];
-        for (int i = 1; i < argb.length; i++) {
-            int x = argb[i];
-            if (x < 0) {
-                x += 256;
-            }
-            rgba[i - 1] = x;
-        }
-        sb.append(rgba[0]);
-        sb.append(",");
-        sb.append(rgba[1]);
-        sb.append(",");
-        sb.append(rgba[2]);
-        sb.append(",");
-        float x = argb[0];
-        if (x == -1.0f) {
-            x = 1.0f;
-        } else if (x == 0.0) {
-            // This is done because of a bug (???) in POI. Colors from libre
-            // office in POI have the alpha-channel as 0.0, so that makes the
-            // colors all wrong. The correct value should be -1.0 (no Alpha)
-            x = 1.0f;
-        }
-        sb.append(x);
-        sb.append(");");
-        return sb.toString();
     }
 
     private byte applyTint(int lum, double tint) {
@@ -490,54 +463,4 @@ public class XSSFColorConverter implements ColorConverter {
         return dxf;
     }
 
-    private String getIndexedARGB(XSSFColor color) {
-        if (!color.isIndexed())
-            return null;
-
-        StylesTable styleSource = workbook.getStylesSource();
-
-        CTRgbColor ctRgbColor = styleSource.getCTStylesheet().getColors()
-            .getIndexedColors().getRgbColorList().get(color.getIndexed());
-
-        String rgb = ctRgbColor.getDomNode().getAttributes().getNamedItem("rgb")
-            .getNodeValue();
-        return toRGBA(rgb);
-
-    }
-
-    private String toRGBA(String hexARGB) {
-        StringBuilder sb = new StringBuilder("rgba(");
-        int rgba[] = new int[3];
-
-        rgba[0] = Integer.parseInt(hexARGB.substring(2, 4), 16);
-        rgba[1] = Integer.parseInt(hexARGB.substring(4, 6), 16);
-        rgba[2] = Integer.parseInt(hexARGB.substring(6), 16);
-        float alpha = Integer.parseInt(hexARGB.substring(0, 2), 16);
-
-        if (alpha == 0.0) {
-            alpha = 1.0f;
-        }
-        sb.append(rgba[0]);
-        sb.append(",");
-        sb.append(rgba[1]);
-        sb.append(",");
-        sb.append(rgba[2]);
-        sb.append(",");
-        sb.append(alpha);
-        sb.append(");");
-
-        return sb.toString();
-    }
-
-    private boolean hasCustomIndexedColors() {
-        StylesTable stylesSource = workbook.getStylesSource();
-        CTColors ctColors = stylesSource.getCTStylesheet().getColors();
-        if (ctColors == null) {
-            return false;
-        }
-        if (ctColors.getIndexedColors() == null) {
-            return false;
-        }
-        return true;
-    }
 }
