@@ -19,6 +19,9 @@ package com.vaadin.addon.spreadsheet;
 
 import static org.apache.poi.common.usermodel.Hyperlink.LINK_DOCUMENT;
 
+import org.apache.poi.ss.formula.WorkbookEvaluatorUtil;
+import org.apache.poi.ss.formula.eval.StringEval;
+import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Hyperlink;
 
@@ -62,7 +65,7 @@ public class DefaultHyperlinkCellClickHandler implements
                         .open(cell.getHyperlink().getAddress(), "_new");
             }
         } else if (isHyperlinkFormulaCell(cell)) {
-            String address = getHyperlinkFunctionCellAddress(cell);
+            String address = getHyperlinkFunctionCellAddress(cell, spreadsheet);
             if (address.startsWith("#")) { // inter-sheet address
                 navigateTo(cell, spreadsheet, address.substring(1));
             } else if (address.startsWith("[") && address.contains("]")) {
@@ -122,6 +125,39 @@ public class DefaultHyperlinkCellClickHandler implements
         int startindex = cellFormula.indexOf("\"");
         int endindex = cellFormula.indexOf('"', startindex + 1);
         String address = cellFormula.substring(startindex + 1, endindex);
+        return address;
+    }
+
+    /**
+     * Should only be called for cells {@link #isHyperlinkFormulaCell(Cell)}
+     * returns true.
+     * <p>
+     * The address is inside the first argument:
+     * <code>HYPERLINK("address","friendly name")</code>
+     * or
+     * <code>HYPERLINK(D5,"friendly name")</code>
+     *
+     * @param cell
+     *            Target cell containing a hyperlink function
+     * @param spreadsheet
+     *            spreadsheet for evaluating the first argument (formula case) 
+     * @return the address that the hyperlink function points to
+     */
+    public final static String getHyperlinkFunctionCellAddress(Cell cell, Spreadsheet spreadsheet) {
+        String address;
+        String cellFormula = cell.getCellFormula();
+        int startIndex = cellFormula.indexOf("(")+1;
+        char nextBracketChart = cellFormula.charAt(startIndex);
+        if (nextBracketChart != '"') {
+            int endIndex = cellFormula.indexOf(",");
+            address = cellFormula.substring(startIndex, endIndex);
+            ValueEval evaluate = WorkbookEvaluatorUtil
+                .evaluate(spreadsheet, cell, address, 0, 0);
+            return (evaluate instanceof StringEval) ? ((StringEval) evaluate).getStringValue() : "";
+        }else {
+            int endIndex = cellFormula.indexOf('"', startIndex + 1);
+            address = cellFormula.substring(startIndex + 1, endIndex);
+        }
         return address;
     }
 
