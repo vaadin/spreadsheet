@@ -57,17 +57,27 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromLinkOpensPopupToCorrectPage() {
-        testExternal("A3");
+        testExternal("A3", "google");
     }
 
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
-        testExternal("A2");
+        testExternal("A2", "google");
+    }
+
+    @Test
+    public void hyperlinkInFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
+        testExternal("G1", "google");
+    }
+
+    @Test
+    public void hyperlinkInSharedFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
+        testExternal("G2", "mail");
     }
 
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromMergedCellOpensPopupToCorrectPage() {
-        testExternal("C7");
+        testExternal("C7", "google");
     }
 
     @Test
@@ -136,10 +146,10 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
         waitUntilSelected(expected);
     }
 
-    private void testExternal(String cell) {
+    private void testExternal(String cell, String urlSubstring) {
         sheetController.clickCell(cell);
         popup.switchToPopup();
-        waitUntilUrlContains("google");
+        waitUntilUrlContains(urlSubstring);
         popup.backToMainWindow();
     }
 
