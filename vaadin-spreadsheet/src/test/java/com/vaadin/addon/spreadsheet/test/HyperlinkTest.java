@@ -16,14 +16,11 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.PopupHelper;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
 /**
  * Tests for hyperlinks.
  *
  */
-@RunLocally(Browser.PHANTOMJS)
 public class HyperlinkTest extends AbstractSpreadsheetTestCase {
 
     private PopupHelper popup;
