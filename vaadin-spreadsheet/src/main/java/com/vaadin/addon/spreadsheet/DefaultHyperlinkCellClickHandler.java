@@ -113,25 +113,6 @@ public class DefaultHyperlinkCellClickHandler implements
      * Should only be called for cells {@link #isHyperlinkFormulaCell(Cell)}
      * returns true.
      * <p>
-     * The address is inside the first quotation marks:
-     * <code>HYPERLINK("address","friendly name")</code>
-     * 
-     * @param cell
-     *            Target cell containing a hyperlink function
-     * @return the address that the hyperlink function points to
-     */
-    public final static String getHyperlinkFunctionCellAddress(Cell cell) {
-        String cellFormula = cell.getCellFormula();
-        int startindex = cellFormula.indexOf("\"");
-        int endindex = cellFormula.indexOf('"', startindex + 1);
-        String address = cellFormula.substring(startindex + 1, endindex);
-        return address;
-    }
-
-    /**
-     * Should only be called for cells {@link #isHyperlinkFormulaCell(Cell)}
-     * returns true.
-     * <p>
      * The address is inside the first argument:
      * <code>HYPERLINK("address","friendly name")</code>
      * or
