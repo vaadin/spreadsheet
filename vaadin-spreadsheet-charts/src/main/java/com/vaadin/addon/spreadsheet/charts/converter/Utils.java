@@ -87,7 +87,8 @@ public class Utils {
     }
 
     /*
-    *returns an arry of contigous area reference.Parenthesis are stripped out, if any.
+     * Returns an array of contiguous area references addressed by the given
+     * formula. Parenthesis will be stripped out, if they are present.
      */
     public static AreaReference[] getAreaReferences(String formula) {
         // generateContiguous cannot parse a forumula in parentheses

@@ -4546,7 +4546,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void setSelection(String selectionRange) {
         CellRangeAddress cra = CellRangeAddress.valueOf(selectionRange);
-        this.setSelectionRange(cra.getFirstRow(), cra.getFirstColumn(), cra.getLastRow(), cra.getLastColumn());
+        setSelectionRange(cra.getFirstRow(), cra.getFirstColumn(),
+                cra.getLastRow(), cra.getLastColumn());
     }
 
     /**

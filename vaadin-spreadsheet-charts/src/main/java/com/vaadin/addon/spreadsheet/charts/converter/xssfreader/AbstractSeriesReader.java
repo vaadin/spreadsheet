@@ -223,14 +223,16 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         seriesData.dataSelectListener = new DataSelectListener() {
             @Override
             public void dataSelected() {
-                AreaReference[] areaReferences =Utils.getAreaReferences(formula);
+                AreaReference[] areaReferences = Utils
+                        .getAreaReferences(formula);
 
-                spreadsheet.setSelectionRange(areaReferences[0].getFirstCell().getRow(),
-                    areaReferences[0].getFirstCell().getCol(),
-                    areaReferences[areaReferences.length - 1].getLastCell()
-                        .getRow(),
-                    areaReferences[areaReferences.length - 1].getLastCell()
-                        .getCol());
+                spreadsheet.setSelectionRange(
+                        areaReferences[0].getFirstCell().getRow(),
+                        areaReferences[0].getFirstCell().getCol(),
+                        areaReferences[areaReferences.length - 1].getLastCell()
+                                .getRow(),
+                        areaReferences[areaReferences.length - 1].getLastCell()
+                                .getCol());
             }
         };
     }
