@@ -123,6 +123,10 @@ public class SpreadsheetPage extends Page {
         return getCellValue(point.getX(), point.getY());
     }
     
+    public void setCellValue(String address, String newValue) {
+        getCellAt(address).setValue(newValue);
+    }
+    
     public String getCellColor(String cellAddress) {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return cellAt.getCssValue(BACKGROUND_COLOR);
