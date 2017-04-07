@@ -4538,27 +4538,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * Selects the cell(s) at the given coordinates Parenthesis are stripped
-     * out, if any. In case of non contiguous areas, a contiguous area
-     * containing them is selected
+     * Selects the cell(s) at the given coordinates
      *
      * @param selectionRange
      *            The wanted range, e.g. "A3" or "B3:C5"
      *
      */
     public void setSelection(String selectionRange) {
-        if (selectionRange.startsWith("(") && selectionRange.endsWith(")")) {
-            selectionRange = selectionRange.substring(1,
-                    selectionRange.length() - 1);
-        }
-        AreaReference[] areaReferences = AreaReference
-                .generateContiguous(selectionRange);
-        this.setSelectionRange(areaReferences[0].getFirstCell().getRow(),
-                areaReferences[0].getFirstCell().getCol(),
-                areaReferences[areaReferences.length - 1].getLastCell()
-                        .getRow(),
-                areaReferences[areaReferences.length - 1].getLastCell()
-                        .getCol());
+        CellRangeAddress cra = CellRangeAddress.valueOf(selectionRange);
+        this.setSelectionRange(cra.getFirstRow(), cra.getFirstColumn(), cra.getLastRow(), cra.getLastColumn());
     }
 
     /**
