@@ -24,7 +24,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
 public class Cell {
-
+    
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
     private static final int ZINDEXVALUE = 2;
@@ -47,7 +47,6 @@ public class Cell {
     private SheetWidget sheetWidget;
     private boolean overflowDirty = true;
     private boolean overflowing;
-    private boolean wrapText;
 
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
@@ -69,7 +68,6 @@ public class Cell {
             needsMeasure = cellData.needsMeasure;
             value = cellData.value;
             cellStyle = cellData.cellStyle;
-            wrapText = cellData.wrapText;
         }
         updateCellValues();
         updateInnerText();
@@ -84,7 +82,6 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
-        wrapText = cellData == null ? false : cellData.wrapText;
 
         updateInnerText();
         updateCellValues();
@@ -113,8 +110,11 @@ public class Cell {
 
     void updateOverflow() {
 
-        boolean rightAligned = element.getAttribute("class").contains(" r ")
-                || element.getAttribute("class").endsWith(" r");
+        String classAttribute = element.getAttribute("class");
+        boolean rightAligned = classAttribute.contains(" r ")
+                || classAttribute.endsWith(" r");
+
+        boolean wrapped = classAttribute.contains(CellData.CELL_WRAP_TEXT_CLASSNAME);
 
         int columnWidth = sheetWidget.actionHandler.getColWidth(col);
 
@@ -123,7 +123,8 @@ public class Cell {
             scrollW = measureOverflow();
         }
         int overflowPx = scrollW - columnWidth;
-        if (!rightAligned && !wrapText && overflowPx > 0) {
+
+        if (!rightAligned && !wrapped && overflowPx > 0) {
             // Increase overflow by cell left padding (2px)
             overflowPx += 2;
             int colIndex = col;
@@ -208,17 +209,12 @@ public class Cell {
         return value;
     }
 
-    public boolean isWrapText() {
-        return wrapText;
-    }
-
-    public void setValue(String value, String cellStyle, boolean needsMeasure, boolean wrapText) {
+    public void setValue(String value, String cellStyle, boolean needsMeasure) {
         if (!this.cellStyle.equals(cellStyle)) {
             this.cellStyle = cellStyle;
             updateClassName();
         }
         this.needsMeasure = needsMeasure;
-        this.wrapText = wrapText;
         setValue(value);
     }
 

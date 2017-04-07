@@ -22,6 +22,9 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class CellData implements Serializable {
 
+    // This is a marker class name for cells with text wrapping enabled
+    public static final String CELL_WRAP_TEXT_CLASSNAME = "wrap-text";
+    
     public int row;
     public int col;
     public String value;
@@ -31,7 +34,6 @@ public class CellData implements Serializable {
     public boolean locked = false;
     public boolean needsMeasure;
     public boolean isPercentage;
-    public boolean wrapText;
 
     @Override
     public int hashCode() {

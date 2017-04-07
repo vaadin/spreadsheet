@@ -28,13 +28,14 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         try {
             WebElement subDiv = element.findElement(By.tagName("div"));
 
-            // SubDiv has been found: if it's wider than cell width then text overflows
+            // SubDiv has been found: if it's wider than cell width then text
+            // overflows
             assertThat(subDiv.getSize().getWidth(),
-                lessThanOrEqualTo(cell.getSize().getWidth()));
+                    lessThanOrEqualTo(cell.getSize().getWidth()));
 
         } catch (NoSuchElementException e) {
             // No Sub-DIVs nested into cell are found so text will fit
-            // the cell div and cannot overflow 
+            // the cell div and cannot overflow
         }
     }
 
@@ -44,20 +45,21 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
         try {
             WebElement subDiv = element.findElement(By.tagName("div"));
 
-            // SubDiv has been found: if it's wider than cell width then text overflows
+            // SubDiv has been found: if it's wider than cell width then text
+            // overflows
             assertThat("Text div was expected to be wider than cell div",
-                subDiv.getSize().getWidth(),
-                greaterThanOrEqualTo(cell.getSize().getWidth()));
+                    subDiv.getSize().getWidth(),
+                    greaterThanOrEqualTo(cell.getSize().getWidth()));
 
         } catch (NoSuchElementException e) {
             Assert.fail(
-                "A sub-DIV with overflowing text was expected inside the cell DIV");
+                    "A sub-DIV with overflowing text was expected inside the cell DIV");
         }
     }
 
     @Test
     public void sheetWithOverflowingText_wordWrapOnFirstColumn_textShouldNotOverflow()
-        throws Exception {
+            throws Exception {
         loadFile();
 
         // Cell A2 contains wrapped long text
@@ -69,10 +71,10 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void sheetWithOverflowingText_wordWrapOnThirdColumn_textShouldNotOverflow()
-        throws Exception {
+            throws Exception {
         loadFile();
 
-        // Cell C2 contains wrapped long text 
+        // Cell C2 contains wrapped long text
         // For some reason it works, the bug shows up only if there is another
         // wrapped cell on the left (A2)
         SheetCellElement cell = spreadsheetPage.getCellAt(3, 2);
@@ -82,10 +84,10 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void sheetWithOverflowingText_noWordWrapAndLongText_textShouldOverflow()
-        throws Exception {
+            throws Exception {
         loadFile();
 
-        // Cell A5 contains unwrapped long text 
+        // Cell A5 contains unwrapped long text
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 5);
 
         assertOverflows(cell);
@@ -93,10 +95,10 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void sheetWithOverflowingText_mergedCellsWordWrapAndLongText_textShouldNotOverflowTheMergedCell()
-        throws Exception {
+            throws Exception {
         loadFile();
 
-        // Cell G2 contains unwrapped long text and is merged with H2 
+        // Cell G2 contains unwrapped long text and is merged with H2
         SheetCellElement cell = spreadsheetPage.getCellAt(7, 2);
 
         assertNoOverflow(cell);
@@ -104,7 +106,7 @@ public class WrappedTextNotOverflowingTest extends AbstractSpreadsheetTestCase {
 
     private void loadFile() {
         spreadsheetPage = headerPage
-            .loadFile("wrapped_text_not_overflowing.xlsx", this);
+                .loadFile("wrapped_text_not_overflowing.xlsx", this);
         spreadsheetPage.selectSheetAt(0);
     }
 }
