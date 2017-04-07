@@ -57,11 +57,12 @@ public class WorkbookEvaluatorUtil {
     }
 
     public static ValueEval evaluate(Spreadsheet spreadsheet, Cell cell,
-        String formula, int deltaRow, int deltaColumn){
+            String formula, int deltaRow, int deltaColumn) {
         // Parse formula and use deltas to get relative cell references to work
         // (#18702)
-        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
-            FormulaType.CELL, spreadsheet.getActiveSheetIndex());
+        Ptg[] ptgs = FormulaParser.parse(formula,
+                WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
+                FormulaType.CELL, spreadsheet.getActiveSheetIndex());
 
         for (Ptg ptg : ptgs) {
             // base class for cell reference "things"
