@@ -45,7 +45,7 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void cellWithLongText_inputWrapped_noVerticalOverflow()
-        throws IOException {
+            throws IOException {
         headerPage.loadFile("wrapping_overflow_test.xlsx", this);
 
         compareScreen("WrapNoVerticalOverflow");
@@ -54,9 +54,9 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
     @Test
     public void cellWithLongText_inputWrapped_overflowHidden() {
         SpreadsheetPage spreadsheetPage = headerPage
-            .loadFile("wrapping_overflow_test.xlsx", this);
+                .loadFile("wrapping_overflow_test.xlsx", this);
 
         assertEquals("hidden",
-            spreadsheetPage.getCellAt(3, 4).getCssValue("overflow"));
+                spreadsheetPage.getCellAt(3, 4).getCssValue("overflow"));
     }
 }
