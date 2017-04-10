@@ -14,7 +14,7 @@ public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheet
     private SpreadsheetPage spreadsheetPage;
 
     @Test
-    public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellFailsWhenHandlerReturnsFalse() {
+    public void conditionalFormatting_deleteCellUsedInFormula_formattingAppliedWithoutException() {
         spreadsheetPage = headerPage.loadFile(
                 "conditional_formatting_with_formula_on_second_sheet.xlsx",
                 this);
