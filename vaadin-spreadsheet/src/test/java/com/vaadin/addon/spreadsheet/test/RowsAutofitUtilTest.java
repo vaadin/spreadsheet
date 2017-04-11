@@ -34,6 +34,7 @@ public class RowsAutofitUtilTest {
     private static final float DEFAULT_FONT_SIZE = 11;
     private static final float MEDIUM_FONT_SIZE = DEFAULT_FONT_SIZE;
     private static final float HUGE_FONT_SIZE = 48;
+    private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f; // 15%
     private static Sheet sheet;
 
     private static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
@@ -56,7 +57,7 @@ public class RowsAutofitUtilTest {
                 .getFile());
         sheet = new XSSFWorkbook(file).getSheetAt(0);
 
-        sut = new RowsAutofitUtil();
+        sut = new RowsAutofitUtil(ROW_AUTOFIT_SECURITY_MARGIN);
     }
 
     @Test
@@ -86,7 +87,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
             .getHeightInPoints();
 
-        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, 1);
+        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN,1);
     }
 
     @Test
@@ -96,7 +97,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
 
-        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, 1);
+        assertThatCellHeightIsAcceptable(heightInPoints, HUGE_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 1);
     }
 
     @Test
@@ -153,7 +154,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT).getHeightInPoints();
 
-        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 2);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 2);
     }
 
     @Test
@@ -164,7 +165,7 @@ public class RowsAutofitUtilTest {
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT).getHeightInPoints();
 
-        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 3);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 3);
     }
 
     @Test
@@ -176,6 +177,6 @@ public class RowsAutofitUtilTest {
             .getRow(ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT)
             .getHeightInPoints();
 
-        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, 3);
+        assertThatCellHeightIsAcceptable(heightInPoints, MEDIUM_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 3);
     }
 }

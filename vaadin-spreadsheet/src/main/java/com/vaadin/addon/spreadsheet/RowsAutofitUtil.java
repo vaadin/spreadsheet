@@ -34,7 +34,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 
 /**
- * RowsAutofitUtil is an utility class of the Spreadsheet component used
+ * RowsAutofitUtil is an utility of the Spreadsheet component used
  * to calculate proper height for autofitting rows.
  *
  * @author Vaadin Ltd.
@@ -43,8 +43,25 @@ public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
     
-    public static final float SECURITY_MARGIN_PERCENTAGE = 0.15f;
-    
+    private final float securityMarginPercentage;
+
+    /**
+     * Creates a new instance
+     *
+     * @param securityMarginPercentage
+     *     a margin in terms of percentage
+     *     of the full cell width/height that must be taken into account
+     *     when autofitting.<br>E.g. percentage=0.15f
+     *     means that autofit both:
+     *     <ul>
+     *     <li>is applied on an effective width which is 15% less than the real cell width,</li>
+     *     <li>add a 15% extra to the autofitted height.</li>
+     *     </ul>
+     */
+    public RowsAutofitUtil(float securityMarginPercentage) {
+        this.securityMarginPercentage = securityMarginPercentage;
+    }
+
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
     // cell height
@@ -75,7 +92,7 @@ public class RowsAutofitUtil {
                 float requiredCellHeight = lineCount * requiredLineHeight
                     + (lineCount - 1) * lineSpaceHeight;
                 
-                requiredCellHeight += requiredCellHeight * SECURITY_MARGIN_PERCENTAGE;
+                requiredCellHeight += requiredCellHeight * securityMarginPercentage;
                 
                 height = Math.max(height, requiredCellHeight);
             }
@@ -110,7 +127,7 @@ public class RowsAutofitUtil {
         return ((XSSFRow) sheetRow).getCTRow().getCustomHeight();
     }
 
-    private static int getLineCount(Cell cell) {
+    private int getLineCount(Cell cell) {
         if (!isWrapText(cell)) {
             return 1;
         }
@@ -140,7 +157,7 @@ public class RowsAutofitUtil {
         int columnWidth = AbstractExcelUtils.getColumnWidthInPx(
             cell.getSheet().getColumnWidth(cell.getColumnIndex()));
         
-        columnWidth -= columnWidth * SECURITY_MARGIN_PERCENTAGE;
+        columnWidth -= columnWidth * securityMarginPercentage;
         
         while (measurer.getPosition() < cellValue.length()) {
             nextPos = measurer.nextOffset(columnWidth);

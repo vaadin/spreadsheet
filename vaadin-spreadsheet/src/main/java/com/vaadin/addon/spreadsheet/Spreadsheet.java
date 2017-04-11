@@ -128,6 +128,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
 
     /**
+     * The margin in terms of percentage of the full cell width/height 
+     * that must be taken into account when autofitting.
+     */
+    private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
+
+    /**
      * A common formula evaluator for this Spreadsheet
      */
     private FormulaEvaluator formulaEvaluator;
@@ -339,8 +345,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private String srcUri;
 
     private boolean defaultColWidthSet, defaultRowHeightSet;
-    
-    private RowsAutofitUtil rowsAutofitUtil = new RowsAutofitUtil();
+
+    private RowsAutofitUtil rowsAutofitUtil = new RowsAutofitUtil(
+        ROW_AUTOFIT_SECURITY_MARGIN);
 
     /**
      * Container for merged regions for the currently active sheet.

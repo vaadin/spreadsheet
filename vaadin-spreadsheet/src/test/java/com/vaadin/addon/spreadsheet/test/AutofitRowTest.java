@@ -13,6 +13,7 @@ public class AutofitRowTest extends AbstractSpreadsheetTestCase {
 
     public static final int HUGE_FONT_SIZE = 48;
     private static final int ROW_TOO_SMALL = 4;
+    private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
 
     @Test
     public void autoFitRow_doubleClickOnRowBoundaryOfATooSmallRow_rowIsAutofitted()
@@ -24,7 +25,7 @@ public class AutofitRowTest extends AbstractSpreadsheetTestCase {
         SheetCellElement cell = spreadsheet.getCellAt(ROW_TOO_SMALL, 1);
         int height = cell.getSize().getHeight();
 
-        assertThatCellHeightIsAcceptable(height, HUGE_FONT_SIZE, 1);
+        assertThatCellHeightIsAcceptable(height, HUGE_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 1);
     }
 
     private SpreadsheetElement loadImageFile() {

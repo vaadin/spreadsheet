@@ -5,9 +5,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
-import com.vaadin.addon.spreadsheet.RowsAutofitUtil;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
-import com.vaadin.addon.spreadsheet.test.RowsAutofitUtilTest;
 
 /**
  * Utility class to check the proper height for a single line of text.
@@ -32,22 +30,27 @@ public class TextLineHeightChecker {
      *     The actual font size
      * @param cellHeightInPoints
      *     The actual cell height
+     * @param securityMarginPercentage
+     *     The margin in terms of percentage of the full cell width/height
+     *     that must be taken into account when autofitting.
      * @param expectedLines
      *     The expected number of text lines in the cell
      */
     public static void assertThatCellHeightIsAcceptable(
-        float cellHeightInPoints, float fontSize, int expectedLines) {
+        float cellHeightInPoints, float fontSize,
+        float securityMarginPercentage, int expectedLines) {
         float minimumLineHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
         float maximumLineHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
-        
-        float minimumRowHeight = minimumLineHeight + 
-                minimumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines - 1);
-        minimumRowHeight += minimumRowHeight * RowsAutofitUtil.SECURITY_MARGIN_PERCENTAGE;
 
-        float maximumRowHeight = maximumLineHeight +
-            maximumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines - 1);
-        maximumRowHeight += maximumRowHeight * RowsAutofitUtil.SECURITY_MARGIN_PERCENTAGE;
-            
+        float minimumRowHeight = minimumLineHeight
+            + minimumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (
+            expectedLines - 1);
+        minimumRowHeight += minimumRowHeight * securityMarginPercentage;
+
+        float maximumRowHeight = maximumLineHeight
+            + maximumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (
+            expectedLines - 1);
+        maximumRowHeight += maximumRowHeight * securityMarginPercentage;
 
         // Row height must properly fit the font size with a "security" margin
         assertThat(cellHeightInPoints,
