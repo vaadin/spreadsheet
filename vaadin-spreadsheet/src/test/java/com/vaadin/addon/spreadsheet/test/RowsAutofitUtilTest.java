@@ -1,6 +1,6 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import static com.vaadin.addon.spreadsheet.test.testutil.TextLineHeightChecker.assertThatCellHeightIsAcceptable;
+import static com.vaadin.addon.spreadsheet.test.testutil.CellHeightChecker.assertThatCellHeightIsAcceptable;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertFalse;

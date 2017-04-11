@@ -8,9 +8,9 @@ import static org.junit.Assert.assertThat;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
- * Utility class to check the proper height for a single line of text.
+ * Utility class to check the proper height for a single cell of text.
  */
-public class TextLineHeightChecker {
+public class CellHeightChecker {
 
     // Boundaries for an acceptable line height size in terms of
     // percentage of font size
