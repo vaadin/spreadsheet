@@ -342,7 +342,7 @@ public class ConditionalFormatter implements Serializable {
                             BorderSide.RIGHT, "border-right-color",
                             borderFormatting));
                 } else {
-                    css.append(BORDER_STYLE_DEFAULT);
+                    css.append(getBorderDefaultStyle());
                 }
             }
             if (isBottomSet) {
@@ -353,7 +353,7 @@ public class ConditionalFormatter implements Serializable {
                             BorderSide.BOTTOM, "border-bottom-color",
                             borderFormatting));
                 } else {
-                    css.append(BORDER_STYLE_DEFAULT);
+                    css.append(getBorderDefaultStyle());
                 }
             }
 
@@ -367,7 +367,7 @@ public class ConditionalFormatter implements Serializable {
                     sb2.append(colorConverter.getBorderColorCSS(BorderSide.TOP,
                             "border-bottom-color", borderFormatting));
                 } else {
-                    sb2.append(BORDER_STYLE_DEFAULT);
+                    sb2.append(getBorderDefaultStyle());
                 }
                 
                 spreadsheet.getState().conditionalFormattingStyles.put(
@@ -385,7 +385,7 @@ public class ConditionalFormatter implements Serializable {
                             BorderSide.LEFT, "border-right-color",
                             borderFormatting));
                 } else {
-                    sb2.append(BORDER_STYLE_DEFAULT);
+                    sb2.append(getBorderDefaultStyle());
                 }
                 
                 spreadsheet.getState().conditionalFormattingStyles.put(
@@ -395,6 +395,10 @@ public class ConditionalFormatter implements Serializable {
         }
 
         return cssIndex;
+    }
+
+    private String getBorderDefaultStyle() {
+        return spreadsheet.isGridlinesVisible() ? BORDER_STYLE_DEFAULT : "0px;";
     }
 
     /**
@@ -772,7 +776,7 @@ public class ConditionalFormatter implements Serializable {
         boolean isFormulaNumericType = isFormulaType
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC;
 
-            String formula = rule.getFormula1();
+        String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell, deltaColumn, deltaRow);
         
