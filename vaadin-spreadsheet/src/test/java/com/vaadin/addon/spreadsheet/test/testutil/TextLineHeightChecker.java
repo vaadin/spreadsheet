@@ -5,6 +5,10 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
+import com.vaadin.addon.spreadsheet.RowsAutofitUtil;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
+import com.vaadin.addon.spreadsheet.test.RowsAutofitUtilTest;
+
 /**
  * Utility class to check the proper height for a single line of text.
  */
@@ -33,12 +37,20 @@ public class TextLineHeightChecker {
      */
     public static void assertThatCellHeightIsAcceptable(
         float cellHeightInPoints, float fontSize, int expectedLines) {
-        float minimumRowHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
-        float maximumRowHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
+        float minimumLineHeight = fontSize * MINIMUM_PERCENTAGE_OF_FONT_SIZE;
+        float maximumLineHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
+        
+        float minimumRowHeight = minimumLineHeight + 
+                minimumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines - 1);
+        minimumRowHeight += minimumRowHeight * RowsAutofitUtil.SECURITY_MARGIN_PERCENTAGE;
+
+        float maximumRowHeight = maximumLineHeight +
+            maximumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines - 1);
+        maximumRowHeight += maximumRowHeight * RowsAutofitUtil.SECURITY_MARGIN_PERCENTAGE;
+            
 
         // Row height must properly fit the font size with a "security" margin
-        float expectedSingleTextLineHeight = cellHeightInPoints / expectedLines;
-        assertThat(expectedSingleTextLineHeight,
+        assertThat(cellHeightInPoints,
             allOf(greaterThan(minimumRowHeight), lessThan(maximumRowHeight)));
     }
 

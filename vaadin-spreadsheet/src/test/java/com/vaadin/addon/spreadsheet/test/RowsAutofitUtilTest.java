@@ -36,10 +36,12 @@ public class RowsAutofitUtilTest {
     private static final float HUGE_FONT_SIZE = 48;
     private static Sheet sheet;
 
+    private static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
+
     private static void checkRowHeightNotChangedAfterAutofit(int row) {
         float initialHeight = (short) (sheet.getRow(row).getHeightInPoints());
 
-        RowsAutofitUtil.autoSizeRow(sheet, row);
+        RowsAutofitUtil.autoSizeRow(sheet, row, CSS_LINE_HEIGHT_PERCENTAGE);
 
         assertThat(sheet.getRow(row).getHeightInPoints(), is(initialHeight));
     }
@@ -55,7 +57,7 @@ public class RowsAutofitUtilTest {
 
     @Test
     public void rowsAutofit_emptyRowNotPresentOnSpreadhseet_autoFitDoesntCrashes() {
-        RowsAutofitUtil.autoSizeRow(sheet, EMPTY_ROW);
+        RowsAutofitUtil.autoSizeRow(sheet, EMPTY_ROW, CSS_LINE_HEIGHT_PERCENTAGE);
     }
 
     @Test
@@ -76,7 +78,7 @@ public class RowsAutofitUtilTest {
 
     @Test
     public void rowsAutofit_rowWithHugeFontAndSmallHeight_heightSetIntoAcceptableRange() {
-        RowsAutofitUtil.autoSizeRow(sheet, ROW_WITH_HUGE_FONT);
+        RowsAutofitUtil.autoSizeRow(sheet, ROW_WITH_HUGE_FONT, CSS_LINE_HEIGHT_PERCENTAGE);
         float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
             .getHeightInPoints();
 
@@ -86,7 +88,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_rowWithWrapTextAndNumericValues_heightSetIntoAcceptableRangeForSingleRowOfText() {
         RowsAutofitUtil
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE, CSS_LINE_HEIGHT_PERCENTAGE);
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
 
@@ -98,7 +100,7 @@ public class RowsAutofitUtilTest {
         float initialHeight = sheet.getRow(ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT)
             .getHeightInPoints();
         RowsAutofitUtil
-            .autoSizeRow(sheet, ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT);
+            .autoSizeRow(sheet, ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT, CSS_LINE_HEIGHT_PERCENTAGE);
 
         assertThat(sheet.getRow(ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT)
             .getHeightInPoints(), greaterThan(initialHeight));
@@ -142,7 +144,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToTwoLines() {
         RowsAutofitUtil
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT).getHeightInPoints();
@@ -153,7 +155,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToThreeLines() {
         RowsAutofitUtil
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT).getHeightInPoints();
@@ -164,7 +166,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_severalCellsWithDifferentContentLenghtAndType_autofitExpandRowToThreeLines() {
         RowsAutofitUtil.autoSizeRow(sheet,
-            ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT);
+            ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT)
