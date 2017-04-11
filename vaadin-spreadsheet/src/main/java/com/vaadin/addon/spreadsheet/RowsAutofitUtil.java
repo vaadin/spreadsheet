@@ -44,8 +44,8 @@ public class RowsAutofitUtil {
     public static final String EXAMPLE_TEXT = "0g";
     
     private final float securityMarginPercentage;
-    
     private final float cssLineHeightPercentage;
+    private final float letterSpacingInPoints;
 
     /**
      * Creates a new instance
@@ -60,13 +60,16 @@ public class RowsAutofitUtil {
      *     <li>add a 15% extra to the autofitted height.</li>
      *     </ul>
      * @param cssLineHeightPercentage
-     *     the value of css line-height property
-     *     for cells expressed in percentage (e.g. 1.1f means 110%)
+     *     the value of css line-height property for cells
+     * @param letterSpacingInPoints
+     *     The value of css letter-spacing property
+     *     expressed in points for cells
      */
     public RowsAutofitUtil(float securityMarginPercentage,
-        float cssLineHeightPercentage) {
+        float cssLineHeightPercentage, float letterSpacingInPoints) {
         this.securityMarginPercentage = securityMarginPercentage;
         this.cssLineHeightPercentage = cssLineHeightPercentage;
+        this.letterSpacingInPoints = letterSpacingInPoints;
     }
 
     // Since calculation of wrapped text is not so accurate
@@ -182,7 +185,7 @@ public class RowsAutofitUtil {
         return cellStyle.getWrapText();
     }
 
-    private static float getRequiredLineHeight(Font font, String text) {
+    private float getRequiredLineHeight(Font font, String text) {
         AttributedString str = new AttributedString(text);
         copyAttributes(font, str, 0, 1);
         TextLayout layout = new TextLayout(str.getIterator(),
@@ -193,12 +196,12 @@ public class RowsAutofitUtil {
     /**
      * Copy text attributes from the supplied Font to Java2D AttributedString
      */
-    private static void copyAttributes(Font font, AttributedString str,
+    private void copyAttributes(Font font, AttributedString str,
         int startIdx, int endIdx) {
         str.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx,
             endIdx);
         
-        str.addAttribute(TextAttribute.TRACKING, 0.1);
+        str.addAttribute(TextAttribute.TRACKING, letterSpacingInPoints);
         str.addAttribute(TextAttribute.SIZE,
             (float) font.getFontHeightInPoints());
         if (font.getBold())

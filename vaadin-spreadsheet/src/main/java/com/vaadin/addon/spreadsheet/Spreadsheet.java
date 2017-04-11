@@ -134,6 +134,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
 
     /**
+     * The value of CSS letter-spacing attribute as set on Spreadsheet cells
+     * Must be specified in points
+     */
+    public static final float CSS_LETTER_SPACING_IN_POINTS = 0.1f;
+    
+    /**
      * A common formula evaluator for this Spreadsheet
      */
     private FormulaEvaluator formulaEvaluator;
@@ -347,7 +353,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private boolean defaultColWidthSet, defaultRowHeightSet;
 
     private RowsAutofitUtil rowsAutofitUtil = new RowsAutofitUtil(
-        ROW_AUTOFIT_SECURITY_MARGIN, CSS_LINE_HEIGHT_PERCENTAGE);
+        ROW_AUTOFIT_SECURITY_MARGIN, CSS_LINE_HEIGHT_PERCENTAGE,
+        CSS_LETTER_SPACING_IN_POINTS);
 
     /**
      * Container for merged regions for the currently active sheet.

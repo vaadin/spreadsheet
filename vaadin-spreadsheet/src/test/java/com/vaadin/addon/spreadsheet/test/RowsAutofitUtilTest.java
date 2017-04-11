@@ -57,7 +57,8 @@ public class RowsAutofitUtilTest {
         sheet = new XSSFWorkbook(file).getSheetAt(0);
 
         sut = new RowsAutofitUtil(ROW_AUTOFIT_SECURITY_MARGIN,
-            Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE);
+            Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE, 
+            Spreadsheet.CSS_LETTER_SPACING_IN_POINTS);
     }
 
     @Test
