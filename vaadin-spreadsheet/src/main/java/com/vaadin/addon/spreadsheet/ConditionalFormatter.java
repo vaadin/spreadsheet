@@ -538,9 +538,11 @@ public class ConditionalFormatter implements Serializable {
                     Cell cell = spreadsheet.getCell(row, col);
                     Cell cellToLeft = getCellToLeft(row, col);
                     Cell cellOnTop = getCellOnTop(row, col);
-
-                    if (cell != null
-                            && matches(cell, rule, col - firstColumn, row
+                    
+                    if (cell == null) {
+                        cell = spreadsheet.createCell(row, col, "");
+                    }
+                    if (matches(cell, rule, col - firstColumn, row
                                     - firstRow)) {
                         Set<Integer> list = cellToIndex.get(SpreadsheetUtil
                                 .toKey(cell));
@@ -770,7 +772,7 @@ public class ConditionalFormatter implements Serializable {
         boolean isFormulaNumericType = isFormulaType
                 && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC;
 
-        String formula = rule.getFormula1();
+            String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
         ValueEval eval = getValueEvalFromFormula(formula, cell, deltaColumn, deltaRow);
         

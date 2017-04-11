@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
