@@ -35,6 +35,13 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 
 /**
  * RowsAutofitUtil is an utility of the Spreadsheet component used
+=======
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.w3c.dom.Element;
+
+/**
+ * RowsAutofitUtil is an utility class of the Spreadsheet component used
+>>>>>>> 6e1287744e7295402dedc4a2ad881facb82b3ed1
  * to calculate proper height for autofitting rows.
  *
  * @author Vaadin Ltd.
@@ -71,6 +78,12 @@ public class RowsAutofitUtil {
         this.cssLineHeightPercentage = cssLineHeightPercentage;
         this.letterSpacingInPoints = letterSpacingInPoints;
     }
+
+    // The <row> attribute to set custom Height
+    public static final String CUSTOM_HEIGHT = "customHeight";
+
+    // The value for customHeight attribute that Excel actually uses for "true"
+    public static final String EXCEL_TRUE = "1";
 
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
@@ -166,7 +179,6 @@ public class RowsAutofitUtil {
         // TODO Support Merged columns
         int columnWidth = AbstractExcelUtils.getColumnWidthInPx(
             cell.getSheet().getColumnWidth(cell.getColumnIndex()));
-        
         columnWidth -= columnWidth * securityMarginPercentage;
         
         while (measurer.getPosition() < cellValue.length()) {
@@ -200,7 +212,6 @@ public class RowsAutofitUtil {
         int startIdx, int endIdx) {
         str.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx,
             endIdx);
-        
         str.addAttribute(TextAttribute.TRACKING, letterSpacingInPoints);
         str.addAttribute(TextAttribute.SIZE,
             (float) font.getFontHeightInPoints());
@@ -214,7 +225,6 @@ public class RowsAutofitUtil {
             str.addAttribute(TextAttribute.UNDERLINE,
                 TextAttribute.UNDERLINE_ON, startIdx, endIdx);
     }
-    
 
     private static Font getCellFont(Cell cell) {
         CellStyle cellStyle = cell.getCellStyle();

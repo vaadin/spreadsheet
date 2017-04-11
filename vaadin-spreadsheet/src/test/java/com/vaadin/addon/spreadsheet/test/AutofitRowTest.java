@@ -1,9 +1,9 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static com.vaadin.addon.spreadsheet.test.testutil.CellHeightChecker.assertThatCellHeightIsAcceptable;
+import static com.vaadin.addon.spreadsheet.test.testutil.TextLineHeightChecker.assertThatCellHeightIsAcceptable;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -17,7 +17,6 @@ public class AutofitRowTest extends AbstractSpreadsheetTestCase {
     private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
 
     @Test
-    @Ignore
     public void autoFitRow_doubleClickOnRowBoundaryOfATooSmallRow_rowIsAutofitted()
         throws InterruptedException {
         final SpreadsheetElement spreadsheet = loadImageFile();
@@ -28,6 +27,7 @@ public class AutofitRowTest extends AbstractSpreadsheetTestCase {
         int height = cell.getSize().getHeight();
 
         assertThatCellHeightIsAcceptable(height, HUGE_FONT_SIZE, ROW_AUTOFIT_SECURITY_MARGIN, 1);
+        assertThatCellHeightIsAcceptable(height, HUGE_FONT_SIZE, 1);
     }
 
     private SpreadsheetElement loadImageFile() {
