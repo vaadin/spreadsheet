@@ -43,7 +43,7 @@ public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
     
-    private static final float SECURITY_MARGIN_PERCENTAGE = 0.10f;
+    public static final float SECURITY_MARGIN_PERCENTAGE = 0.15f;
     
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
@@ -174,6 +174,7 @@ public class RowsAutofitUtil {
         str.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx,
             endIdx);
         
+        str.addAttribute(TextAttribute.TRACKING, 0.1);
         str.addAttribute(TextAttribute.SIZE,
             (float) font.getFontHeightInPoints());
         if (font.getBold())
