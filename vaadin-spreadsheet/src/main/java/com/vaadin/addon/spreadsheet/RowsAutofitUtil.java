@@ -51,7 +51,7 @@ public class RowsAutofitUtil {
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
 
-    public static void autoSizeRow(Sheet sheet, int row, float cssLineHeightPercentage) {
+    public void autoSizeRow(Sheet sheet, int row, float cssLineHeightPercentage) {
         Row sheetRow = sheet.getRow(row);
         if (sheetRow == null) {
             return;

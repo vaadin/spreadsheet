@@ -339,6 +339,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private String srcUri;
 
     private boolean defaultColWidthSet, defaultRowHeightSet;
+    
+    private RowsAutofitUtil rowsAutofitUtil = new RowsAutofitUtil();
 
     /**
      * Container for merged regions for the currently active sheet.
@@ -1872,7 +1874,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void autofitRow(int rowIndex) {
         final Sheet activeSheet = getActiveSheet();
-        RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex, CSS_LINE_HEIGHT_PERCENTAGE);
+        rowsAutofitUtil.autoSizeRow(activeSheet, rowIndex, CSS_LINE_HEIGHT_PERCENTAGE);
 
         // Once the user autofit a row
         // the row becomes "autoresizable"
