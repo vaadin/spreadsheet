@@ -134,6 +134,10 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
             String formula = axisDataSource.getStrRef().getF();
             return Utils.getAllReferencedCells(formula, spreadsheet,
                     showDataInHiddenCells);
+        } else if (axisDataSource.isSetNumRef()) {
+            String formula = axisDataSource.getNumRef().getF();
+            return Utils.getAllReferencedCells(formula, spreadsheet,
+                    showDataInHiddenCells);
         } else if (axisDataSource.isSetMultiLvlStrRef()) {
             return tryHandleMultilevelCategories(axisDataSource);
         } else {
