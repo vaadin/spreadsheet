@@ -2,6 +2,8 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Locale;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -62,6 +64,17 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
 
         // Excel also adds space on both sides
         assertEquals("text", formatCell.getValue());
+    }
+
+    @Test
+    public void customFormatCell_enterNumberWithITlocale_getsFormatted()
+        throws Exception {
+
+        SheetCellElement formatCell = spreadSheet.getCellAt("B2");
+        formatCell.setValue("=5555555.5");
+        setLocale(Locale.ITALY);
+        //number formatted in European format
+        assertEquals("5.555.555,5", formatCell.getValue());
     }
 
 }

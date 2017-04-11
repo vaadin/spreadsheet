@@ -245,8 +245,9 @@ public class CellValueManager implements Serializable {
             if (cell.getCellStyle().getDataFormatString().contains("%")) {
                 cellData.isPercentage = true;
             }
-
-            String formattedCellValue = formatter.formatCellValue(cell,
+            //TODO: change the call to formatter.formatCellValue when
+            // the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+            String formattedCellValue = new CustomDataFormatter(formatter).formatCellValue(cell,
                     getFormulaEvaluator());
 
             if (!spreadsheet.isCellHidden(cell)) {
@@ -722,7 +723,8 @@ public class CellValueManager implements Serializable {
      */
     private String getFormattedCellValue(Cell cell) {
         try {
-            return formatter.formatCellValue(cell, getFormulaEvaluator());
+            //TODO: change the call to formatter.formatCellValue when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+            return new CustomDataFormatter(formatter).formatCellValue(cell, getFormulaEvaluator());
         } catch (RuntimeException rte) {
             return null;
         }
