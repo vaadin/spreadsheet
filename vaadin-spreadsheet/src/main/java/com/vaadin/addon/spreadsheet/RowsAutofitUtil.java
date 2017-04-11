@@ -29,8 +29,9 @@ import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.w3c.dom.Element;
 
 /**
  * RowsAutofitUtil is an utility class of the Spreadsheet component used
@@ -41,14 +42,16 @@ import org.w3c.dom.Element;
 public class RowsAutofitUtil {
     // Sample text reaching the maximum possible row height
     public static final String EXAMPLE_TEXT = "0g";
-
+    
+    private static final float SECURITY_MARGIN_PERCENTAGE = 0.10f;
+    
     // Since calculation of wrapped text is not so accurate
     // this amount of additional rows is taken into account to calculate
     // cell height
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
 
-    public static void autoSizeRow(Sheet sheet, int row) {
+    public static void autoSizeRow(Sheet sheet, int row, float cssLineHeightPercentage) {
         Row sheetRow = sheet.getRow(row);
         if (sheetRow == null) {
             return;
@@ -65,8 +68,16 @@ public class RowsAutofitUtil {
         for (Cell cell : sheetRow) {
             Font font = getCellFont(cell);
             if (font != null) {
-                height = Math.max(height,
-                    getRequiredHeight(font, EXAMPLE_TEXT) * getLineCount(cell));
+                float requiredLineHeight = getRequiredLineHeight(font, EXAMPLE_TEXT);
+                float lineSpaceHeight = requiredLineHeight * (cssLineHeightPercentage - 1);
+                int lineCount = getLineCount(cell);
+                
+                float requiredCellHeight = lineCount * requiredLineHeight
+                    + (lineCount - 1) * lineSpaceHeight;
+                
+                requiredCellHeight += requiredCellHeight * SECURITY_MARGIN_PERCENTAGE;
+                
+                height = Math.max(height, requiredCellHeight);
             }
         }
 
@@ -111,8 +122,14 @@ public class RowsAutofitUtil {
         } catch (Exception e) {
             return 1;
         }
+        
+        if (cellValue.isEmpty()) {
+            return 1;
+        }
 
         AttributedString str = new AttributedString(cellValue);
+        XSSFFont font = ((XSSFCellStyle) cell.getCellStyle()).getFont();
+        copyAttributes(font, str, 0, cellValue.length() - 1);
         LineBreakMeasurer measurer = new LineBreakMeasurer(str.getIterator(),
             fontRenderContext);
 
@@ -122,6 +139,9 @@ public class RowsAutofitUtil {
         // TODO Support Merged columns
         int columnWidth = AbstractExcelUtils.getColumnWidthInPx(
             cell.getSheet().getColumnWidth(cell.getColumnIndex()));
+        
+        columnWidth -= columnWidth * SECURITY_MARGIN_PERCENTAGE;
+        
         while (measurer.getPosition() < cellValue.length()) {
             nextPos = measurer.nextOffset(columnWidth);
             lineCnt++;
@@ -138,7 +158,7 @@ public class RowsAutofitUtil {
         return cellStyle.getWrapText();
     }
 
-    private static float getRequiredHeight(Font font, String text) {
+    private static float getRequiredLineHeight(Font font, String text) {
         AttributedString str = new AttributedString(text);
         copyAttributes(font, str, 0, 1);
         TextLayout layout = new TextLayout(str.getIterator(),
@@ -153,6 +173,7 @@ public class RowsAutofitUtil {
         int startIdx, int endIdx) {
         str.addAttribute(TextAttribute.FAMILY, font.getFontName(), startIdx,
             endIdx);
+        
         str.addAttribute(TextAttribute.SIZE,
             (float) font.getFontHeightInPoints());
         if (font.getBold())
@@ -165,6 +186,7 @@ public class RowsAutofitUtil {
             str.addAttribute(TextAttribute.UNDERLINE,
                 TextAttribute.UNDERLINE_ON, startIdx, endIdx);
     }
+    
 
     private static Font getCellFont(Cell cell) {
         CellStyle cellStyle = cell.getCellStyle();

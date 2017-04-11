@@ -122,6 +122,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             .getName());
 
     /**
+     * The value of CSS line-height attribute as set on Spreadsheet cells
+     * Must be specified as percentage (1.0f = 100%)
+     */
+    public static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
+
+    /**
      * A common formula evaluator for this Spreadsheet
      */
     private FormulaEvaluator formulaEvaluator;
@@ -1866,7 +1872,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void autofitRow(int rowIndex) {
         final Sheet activeSheet = getActiveSheet();
-        RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex);
+        RowsAutofitUtil.autoSizeRow(activeSheet, rowIndex, CSS_LINE_HEIGHT_PERCENTAGE);
 
         // Once the user autofit a row
         // the row becomes "autoresizable"
