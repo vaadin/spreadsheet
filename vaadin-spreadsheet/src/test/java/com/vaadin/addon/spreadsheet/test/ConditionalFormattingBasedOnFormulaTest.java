@@ -10,6 +10,7 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -47,6 +48,22 @@ public class ConditionalFormattingBasedOnFormulaTest
 
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed()
+        throws IOException {
+
+        final SheetCellElement a1 = spreadSheet.getCellAt("A1");
+        final SheetCellElement a2 = spreadSheet.getCellAt("A2");
+
+        a1.setValue(VALUE);
+        a2.setValue(VALUE);
+
+        String cellColor = spreadSheet.getCellAt("A2")
+            .getCssValue("background-color");
+
+        assertEquals(TRUE_CONDITION_COLOR, cellColor);
+    }
+
+    @Test
+    public void loadSpreadsheetWithTwoSheetWithANdWithoutGrid_CheckBorderOfCells()
         throws IOException {
 
         final SheetCellElement a1 = spreadSheet.getCellAt("A1");
