@@ -44,6 +44,8 @@ public class RowsAutofitUtil {
     public static final String EXAMPLE_TEXT = "0g";
     
     private final float securityMarginPercentage;
+    
+    private final float cssLineHeightPercentage;
 
     /**
      * Creates a new instance
@@ -57,9 +59,14 @@ public class RowsAutofitUtil {
      *     <li>is applied on an effective width which is 15% less than the real cell width,</li>
      *     <li>add a 15% extra to the autofitted height.</li>
      *     </ul>
+     * @param cssLineHeightPercentage
+     *     the value of css line-height property
+     *     for cells expressed in percentage (e.g. 1.1f means 110%)
      */
-    public RowsAutofitUtil(float securityMarginPercentage) {
+    public RowsAutofitUtil(float securityMarginPercentage,
+        float cssLineHeightPercentage) {
         this.securityMarginPercentage = securityMarginPercentage;
+        this.cssLineHeightPercentage = cssLineHeightPercentage;
     }
 
     // Since calculation of wrapped text is not so accurate
@@ -68,7 +75,7 @@ public class RowsAutofitUtil {
     private static final FontRenderContext fontRenderContext = new FontRenderContext(
         null, true, true);
 
-    public void autoSizeRow(Sheet sheet, int row, float cssLineHeightPercentage) {
+    public void autoSizeRow(Sheet sheet, int row) {
         Row sheetRow = sheet.getRow(row);
         if (sheetRow == null) {
             return;

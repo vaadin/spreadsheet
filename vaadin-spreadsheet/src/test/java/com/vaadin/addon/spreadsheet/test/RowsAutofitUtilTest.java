@@ -16,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.RowsAutofitUtil;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetDemoUI;
 
 public class RowsAutofitUtilTest {
@@ -36,15 +37,13 @@ public class RowsAutofitUtilTest {
     private static final float HUGE_FONT_SIZE = 48;
     private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f; // 15%
     private static Sheet sheet;
-
-    private static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
     
     private RowsAutofitUtil sut;
 
     private void checkRowHeightNotChangedAfterAutofit(int row) {
         float initialHeight = (short) (sheet.getRow(row).getHeightInPoints());
 
-        sut.autoSizeRow(sheet, row, CSS_LINE_HEIGHT_PERCENTAGE);
+        sut.autoSizeRow(sheet, row);
 
         assertThat(sheet.getRow(row).getHeightInPoints(), is(initialHeight));
     }
@@ -57,12 +56,13 @@ public class RowsAutofitUtilTest {
                 .getFile());
         sheet = new XSSFWorkbook(file).getSheetAt(0);
 
-        sut = new RowsAutofitUtil(ROW_AUTOFIT_SECURITY_MARGIN);
+        sut = new RowsAutofitUtil(ROW_AUTOFIT_SECURITY_MARGIN,
+            Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE);
     }
 
     @Test
     public void rowsAutofit_emptyRowNotPresentOnSpreadhseet_autoFitDoesntCrashes() {
-        sut.autoSizeRow(sheet, EMPTY_ROW, CSS_LINE_HEIGHT_PERCENTAGE);
+        sut.autoSizeRow(sheet, EMPTY_ROW);
     }
 
     @Test
@@ -83,7 +83,7 @@ public class RowsAutofitUtilTest {
 
     @Test
     public void rowsAutofit_rowWithHugeFontAndSmallHeight_heightSetIntoAcceptableRange() {
-        sut.autoSizeRow(sheet, ROW_WITH_HUGE_FONT, CSS_LINE_HEIGHT_PERCENTAGE);
+        sut.autoSizeRow(sheet, ROW_WITH_HUGE_FONT);
         float heightInPoints = sheet.getRow(ROW_WITH_HUGE_FONT)
             .getHeightInPoints();
 
@@ -93,7 +93,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_rowWithWrapTextAndNumericValues_heightSetIntoAcceptableRangeForSingleRowOfText() {
         sut
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE, CSS_LINE_HEIGHT_PERCENTAGE);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE);
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_NUMERIC_VALUE).getHeightInPoints();
 
@@ -105,7 +105,7 @@ public class RowsAutofitUtilTest {
         float initialHeight = sheet.getRow(ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT)
             .getHeightInPoints();
         sut
-            .autoSizeRow(sheet, ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT, CSS_LINE_HEIGHT_PERCENTAGE);
+            .autoSizeRow(sheet, ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT);
 
         assertThat(sheet.getRow(ROW_WITH_SMALL_FONT_AND_SMALL_HEIGHT)
             .getHeightInPoints(), greaterThan(initialHeight));
@@ -149,7 +149,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToTwoLines() {
         sut
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_2_LINES_OF_TEXT).getHeightInPoints();
@@ -160,7 +160,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_smallHeightAndTextOverflowing_autofitExpandRowToThreeLines() {
         sut
-            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
+            .autoSizeRow(sheet, ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_AND_3_LINES_OF_TEXT).getHeightInPoints();
@@ -171,7 +171,7 @@ public class RowsAutofitUtilTest {
     @Test
     public void rowsAutofit_severalCellsWithDifferentContentLenghtAndType_autofitExpandRowToThreeLines() {
         sut.autoSizeRow(sheet,
-            ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT, CSS_LINE_HEIGHT_PERCENTAGE);
+            ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT);
 
         float heightInPoints = sheet
             .getRow(ROW_WITH_WRAP_TEXT_MULTIPLE_CELLS_AND_3_LINES_OF_TEXT)
