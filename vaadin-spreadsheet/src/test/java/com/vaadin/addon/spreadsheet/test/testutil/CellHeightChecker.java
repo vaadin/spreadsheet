@@ -5,8 +5,6 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertThat;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
-
 /**
  * Utility class to check the proper height for a single cell of text.
  */
@@ -16,6 +14,24 @@ public class CellHeightChecker {
     // percentage of font size
     private static final float MINIMUM_PERCENTAGE_OF_FONT_SIZE = 1.1f;
     private static final float MAXIMUM_PERCENTAGE_OF_FONT_SIZE = 1.2f;
+
+    /**
+     * The value of CSS line-height attribute as set on Spreadsheet cells
+     * Must be specified as percentage (1.0f = 100%)
+     */
+    public static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
+
+    /**
+     * The margin in terms of percentage of the full cell width/height 
+     * that must be taken into account when autofitting.
+     */
+    public static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
+
+    /**
+     * The value of CSS letter-spacing attribute as set on Spreadsheet cells
+     * Must be specified in points
+     */
+    public static final float CSS_LETTER_SPACING_IN_POINTS = 0.1f;    
 
     /**
      * Asserts that the {@code cellHeightInPoints} is acceptable for the given
@@ -43,13 +59,13 @@ public class CellHeightChecker {
         float maximumLineHeight = fontSize * MAXIMUM_PERCENTAGE_OF_FONT_SIZE;
 
         float minimumRowHeight = minimumLineHeight
-            + minimumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (
-            expectedLines - 1);
+            + minimumLineHeight * CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines
+            - 1);
         minimumRowHeight += minimumRowHeight * securityMarginPercentage;
 
         float maximumRowHeight = maximumLineHeight
-            + maximumLineHeight * Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE * (
-            expectedLines - 1);
+            + maximumLineHeight * CSS_LINE_HEIGHT_PERCENTAGE * (expectedLines
+            - 1);
         maximumRowHeight += maximumRowHeight * securityMarginPercentage;
 
         // Row height must properly fit the font size with a "security" margin

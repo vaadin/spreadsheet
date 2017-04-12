@@ -1,6 +1,6 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import static com.vaadin.addon.spreadsheet.test.testutil.CellHeightChecker.assertThatCellHeightIsAcceptable;
+import static com.vaadin.addon.spreadsheet.test.testutil.CellHeightChecker.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertFalse;
@@ -35,7 +35,7 @@ public class RowsAutofitUtilTest {
     private static final float DEFAULT_FONT_SIZE = 11;
     private static final float MEDIUM_FONT_SIZE = DEFAULT_FONT_SIZE;
     private static final float HUGE_FONT_SIZE = 48;
-    private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f; // 15%
+    
     private static Sheet sheet;
 
     private RowsAutofitUtil sut;
@@ -57,8 +57,8 @@ public class RowsAutofitUtilTest {
         sheet = new XSSFWorkbook(file).getSheetAt(0);
 
         sut = new RowsAutofitUtil(ROW_AUTOFIT_SECURITY_MARGIN,
-            Spreadsheet.CSS_LINE_HEIGHT_PERCENTAGE,
-            Spreadsheet.CSS_LETTER_SPACING_IN_POINTS);
+            CSS_LINE_HEIGHT_PERCENTAGE,
+            CSS_LETTER_SPACING_IN_POINTS);
     }
 
     @Test
