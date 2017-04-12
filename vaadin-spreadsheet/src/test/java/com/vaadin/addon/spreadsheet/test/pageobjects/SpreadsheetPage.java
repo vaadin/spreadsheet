@@ -14,6 +14,8 @@ import com.vaadin.testbench.By;
 public class SpreadsheetPage extends Page {
 
     public static final String BACKGROUND_COLOR = "background-color";
+    public static final String BORDER_RIGHT = "border-right";
+    public static final String BORDER_BOTTOM = "border-bottom";
     private final SheetSelection selection;
 
     public SpreadsheetPage(WebDriver driver) {
@@ -130,6 +132,16 @@ public class SpreadsheetPage extends Page {
     public String getCellColor(String cellAddress) {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return cellAt.getCssValue(BACKGROUND_COLOR);
+    }
+    
+    public boolean hasBorderRight(String cellAddress) {
+        SheetCellElement cellAt = getCellAt(cellAddress);
+        return !cellAt.getCssValue(BORDER_RIGHT).contains("0px");
+    }
+
+    public boolean hasBorderBottom(String cellAddress) {
+        SheetCellElement cellAt = getCellAt(cellAddress);
+        return !cellAt.getCssValue(BORDER_BOTTOM).contains("0px");
     }
 
     public boolean isCellActiveWithinSelection(String address) {

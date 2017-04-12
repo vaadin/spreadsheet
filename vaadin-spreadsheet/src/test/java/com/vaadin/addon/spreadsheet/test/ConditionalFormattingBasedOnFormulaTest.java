@@ -1,6 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
@@ -50,5 +52,19 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(FALSE_CONDITION_COLOR, b10WithConditionEqualsToZero);
         assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, c10WithConditionGreaterOfZero);
         assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, d10WithConditionLowerOfZero);
+    }
+
+    @Test
+    public void loadSpreadsheetWithConditionalFormattingCellBorderRulesInD15_EvaluateFormatting_CheckColorOfCells(){
+        // D15
+        assertFalse(spreadsheetPage.hasBorderBottom("C14")); // up
+        assertTrue(spreadsheetPage.hasBorderBottom("D15"));  // bottom (up for D16)
+        assertFalse(spreadsheetPage.hasBorderRight("D15"));  // right
+        assertFalse(spreadsheetPage.hasBorderRight("C15"));  // left
+
+        // D16
+        assertTrue(spreadsheetPage.hasBorderBottom("D16"));  // bottom
+        assertTrue(spreadsheetPage.hasBorderRight("D16"));  // right
+        assertTrue(spreadsheetPage.hasBorderRight("C16"));  // left
     }
 }
