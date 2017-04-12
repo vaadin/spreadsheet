@@ -125,7 +125,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * The value of CSS line-height attribute as set on Spreadsheet cells
      * Must be specified as percentage (1.0f = 100%)
      */
-    public static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
+    private static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
 
     /**
      * The margin in terms of percentage of the full cell width/height 
@@ -137,7 +137,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * The value of CSS letter-spacing attribute as set on Spreadsheet cells
      * Must be specified in points
      */
-    public static final float CSS_LETTER_SPACING_IN_POINTS = 0.1f;
+    private static final float CSS_LETTER_SPACING_IN_POINTS = 0.1f;
     
     /**
      * A common formula evaluator for this Spreadsheet
