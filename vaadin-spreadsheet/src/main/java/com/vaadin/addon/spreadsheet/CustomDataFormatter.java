@@ -1,5 +1,7 @@
 package com.vaadin.addon.spreadsheet;
 
+import java.util.regex.Pattern;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -15,6 +17,7 @@ public class CustomDataFormatter {
     private final int NEGATIVE_FORMAT_INDEX = 1;
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
 
     private final DataFormatter formatter;
 
@@ -25,26 +28,25 @@ public class CustomDataFormatter {
     /*
      * returns true if the formatting contains 3 or more parts
      */
-    public static boolean hasThreeParts(String dataFormatString) {
+    private boolean hasThreeParts(String dataFormatString) {
         return dataFormatString.contains(";")
             && dataFormatString.indexOf(';') != dataFormatString
             .lastIndexOf(';');
     }
 
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
-        String result = null;
 
         String dataFormatString = cell.getCellStyle().getDataFormatString();
-        if (hasThreeParts(dataFormatString)) {
-            String oldFormat = changeFormat(cell, evaluator);
-            result = formatter.formatCellValue(cell, evaluator);
-            setCellFormat(cell, oldFormat);
-            //remove - sign from negetive numbers unless it is specified in the format
-            if (result.startsWith("-") && !dataFormatString.startsWith("-")) {
-                result = result.substring(1);
-            }
-
-            return result;
+        CellType cellType = getCellType(cell, evaluator);
+        if (hasThreeParts(dataFormatString) && cellType == CellType.NUMERIC) {
+            String newFormatString = changeFormat(cell, evaluator);
+                double numericCellValue = cell.getNumericCellValue();
+                //if it is negative remove the - sign
+                numericCellValue = numericCellValue < 0 ?
+                    numericCellValue * -1 :
+                    numericCellValue;
+                return formatter.formatRawCellContents(numericCellValue, -1,
+                    newFormatString);
         }
 
         return formatter.formatCellValue(cell, evaluator);
@@ -52,30 +54,24 @@ public class CustomDataFormatter {
 
     /*
      *Given a Cell with a custom format having 3 (or in some cases 4) parts,
-     * This method chooses only one part (according to the value of the cell)
+     *  returns only one part (according to the value of the cell)
      */
     private String changeFormat(Cell cell, FormulaEvaluator evalueator) {
         int index = getFormatIndex(cell, evalueator);
         String oldFormatString = cell.getCellStyle().getDataFormatString();
         String newFormatString = getFormatPart(oldFormatString, index);
-        setCellFormat(cell, newFormatString);
-        return oldFormatString;
+
+        //POI doesn't format string literals having 1 part, repeat it three times
+        if(!NUMBER_PATTERN.matcher(newFormatString).find()){
+            newFormatString +=  ";" +newFormatString + ";" + newFormatString;
+        }
+        return newFormatString;
     }
 
-    private void setCellFormat(Cell cell, String dataFormatString) {
-        DataFormat dataFormat = cell.getSheet().getWorkbook()
-            .createDataFormat();
-        CellStyle cellStyle = cell.getCellStyle();
-
-        cellStyle.setDataFormat(dataFormat.getFormat(dataFormatString));
-    }
 
     private int getFormatIndex(Cell cell, FormulaEvaluator evalueator) {
 
-        CellType cellType = cell.getCellTypeEnum();
-        if (cellType == CellType.FORMULA) {
-            cellType = evalueator.evaluateFormulaCellEnum(cell);
-        }
+        CellType cellType = getCellType(cell, evalueator);
 
         if (cellType != CellType.NUMERIC)
             return TEXT_FORMAT_INDEX;
@@ -83,6 +79,14 @@ public class CustomDataFormatter {
         if (numericCellValue > 0)
             return POSITIVE_FORMAT_INDEX;
         return numericCellValue < 0 ? NEGATIVE_FORMAT_INDEX : ZERO_FORMAT_INDEX;
+    }
+
+    private CellType getCellType(Cell cell, FormulaEvaluator evalueator) {
+        CellType cellType = cell.getCellTypeEnum();
+        if (cellType == CellType.FORMULA) {
+            cellType = evalueator.evaluateFormulaCellEnum(cell);
+        }
+        return cellType;
     }
 
     private String getFormatPart(String threePartFormat, int i) {
