@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Locale;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -47,7 +46,6 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    @Ignore("not supported")
     public void customFormatCell_enterZero_getsFormatted() throws Exception {
         SheetCellElement formatCell = spreadSheet.getCellAt("A1");
         formatCell.setValue("0");
