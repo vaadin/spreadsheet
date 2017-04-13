@@ -659,6 +659,9 @@ public class CellValueManager implements Serializable {
                     } else if (oldCellType == Cell.CELL_TYPE_BOOLEAN) {
                         cell.setCellValue(Boolean.parseBoolean(value));
                     } else {
+                        if (value.startsWith("'")) {
+                            value = value.substring(1, value.length());
+                        }
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         cell.setCellValue(value);
                     }
