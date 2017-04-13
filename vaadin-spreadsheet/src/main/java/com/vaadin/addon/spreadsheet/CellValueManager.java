@@ -343,6 +343,12 @@ public class CellValueManager implements Serializable {
         return cellData;
     }
 
+    private boolean isNumericString(Cell cell, String value,
+        Locale spreadsheetLocale) {
+        return SpreadsheetUtil.parseNumber(cell, value, spreadsheetLocale)
+            != null;
+    }
+
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
         boolean isCellNumeric = cell.getCellType() == Cell.CELL_TYPE_NUMERIC;
         boolean isCellFormula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
@@ -387,7 +393,13 @@ public class CellValueManager implements Serializable {
             return originalValueDecimalFormat
                     .format(cell.getNumericCellValue());
         case Cell.CELL_TYPE_STRING:
-            return cell.getStringCellValue();
+            String value = cell.getStringCellValue();    
+            // Apex escaping
+            if (value.startsWith("'") || isNumericString(
+                cell, value, spreadsheet.getLocale())) {
+                value = "'" + value;
+            }
+            return value;         
         case Cell.CELL_TYPE_BOOLEAN:
             return String.valueOf(cell.getBooleanCellValue());
         case Cell.CELL_TYPE_BLANK:
