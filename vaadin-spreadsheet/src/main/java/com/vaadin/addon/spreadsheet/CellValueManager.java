@@ -343,11 +343,24 @@ public class CellValueManager implements Serializable {
         return cellData;
     }
 
-    private boolean isNumericString(Cell cell, String value,
-        Locale spreadsheetLocale) {
-        return SpreadsheetUtil.parseNumber(cell, value, spreadsheetLocale)
+    private boolean needsLeadingQuote(Cell cell, Locale spreadsheetLocale) {
+        if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
+            return false;
+        }
+        String value = cell.getStringCellValue();
+        if (value == null) {
+            return false;
+        }
+
+        // Additional quote has to be added  
+        // if the value is a string that can be confused with a number
+        // or if the value already starts with a trailing quote (since the first
+        // one will be removed when rendered)
+        return value.startsWith("'")
+            || SpreadsheetUtil.parseNumber(cell, value, spreadsheetLocale)
             != null;
     }
+
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
         boolean isCellNumeric = cell.getCellType() == Cell.CELL_TYPE_NUMERIC;
@@ -393,13 +406,11 @@ public class CellValueManager implements Serializable {
             return originalValueDecimalFormat
                     .format(cell.getNumericCellValue());
         case Cell.CELL_TYPE_STRING:
-            String value = cell.getStringCellValue();    
-            // Apex escaping
-            if (value.startsWith("'") || isNumericString(
-                cell, value, spreadsheet.getLocale())) {
-                value = "'" + value;
+            String stringCellValue = cell.getStringCellValue();
+            if (needsLeadingQuote(cell, spreadsheet.getLocale())) {
+                return "'" + stringCellValue;
             }
-            return value;         
+            return stringCellValue;
         case Cell.CELL_TYPE_BOOLEAN:
             return String.valueOf(cell.getBooleanCellValue());
         case Cell.CELL_TYPE_BLANK:
