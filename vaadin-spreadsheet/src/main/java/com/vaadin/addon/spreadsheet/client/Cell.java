@@ -171,6 +171,7 @@ public class Cell {
         if (overflowing) {
             updateInnerText();
         }
+        appendOverlayElements();
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
             scrollW = element.getScrollWidth();
@@ -218,6 +219,12 @@ public class Cell {
         this.value = value;
         updateInnerText();
 
+        appendOverlayElements();
+
+        markAsOverflowDirty();
+    }
+
+    private void appendOverlayElements() {
         if (cellCommentTriangle != null) {
             element.appendChild(cellCommentTriangle);
         }
@@ -227,8 +234,6 @@ public class Cell {
         if (popupButtonElement != null) {
             element.appendChild(popupButtonElement);
         }
-
-        markAsOverflowDirty();
     }
 
     public void showPopupButton(Element popupButtonElement) {

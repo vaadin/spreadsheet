@@ -1,16 +1,19 @@
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import com.vaadin.testbench.TestBenchElement;
 
 public class PopupButtonTest extends AbstractSpreadsheetTestCase {
 
@@ -126,6 +129,54 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         });
 
         headerPage.addFreezePane();
+
+        assertTrue(spreadsheetElement.getCellAt("D1").hasPopupButton());
+    }
+
+    @Test
+    public void popupButton_HideUnhideColumn_cellContainsPopupButton() {
+        headerPage.loadTestFixture(TestFixtures.PopupButton);
+        final SpreadsheetElement spreadsheetElement = $(
+            SpreadsheetElement.class).first();
+        final SheetCellElement cell = spreadsheetElement.getCellAt("D1");
+
+//        spreadsheetElement.getColumnHeader(4).contextClick();
+//        spreadsheetElement.getContextMenu().getItem("Hide column D").click();
+//
+//        spreadsheetElement.getColumnHeader(3).contextClick();
+//        spreadsheetElement.getContextMenu().getItem("Unhide column D").click();
+//
+//
+//        waitUntil(new ExpectedCondition<Boolean>() {
+//            @Override
+//            public Boolean apply(WebDriver webDriver) {
+//                return cell.hasPopupButton();
+//            }
+//        });
+//
+//        assertTrue(spreadsheetElement.getCellAt("D1").hasPopupButton());
+
+        TestBenchElement resizeHandle = spreadsheetElement.getColumnHeader(4)
+            .getResizeHandle();
+
+        int width = Integer
+            .valueOf(cell.getCssValue("width").replaceAll("px", ""));
+
+        Actions actions = new Actions(driver);
+        actions.dragAndDropBy(resizeHandle, -1 * width, 0).perform();
+
+        assertEquals("0px", cell.getCssValue("width"));
+
+        actions.dragAndDropBy(resizeHandle, width, 0);
+
+        assertEquals(width, cell.getCssValue("width"));
+
+        waitUntil(new ExpectedCondition<Boolean>() {
+            @Override
+            public Boolean apply(WebDriver webDriver) {
+                return cell.hasPopupButton();
+            }
+        });
 
         assertTrue(spreadsheetElement.getCellAt("D1").hasPopupButton());
     }
