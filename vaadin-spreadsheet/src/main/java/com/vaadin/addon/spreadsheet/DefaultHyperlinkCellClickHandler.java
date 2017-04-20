@@ -114,29 +114,28 @@ public class DefaultHyperlinkCellClickHandler implements
      * returns true.
      * <p>
      * The address is inside the first argument:
-     * <code>HYPERLINK("address","friendly name")</code> or
+     * <code>HYPERLINK("address","friendly name")</code>
+     * or
      * <code>HYPERLINK(D5,"friendly name")</code>
      *
      * @param cell
      *            Target cell containing a hyperlink function
      * @param spreadsheet
-     *            Spreadsheet for evaluating the first argument (formula case)
-     * @return The address that the hyperlink function points to
+     *            spreadsheet for evaluating the first argument (formula case) 
+     * @return the address that the hyperlink function points to
      */
-    public final static String getHyperlinkFunctionCellAddress(Cell cell,
-            Spreadsheet spreadsheet) {
+    public final static String getHyperlinkFunctionCellAddress(Cell cell, Spreadsheet spreadsheet) {
         String address;
         String cellFormula = cell.getCellFormula();
-        int startIndex = cellFormula.indexOf("(") + 1;
+        int startIndex = cellFormula.indexOf("(")+1;
         char nextBracketChart = cellFormula.charAt(startIndex);
         if (nextBracketChart != '"') {
             int endIndex = cellFormula.indexOf(",");
             address = cellFormula.substring(startIndex, endIndex);
-            ValueEval evaluate = WorkbookEvaluatorUtil.evaluate(spreadsheet,
-                    cell, address, 0, 0);
-            return (evaluate instanceof StringEval)
-                    ? ((StringEval) evaluate).getStringValue() : "";
-        } else {
+            ValueEval evaluate = WorkbookEvaluatorUtil
+                .evaluate(spreadsheet, cell, address, 0, 0);
+            return (evaluate instanceof StringEval) ? ((StringEval) evaluate).getStringValue() : "";
+        }else {
             int endIndex = cellFormula.indexOf('"', startIndex + 1);
             address = cellFormula.substring(startIndex + 1, endIndex);
         }

@@ -3163,9 +3163,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                                             .put(SpreadsheetUtil.toKey(c + 1,
                                                     r + 1),
                                                     DefaultHyperlinkCellClickHandler
-                                                            .getHyperlinkFunctionCellAddress(
-                                                                    cell,
-                                                                    this));
+                                                            .getHyperlinkFunctionCellAddress(cell, this));
                                 }
                             }
                         } catch (XmlValueDisconnectedException exc) {
