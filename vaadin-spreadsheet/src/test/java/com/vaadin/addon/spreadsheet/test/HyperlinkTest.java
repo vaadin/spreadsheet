@@ -16,11 +16,14 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.PopupHelper;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
 /**
  * Tests for hyperlinks.
  *
  */
+@RunLocally(Browser.PHANTOMJS)
 public class HyperlinkTest extends AbstractSpreadsheetTestCase {
 
     private PopupHelper popup;
@@ -63,6 +66,21 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("A2", "google");
+    }
+
+    @Test
+    public void hyperlinkWithSpace_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
+        testExternal("A7", "google");
+    }
+
+    @Test
+    public void hyperlinkWithBracketAndSpace1_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
+        testExternal("A8", "google");
+    }
+
+    @Test
+    public void hyperlinkWithBracketAndSpace2_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
+        testExternal("A10", "google");
     }
 
     @Test

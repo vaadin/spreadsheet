@@ -19,6 +19,10 @@ package com.vaadin.addon.spreadsheet;
 
 import static org.apache.poi.common.usermodel.Hyperlink.LINK_DOCUMENT;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.formula.WorkbookEvaluatorUtil;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
@@ -124,22 +128,46 @@ public class DefaultHyperlinkCellClickHandler implements
      *            spreadsheet for evaluating the first argument (formula case) 
      * @return the address that the hyperlink function points to
      */
-    public final static String getHyperlinkFunctionCellAddress(Cell cell, Spreadsheet spreadsheet) {
-        String address;
+    public final static String getHyperlinkFunctionCellAddress(Cell cell,
+        Spreadsheet spreadsheet) {
+        String url = "";
         String cellFormula = cell.getCellFormula();
-        int startIndex = cellFormula.indexOf("(")+1;
-        char nextBracketChart = cellFormula.charAt(startIndex);
-        if (nextBracketChart != '"') {
-            int endIndex = cellFormula.indexOf(",");
-            address = cellFormula.substring(startIndex, endIndex);
-            ValueEval evaluate = WorkbookEvaluatorUtil
-                .evaluate(spreadsheet, cell, address, 0, 0);
-            return (evaluate instanceof StringEval) ? ((StringEval) evaluate).getStringValue() : "";
-        }else {
-            int endIndex = cellFormula.indexOf('"', startIndex + 1);
-            address = cellFormula.substring(startIndex + 1, endIndex);
+        Pattern pattern = Pattern.compile("\\(\\p{Blank}*");
+        Matcher matcher = pattern.matcher(cellFormula);
+        try {
+            if (matcher.find() && matcher.end() < cellFormula.length()) {
+                int startIndex = matcher.end();
+                char nextToBracketChar = cellFormula.charAt(startIndex);
+                if (nextToBracketChar != '"') {
+                    int endIndex = getEndIndex(cellFormula);
+                    if (endIndex != -1) {
+                        url = cellFormula.substring(startIndex, endIndex);
+                        ValueEval evaluate = WorkbookEvaluatorUtil
+                            .evaluate(spreadsheet, cell, url, 0, 0);
+                        return (evaluate instanceof StringEval) ?
+                            ((StringEval) evaluate).getStringValue() :
+                            "";
+                    }
+                } else {
+                    int endIndex = cellFormula.indexOf('"', startIndex + 1);
+                    if (endIndex != -1) {
+                        url = cellFormula
+                            .substring(startIndex + 1, endIndex);
+                    }
+                }
+            }
+        } catch (FormulaParseException e) {
+            //do nothing
         }
-        return address;
+        return url;
+    }
+
+    private static int getEndIndex(String cellFormula) {
+        int endIndex = cellFormula.indexOf(",");
+        if (endIndex==-1) {
+            endIndex = cellFormula.lastIndexOf(")");
+        }
+        return endIndex;
     }
 
     /**

@@ -699,25 +699,7 @@ public class ConditionalFormatter implements Serializable {
     }
 
     private ValueEval getValueEvalFromFormula(String formula, Cell cell, int deltaColumn, int deltaRow) {
-        // Parse formula and use deltas to get relative cell references to work
-        // (#18702)
-        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
-                FormulaType.CELL, spreadsheet.getActiveSheetIndex());
-
-        for (Ptg ptg : ptgs) {
-            // base class for cell reference "things"
-            if (ptg instanceof RefPtgBase) {
-                RefPtgBase ref = (RefPtgBase) ptg;
-                // re-calculate cell references
-                if (ref.isColRelative()) {
-                    ref.setColumn(ref.getColumn() + deltaColumn);
-                }
-                if (ref.isRowRelative()) {
-                    ref.setRow(ref.getRow() + deltaRow);
-                }
-            }
-        }
-        return WorkbookEvaluatorUtil.evaluate(spreadsheet, ptgs, cell);
+        return WorkbookEvaluatorUtil.evaluate(spreadsheet, cell, formula, deltaRow, deltaColumn);
     }
 
     /**
