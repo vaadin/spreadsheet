@@ -210,18 +210,18 @@ class ChartStylesReader {
         AxisProperties axisProperties = new AxisProperties();
 
         readAxisTitle(yAx.getTitle(), axisProperties);
-    	
-		CTScaling scaling = yAx.getScaling();
-		if (scaling != null && scaling.isSetMin()) {
-			axisProperties.minVal = Double.valueOf(scaling.getMin().getVal());
-		}
-		if (scaling != null && scaling.isSetMax()) {
-			axisProperties.maxVal = Double.valueOf(scaling.getMax().getVal());
-		}
+
+        CTScaling scaling = yAx.getScaling();
+        if (scaling != null && scaling.isSetMin()) {
+            axisProperties.minVal = Double.valueOf(scaling.getMin().getVal());
+        }
+        if (scaling != null && scaling.isSetMax()) {
+            axisProperties.maxVal = Double.valueOf(scaling.getMax().getVal());
+        }
 
         return axisProperties;
     }
-    
+
     /**
      * Allows for overriding to wrap in additional property detection/conversion
      * NOTE: POI needs a meta-API for the generated OOXML CT* classes,
@@ -230,21 +230,21 @@ class ChartStylesReader {
      * @return axis properties
      */
     protected AxisProperties getAxisProperties(CTCatAx xAx) {
-    	AxisProperties axisProperties = new AxisProperties();
-    	
-    	readAxisTitle(xAx.getTitle(), axisProperties);
-    	
-    	CTScaling scaling = xAx.getScaling();
-    	if (scaling != null && scaling.isSetMin()) {
-    		axisProperties.minVal = Double.valueOf(scaling.getMin().getVal());
+        AxisProperties axisProperties = new AxisProperties();
+
+        readAxisTitle(xAx.getTitle(), axisProperties);
+
+        CTScaling scaling = xAx.getScaling();
+        if (scaling != null && scaling.isSetMin()) {
+            axisProperties.minVal = Double.valueOf(scaling.getMin().getVal());
     	}
-    	if (scaling != null && scaling.isSetMax()) {
-    		axisProperties.maxVal = Double.valueOf(scaling.getMax().getVal());
-    	}
-    	
-    	return axisProperties;
+        if (scaling != null && scaling.isSetMax()) {
+            axisProperties.maxVal = Double.valueOf(scaling.getMax().getVal());
+        }
+
+        return axisProperties;
     }
-    
+
     private void readAxisTitle(CTTitle title, AxisProperties axisProperties) {
         try {
             CTTextParagraph p = title.getTx().getRich().getPArray(0);
