@@ -243,7 +243,7 @@ public class ChartFeatureTest extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile("numeric-categories-Explicit-Y-Axis-Bounds.xlsx",
                 "E1").getConfiguration();
-    	
+
         // min still set to auto scaling
         Assert.assertNull(conf.getyAxis().getMin());
         // max set to an explicit value
