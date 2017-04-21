@@ -237,7 +237,7 @@ class ChartStylesReader {
         CTScaling scaling = xAx.getScaling();
         if (scaling != null && scaling.isSetMin()) {
             axisProperties.minVal = Double.valueOf(scaling.getMin().getVal());
-    	}
+        }
         if (scaling != null && scaling.isSetMax()) {
             axisProperties.maxVal = Double.valueOf(scaling.getMax().getVal());
         }
