@@ -179,11 +179,11 @@ public class ChartDataToVaadinConfigWriter {
 
         YAxis defaultyAxis = conf.getyAxis();
         AxisProperties firstYAxisProps = yAxisProperties.get(0);
-		updateYAxisTitle(defaultyAxis, firstYAxisProps);
-		// todo: how to tell if the stored double is really a date?
-		defaultyAxis.setMin(firstYAxisProps.minVal);
-		defaultyAxis.setMax(firstYAxisProps.maxVal);
-		
+        updateYAxisTitle(defaultyAxis, firstYAxisProps);
+        // todo: how to tell if the stored double is really a date?
+        defaultyAxis.setMin(firstYAxisProps.minVal);
+        defaultyAxis.setMax(firstYAxisProps.maxVal);
+
         for (AxisProperties axProp : yAxisProperties.subList(1,
                 yAxisProperties.size())) {
             YAxis axis = new YAxis();
@@ -265,7 +265,7 @@ public class ChartDataToVaadinConfigWriter {
 
         axis.getTitle().setStyle(
                 createStyleFromTextFroperties(axisProperties.textProperties));
-        
+
         axis.setMin(axisProperties.minVal);
         axis.setMax(axisProperties.maxVal);
     }
