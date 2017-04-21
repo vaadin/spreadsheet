@@ -95,7 +95,7 @@ public class CellValueManager implements Serializable {
 
     private CellValueHandler customCellValueHandler;
     private CellDeletionHandler customCellDeletionHandler;
-
+ 
     private DataFormatter formatter;
 
     /** Cell keys that have values sent to client side and are cached there. */
@@ -662,7 +662,6 @@ public class CellValueManager implements Serializable {
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         cell.setCellValue(value);
                     }
-                    getFormulaEvaluator().notifyUpdateCell(cell);
                 }
 
             } catch (FormulaParseException fpe) {
@@ -688,6 +687,8 @@ public class CellValueManager implements Serializable {
             } catch (Exception e) {
                 exception = e;
                 cell.setCellValue(value);
+            } finally {
+                getFormulaEvaluator().notifyUpdateCell(cell);
             }
             if (cell != null) {
                 markCellForUpdate(cell);
@@ -836,9 +837,9 @@ public class CellValueManager implements Serializable {
         }
         // removeCell and removeCells makes sure that cells are removed and
         // cleared from client side cache.
-        updateMarkedCellValues();
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
+        spreadsheet.updateMarkedCells();
         spreadsheet.loadHyperLinks();
     }
 
