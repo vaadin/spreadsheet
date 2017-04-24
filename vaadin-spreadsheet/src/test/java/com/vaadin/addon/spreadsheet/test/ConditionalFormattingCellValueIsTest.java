@@ -72,4 +72,11 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
         spreadsheetPage.setCellValue("B4", NUMBER_VALUE);
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B4"));
     }
+
+    @Test
+    public void loadSpreadsheetWithNotEqualConditionFormattingInBlankCell_insertIncoherentValue_CellB4FilledRed() {
+        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
+        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B6"));
+        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B7"));
+    }
 }

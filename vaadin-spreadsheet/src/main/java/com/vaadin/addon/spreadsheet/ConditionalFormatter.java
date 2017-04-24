@@ -548,7 +548,7 @@ public class ConditionalFormatter implements Serializable {
 
                     Cell cell = spreadsheet.getCell(row, col);
                     if (cell == null) {
-                        cell = spreadsheet.createCell(row, col, "");
+                        cell = spreadsheet.createBlankCell(row, col);
                     }
                     if (matches(cell, rule, col - firstColumn, row
                                     - firstRow)) {
@@ -570,8 +570,8 @@ public class ConditionalFormatter implements Serializable {
                                 Cell cellToLeft = spreadsheet.getCell(row,
                                         col - 1);
                                 if (cellToLeft == null) {
-                                    cellToLeft = spreadsheet.createCell(row,
-                                            col - 1, "");
+                                    cellToLeft = spreadsheet
+                                        .createBlankCell(row, col - 1);
                                 }
                                 list = cellToIndex.get(SpreadsheetUtil
                                         .toKey(cellToLeft));
@@ -589,11 +589,11 @@ public class ConditionalFormatter implements Serializable {
 
                             // top border for row 0 isn't rendered
                             if (row != 0) {
-                                Cell cellOnTop = spreadsheet.getCell(row - 1,
-                                        col);
+                                Cell cellOnTop = spreadsheet
+                                    .getCell(row - 1, col);
                                 if (cellOnTop == null) {
-                                    cellOnTop = spreadsheet.createCell(row - 1,
-                                            col, "");
+                                    cellOnTop = spreadsheet
+                                        .createBlankCell(row - 1, col);
                                 }
                                 list = cellToIndex.get(SpreadsheetUtil
                                         .toKey(cellOnTop));
@@ -738,19 +738,20 @@ public class ConditionalFormatter implements Serializable {
      */
     protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
 
-        boolean isFormulaType = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
+        int valueType = cell.getCellType();
+        boolean isFormulaType = valueType == Cell.CELL_TYPE_FORMULA;
 
         if (isFormulaType) {
             // make sure we have the latest value for formula cells
-            getFormulaEvaluator().evaluateFormulaCell(cell);
+            valueType = getFormulaEvaluator().evaluateFormulaCell(cell);
         }
-        
-        boolean isFormulaStringType = isFormulaType
-                && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_STRING;
-        boolean isFormulaBooleanType = isFormulaType
-                && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_BOOLEAN;
-        boolean isFormulaNumericType = isFormulaType
-                && cell.getCachedFormulaResultType() == Cell.CELL_TYPE_NUMERIC;
+
+        boolean isFormulaStringType =
+            isFormulaType && valueType == Cell.CELL_TYPE_STRING;
+        boolean isFormulaBooleanType =
+            isFormulaType && valueType == Cell.CELL_TYPE_BOOLEAN;
+        boolean isFormulaNumericType =
+            isFormulaType && valueType == Cell.CELL_TYPE_NUMERIC;
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
@@ -768,9 +769,18 @@ public class ConditionalFormatter implements Serializable {
         }
 
         // other than numerical types
-        if (cell.getCellType() == Cell.CELL_TYPE_STRING || isFormulaStringType) {
 
-            String formulaValue = ((StringEval)eval).getStringValue();
+        if (valueType == Cell.CELL_TYPE_BLANK) {
+            switch (comparisonOperation) {
+            case ComparisonOperator.EQUAL:
+                return isCoherentWithBlankType(eval);
+            case ComparisonOperator.NOT_EQUAL:
+                return !isCoherentWithBlankType(eval);
+            }
+        }
+        if (valueType == Cell.CELL_TYPE_STRING) {
+
+            String formulaValue = ((StringEval) eval).getStringValue();
             String stringValue = cell.getStringCellValue();
 
             // Excel string comparison ignores case
@@ -781,8 +791,7 @@ public class ConditionalFormatter implements Serializable {
                 return !stringValue.equalsIgnoreCase(formulaValue);
             }
         }
-        if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN
-                || isFormulaBooleanType) {
+        if (valueType == Cell.CELL_TYPE_BOOLEAN) {
             // not sure if this is used, since no boolean option exists in
             // Excel..
 
@@ -797,8 +806,7 @@ public class ConditionalFormatter implements Serializable {
         }
 
         // numerical types
-        if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC
-                || isFormulaNumericType) {
+        if (valueType == Cell.CELL_TYPE_NUMERIC) {
 
             double formula1Val = ((NumericValueEval)eval).getNumberValue();
 
@@ -861,6 +869,23 @@ public class ConditionalFormatter implements Serializable {
         case Cell.CELL_TYPE_FORMULA:
             return isCoherentTypeFormula(eval, isFormulaStringType,
                 isFormulaBooleanType, isFormulaNumericType);
+        case Cell.CELL_TYPE_BLANK:
+            return isCoherentWithBlankType(eval);
+        }
+        return false;
+    }
+
+    private boolean isCoherentWithBlankType(ValueEval eval) {
+        if (eval instanceof BoolEval) {
+            return !((BoolEval) eval).getBooleanValue();
+        } else {
+            if (eval instanceof NumericValueEval) {
+                return ((NumericValueEval) eval).getNumberValue() == 0;
+            } else {
+                if (eval instanceof StringEval) {
+                    return ((StringEval) eval).getStringValue().isEmpty();
+                }
+            }
         }
         return false;
     }

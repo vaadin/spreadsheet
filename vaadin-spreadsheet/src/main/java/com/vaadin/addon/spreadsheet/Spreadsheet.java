@@ -1618,6 +1618,25 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
+     * Create a new blank cell (or replace existing). 
+     *
+     * After all editing is done, call {@link #refreshCells(Cell...)} or
+     * {@link #refreshAllCellValues()} to make sure the client side is updated.
+     *
+     * @param row
+     *            Row index of the new cell, 0-based
+     * @param col
+     *            Column index of the new cell, 0-based
+     * @return The newly created cell
+     * @throws IllegalArgumentException
+     *             If columnIndex < 0 or greater than the maximum number of
+     *             supported columns (255 for *.xls, 1048576 for *.xlsx)
+     */
+    public Cell createBlankCell(int row, int col) throws IllegalArgumentException {
+        return createCell(row, col, null);
+    }
+
+    /**
      * Create a new cell (or replace existing) with the given value, the type of
      * the value parameter will define the type of the cell. The value may be of
      * the following types: Boolean, Calendar, Date, Double or String. The
@@ -1655,16 +1674,18 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             final String key = SpreadsheetUtil.toKey(col + 1, row + 1);
             valueManager.clearCellCache(key);
         }
-        if (value instanceof Double) {
-            cell.setCellValue((Double) value);
-        } else if (value instanceof Boolean) {
-            cell.setCellValue((Boolean) value);
-        } else if (value instanceof Date) {
-            cell.setCellValue((Date) value);
-        } else if (value instanceof Calendar) {
-            cell.setCellValue((Calendar) value);
-        } else {
-            cell.setCellValue(value.toString());
+        if (value != null) {
+            if (value instanceof Double) {
+                cell.setCellValue((Double) value);
+            } else if (value instanceof Boolean) {
+                cell.setCellValue((Boolean) value);
+            } else if (value instanceof Date) {
+                cell.setCellValue((Date) value);
+            } else if (value instanceof Calendar) {
+                cell.setCellValue((Calendar) value);
+            } else {
+                cell.setCellValue(value.toString());
+            }
         }
         valueManager.cellUpdated(cell);
         return cell;
