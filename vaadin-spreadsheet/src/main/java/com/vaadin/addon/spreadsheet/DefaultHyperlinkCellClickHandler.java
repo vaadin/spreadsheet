@@ -143,7 +143,7 @@ public class DefaultHyperlinkCellClickHandler implements
     }
 
     private static String getFirstArgumentFromFormula(String cellFormula) {
-        // matches (arg1[;...]) with possible whitespace between any constituent.
+        // matches (arg1[;...]) with possible whitespace between any constituents.
         Pattern pattern = Pattern.compile("\\(\\s*(\\w*?|\".*?\")\\s*(,.*)?\\)");
         Matcher matcher = pattern.matcher(cellFormula);
         if (matcher.find()) {
