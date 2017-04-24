@@ -19,7 +19,6 @@ package org.apache.poi.ss.formula;
 
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.ptg.Ptg;
-import org.apache.poi.ss.formula.ptg.RefPtgBase;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.BaseXSSFEvaluationWorkbook;
@@ -54,28 +53,5 @@ public class WorkbookEvaluatorUtil {
     private static int getSheetIndex(Cell cell) {
         Sheet sheet = cell.getSheet();
         return sheet.getWorkbook().getSheetIndex(sheet);
-    }
-
-    public static ValueEval evaluate(Spreadsheet spreadsheet, Cell cell,
-        String formula, int deltaRow, int deltaColumn){
-        // Parse formula and use deltas to get relative cell references to work
-        // (#18702)
-        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
-            FormulaType.CELL, spreadsheet.getActiveSheetIndex());
-
-        for (Ptg ptg : ptgs) {
-            // base class for cell reference "things"
-            if (ptg instanceof RefPtgBase) {
-                RefPtgBase ref = (RefPtgBase) ptg;
-                // re-calculate cell references
-                if (ref.isColRelative()) {
-                    ref.setColumn(ref.getColumn() + deltaColumn);
-                }
-                if (ref.isRowRelative()) {
-                    ref.setRow(ref.getRow() + deltaRow);
-                }
-            }
-        }
-        return evaluate(spreadsheet, ptgs, cell);
     }
 }
