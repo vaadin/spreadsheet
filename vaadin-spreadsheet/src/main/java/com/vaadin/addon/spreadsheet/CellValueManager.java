@@ -294,10 +294,8 @@ public class CellValueManager implements Serializable {
                                             spreadsheet.getState(false).colW[cell
                                                     .getColumnIndex()] - 10);
                         } else if (cell.getCellType() != Cell.CELL_TYPE_STRING
-                        		&& (cell.getCellType() == Cell.CELL_TYPE_FORMULA 
-                        		    && cell.getCachedFormulaResultType() != Cell.CELL_TYPE_STRING
-                        		   ) 
-                        		) {
+                                && (cell.getCellType() == Cell.CELL_TYPE_FORMULA
+                                        && cell.getCachedFormulaResultType() != Cell.CELL_TYPE_STRING)) {
                             cellData.needsMeasure = true;
                         }
                     }
