@@ -134,9 +134,10 @@ public class DefaultHyperlinkCellClickHandler implements
             address = firstArg.substring(1, firstArg.length() - 1);
         } else { // address is specified in a cell
             Cell firstArgCell = spreadsheet.getCell(firstArg);
-            
-            if (firstArgCell != null)
+
+            if (firstArgCell != null) {
                 address = spreadsheet.getCellValue(firstArgCell);
+            }
         }
 
         return address;
