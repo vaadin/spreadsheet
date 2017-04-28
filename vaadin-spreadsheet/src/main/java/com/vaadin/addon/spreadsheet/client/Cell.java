@@ -28,7 +28,7 @@ class Cell {
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
     private static final int Z_INDEX_VALUE = 2;
-    
+
     /**
      * 1-based
      */
@@ -44,7 +44,7 @@ class Cell {
      * Numeric values never overflow or wrap lines, they turn to ### if not fit
      */
     private boolean isNumeric;
-    
+
     private boolean overflowDirty = true;
     private boolean overflowing;
 
@@ -60,23 +60,12 @@ class Cell {
         this.row = row;
 
         element = Document.get().createDivElement();
-        updateCellValues();
     }
 
     public Cell(SheetWidget sheetWidget, int col, int row, CellData cellData) {
-        this.sheetWidget = sheetWidget;
-        this.col = col;
-        this.row = row;
-        element = Document.get().createDivElement();
-        if (cellData == null) {
-            value = null;
-        } else {
-            isNumeric = cellData.needsMeasure;
-            value = cellData.value;
-            cellStyle = cellData.cellStyle;
-        }
-        updateCellValues();
-        updateInnerText();
+        this(sheetWidget, col, row);
+
+        updateCellData(col, row, cellData);
     }
 
     public DivElement getElement() {
@@ -84,15 +73,21 @@ class Cell {
     }
 
     public void updateCellData(int col, int row, CellData cellData) {
+        resetCellValues();
+
+        // cellData could be null, so we can't use cellData.col/row
         this.col = col;
         this.row = row;
-        cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
-        value = cellData == null ? null : cellData.value;
+
+        if (cellData != null) {
+            cellStyle = cellData.cellStyle;
+            value = cellData.value;
+            isNumeric = cellData.needsMeasure;
+        }
 
         updateInnerText();
-        updateCellValues();
 
-        markAsOverflowDirty();
+        resetCellValues();
     }
 
     private void updateInnerText() {
@@ -185,9 +180,18 @@ class Cell {
         return scrollW;
     }
 
-    private void updateCellValues() {
+    private void resetCellValues() {
+        row = -1;
+        col = -1;
+        cellStyle = "cs0";
+        value = null;
+        isNumeric = false;
+        overflowDirty = true;
+        overflowing = false;
+
         removeCellCommentMark();
         removePopupButton();
+        removeInvalidFormulaIndicator();
         updateClassName();
     }
 
