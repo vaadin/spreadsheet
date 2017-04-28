@@ -2957,7 +2957,7 @@ public class SheetWidget extends Panel {
                 final Cell cell;
                 if (row.size() > (c - c1)) {
                     cell = row.get(c - c1);
-                    cell.update(c, r, getCellData(c, r));
+                    cell.updateCellData(c, r, getCellData(c, r));
                 } else {
                     cell = new Cell(this, c, r, getCellData(c, r));
                     paneElement.appendChild(cell.getElement());
@@ -3069,7 +3069,7 @@ public class SheetWidget extends Panel {
                 }
 
                 if (cIndex != cell.getCol() || rIndex != cell.getRow()) {
-                    cell.update(cIndex, rIndex, getCellData(cIndex, rIndex));
+                    cell.updateCellData(cIndex, rIndex, getCellData(cIndex, rIndex));
                 }
             }
             if (hScrollDiff > 0) {

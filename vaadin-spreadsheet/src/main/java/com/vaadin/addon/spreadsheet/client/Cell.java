@@ -28,9 +28,7 @@ class Cell {
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
     private static final int Z_INDEX_VALUE = 2;
-    private final DivElement element;
-    private DivElement cellCommentTriangle;
-    private DivElement invalidFormulaTriangle;
+    
     /**
      * 1-based
      */
@@ -39,7 +37,6 @@ class Cell {
      * 1-based
      */
     private int row;
-    private Element popupButtonElement;
     private String value;
 
     private String cellStyle = "cs0";
@@ -47,9 +44,15 @@ class Cell {
      * Numeric values never overflow or wrap lines, they turn to ### if not fit
      */
     private boolean isNumeric;
-    private SheetWidget sheetWidget;
+    
     private boolean overflowDirty = true;
     private boolean overflowing;
+
+    private final DivElement element;
+    private final SheetWidget sheetWidget;
+    private DivElement cellCommentTriangle;
+    private DivElement invalidFormulaTriangle;
+    private Element popupButtonElement;
 
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
@@ -80,7 +83,7 @@ class Cell {
         return element;
     }
 
-    public void update(int col, int row, CellData cellData) {
+    public void updateCellData(int col, int row, CellData cellData) {
         this.col = col;
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
