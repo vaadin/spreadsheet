@@ -27,7 +27,7 @@ class Cell {
 
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
-    private static final int ZINDEXVALUE = 2;
+    private static final int Z_INDEX_VALUE = 2;
     private final DivElement element;
     private DivElement cellCommentTriangle;
     private DivElement invalidFormulaTriangle;
@@ -95,7 +95,7 @@ class Cell {
             element.setInnerText("");
             element.getStyle().clearZIndex();
         } else {
-            element.getStyle().setZIndex(ZINDEXVALUE);
+            element.getStyle().setZIndex(Z_INDEX_VALUE);
             if (needsMeasure
                     && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
                             .getClientWidth()) {
