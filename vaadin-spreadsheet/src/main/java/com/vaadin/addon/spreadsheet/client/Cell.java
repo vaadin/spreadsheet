@@ -43,7 +43,10 @@ class Cell {
     private String value;
 
     private String cellStyle = "cs0";
-    private boolean needsMeasure;
+    /**
+     * Numeric values never overflow or wrap lines, they turn to ### if not fit
+     */
+    private boolean isNumeric;
     private SheetWidget sheetWidget;
     private boolean overflowDirty = true;
     private boolean overflowing;
@@ -65,7 +68,7 @@ class Cell {
         if (cellData == null) {
             value = null;
         } else {
-            needsMeasure = cellData.needsMeasure;
+            isNumeric = cellData.needsMeasure;
             value = cellData.value;
             cellStyle = cellData.cellStyle;
         }
@@ -96,7 +99,7 @@ class Cell {
             element.getStyle().clearZIndex();
         } else {
             element.getStyle().setZIndex(Z_INDEX_VALUE);
-            if (needsMeasure
+            if (isNumeric
                     && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
                             .getClientWidth()) {
                 element.setInnerText("###");
@@ -210,7 +213,7 @@ class Cell {
             this.cellStyle = cellStyle;
             updateClassName();
         }
-        this.needsMeasure = needsMeasure;
+        this.isNumeric = needsMeasure;
         setValue(value);
     }
 
