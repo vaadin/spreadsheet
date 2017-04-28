@@ -128,18 +128,18 @@ public class Cell {
             int colIndex = col;
             int width = 0;
             int[] colW = sheetWidget.actionHandler.getColWidths();
-            boolean inFreezePane = col <= sheetWidget.verticalSplitPosition;
+            boolean inFreezePane = sheetWidget.hasFrozenColumns() && sheetWidget.isCellRenderedInFrozenPane(colIndex, row);
 
             while (colIndex < colW.length && width < overflowPx) {
                 if (inFreezePane
-                        && colIndex >= sheetWidget.verticalSplitPosition) {
+                        && sheetWidget.isCellRenderedInFrozenPane(colIndex, row) ) {
                     break;
                 }
                 Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
                 if (nextCell != null && nextCell.hasValue()) {
                     break;
                 }
-                width += colW[colIndex];
+                width +=sheetWidget.actionHandler.getColWidth(colIndex);
                 colIndex++;
             }
             // columnWidth is added after calculating the overflowing width
