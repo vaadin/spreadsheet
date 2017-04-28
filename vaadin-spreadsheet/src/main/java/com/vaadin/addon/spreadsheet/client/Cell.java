@@ -60,6 +60,8 @@ class Cell {
         this.row = row;
 
         element = Document.get().createDivElement();
+
+        updateClassName();
     }
 
     public Cell(SheetWidget sheetWidget, int col, int row, CellData cellData) {
@@ -85,9 +87,9 @@ class Cell {
             isNumeric = cellData.needsMeasure;
         }
 
-        updateInnerText();
+        updateClassName();
 
-        resetCellValues();
+        updateInnerText();
     }
 
     private void updateInnerText() {
@@ -183,6 +185,7 @@ class Cell {
     private void resetCellValues() {
         row = -1;
         col = -1;
+
         cellStyle = "cs0";
         value = null;
         isNumeric = false;
@@ -192,7 +195,6 @@ class Cell {
         removeCellCommentMark();
         removePopupButton();
         removeInvalidFormulaIndicator();
-        updateClassName();
     }
 
     protected void updateClassName() {
