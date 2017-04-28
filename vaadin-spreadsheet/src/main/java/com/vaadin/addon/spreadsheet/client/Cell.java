@@ -23,7 +23,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
-public class Cell {
+class Cell {
 
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
@@ -179,7 +179,7 @@ public class Cell {
         return scrollW;
     }
 
-    protected void updateCellValues() {
+    private void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
         updateClassName();
@@ -271,29 +271,6 @@ public class Cell {
             invalidFormulaTriangle.removeFromParent();
             invalidFormulaTriangle = null;
         }
-    }
-
-    public boolean isNeedsMeasure() {
-        return needsMeasure;
-    }
-
-    /**
-     * @param sizes
-     * @param beginIndex
-     *            1-based inclusive
-     * @param endIndex
-     *            1-based exclusive
-     * @return
-     */
-    public int countSum(int[] sizes, int beginIndex, int endIndex) {
-        if (sizes == null || sizes.length < endIndex - 1) {
-            return 0;
-        }
-        int pos = 0;
-        for (int i = beginIndex; i < endIndex; i++) {
-            pos += sizes[i - 1];
-        }
-        return pos;
     }
 
     public boolean isOverflowDirty() {
