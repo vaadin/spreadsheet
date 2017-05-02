@@ -46,7 +46,6 @@ class Cell {
     private boolean isNumeric;
 
     private boolean overflowDirty = true;
-    private boolean overflowing;
 
     private final DivElement element;
     private final SheetWidget sheetWidget;
@@ -128,10 +127,6 @@ class Cell {
         if (overflowPx > 0) {
             int width = getOverflowingDivWidth(overflowPx);
             createOverflowingDiv(width);
-
-            overflowing = true;
-        } else {
-            overflowing = false;
         }
 
         // FIXME: is this whole thing necessary here?
