@@ -116,6 +116,9 @@ class Cell {
         boolean rightAligned = element.getAttribute("class").contains(" r ")
                 || element.getAttribute("class").endsWith(" r");
 
+        if (rightAligned)
+            return;
+
         int columnWidth = sheetWidget.actionHandler.getColWidth(col);
 
         int overflowPx = measureScrollWidth() - columnWidth;
