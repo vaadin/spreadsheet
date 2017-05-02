@@ -9,10 +9,7 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     private static final String B3 = "B3";
