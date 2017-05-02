@@ -99,11 +99,8 @@ class Cell {
             element.getStyle().clearZIndex();
         } else {
             element.getStyle().setZIndex(Z_INDEX_VALUE);
-            if (isNumeric
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
-                            .getClientWidth()) {
-                element.setInnerText("###");
-            } else if (value.startsWith("'")) {
+
+            if (value.startsWith("'")) {
                 element.setInnerText(value.substring(1, value.length()));
             } else {
                 element.setInnerText(value);
@@ -125,8 +122,12 @@ class Cell {
         overflowPx += 2;
 
         if (overflowPx > 0) {
-            int width = getOverflowingDivWidth(overflowPx);
-            createOverflowingDiv(width);
+            if (isNumeric) {
+                setElementText("###");
+            } else {
+                int width = getOverflowingDivWidth(overflowPx);
+                createOverflowingDiv(width);
+            }
         }
 
         // FIXME: is this whole thing necessary here?
@@ -307,4 +308,8 @@ class Cell {
         return 31 * (value.hashCode() + cellStyle.hashCode());
     }
 
+    private void setElementText(String elementText) {
+        // FIXME: make all set inner text calls use this method and add overlays
+        element.setInnerText(elementText);
+    }
 }
