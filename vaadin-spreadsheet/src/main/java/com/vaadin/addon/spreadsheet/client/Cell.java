@@ -198,7 +198,6 @@ class Cell {
         value = null;
         isNumeric = false;
         overflowDirty = true;
-        overflowing = false;
 
         removeCellCommentMark();
         removePopupButton();
