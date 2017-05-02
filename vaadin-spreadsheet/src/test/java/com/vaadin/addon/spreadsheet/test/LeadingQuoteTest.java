@@ -31,7 +31,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void leadingQuote_exsistingStringRepresentingANumber_formulaBarAndInlineEditorShowALeadingQuote()
+    public void leadingQuote_existingStringRepresentingANumber_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
 
         // Cell must show the string value WITHOUT the trailing quote
@@ -48,7 +48,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void leadingQuote_exsistingStringRepresentingANumberWithDot_formulaBarAndInlineEditorShowALeadingQuote()
+    public void leadingQuote_existingStringRepresentingANumberWithDot_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
 
         // Cell must show the string value WITHOUT the trailing quote
@@ -65,7 +65,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void leadingQuote_exsistingStringRepresentingANumberWithComma_formulaBarAndInlineEditorShowALeadingQuote()
+    public void leadingQuote_existingStringRepresentingANumberWithComma_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
 
         // Cell must show the string value WITHOUT the trailing quote
