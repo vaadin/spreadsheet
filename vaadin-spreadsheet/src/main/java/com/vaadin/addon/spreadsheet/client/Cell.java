@@ -186,9 +186,6 @@ class Cell {
     }
 
     int measureScrollWidth() {
-        if (overflowing) {
-            updateInnerText();
-        }
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
             scrollW = element.getScrollWidth();
