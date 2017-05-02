@@ -111,8 +111,6 @@ public class SheetWidget extends Panel {
 
     final Logger debugConsole = Logger.getLogger("spreadsheet-logger");
 
-    Map<Integer, Integer> scrollWidthCache = new HashMap<Integer, Integer>();
-
     final SheetHandler actionHandler;
 
     private final SelectionWidget selectionWidget;
@@ -331,7 +329,7 @@ public class SheetWidget extends Panel {
     private int leftFrozenPanelWidth;
 
     /** 1-based. marks the last frozen row index */
-    int verticalSplitPosition;
+    private int verticalSplitPosition;
     /** 1-based. marks the last frozen column index */
     private int horizontalSplitPosition;
 
@@ -631,7 +629,6 @@ public class SheetWidget extends Panel {
     public void resetFromModel(final int scrollLeft, final int scrollTop) {
         loaded = false;
         cachedCellData.clear();
-        scrollWidthCache.clear();
         if (ppiCounter.hasParentElement()) {
             ppi = ppiCounter.getOffsetWidth();
         }
@@ -790,8 +787,6 @@ public class SheetWidget extends Panel {
 
             updateColGrouping();
             updateRowGrouping();
-
-            updateOverflows(true);
 
         } catch (Exception e) {
             debugConsole.severe("SheetWidget:relayoutSheet: " + e.toString()
@@ -2973,7 +2968,6 @@ public class SheetWidget extends Panel {
                 cell.getElement().removeFromParent();
             }
         }
-        updateOverflows(false);
     }
 
     private void runEscalatorPartially(int vScrollDiff, int hScrollDiff,
@@ -3137,7 +3131,6 @@ public class SheetWidget extends Panel {
                 rows.add(0, row);
             }
         }
-        updateOverflows(false);
     }
 
     /** push the cells to the escalator */
@@ -4104,9 +4097,6 @@ public class SheetWidget extends Panel {
                 }
             }
         }
-        // Update cell overflow state
-        updateOverflows(false);
-
     }
 
     public void updateTopRightCellValues(List<CellData> cellData2) {
@@ -4148,9 +4138,6 @@ public class SheetWidget extends Panel {
                 cachedCellData.put(key, cd);
             }
         }
-        // Update cell overflow state
-        updateOverflows(false);
-
     }
 
     public void cellValuesUpdated(ArrayList<CellData> updatedCellData) {
@@ -4177,20 +4164,9 @@ public class SheetWidget extends Panel {
 
                 if (cell != null) {
                     cell.setValue(cd.value, cd.cellStyle, cd.needsMeasure);
-                    cell.markAsOverflowDirty();
-                }
-                int j = verticalSplitPosition > 0 ? 0 : firstColumnIndex;
-                for (; j < cd.col; j++) {
-                    Cell c = getCell(j, cd.row);
-                    if (c != null) {
-                        c.markAsOverflowDirty();
-                    }
                 }
             }
         }
-
-        // Update cell overflow state
-        updateOverflows(false);
     }
 
     /**
@@ -4338,7 +4314,6 @@ public class SheetWidget extends Panel {
         }
         cleanDOM();
         cachedCellData.clear();
-        scrollWidthCache.clear();
 
         clearPositionStyles();
         clearCellRangeStyles();
@@ -5065,104 +5040,7 @@ public class SheetWidget extends Panel {
         if (isSelectedCellRendered()) {
             getSelectedCell().setValue(value);
         }
-
-        int j = verticalSplitPosition > 0 ? 0 : firstColumnIndex;
-        for (; j < getSelectedCellColumn(); j++) {
-            Cell cell = getCell(j, getSelectedCellRow());
-            if (cell != null) {
-                cell.markAsOverflowDirty();
-            }
-        }
-        // Update cell overflow state
-        updateOverflows(false);
     }
-
-    private void updateOverflows(boolean forced) {
-        if (forced) {
-            markRowsAsDirty(rows);
-            markRowsAsDirty(topRightRows);
-            markRowsAsDirty(bottomLeftRows);
-            for (Cell cell : topLeftCells) {
-                if (cell != null) {
-                    cell.markAsOverflowDirty();
-                }
-            }
-        }
-        overflowUpdater.schedule(SCROLL_HANDLER_TRIGGER_DELAY);
-    }
-
-    private void markRowsAsDirty(ArrayList<ArrayList<Cell>> rows) {
-        if (rows != null) {
-            for (ArrayList<Cell> row : rows) {
-                for (Cell cell : row) {
-                    if (cell != null) {
-                        cell.markAsOverflowDirty();
-                    }
-                }
-            }
-        }
-    }
-
-    private Timer overflowUpdater = new Timer() {
-
-        private void measureCell(int col, int row) {
-            Cell cell = getCell(col, row);
-            if (cell != null && cell.isOverflowDirty()) {
-                cell.measureOverflow();
-            }
-        }
-
-        private void measureCells(int fromRow, int toRow, int fromCol, int toCol) {
-            for (int i = fromRow; i <= toRow; i++) {
-                for (int j = fromCol; j <= toCol; j++) {
-                    measureCell(j, i);
-                }
-            }
-        }
-
-        private void updateCell(int col, int row) {
-            Cell cell = getCell(col, row);
-            if (cell != null && cell.isOverflowDirty()) {
-                cell.updateOverflow();
-            }
-        }
-
-        private void updateCells(int fromRow, int toRow, int fromCol, int toCol) {
-            for (int i = fromRow; i <= toRow; i++) {
-                for (int j = fromCol; j <= toCol; j++) {
-                    updateCell(j, i);
-                }
-            }
-        }
-
-        @Override
-        public void run() {
-            // First measure all
-            // Bottom right pane
-            measureCells(firstRowIndex, lastRowIndex, firstColumnIndex,
-                    lastColumnIndex);
-            // Top left pane
-            measureCells(0, verticalSplitPosition, 0, horizontalSplitPosition);
-            // Top right pane
-            measureCells(0, verticalSplitPosition, firstColumnIndex,
-                    lastColumnIndex);
-            // Bottom left pane
-            measureCells(firstRowIndex, lastRowIndex, 0,
-                    horizontalSplitPosition);
-
-            // Then update contents
-            // Bottom right pane
-            updateCells(firstRowIndex, lastRowIndex, firstColumnIndex,
-                    lastColumnIndex);
-            // Top left pane
-            updateCells(0, verticalSplitPosition, 0, horizontalSplitPosition);
-            // Top right pane
-            updateCells(0, verticalSplitPosition, firstColumnIndex,
-                    lastColumnIndex);
-            // Bottom left pane
-            updateCells(firstRowIndex, lastRowIndex, 0, horizontalSplitPosition);
-        }
-    };
 
     public void updateInputValue(String value) {
         if (customCellEditorDisplayed) {
