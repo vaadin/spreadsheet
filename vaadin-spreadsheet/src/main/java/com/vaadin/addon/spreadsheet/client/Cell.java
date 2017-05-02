@@ -119,55 +119,70 @@ class Cell {
         if (rightAligned)
             return;
 
-        int columnWidth = sheetWidget.actionHandler.getColWidth(col);
+        int overflowPx = measureScrollWidth() - getColumnWidth();
 
-        int overflowPx = measureScrollWidth() - columnWidth;
+        // Increase overflow by cell left padding (2px)
+        overflowPx += 2;
 
-        if (!rightAligned && overflowPx > 0) {
-            // Increase overflow by cell left padding (2px)
-            overflowPx += 2;
-            int colIndex = col;
-            int width = 0;
-            int[] colW = sheetWidget.actionHandler.getColWidths();
-            boolean inFreezePane = col <= sheetWidget.verticalSplitPosition;
-
-            while (colIndex < colW.length && width < overflowPx) {
-                if (inFreezePane
-                        && colIndex >= sheetWidget.verticalSplitPosition) {
-                    break;
-                }
-                Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
-                if (nextCell != null && nextCell.hasValue()) {
-                    break;
-                }
-                width += colW[colIndex];
-                colIndex++;
-            }
-            // columnWidth is added after calculating the overflowing width
-            width += columnWidth;
-
-            // create element to contain the text, so we can apply overflow
-            // rules
-            DivElement overflowDiv = Document.get().createDivElement();
-            overflowDiv.getStyle().setProperty("pointerEvents", "none");
-            overflowDiv.getStyle().setWidth(width, Style.Unit.PX);
-            overflowDiv.getStyle().setOverflow(Overflow.HIDDEN);
-            overflowDiv.getStyle().setTextOverflow(Style.TextOverflow.ELLIPSIS);
-            overflowDiv.setInnerText(element.getInnerText());
-            element.setInnerText(null);
-            element.appendChild(overflowDiv);
+        if (overflowPx > 0) {
+            int width = getOverflowingDivWidth(overflowPx);
+            createOverflowingDiv(width);
 
             overflowing = true;
         } else {
             overflowing = false;
         }
+
+        // FIXME: is this whole thing necessary here?
         if (sheetWidget.isMergedCell(SheetWidget.toKey(col, row))
                 && !(this instanceof MergedCell)) {
             element.getStyle().setOverflow(Overflow.HIDDEN);
         } else {
             element.getStyle().setOverflow(Overflow.VISIBLE);
         }
+
         overflowDirty = false;
+    }
+
+    private void createOverflowingDiv(int width) {
+        // create element to contain the text, so we can apply overflow
+        // rules
+        DivElement overflowDiv = Document.get().createDivElement();
+        overflowDiv.getStyle().setProperty("pointerEvents", "none");
+        overflowDiv.getStyle().setWidth(width, Style.Unit.PX);
+        overflowDiv.getStyle().setOverflow(Overflow.HIDDEN);
+        overflowDiv.getStyle().setTextOverflow(Style.TextOverflow.ELLIPSIS);
+        overflowDiv.setInnerText(element.getInnerText());
+        element.setInnerText(null);
+        element.appendChild(overflowDiv);
+    }
+
+    private int getColumnWidth() {
+        return sheetWidget.actionHandler.getColWidth(col);
+    }
+
+    private int getOverflowingDivWidth(int overflowPx) {
+        int columnWidth = getColumnWidth();
+        int colIndex = col;
+        int width = 0;
+        int[] colW = sheetWidget.actionHandler.getColWidths();
+        boolean inFreezePane = col <= sheetWidget.verticalSplitPosition;
+
+        while (colIndex < colW.length && width < overflowPx) {
+            if (inFreezePane
+                    && colIndex >= sheetWidget.verticalSplitPosition) {
+                break;
+            }
+            Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
+            if (nextCell != null && nextCell.hasValue()) {
+                break;
+            }
+            width += colW[colIndex];
+            colIndex++;
+        }
+        // columnWidth is added after calculating the overflowing width
+        width += columnWidth;
+        return width;
     }
 
     int measureScrollWidth() {
