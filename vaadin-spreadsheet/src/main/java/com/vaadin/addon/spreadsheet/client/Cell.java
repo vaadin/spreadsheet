@@ -158,7 +158,6 @@ class Cell {
     }
 
     private int getOverflowingDivWidth(int overflowPx) {
-        int columnWidth = getColumnWidth();
         int colIndex = col;
         int width = 0;
         int[] colW = sheetWidget.actionHandler.getColWidths();
@@ -177,7 +176,7 @@ class Cell {
             colIndex++;
         }
         // columnWidth is added after calculating the overflowing width
-        width += columnWidth;
+        width += getColumnWidth();
         return width;
     }
 
