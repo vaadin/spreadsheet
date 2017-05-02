@@ -118,11 +118,8 @@ class Cell {
 
         int columnWidth = sheetWidget.actionHandler.getColWidth(col);
 
-        Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
-        if (scrollW == null) {
-            scrollW = measureScrollWidth();
-        }
-        int overflowPx = scrollW - columnWidth;
+        int overflowPx = measureScrollWidth() - columnWidth;
+
         if (!rightAligned && overflowPx > 0) {
             // Increase overflow by cell left padding (2px)
             overflowPx += 2;
