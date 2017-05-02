@@ -5108,7 +5108,7 @@ public class SheetWidget extends Panel {
         private void measureCell(int col, int row) {
             Cell cell = getCell(col, row);
             if (cell != null && cell.isOverflowDirty()) {
-                cell.measureOverflow();
+                cell.measureScrollWidth();
             }
         }
 

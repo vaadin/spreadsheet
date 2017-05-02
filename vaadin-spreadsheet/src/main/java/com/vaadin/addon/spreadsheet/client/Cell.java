@@ -120,7 +120,7 @@ class Cell {
 
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
-            scrollW = measureOverflow();
+            scrollW = measureScrollWidth();
         }
         int overflowPx = scrollW - columnWidth;
         if (!rightAligned && overflowPx > 0) {
@@ -170,7 +170,7 @@ class Cell {
         overflowDirty = false;
     }
 
-    int measureOverflow() {
+    int measureScrollWidth() {
         if (overflowing) {
             updateInnerText();
         }
