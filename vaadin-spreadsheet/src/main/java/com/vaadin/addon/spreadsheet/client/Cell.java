@@ -93,7 +93,8 @@ class Cell {
     }
 
     private void updateInnerText() {
-        element.getStyle().setOverflow(Overflow.HIDDEN);
+        element.getStyle().setOverflow(Overflow.VISIBLE);
+
         if (value == null || value.isEmpty()) {
             element.setInnerText("");
             element.getStyle().clearZIndex();
@@ -134,12 +135,12 @@ class Cell {
         }
 
         // FIXME: is this whole thing necessary here?
-        if (sheetWidget.isMergedCell(SheetWidget.toKey(col, row))
-                && !(this instanceof MergedCell)) {
-            element.getStyle().setOverflow(Overflow.HIDDEN);
-        } else {
-            element.getStyle().setOverflow(Overflow.VISIBLE);
-        }
+//        if (sheetWidget.isMergedCell(SheetWidget.toKey(col, row))
+//                && !(this instanceof MergedCell)) {
+//            element.getStyle().setOverflow(Overflow.HIDDEN);
+//        } else {
+//            element.getStyle().setOverflow(Overflow.VISIBLE);
+//        }
 
         overflowDirty = false;
     }
