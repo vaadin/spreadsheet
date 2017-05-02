@@ -9,7 +9,10 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     private static final String B3 = "B3";
@@ -44,7 +47,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
         // Inline editor must show the string value WITH the trailing quote
         WebElement cellEditor = sheetController.getInlineEditor(B3);
-        assertEquals("'01", spreadsheetPage.getFormulaFieldValue());
+        assertEquals("'01", cellEditor.getAttribute("value"));
     }
 
     @Test
@@ -61,7 +64,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
         // Inline editor must show the string value WITH the trailing quote
         WebElement cellEditor = sheetController.getInlineEditor(B4);
-        assertEquals("'123.456", spreadsheetPage.getFormulaFieldValue());
+        assertEquals("'123.456", cellEditor.getAttribute("value"));
     }
 
     @Test
@@ -78,7 +81,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
         // Inline editor must show the string value WITH the trailing quote
         WebElement cellEditor = sheetController.getInlineEditor(B5);
-        assertEquals("'123,456", spreadsheetPage.getFormulaFieldValue());
+        assertEquals("'123,456", cellEditor.getAttribute("value"));
     }
 
     @Test
