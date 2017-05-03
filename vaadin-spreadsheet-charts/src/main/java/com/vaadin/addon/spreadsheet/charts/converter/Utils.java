@@ -93,7 +93,7 @@ public class Utils {
      */
     public static AreaReference[] getAreaReferences(String formula) {
         // generateContiguous cannot parse a forumula in parentheses
-        if (formula.startsWith("(") && formula.endsWith("")) {
+        if (formula.startsWith("(") && formula.endsWith(")")) {
             formula = formula.substring(1, formula.length() - 1);
         }
         return AreaReference.generateContiguous(formula);
