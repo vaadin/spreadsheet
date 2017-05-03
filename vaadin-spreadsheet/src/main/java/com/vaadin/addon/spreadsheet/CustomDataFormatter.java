@@ -11,12 +11,18 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
  *TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+ * {@Link org.apache.poi.ss.usermodel.DataFormatter} doesn't consider Locale while formatting three part custom format (eg. #.##0,00#;(#.##0,00);"-").
+ * Instead it formats a custom format having one or two parts according to the Locale.
+ * This class is used to format a cell with a three/four part custom format by choosing only one based on the cell content.
  */
-public class CustomDataFormatter {
+class CustomDataFormatter extends DataFormatter{
+    //In a custom format the first part represents a format for positive numbers,
+    // the second for negative numbers, the third for zero and the fourth a plain text
     private final int POSITIVE_FORMAT_INDEX = 0;
     private final int NEGATIVE_FORMAT_INDEX = 1;
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
+
     private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
 
     private final DataFormatter formatter;
@@ -33,7 +39,11 @@ public class CustomDataFormatter {
             && dataFormatString.indexOf(';') != dataFormatString
             .lastIndexOf(';');
     }
-
+    /**
+     * if a cell has a custom format with three or more parts and it contains a numeric value,
+     * then formats it as if it had only one part by choosing the format based on the value(i.e. +ve, -ve or 0)
+     * otherwise use  <code>DataFormatter#formatCellValue</code>
+     * **/
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
         String dataFormatString = cell.getCellStyle().getDataFormatString();
@@ -42,9 +52,7 @@ public class CustomDataFormatter {
             String newFormatString = changeFormat(cell, evaluator);
                 double numericCellValue = cell.getNumericCellValue();
                 //if it is negative remove the - sign
-                numericCellValue = numericCellValue < 0 ?
-                    numericCellValue * -1 :
-                    numericCellValue;
+                numericCellValue = Math.abs(numericCellValue);
                 return formatter.formatRawCellContents(numericCellValue, -1,
                     newFormatString);
         }
@@ -91,10 +99,6 @@ public class CustomDataFormatter {
 
     private String getFormatPart(String threePartFormat, int i) {
         String[] parts = threePartFormat.split(";");
-        //in case if there is no format part for text live it as it is
-        if (i >= parts.length)
-            return "@";
-
         return parts[i];
     }
 }

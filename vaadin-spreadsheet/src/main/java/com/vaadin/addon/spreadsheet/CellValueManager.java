@@ -96,7 +96,8 @@ public class CellValueManager implements Serializable {
     private CellValueHandler customCellValueHandler;
     private CellDeletionHandler customCellDeletionHandler;
 
-    private DataFormatter formatter;
+    //TODO: change to DataFormatter when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+    private CustomDataFormatter formatter;
 
     /** Cell keys that have values sent to client side and are cached there. */
     private final HashSet<String> sentCells = new HashSet<String>();
@@ -134,9 +135,9 @@ public class CellValueManager implements Serializable {
         this.spreadsheet = spreadsheet;
         UI current = UI.getCurrent();
         if (current != null) {
-            formatter = new DataFormatter(current.getLocale());
+            formatter = new CustomDataFormatter(new DataFormatter(current.getLocale()));
         } else {
-            formatter = new DataFormatter();
+            formatter = new CustomDataFormatter(new DataFormatter());
         }
     }
 
@@ -160,7 +161,7 @@ public class CellValueManager implements Serializable {
         return formatter;
     }
 
-    public void setDataFormatter(DataFormatter dataFormatter) {
+    public void setDataFormatter(CustomDataFormatter dataFormatter) {
         formatter = dataFormatter;
     }
 
@@ -169,7 +170,7 @@ public class CellValueManager implements Serializable {
     }
 
     protected void updateLocale(Locale locale) {
-        formatter = new DataFormatter(locale);
+        formatter = new CustomDataFormatter(new DataFormatter(locale));
         localeDecimalSymbols = DecimalFormatSymbols.getInstance(locale);
         originalValueDecimalFormat = new DecimalFormat(
                 EXCEL_FORMULA_BAR_DECIMAL_FORMAT, localeDecimalSymbols);
@@ -245,9 +246,8 @@ public class CellValueManager implements Serializable {
             if (cell.getCellStyle().getDataFormatString().contains("%")) {
                 cellData.isPercentage = true;
             }
-            //TODO: change the call to formatter.formatCellValue when
-            // the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
-            String formattedCellValue = new CustomDataFormatter(formatter).formatCellValue(cell,
+
+            String formattedCellValue = formatter.formatCellValue(cell,
                     getFormulaEvaluator());
 
             if (!spreadsheet.isCellHidden(cell)) {
@@ -723,8 +723,8 @@ public class CellValueManager implements Serializable {
      */
     private String getFormattedCellValue(Cell cell) {
         try {
-            //TODO: change the call to formatter.formatCellValue when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
-            return new CustomDataFormatter(formatter).formatCellValue(cell, getFormulaEvaluator());
+
+            return formatter.formatCellValue(cell, getFormulaEvaluator());
         } catch (RuntimeException rte) {
             return null;
         }
