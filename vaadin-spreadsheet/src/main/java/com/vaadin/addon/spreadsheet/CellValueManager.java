@@ -57,6 +57,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -343,7 +345,7 @@ public class CellValueManager implements Serializable {
         return cellData;
     }
 
-    private boolean needsLeadingQuote(Cell cell, Locale spreadsheetLocale) {
+    private boolean needsLeadingQuote(Cell cell) {
         if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
             return false;
         }
@@ -352,15 +354,44 @@ public class CellValueManager implements Serializable {
             return false;
         }
 
-        // Additional quote has to be added  
-        // if the value is a string that can be confused with a number
-        // or if the value already starts with a trailing quote (since the first
-        // one will be removed when rendered)
-        return value.startsWith("'")
-            || SpreadsheetUtil.parseNumber(cell, value, spreadsheetLocale)
-            != null;
+        if (!(cell instanceof XSSFCell)) {
+            // TODO support also old XLS format
+            return false;
+        }
+
+        return styleHasQuotePrefix(cell);
     }
 
+    private void setLeadingQuoteStyle(Cell cell, boolean leadingQuote) {
+        if (!(cell instanceof XSSFCell)) {
+            // TODO support also old XLS format
+            return;
+        }
+        
+        boolean originalStyleHasQuotedPrefix = styleHasQuotePrefix(cell);
+        
+        if (originalStyleHasQuotedPrefix != leadingQuote) {
+            XSSFCellStyle newStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
+            
+            XSSFCellStyle originalStyle = (XSSFCellStyle) cell.getCellStyle();
+            if (originalStyle != null) {
+                newStyle.cloneStyleFrom(originalStyle);    
+            }
+
+            newStyle.getCoreXf().setQuotePrefix(leadingQuote);
+            cell.setCellStyle(newStyle);
+        }
+    }
+
+    private boolean styleHasQuotePrefix(Cell cell) {
+        XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
+        
+        if (cellStyle == null) {
+            return false;
+        }
+        
+        return cellStyle.getCoreXf().getQuotePrefix();
+    }
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
         boolean isCellNumeric = cell.getCellType() == Cell.CELL_TYPE_NUMERIC;
@@ -407,7 +438,7 @@ public class CellValueManager implements Serializable {
                     .format(cell.getNumericCellValue());
         case Cell.CELL_TYPE_STRING:
             String stringCellValue = cell.getStringCellValue();
-            if (needsLeadingQuote(cell, spreadsheet.getLocale())) {
+            if (needsLeadingQuote(cell)) {
                 return "'" + stringCellValue;
             }
             return stringCellValue;
@@ -617,6 +648,7 @@ public class CellValueManager implements Serializable {
                             && cell.getCellFormula().startsWith("HYPERLINK")) {
                         updateHyperlinks = true;
                     }
+                    setLeadingQuoteStyle(cell, false);
                 }
                 if (formulaFormatter.isFormulaFormat(value)) {
                     if (formulaFormatter.isValidFormulaFormat(value,
@@ -684,6 +716,7 @@ public class CellValueManager implements Serializable {
                     } else {
                         if (value.startsWith("'")) {
                             value = value.substring(1, value.length());
+                            setLeadingQuoteStyle(cell, true);
                         }
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         cell.setCellValue(value);
