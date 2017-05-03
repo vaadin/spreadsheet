@@ -71,21 +71,17 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     public void typingOnCell_withLeadingQuote_quoteNotShownInCellAndInPOIModel()
         throws Exception {
 
-        // Typing '12345 in B6
-        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
-        sheetController.putCellContent(B6, "'12345");
-
         // Cell must show the string value WITHOUT the trailing quote
-        assertEquals("12345", cell.getCellAt(B6).getValue());
-
-        // POI model must be WITHOUT the trailing quote 
-        // In cell C6 an excel formula prints the first two characters of B6
-        // (that must not be a quotego
-        assertEquals("12", cell.getCellAt(C6).getValue());
+        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
+        assertEquals("123,456", cell.getCellAt(B5).getValue());
 
         // Formula bar must show the string value WITH the trailing quote
-        sheetController.selectCell(B6);
-        assertEquals("'12345", spreadsheetPage.getFormulaFieldValue());
+        sheetController.selectCell(B5);
+        assertEquals("'123,456", spreadsheetPage.getFormulaFieldValue());
+
+        // Inline editor must show the string value WITH the trailing quote
+        WebElement cellEditor = sheetController.getInlineEditor(B5);
+        assertEquals("'123,456", cellEditor.getAttribute("value"));
     }
 
     @Test
