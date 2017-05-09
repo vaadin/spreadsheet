@@ -349,17 +349,27 @@ public class CellValueManager implements Serializable {
         if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
             return false;
         }
-        String value = cell.getStringCellValue();
-        if (value == null) {
+
+        if (cell.getStringCellValue() == null) {
             return false;
         }
 
+        return styleHasQuotePrefix(cell);
+    }
+
+    private boolean styleHasQuotePrefix(Cell cell) {
         if (!(cell instanceof XSSFCell)) {
             // TODO support also old XLS format
             return false;
         }
 
-        return styleHasQuotePrefix(cell);
+        XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
+
+        if (cellStyle == null) {
+            return false;
+        }
+
+        return cellStyle.getCoreXf().getQuotePrefix();
     }
 
     private void setLeadingQuoteStyle(Cell cell, boolean leadingQuote) {
@@ -381,16 +391,6 @@ public class CellValueManager implements Serializable {
             newStyle.getCoreXf().setQuotePrefix(leadingQuote);
             cell.setCellStyle(newStyle);
         }
-    }
-
-    private boolean styleHasQuotePrefix(Cell cell) {
-        XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
-        
-        if (cellStyle == null) {
-            return false;
-        }
-        
-        return cellStyle.getCoreXf().getQuotePrefix();
     }
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
