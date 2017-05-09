@@ -22,20 +22,22 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  */
 class CustomDataFormatter extends DataFormatter {
     private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
-    //In a custom format the first part represents a format for positive numbers,
+
+    // In a custom format the first part represents a format for positive numbers,
     // the second for negative numbers, the third for zero and the fourth a plain text
     private final int POSITIVE_FORMAT_INDEX = 0;
     private final int NEGATIVE_FORMAT_INDEX = 1;
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
+
     private final DataFormatter formatter;
 
     public CustomDataFormatter(DataFormatter formatter) {
         this.formatter = formatter;
     }
 
-    /*
-     * returns true if the formatting contains 3 or more parts
+    /**
+     * Returns true if the formatting contains 3 or more parts.
      */
     private boolean hasThreeParts(String dataFormatString) {
         return dataFormatString.contains(";")
@@ -44,10 +46,14 @@ class CustomDataFormatter extends DataFormatter {
     }
 
     /**
-     * if a cell has a custom format with three or more parts and it contains a numeric value,
-     * then formats it as if it had only one part by choosing the format based on the value(i.e. +ve, -ve or 0)
-     * otherwise use  <code>DataFormatter#formatCellValue</code>
+     * If a cell has a custom format with three or more parts
+     * and it contains a numeric value,
+     * then this method formats it as if it had only one part by
+     * choosing the format based on the value (i.e. positive, negative or 0).
+     *
+     * Otherwise use <code>DataFormatter#formatCellValue</code>
      **/
+    @Override
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
         String dataFormatString = cell.getCellStyle().getDataFormatString();
@@ -64,9 +70,9 @@ class CustomDataFormatter extends DataFormatter {
         return formatter.formatCellValue(cell, evaluator);
     }
 
-    /*
-     *Given a Cell with a custom format having 3 (or in some cases 4) parts,
-     *  returns only one part (according to the value of the cell)
+    /**
+     * Given a Cell with a custom format having 3 (or in some cases 4) parts,
+     * returns only one part (according to the value of the cell)
      */
     private String changeFormat(Cell cell, FormulaEvaluator evalueator) {
         int index = getFormatIndex(cell, evalueator);
@@ -77,6 +83,7 @@ class CustomDataFormatter extends DataFormatter {
         if (!NUMBER_PATTERN.matcher(newFormatString).find()) {
             newFormatString += ";" + newFormatString + ";" + newFormatString;
         }
+
         return newFormatString;
     }
 
