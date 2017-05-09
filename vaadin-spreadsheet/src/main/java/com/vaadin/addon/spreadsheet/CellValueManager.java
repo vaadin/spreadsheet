@@ -373,24 +373,12 @@ public class CellValueManager implements Serializable {
     }
 
     private void setLeadingQuoteStyle(Cell cell, boolean leadingQuote) {
-        if (!(cell instanceof XSSFCell)) {
-            // TODO support also old XLS format
-            return;
+        if (cell instanceof XSSFCell) {
+            ((XSSFCell) cell).getCellStyle().getCoreXf()
+                .setQuotePrefix(leadingQuote);
         }
-        
-        boolean originalStyleHasQuotedPrefix = styleHasQuotePrefix(cell);
-        
-        if (originalStyleHasQuotedPrefix != leadingQuote) {
-            XSSFCellStyle newStyle = (XSSFCellStyle) cell.getSheet().getWorkbook().createCellStyle();
-            
-            XSSFCellStyle originalStyle = (XSSFCellStyle) cell.getCellStyle();
-            if (originalStyle != null) {
-                newStyle.cloneStyleFrom(originalStyle);    
-            }
 
-            newStyle.getCoreXf().setQuotePrefix(leadingQuote);
-            cell.setCellStyle(newStyle);
-        }
+        // TODO support also old XLS format
     }
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
