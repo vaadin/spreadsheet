@@ -6,20 +6,10 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
-
-    private static final String B3 = "B3";
-    private static final String B4 = "B4";
-    private static final String B5 = "B5";
-    private static final String B6 = "B6";
-    private static final String C6 = "C6";
 
     private SheetController sheetController;
     private SpreadsheetPage spreadsheetPage;
@@ -34,74 +24,65 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void existingCell_withQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
+    public void existingCell_numberStringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
 
-        // Cell must show the string value WITHOUT the trailing quote
-        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
-        assertEquals("01", cell.getCellAt(B3).getValue());
-
-        // Formula bar must show the string value WITH the trailing quote
-        sheetController.selectCell(B3);
-        assertEquals("'01", spreadsheetPage.getFormulaFieldValue());
-
-        // Inline editor must show the string value WITH the trailing quote
-        WebElement cellEditor = sheetController.getInlineEditor(B3);
-        assertEquals("'01", cellEditor.getAttribute("value"));
+        assertCellValues("B3", "01", "'01", "'01");
     }
 
     @Test
-    public void existingCell_withoutQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
+    public void existingCell_stringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
 
-        // Cell must show the string value WITHOUT the trailing quote
-        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
-        assertEquals("abc", cell.getCellAt(B4).getValue());
-
-        // Formula bar must show the string value WITHOUT the trailing quote
-        sheetController.selectCell(B4);
-        assertEquals("'abc", spreadsheetPage.getFormulaFieldValue());
-
-        // Inline editor must show the string value WITHOUT the trailing quote
-        WebElement cellEditor = sheetController.getInlineEditor(B4);
-        assertEquals("'abc", cellEditor.getAttribute("value"));
+        assertCellValues("B4", "abc", "'abc", "'abc");
     }
 
     @Test
-    public void typingOnCell_withLeadingQuote_quoteNotShownInCellAndInPOIModel()
+    public void existingCell_stringWithoutQuotePrefixStyle_noLeadingQuote()
         throws Exception {
 
-        // Cell must show the string value WITHOUT the trailing quote
-        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
-        assertEquals("123,456", cell.getCellAt(B5).getValue());
+        assertCellValues("B5", "def", "def", "def");
+    }
 
-        // Formula bar must show the string value WITH the trailing quote
-        sheetController.selectCell(B5);
-        assertEquals("'123,456", spreadsheetPage.getFormulaFieldValue());
+    @Test
+    public void typingOnCell_withLeadingQuote_noQuoteShownInCellAndInPOIModel()
+        throws Exception {
 
-        // Inline editor must show the string value WITH the trailing quote
-        WebElement cellEditor = sheetController.getInlineEditor(B5);
-        assertEquals("'123,456", cellEditor.getAttribute("value"));
+        final String cell = "D15";
+
+        sheetController.putCellContent(cell, "'567");
+
+        assertCellValues(cell, "567", "'567", "'567");
     }
 
     @Test
     public void typingOnCell_withTwoLeadingQuotes_justOneQuoteShownInCellAndInPOIModel()
         throws Exception {
 
-        // Typing ''567 in B6
-        SpreadsheetElement cell = $(SpreadsheetElement.class).first();
-        sheetController.putCellContent(B6, "''567");
+        final String cell = "D10";
 
-        // Cell must show the string value WITHOUT the first trailing quote
-        assertEquals("'567", cell.getCellAt(B6).getValue());
+        sheetController.putCellContent(cell, "''567");
 
-        // POI model must be WITHOUT the first trailing quote 
-        // In cell C6 an excel formula prints the first character of B6
-        // (that must not be a quote)
-        assertEquals("'5", cell.getCellAt(C6).getValue());
+        assertCellValues(cell, "'567", "''567", "''567");
+    }
 
-        // Formula bar must show the string value WITH two trailing quote
-        sheetController.selectCell(B6);
-        assertEquals("''567", spreadsheetPage.getFormulaFieldValue());
+    private void assertCellValues(String cell, String cellValue,
+        String formulaBarValue, String inlineEditorValue) {
+
+        assertEquals(cellValue, spreadsheetPage.getCellValue(cell));
+
+        assertEquals(formulaBarValue, getFormulaBarValue(cell));
+
+        assertEquals(inlineEditorValue, getInlineEditorValue(cell));
+    }
+
+    private String getInlineEditorValue(String cell) {
+        WebElement cellEditor = sheetController.getInlineEditor(cell);
+        return cellEditor.getAttribute("value");
+    }
+
+    private String getFormulaBarValue(String cell) {
+        sheetController.selectCell(cell);
+        return spreadsheetPage.getFormulaFieldValue();
     }
 }
