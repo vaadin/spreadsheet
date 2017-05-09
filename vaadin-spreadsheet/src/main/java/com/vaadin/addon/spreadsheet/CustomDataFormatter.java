@@ -87,9 +87,9 @@ class CustomDataFormatter extends DataFormatter {
         return newFormatString;
     }
 
-    private int getFormatIndex(Cell cell, FormulaEvaluator evalueator) {
+    private int getFormatIndex(Cell cell, FormulaEvaluator evaluator) {
 
-        CellType cellType = getCellType(cell, evalueator);
+        CellType cellType = getCellType(cell, evaluator);
 
         if (cellType != CellType.NUMERIC)
             return TEXT_FORMAT_INDEX;
@@ -99,10 +99,10 @@ class CustomDataFormatter extends DataFormatter {
         return numericCellValue < 0 ? NEGATIVE_FORMAT_INDEX : ZERO_FORMAT_INDEX;
     }
 
-    private CellType getCellType(Cell cell, FormulaEvaluator evalueator) {
+    private CellType getCellType(Cell cell, FormulaEvaluator evaluator) {
         CellType cellType = cell.getCellTypeEnum();
         if (cellType == CellType.FORMULA) {
-            cellType = evalueator.evaluateFormulaCellEnum(cell);
+            cellType = evaluator.evaluateFormulaCellEnum(cell);
         }
         return cellType;
     }
