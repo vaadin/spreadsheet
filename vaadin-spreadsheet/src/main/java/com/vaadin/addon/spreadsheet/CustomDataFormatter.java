@@ -3,28 +3,31 @@ package com.vaadin.addon.spreadsheet;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
- *TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
- * {@Link org.apache.poi.ss.usermodel.DataFormatter} doesn't consider Locale while formatting three part custom format (eg. #.##0,00#;(#.##0,00);"-").
- * Instead it formats a custom format having one or two parts according to the Locale.
- * This class is used to format a cell with a three/four part custom format by choosing only one based on the cell content.
+ * TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+ *
+ * {@Link org.apache.poi.ss.usermodel.DataFormatter} doesn't consider
+ * Locale while formatting three part custom format (eg. #.##0,00#;(#.##0,00);"-").
+ *
+ * However, a custom format that has one or two parts is treated correctly
+ * with regards to Locale.
+ *
+ * This class is used as workaround for 3-4 part custom formats, which is done
+ * only one option based on the cell content and treating it as a one-part
+ * formatting.
  */
-class CustomDataFormatter extends DataFormatter{
+class CustomDataFormatter extends DataFormatter {
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
     //In a custom format the first part represents a format for positive numbers,
     // the second for negative numbers, the third for zero and the fourth a plain text
     private final int POSITIVE_FORMAT_INDEX = 0;
     private final int NEGATIVE_FORMAT_INDEX = 1;
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
-
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
-
     private final DataFormatter formatter;
 
     public CustomDataFormatter(DataFormatter formatter) {
@@ -39,22 +42,23 @@ class CustomDataFormatter extends DataFormatter{
             && dataFormatString.indexOf(';') != dataFormatString
             .lastIndexOf(';');
     }
+
     /**
      * if a cell has a custom format with three or more parts and it contains a numeric value,
      * then formats it as if it had only one part by choosing the format based on the value(i.e. +ve, -ve or 0)
      * otherwise use  <code>DataFormatter#formatCellValue</code>
-     * **/
+     **/
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
         String dataFormatString = cell.getCellStyle().getDataFormatString();
         CellType cellType = getCellType(cell, evaluator);
         if (hasThreeParts(dataFormatString) && cellType == CellType.NUMERIC) {
             String newFormatString = changeFormat(cell, evaluator);
-                double numericCellValue = cell.getNumericCellValue();
-                //if it is negative remove the - sign
-                numericCellValue = Math.abs(numericCellValue);
-                return formatter.formatRawCellContents(numericCellValue, -1,
-                    newFormatString);
+            double numericCellValue = cell.getNumericCellValue();
+            //if it is negative remove the - sign
+            numericCellValue = Math.abs(numericCellValue);
+            return formatter
+                .formatRawCellContents(numericCellValue, -1, newFormatString);
         }
 
         return formatter.formatCellValue(cell, evaluator);
@@ -70,12 +74,11 @@ class CustomDataFormatter extends DataFormatter{
         String newFormatString = getFormatPart(oldFormatString, index);
 
         //POI doesn't format string literals having 1 part, repeat it three times
-        if(!NUMBER_PATTERN.matcher(newFormatString).find()){
-            newFormatString +=  ";" +newFormatString + ";" + newFormatString;
+        if (!NUMBER_PATTERN.matcher(newFormatString).find()) {
+            newFormatString += ";" + newFormatString + ";" + newFormatString;
         }
         return newFormatString;
     }
-
 
     private int getFormatIndex(Cell cell, FormulaEvaluator evalueator) {
 
