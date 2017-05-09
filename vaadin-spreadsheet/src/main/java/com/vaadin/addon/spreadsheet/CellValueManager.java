@@ -359,8 +359,8 @@ public class CellValueManager implements Serializable {
 
     private boolean styleHasQuotePrefix(Cell cell) {
         if (!(cell instanceof XSSFCell)) {
-            // TODO support also old XLS format
-            return false;
+            // in 97 format all strings are prefixed
+            return true;
         }
 
         XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
@@ -377,8 +377,6 @@ public class CellValueManager implements Serializable {
             ((XSSFCell) cell).getCellStyle().getCoreXf()
                 .setQuotePrefix(leadingQuote);
         }
-
-        // TODO support also old XLS format
     }
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
