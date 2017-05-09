@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -259,21 +260,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         });
 
         Button downloadButton = new Button("Download");
-        new FileDownloader(new StreamResource(new StreamSource() {
 
-            @Override
-            public InputStream getStream() {
-                try {
-                    return new FileInputStream(
-                            spreadsheet.write("testsheet.xlsx"));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        }, "testsheet.xlsx")).extend(downloadButton);
+        handleDownload(downloadButton);
 
         localeSelect = new NativeSelect();
         localeSelect.setWidth("200px");
@@ -379,6 +367,34 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         updateFromFragment();
 
+    }
+
+    private void handleDownload(Button downloadButton) {
+        final StreamSource streamSource = new StreamSource() {
+            @Override
+            public InputStream getStream() {
+                try {
+                    return new FileInputStream(spreadsheet.write("testsheet"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+
+        new FileDownloader(new StreamResource(streamSource, "") {
+            @Override
+            public String getFilename() {
+                if (spreadsheet.getWorkbook().getSpreadsheetVersion()
+                    == SpreadsheetVersion.EXCEL2007) {
+                    return "test_sheet.xlsx";
+                } else {
+                    return "test_sheet.xls";
+                }
+            }
+        }).extend(downloadButton);
     }
 
     private Button createSaveButton() {
