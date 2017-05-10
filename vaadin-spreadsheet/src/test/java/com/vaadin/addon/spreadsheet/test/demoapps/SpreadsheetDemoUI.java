@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -125,68 +124,69 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         options = new HorizontalLayout();
         options.setSpacing(true);
-        rowColHeadings = createRowHeadings();
+        rowColHeadings=createRowHeadings();
 
         Button newSpreadsheetButton = createNewButton();
 
         File file = null;
         try {
             ClassLoader classLoader = SpreadsheetDemoUI.class.getClassLoader();
-            URL resource = classLoader
-                .getResource("test_sheets" + File.separator);
+            URL resource = classLoader.getResource("test_sheets"
+                    + File.separator);
             file = new File(resource.toURI());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
 
-        final FilesystemContainer testSheetContainer = new FilesystemContainer(
-            file);
+        final FilesystemContainer testSheetContainer = new FilesystemContainer(file);
         testSheetContainer.setRecursive(false);
         testSheetContainer.setFilter(new FilenameFilter() {
 
             @Override
             public boolean accept(File dir, String name) {
-                if (name != null && (name.endsWith(".xls") || name
-                    .endsWith(".xlsx") || name.endsWith(".xlsm"))) {
+                if (name != null
+                        && (name.endsWith(".xls") || name.endsWith(".xlsx") || name
+                                .endsWith(".xlsm"))) {
                     return true;
                 } else {
                     return false;
                 }
             }
         });
-        openTestSheetSelect = createTestSheetCombobox(testSheetContainer);
-        updateButton = createUpdateButton(testSheetContainer);
-        save = createSaveButton();
+        openTestSheetSelect=createTestSheetCombobox(testSheetContainer);
+        updateButton=createUpdateButton(testSheetContainer);
+        save=createSaveButton();
 
         download = new Button("Download");
         download.setEnabled(false);
 
-        gridlines = createCBNewLines();
+        gridlines =createCBNewLines();
         Button customComponentTest = new Button(
-            "Create Custom Editor Test sheet", new Button.ClickListener() {
+                "Create Custom Editor Test sheet", new Button.ClickListener() {
 
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if (spreadsheet == null) {
-                    spreadsheet = new Spreadsheet(
-                        ((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
-                            .getTestWorkbook());
-                    updateLocale();
-                    spreadsheet.setSpreadsheetComponentFactory(
-                        spreadsheetFieldFactory);
-                    layout.addComponent(spreadsheet);
-                    layout.setExpandRatio(spreadsheet, 1.0F);
-                } else {
-                    spreadsheet.setWorkbook(
-                        ((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
-                            .getTestWorkbook());
-                    spreadsheet.setSpreadsheetComponentFactory(
-                        spreadsheetFieldFactory);
-                }
-                gridlines.setValue(spreadsheet.isGridlinesVisible());
-                rowColHeadings.setValue(spreadsheet.isRowColHeadingsVisible());
-            }
-        });
+                    @Override
+                    public void buttonClick(ClickEvent event) {
+                        if (spreadsheet == null) {
+                            spreadsheet = new Spreadsheet(
+                                    ((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
+                                            .getTestWorkbook());
+                            updateLocale();
+                            spreadsheet
+                                    .setSpreadsheetComponentFactory(spreadsheetFieldFactory);
+                            layout.addComponent(spreadsheet);
+                            layout.setExpandRatio(spreadsheet, 1.0F);
+                        } else {
+                            spreadsheet
+                                    .setWorkbook(((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
+                                            .getTestWorkbook());
+                            spreadsheet
+                                    .setSpreadsheetComponentFactory(spreadsheetFieldFactory);
+                        }
+                        gridlines.setValue(spreadsheet.isGridlinesVisible());
+                        rowColHeadings.setValue(spreadsheet
+                                .isRowColHeadingsVisible());
+                    }
+                });
 
         upload.addSucceededListener(new SucceededListener() {
 
@@ -199,13 +199,13 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         VerticalLayout checkBoxLayout = new VerticalLayout();
 
         Button freezePanesButton = new Button("Freeze Pane",
-            new Button.ClickListener() {
+                new Button.ClickListener() {
 
-                @Override
-                public void buttonClick(ClickEvent event) {
-                    addWindow(new FreezePaneWindow());
-                }
-            });
+                    @Override
+                    public void buttonClick(ClickEvent event) {
+                        addWindow(new FreezePaneWindow());
+                    }
+                });
 
         hideTop = new CheckBox("toggle top bar visibility");
         hideTop.setImmediate(true);
@@ -242,9 +242,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
         });
 
-        checkBoxLayout
-            .addComponents(gridlines, rowColHeadings, hideTop, hideBottom,
-                hideBoth);
+        checkBoxLayout.addComponents(gridlines, rowColHeadings, hideTop,
+                hideBottom, hideBoth);
 
         Button closeButton = new Button("Close", new Button.ClickListener() {
 
@@ -260,15 +259,28 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         });
 
         Button downloadButton = new Button("Download");
+        new FileDownloader(new StreamResource(new StreamSource() {
 
-        handleDownload(downloadButton);
+            @Override
+            public InputStream getStream() {
+                try {
+                    return new FileInputStream(
+                            spreadsheet.write("testsheet.xlsx"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }, "testsheet.xlsx")).extend(downloadButton);
 
         localeSelect = new NativeSelect();
         localeSelect.setWidth("200px");
         localeSelect.setId("localeSelect");
 
         final List<Locale> locales = Arrays
-            .asList(Locale.getAvailableLocales());
+                .asList(Locale.getAvailableLocales());
         Collections.sort(locales, new Comparator<Locale>() {
             @Override
             public int compare(Locale o1, Locale o2) {
@@ -328,14 +340,14 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         loadFixtureBtn.setId("loadFixtureBtn");
 
         HorizontalLayout loadFixture = new HorizontalLayout(fixtureSelect,
-            loadFixtureBtn);
-        loadFixture
-            .setComponentAlignment(loadFixtureBtn, Alignment.BOTTOM_CENTER);
+                loadFixtureBtn);
+        loadFixture.setComponentAlignment(loadFixtureBtn,
+                Alignment.BOTTOM_CENTER);
 
         VerticalLayout createAndFreeze = new VerticalLayout();
         createAndFreeze.setSpacing(true);
-        createAndFreeze.addComponents(newSpreadsheetButton, customComponentTest,
-            freezePanesButton);
+        createAndFreeze.addComponents(newSpreadsheetButton,
+                customComponentTest, freezePanesButton);
 
         HorizontalLayout updateLayout = new HorizontalLayout();
         updateLayout.addComponents(openTestSheetSelect, updateButton);
@@ -357,45 +369,16 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         options.addComponent(closeDownload);
 
         getPage().addUriFragmentChangedListener(
-            new Page.UriFragmentChangedListener() {
-                @Override
-                public void uriFragmentChanged(
-                    Page.UriFragmentChangedEvent event) {
-                    updateFromFragment();
-                }
-            });
+                new Page.UriFragmentChangedListener() {
+                    @Override
+                    public void uriFragmentChanged(
+                            Page.UriFragmentChangedEvent event) {
+                        updateFromFragment();
+                    }
+                });
 
         updateFromFragment();
 
-    }
-
-    private void handleDownload(Button downloadButton) {
-        final StreamSource streamSource = new StreamSource() {
-            @Override
-            public InputStream getStream() {
-                try {
-                    return new FileInputStream(spreadsheet.write("testsheet"));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        };
-
-        new FileDownloader(new StreamResource(streamSource, "") {
-            @Override
-            public String getFilename() {
-                if (spreadsheet.getWorkbook() != null
-                    && spreadsheet.getWorkbook().getSpreadsheetVersion()
-                    == SpreadsheetVersion.EXCEL97) {
-                    return "test_sheet.xls";
-                }
-
-                return "test_sheet.xlsx";
-            }
-        }).extend(downloadButton);
     }
 
     private Button createSaveButton() {
@@ -407,8 +390,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     try {
                         if (previousFile != null) {
                             int i = previousFile.getName().lastIndexOf(".xls");
-                            String fileName =
-                                previousFile.getName().substring(0, i) + ("(1)")
+                            String fileName = previousFile.getName().substring(
+                                    0, i)
+                                    + ("(1)")
                                     + previousFile.getName().substring(i);
                             previousFile = spreadsheet.write(fileName);
                         } else {
@@ -417,7 +401,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                         download.setEnabled(true);
                         FileResource resource = new FileResource(previousFile);
                         FileDownloader fileDownloader = new FileDownloader(
-                            resource);
+                                resource);
                         fileDownloader.extend(download);
                         previousFile.deleteOnExit();
                     } catch (FileNotFoundException e) {
@@ -434,8 +418,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         return save;
     }
 
-    private Button createUpdateButton(
-        final FilesystemContainer testSheetContainer) {
+    private Button createUpdateButton(final FilesystemContainer testSheetContainer) {
         Button updateButton = new Button("Update", new Button.ClickListener() {
 
             @Override
@@ -444,11 +427,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 if (value != null && value instanceof File) {
                     loadFile((File) value);
                 }
-                Object caption = testSheetContainer.getItem(value)
-                    .getItemProperty("Name").getValue();
-                if (caption != null) {
-                    Page.getCurrent()
-                        .setUriFragment("file/" + caption.toString(), false);
+                Object caption = testSheetContainer.getItem(value).getItemProperty("Name").getValue();
+                if(caption != null) {
+                    Page.getCurrent().setUriFragment("file/" + caption.toString(), false);
                 }
             }
         });
@@ -456,8 +437,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         return updateButton;
     }
 
-    private ComboBox createTestSheetCombobox(
-        FilesystemContainer testSheetContainer) {
+    private ComboBox createTestSheetCombobox(FilesystemContainer testSheetContainer) {
         ComboBox cb = new ComboBox(null, testSheetContainer);
         cb.setId("testSheetSelect");
         cb.setImmediate(true);
@@ -468,35 +448,36 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
     }
 
     private Button createNewButton() {
-        return new Button("Create new", new Button.ClickListener() {
+        return new Button("Create new",
+                new Button.ClickListener() {
 
-            @Override
-            public void buttonClick(ClickEvent event) {
-                if (spreadsheet == null) {
-                    spreadsheet = new Spreadsheet();
-                    updateLocale();
-                    spreadsheet
-                        .addSheetChangeListener(selectedSheetChangeListener);
-                    layout.addComponent(spreadsheet);
-                    layout.setExpandRatio(spreadsheet, 1.0f);
-                } else {
-                    spreadsheet.reset();
-                }
-                spreadsheet.setSpreadsheetComponentFactory(null);
-                save.setEnabled(true);
-                previousFile = null;
-                openTestSheetSelect.setValue(null);
-                gridlines.setValue(spreadsheet.isGridlinesVisible());
-                rowColHeadings.setValue(spreadsheet.isRowColHeadingsVisible());
+                    @Override
+                    public void buttonClick(ClickEvent event) {
+                        if (spreadsheet == null) {
+                            spreadsheet = new Spreadsheet();
+                            updateLocale();
+                            spreadsheet
+                                    .addSheetChangeListener(selectedSheetChangeListener);
+                            layout.addComponent(spreadsheet);
+                            layout.setExpandRatio(spreadsheet, 1.0f);
+                        } else {
+                            spreadsheet.reset();
+                        }
+                        spreadsheet.setSpreadsheetComponentFactory(null);
+                        save.setEnabled(true);
+                        previousFile = null;
+                        openTestSheetSelect.setValue(null);
+                        gridlines.setValue(spreadsheet.isGridlinesVisible());
+                        rowColHeadings.setValue(spreadsheet
+                                .isRowColHeadingsVisible());
 
-                Page.getCurrent().setUriFragment(null, false);
-            }
-        });
+                        Page.getCurrent().setUriFragment(null, false);
+                    }
+                });
     }
 
     private CheckBox createRowHeadings() {
-        CheckBox rowColHeadings = new CheckBox(
-            "display row and column headers");
+        CheckBox rowColHeadings = new CheckBox("display row and column headers");
         rowColHeadings.setImmediate(true);
 
         rowColHeadings.addValueChangeListener(new ValueChangeListener() {
@@ -575,7 +556,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
 
             Notification.show("File not found: " + filename,
-                Notification.Type.WARNING_MESSAGE);
+                    Notification.Type.WARNING_MESSAGE);
         }
     }
 
@@ -587,8 +568,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 layout.addComponent(spreadsheet);
                 layout.setExpandRatio(spreadsheet, 1.0f);
             } else {
-                if (previousFile == null || !previousFile.getAbsolutePath()
-                    .equals(file.getAbsolutePath())) {
+                if (previousFile == null
+                        || !previousFile.getAbsolutePath().equals(
+                                file.getAbsolutePath())) {
                     spreadsheet.read(file);
                 }
             }
@@ -614,37 +596,31 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         }
     }
 
-    @Override
-    public OutputStream receiveUpload(final String filename, String mimeType) {
-        try {
-            File file = new File(filename);
-            file.deleteOnExit();
-            uploadedFile = file;
-            FileOutputStream fos = new FileOutputStream(uploadedFile);
-            return fos;
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return null;
-    }
+    class SpreadsheetEditorComponentFactoryTest implements
+            SpreadsheetComponentFactory {
 
-    class SpreadsheetEditorComponentFactoryTest
-        implements SpreadsheetComponentFactory {
+        private int counter = 0;
 
         private final DateField dateField = new DateField();
+
         private final CheckBox checkBox = new CheckBox();
+
         private final Workbook testWorkbook;
+
         private final String[] comboBoxValues = { "Value 1", "Value 2",
-            "Value 3" };
+                "Value 3" };
+
         private final Object[][] data = {
-            { "Testing custom editors", "Boolean", "Date", "Numeric", "Button",
-                "ComboBox" }, { "nulls:", false, null, 0, null, null },
-            { "", true, new Date(), 5, "here is a button", comboBoxValues[0] },
-            { "", true, Calendar.getInstance(), 500.0D,
-                "here is another button", comboBoxValues[1] } };
+                { "Testing custom editors", "Boolean", "Date", "Numeric",
+                        "Button", "ComboBox" },
+                { "nulls:", false, null, 0, null, null },
+                { "", true, new Date(), 5, "here is a button",
+                        comboBoxValues[0] },
+                { "", true, Calendar.getInstance(), 500.0D,
+                        "here is another button", comboBoxValues[1] } };
+
         private final ComboBox comboBox;
-        private int counter = 0;
+
         private boolean initializingComboBoxValue;
 
         private Button button;
@@ -665,8 +641,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         public SpreadsheetEditorComponentFactoryTest() {
             testWorkbook = new XSSFWorkbook();
-            final Sheet sheet = getTestWorkbook()
-                .createSheet("Custom Components");
+            final Sheet sheet = getTestWorkbook().createSheet(
+                    "Custom Components");
             Row lastRow = sheet.createRow(100);
             lastRow.createCell(100, Cell.CELL_TYPE_BOOLEAN).setCellValue(true);
             sheet.setColumnWidth(0, 6000);
@@ -689,20 +665,20 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                         cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                     }
                     final DataFormat format = getTestWorkbook()
-                        .createDataFormat();
+                            .createDataFormat();
                     if (value != null) {
                         if (value instanceof String) {
                             cell.setCellValue((String) value);
                         } else if (value instanceof Double) {
                             cell.setCellValue((Double) value);
                             CellStyle style = sheet.getWorkbook()
-                                .createCellStyle();
+                                    .createCellStyle();
                             style.setDataFormat(format.getFormat("0000.0"));
                             cell.setCellStyle(style);
                         } else if (value instanceof Integer) {
                             cell.setCellValue(((Integer) value).intValue());
                             CellStyle style = sheet.getWorkbook()
-                                .createCellStyle();
+                                    .createCellStyle();
                             style.setDataFormat(format.getFormat("0.0"));
                             cell.setCellStyle(style);
                         } else if (value instanceof Boolean) {
@@ -710,16 +686,16 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                         } else if (value instanceof Date) {
                             cell.setCellValue((Date) value);
                             CellStyle dateStyle = sheet.getWorkbook()
-                                .createCellStyle();
-                            dateStyle
-                                .setDataFormat(format.getFormat("m/d/yy h:mm"));
+                                    .createCellStyle();
+                            dateStyle.setDataFormat(format
+                                    .getFormat("m/d/yy h:mm"));
                             cell.setCellStyle(dateStyle);
                         } else if (value instanceof Calendar) {
                             cell.setCellValue((Calendar) value);
                             CellStyle dateStyle = sheet.getWorkbook()
-                                .createCellStyle();
-                            dateStyle
-                                .setDataFormat(format.getFormat("d m yyyy"));
+                                    .createCellStyle();
+                            dateStyle.setDataFormat(format
+                                    .getFormat("d m yyyy"));
                             cell.setCellStyle(dateStyle);
                         }
                     } // null sells don't get a value
@@ -727,13 +703,12 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
             Row row5 = sheet.createRow(5);
             row5.setHeightInPoints(20F);
-            row5.createCell(0)
-                .setCellValue("This cell has a value, and a component (label)");
-            row5.createCell(1)
-                .setCellValue("This cell has a value, and a button");
+            row5.createCell(0).setCellValue(
+                    "This cell has a value, and a component (label)");
+            row5.createCell(1).setCellValue(
+                    "This cell has a value, and a button");
             Cell cell2 = row5.createCell(2);
-            cell2.setCellValue(
-                "This cell has a value and button, and is locked.");
+            cell2.setCellValue("This cell has a value and button, and is locked.");
             CellStyle lockedCellStyle = sheet.getWorkbook().createCellStyle();
             lockedCellStyle.setLocked(true);
             cell2.setCellStyle(lockedCellStyle);
@@ -752,9 +727,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     if (!initializingComboBoxValue) {
                         String s = (String) comboBox.getValue();
                         CellReference cr = spreadsheet
-                            .getSelectedCellReference();
-                        Cell cell = spreadsheet
-                            .getCell(cr.getRow(), cr.getCol());
+                                .getSelectedCellReference();
+                        Cell cell = spreadsheet.getCell(cr.getRow(),
+                                cr.getCol());
                         if (cell != null) {
                             cell.setCellValue(s);
                             spreadsheet.refreshCells(cell);
@@ -770,9 +745,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 @Override
                 public void valueChange(ValueChangeEvent event) {
                     CellReference selectedCellReference = spreadsheet
-                        .getSelectedCellReference();
-                    Cell cell = spreadsheet
-                        .getCell(selectedCellReference.getRow(),
+                            .getSelectedCellReference();
+                    Cell cell = spreadsheet.getCell(
+                            selectedCellReference.getRow(),
                             selectedCellReference.getCol());
                     try {
                         Date oldValue = cell.getDateCellValue();
@@ -794,9 +769,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 @Override
                 public void valueChange(ValueChangeEvent event) {
                     CellReference selectedCellReference = spreadsheet
-                        .getSelectedCellReference();
-                    Cell cell = spreadsheet
-                        .getCell(selectedCellReference.getRow(),
+                            .getSelectedCellReference();
+                    Cell cell = spreadsheet.getCell(
+                            selectedCellReference.getRow(),
                             selectedCellReference.getCol());
                     try {
                         Boolean value = checkBox.getValue();
@@ -814,7 +789,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         @Override
         public Component getCustomEditorForCell(Cell cell, int rowIndex,
-            int columnIndex, Spreadsheet spreadsheet, Sheet sheet) {
+                int columnIndex, Spreadsheet spreadsheet, Sheet sheet) {
             if (spreadsheet.getActiveSheetIndex() == 0) {
                 if (rowIndex == 0 || rowIndex > 3) {
                     return null;
@@ -827,14 +802,14 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     return null;
                 } else if (4 == columnIndex) { // button
                     return new Button("Button " + (++counter),
-                        new Button.ClickListener() {
+                            new Button.ClickListener() {
 
-                            @Override
-                            public void buttonClick(ClickEvent event) {
-                                Notification
-                                    .show("Clicked button inside sheet");
-                            }
-                        });
+                                @Override
+                                public void buttonClick(ClickEvent event) {
+                                    Notification
+                                            .show("Clicked button inside sheet");
+                                }
+                            });
                 } else if (5 == columnIndex) { // combobox
                     return comboBox;
                 }
@@ -844,22 +819,22 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         @Override
         public void onCustomEditorDisplayed(Cell cell, int rowIndex,
-            int columnIndex, Spreadsheet spreadsheet, Sheet sheet,
-            Component customEditor) {
+                int columnIndex, Spreadsheet spreadsheet, Sheet sheet,
+                Component customEditor) {
             if (customEditor instanceof Button) {
                 if (rowIndex == 3) {
                     customEditor.setWidth("100%");
                 } else {
                     customEditor.setWidth("110px");
-                    customEditor
-                        .setCaption("Col " + columnIndex + " Row " + rowIndex);
+                    customEditor.setCaption("Col " + columnIndex + " Row "
+                            + rowIndex);
                 }
                 return;
             }
             if (customEditor.equals(comboBox)) {
                 initializingComboBoxValue = true;
-                String stringCellValue =
-                    cell != null ? cell.getStringCellValue() : null;
+                String stringCellValue = cell != null ? cell
+                        .getStringCellValue() : null;
                 comboBox.setValue(stringCellValue);
                 comboBox.setWidth("100%");
                 initializingComboBoxValue = false;
@@ -867,38 +842,38 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
             if (cell != null) {
                 if (cell.getCellType() == Cell.CELL_TYPE_BOOLEAN) {
-                    ((CheckBox) customEditor)
-                        .setValue(cell.getBooleanCellValue());
+                    ((CheckBox) customEditor).setValue(cell
+                            .getBooleanCellValue());
                 } else if (customEditor instanceof DateField) {
                     final String s = cell.getCellStyle().getDataFormatString();
                     if (s.contains("ss")) {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.SECOND);
+                                .setResolution(Resolution.SECOND);
                     } else if (s.contains("mm")) {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.MINUTE);
+                                .setResolution(Resolution.MINUTE);
                     } else if (s.contains("h")) {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.HOUR);
+                                .setResolution(Resolution.HOUR);
                     } else if (s.contains("d")) {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.DAY);
+                                .setResolution(Resolution.DAY);
                     } else if (s.contains("m") || s.contains("mmm")) {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.MONTH);
+                                .setResolution(Resolution.MONTH);
                     } else {
                         ((DateField) customEditor)
-                            .setResolution(Resolution.YEAR);
+                                .setResolution(Resolution.YEAR);
                     }
                     ((DateField) customEditor)
-                        .setValue(cell.getDateCellValue());
+                            .setValue(cell.getDateCellValue());
                     ((DateField) customEditor).setWidth("100%");
                     Format format = spreadsheet.getDataFormatter()
-                        .createFormat(cell);
+                            .createFormat(cell);
                     String pattern = null;
                     if (format instanceof ExcelStyleDateFormatter) {
                         pattern = ((ExcelStyleDateFormatter) format)
-                            .toLocalizedPattern();
+                                .toLocalizedPattern();
                     }
                     try {
                         ((DateField) customEditor).setDateFormat(pattern);
@@ -911,32 +886,33 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         @Override
         public Component getCustomComponentForCell(Cell cell,
-            final int rowIndex, final int columnIndex,
-            final Spreadsheet spreadsheet, final Sheet sheet) {
+                final int rowIndex, final int columnIndex,
+                final Spreadsheet spreadsheet, final Sheet sheet) {
 
             if (rowIndex == 5) {
                 if (!hidden) {
                     if (columnIndex == 0) {
                         Label label = new Label(
-                            "<div style=\"text-overflow: ellipsis; font-size: 15pt;"
-                                + "overflow: hidden; white-space: nowrap;\">Custom"
-                                + "Components in this row.</div>",
-                            ContentMode.HTML);
+                                "<div style=\"text-overflow: ellipsis; font-size: 15pt;"
+                                        + "overflow: hidden; white-space: nowrap;\">Custom"
+                                        + "Components in this row.</div>",
+                                ContentMode.HTML);
                         return label;
                     }
                     if (columnIndex == 1) {
                         if (button == null) {
                             button = new Button("CLICKME",
-                                new Button.ClickListener() {
+                                    new Button.ClickListener() {
 
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        Notification.show(
-                                            "Clicked button at row index "
-                                                + rowIndex + " column index "
-                                                + columnIndex);
-                                    }
-                                });
+                                        @Override
+                                        public void buttonClick(ClickEvent event) {
+                                            Notification
+                                                    .show("Clicked button at row index "
+                                                            + rowIndex
+                                                            + " column index "
+                                                            + columnIndex);
+                                        }
+                                    });
                             button.setWidth("100%");
                         }
                         return button;
@@ -944,56 +920,60 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     if (columnIndex == 2) {
                         if (button3 == null) {
                             button3 = new Button("Hide/Show rows 1-4",
-                                new Button.ClickListener() {
+                                    new Button.ClickListener() {
 
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        boolean hidden = !sheet.getRow(0)
-                                            .getZeroHeight();
-                                        spreadsheet.setRowHidden(0, hidden);
-                                        spreadsheet.setRowHidden(1, hidden);
-                                        spreadsheet.setRowHidden(2, hidden);
-                                        spreadsheet.setRowHidden(3, hidden);
-                                    }
-                                });
+                                        @Override
+                                        public void buttonClick(ClickEvent event) {
+                                            boolean hidden = !sheet.getRow(0)
+                                                    .getZeroHeight();
+                                            spreadsheet.setRowHidden(0, hidden);
+                                            spreadsheet.setRowHidden(1, hidden);
+                                            spreadsheet.setRowHidden(2, hidden);
+                                            spreadsheet.setRowHidden(3, hidden);
+                                        }
+                                    });
                         }
                         return button3;
                     }
                     if (columnIndex == 3) {
                         if (button2 == null) {
                             button2 = new Button("Hide/Show Columns F-I",
-                                new Button.ClickListener() {
+                                    new Button.ClickListener() {
 
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        boolean hidden = !sheet
-                                            .isColumnHidden(5);
-                                        spreadsheet.setColumnHidden(5, hidden);
-                                        spreadsheet.setColumnHidden(6, hidden);
-                                        spreadsheet.setColumnHidden(7, hidden);
-                                        spreadsheet.setColumnHidden(8, hidden);
-                                    }
-                                });
+                                        @Override
+                                        public void buttonClick(ClickEvent event) {
+                                            boolean hidden = !sheet
+                                                    .isColumnHidden(5);
+                                            spreadsheet.setColumnHidden(5,
+                                                    hidden);
+                                            spreadsheet.setColumnHidden(6,
+                                                    hidden);
+                                            spreadsheet.setColumnHidden(7,
+                                                    hidden);
+                                            spreadsheet.setColumnHidden(8,
+                                                    hidden);
+                                        }
+                                    });
                         }
                         return button2;
                     }
                     if (columnIndex == 4) {
                         if (button4 == null) {
                             button4 = new Button("Lock/Unlock sheet",
-                                new Button.ClickListener() {
+                                    new Button.ClickListener() {
 
-                                    @Override
-                                    public void buttonClick(ClickEvent event) {
-                                        if (spreadsheet.getActiveSheet()
-                                            .getProtect()) {
-                                            spreadsheet
-                                                .setActiveSheetProtected(null);
-                                        } else {
-                                            spreadsheet
-                                                .setActiveSheetProtected("");
+                                        @Override
+                                        public void buttonClick(ClickEvent event) {
+                                            if (spreadsheet.getActiveSheet()
+                                                    .getProtect()) {
+                                                spreadsheet
+                                                        .setActiveSheetProtected(null);
+                                            } else {
+                                                spreadsheet
+                                                        .setActiveSheetProtected("");
+                                            }
                                         }
-                                    }
-                                });
+                                    });
                         }
                         return button4;
                     }
@@ -1001,14 +981,14 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 if (columnIndex == 5) {
                     if (button5 == null) {
                         button5 = new Button("Hide all custom components",
-                            new Button.ClickListener() {
+                                new Button.ClickListener() {
 
-                                @Override
-                                public void buttonClick(ClickEvent event) {
-                                    hidden = !hidden;
-                                    spreadsheet.reloadVisibleCellContents();
-                                }
-                            });
+                                    @Override
+                                    public void buttonClick(ClickEvent event) {
+                                        hidden = !hidden;
+                                        spreadsheet.reloadVisibleCellContents();
+                                    }
+                                });
                     }
                     return button5;
                 }
@@ -1043,6 +1023,21 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
     }
 
+    @Override
+    public OutputStream receiveUpload(final String filename, String mimeType) {
+        try {
+            File file = new File(filename);
+            file.deleteOnExit();
+            uploadedFile = file;
+            FileOutputStream fos = new FileOutputStream(uploadedFile);
+            return fos;
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     class FreezePaneWindow extends Window {
 
         public FreezePaneWindow() {
@@ -1057,7 +1052,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             setContent(l);
 
             final TextField hSplitTF = new TextField(
-                "Horizontal Split Position");
+                    "Horizontal Split Position");
             hSplitTF.setValue("6");
             hSplitTF.setConverter(Integer.class);
             final TextField vSplitTF = new TextField("Vertical Split Position");
@@ -1065,22 +1060,24 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             vSplitTF.setValue("6");
             l.addComponent(vSplitTF);
             l.addComponent(hSplitTF);
-            l.addComponent(
-                new Button("Submit values", new Button.ClickListener() {
+            l.addComponent(new Button("Submit values",
+                    new Button.ClickListener() {
 
-                    @Override
-                    public void buttonClick(ClickEvent event) {
-                        try {
-                            if (spreadsheet != null) {
-                                spreadsheet.createFreezePane(
-                                    (Integer) vSplitTF.getConvertedValue(),
-                                    (Integer) hSplitTF.getConvertedValue());
+                        @Override
+                        public void buttonClick(ClickEvent event) {
+                            try {
+                                if (spreadsheet != null) {
+                                    spreadsheet.createFreezePane(
+                                            (Integer) vSplitTF
+                                                    .getConvertedValue(),
+                                            (Integer) hSplitTF
+                                                    .getConvertedValue());
+                                }
+                            } catch (ConversionException e) {
                             }
-                        } catch (ConversionException e) {
+                            close();
                         }
-                        close();
-                    }
-                }));
+                    }));
         }
     }
 }
