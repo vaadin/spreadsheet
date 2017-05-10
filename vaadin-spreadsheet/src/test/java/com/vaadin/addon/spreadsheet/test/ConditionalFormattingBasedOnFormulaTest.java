@@ -1,15 +1,13 @@
 package com.vaadin.addon.spreadsheet.test;
 
+import static com.vaadin.addon.spreadsheet.test.ConditionalFormattingBasedOnFormulaTest.BorderState.BORDERED;
+import static com.vaadin.addon.spreadsheet.test.ConditionalFormattingBasedOnFormulaTest.BorderState.BORDERLESS;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -19,6 +17,7 @@ public class ConditionalFormattingBasedOnFormulaTest
     private static final String DIFFERENT_FROM_ZERO_CONDITION_COLOR = "rgba(255, 255, 0, 1)";
     
     private SpreadsheetPage spreadsheetPage;
+    static final boolean DEFAULT_STATE = false;
 
     @Override
     public void setUp() throws Exception {
@@ -53,18 +52,275 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, c10WithConditionGreaterOfZero);
         assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, d10WithConditionLowerOfZero);
     }
+    
+    enum BorderState {
+        BORDERED(true),
+        BORDERLESS(false),
+        DEFAULT_BORDER_STATE(DEFAULT_STATE);
+
+        boolean hasBorder;
+
+        BorderState(boolean bordered) {
+            this.hasBorder = bordered;
+        }
+    }
 
     @Test
-    public void loadSpreadsheetWithConditionalFormattingCellBorderRulesInD15_EvaluateFormatting_CheckColorOfCells(){
-        // D15
-        assertFalse(spreadsheetPage.hasBorderBottom("C14")); // up
-        assertTrue(spreadsheetPage.hasBorderBottom("D15"));  // bottom (up for D16)
-        assertFalse(spreadsheetPage.hasBorderRight("D15"));  // right
-        assertFalse(spreadsheetPage.hasBorderRight("C15"));  // left
+    public void loadSpreadsheetWithConditionalFormattingCellBorderRulesInD14D15D16_EvaluateFormatting_CheckBorderOfCells() {
+        String[] cells = { "D14", "D15", "D16", "C14" };
+        Map<String, BorderState> borderRuleValues = new HashMap<String, BorderState>() {{
+            put("D14", BORDERLESS);
+            put("D15", BORDERLESS);
+            put("D16", BORDERED);
+            put("C14", BORDERED);
+        }};
+        Map<String, Boolean> matchRuleValues = new HashMap<String, Boolean>() {{
+            put("D14", false);
+            put("D15", false);
+            put("D16", true);
+            put("C14", true);
+        }};
 
-        // D16
-        assertTrue(spreadsheetPage.hasBorderBottom("D16"));  // bottom
-        assertTrue(spreadsheetPage.hasBorderRight("D16"));  // right
-        assertTrue(spreadsheetPage.hasBorderRight("C16"));  // left
+        Map<String, BorderState> cellStates = computeCellBorderStates(cells,
+            borderRuleValues, matchRuleValues);
+        Map<String, Map<String, BorderState>> neighbourCellsStates = computeNeighbourCellStates(
+            cells, cellStates);
+
+        for (String cell : cells) {
+            checkBordersState(cell, matchRuleValues.get(cell),
+                cellStates.get(cell), neighbourCellsStates.get(cell));
+        }
+
+        spreadsheetPage.setCellValue("D16", "borderless");
+        matchRuleValues.put("D16", false);
+        cellStates = computeCellBorderStates(cells, borderRuleValues,
+            matchRuleValues);
+        neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
+
+        for (String cell : cells) {
+            checkBordersState(cell, matchRuleValues.get(cell),
+                cellStates.get(cell), neighbourCellsStates.get(cell));
+        }
+
+        spreadsheetPage.setCellValue("D14", "borderless");
+        matchRuleValues.put("D14", true);
+        cellStates = computeCellBorderStates(cells, borderRuleValues,
+            matchRuleValues);
+        neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
+
+        for (String cell : cells) {
+            checkBordersState(cell, matchRuleValues.get(cell),
+                cellStates.get(cell), neighbourCellsStates.get(cell));
+        }
+    }
+
+    /// Check Cell States
+
+    /**
+     * Check method that compare the current and the expected cell states
+     *
+     * @param cell
+     *     Address of the cell "subject of the test"
+     * @param matchRule
+     *     Conditional formatting rule state
+     * @param cellState
+     *     Current border cell state
+     * @param borderingCellState
+     *     Current border cell states of the four neighbours of <code>cell</code>
+     */
+    private void checkBordersState(String cell, boolean matchRule,
+        BorderState cellState, Map<String, BorderState> borderingCellState) {
+        // In the testing sheet, conditional formatting rules are growing priority
+        // going from top to bottom and from right to left
+        boolean winOnAboveCell = cellStateWinOnNeighbour(matchRule, true);
+        boolean winOnRightCell = cellStateWinOnNeighbour(matchRule, false);
+        boolean winOnBelowCell = cellStateWinOnNeighbour(matchRule, false);
+        boolean winOnLeftCell = cellStateWinOnNeighbour(matchRule, true);
+
+        assertEquals(topBorderState(cell),
+            borderState(winOnAboveCell, cellState,
+                getAboveCellState(borderingCellState, cell)));     // top
+        assertEquals(rightBorderState(cell),
+            borderState(winOnRightCell, cellState,
+                getRightCellState(borderingCellState, cell)));   // right
+        assertEquals(bottomBorderState(cell),
+            borderState(winOnBelowCell, cellState,
+                getBelowCellState(borderingCellState, cell)));  // bottom
+        assertEquals(leftBorderState(cell),
+            borderState(winOnLeftCell, cellState,
+                getLeftCellState(borderingCellState, cell)));      // left
+    }
+
+    private boolean cellStateWinOnNeighbour(boolean match,
+        boolean hasMorePriority) {
+        return match && hasMorePriority;
+    }
+
+    /// Pre-Elaboration States
+
+    /**
+     * Return the border states of neighbours (of the test subject cells)
+     *
+     * @param cells
+     *     Subjects of the test
+     * @param cellBorderStates
+     *     Border states of the cells: "cell address" -> "border status"
+     * @return Border states of the neighbours: "cell address" -> "states of neighbours of cell"
+     * (neighbour address -> border status)
+     */
+    private Map<String, Map<String, BorderState>> computeNeighbourCellStates(
+        String[] cells, Map<String, BorderState> cellBorderStates) {
+        Map<String, Map<String, BorderState>> borderingCellsStates = new HashMap<String, Map<String, BorderState>>();
+        for (String sut : cells) {
+            Map<String, BorderState> sutBorderingCellsStates = new HashMap<String, BorderState>();
+            sutBorderingCellsStates.put(getAboveCellAddress(sut),
+                cellBorderState(cellBorderStates, getAboveCellAddress(sut)));
+            sutBorderingCellsStates.put(getRightCellAddress(sut),
+                cellBorderState(cellBorderStates, getRightCellAddress(sut)));
+            sutBorderingCellsStates.put(getBelowCellAddress(sut),
+                cellBorderState(cellBorderStates, getBelowCellAddress(sut)));
+            sutBorderingCellsStates.put(getLeftCellAddress(sut),
+                cellBorderState(cellBorderStates, getLeftCellAddress(sut)));
+            borderingCellsStates.put(sut, sutBorderingCellsStates);
+        }
+        return borderingCellsStates;
+    }
+
+    /**
+     * Compute the border state of the cell at <code>cellAddress</code>, discriminating
+     * between the cells subject of the test and others (with default border state)
+     *
+     * @param cellBorderStates
+     *     border states of the cells, that are subjects of the test
+     * @param cellAddress
+     *     current cell
+     * @return border state of cell at <code>cellAddress</code>
+     */
+    private BorderState cellBorderState(
+        Map<String, BorderState> cellBorderStates, String cellAddress) {
+        BorderState state = cellBorderStates.get(cellAddress);
+        if (state != null)
+            return state;
+        else
+            return BorderState.DEFAULT_BORDER_STATE;
+    }
+
+    /**
+     * Compute the cell border states of <code>cells</code>
+     * starting from the cell border states applied with the conditional formatting rule (BORDERLESS or BORDERED)
+     * and the conditional formatting rule states (true if the rule occurs, neither false)
+     *
+     * @param cells
+     *     <code>cells</code> subjects of the test
+     * @param borderRuleValues
+     *     cell border states if the rule match
+     * @param matchRuleValues
+     *     conditional formatting rule states
+     * @return cell border states of <code>cells</code>
+     */
+    private Map<String, BorderState> computeCellBorderStates(String[] cells,
+        Map<String, BorderState> borderRuleValues,
+        Map<String, Boolean> matchRuleValues) {
+        Map<String, BorderState> cellBorderStates = new HashMap<String, BorderState>();
+        for (String c : cells) {
+            BorderState borderState = (matchRuleValues.get(c)) ?
+                borderRuleValues.get(c) :
+                BorderState.DEFAULT_BORDER_STATE;
+            cellBorderStates.put(c, borderState);
+        }
+        return cellBorderStates;
+    }
+
+    /// EXPECTED Border State of a cell with specific properties
+    // (border priority over neighbour, border state , neighbour border state) 
+
+    /**
+     * Compute the expected value of a specific border (top or right or bottom or left) of a cell
+     *
+     * @param hasMorePriorityOfNeighbour
+     *     true if cell has more priority of the (above or right or below or left) neighbor
+     * @param cellState
+     *     cell border state
+     * @param neighbourState
+     *     border state of the (above or right or below or left) neighbor
+     * @return true if the border is visible, false neither
+     */
+    private boolean borderState(boolean hasMorePriorityOfNeighbour,
+        BorderState cellState, BorderState neighbourState) {
+        if (neighbourState.equals(BorderState.DEFAULT_BORDER_STATE)) {
+            return cellState.hasBorder;
+        } else {
+            return (hasMorePriorityOfNeighbour) ?
+                cellState.hasBorder :
+                neighbourState.hasBorder;
+        }
+    }
+
+    ////// CURRENT Border State of a cell at cellAddress  
+    private boolean topBorderState(String cellAddress) {
+        return bottomBorderState(getAboveCellAddress(cellAddress));
+    }
+
+    private boolean rightBorderState(String cellAdress) {
+        return spreadsheetPage.hasBorderRight(cellAdress);
+    }
+
+    private boolean bottomBorderState(String cellAdress) {
+        return spreadsheetPage.hasBorderBottom(cellAdress);
+    }
+
+    private boolean leftBorderState(String cellAdress) {
+        return rightBorderState(getLeftCellAddress(cellAdress));
+    }
+    ///// Give the border state of a cell neighbor  
+
+    private BorderState getAboveCellState(
+        Map<String, BorderState> cellBorderStates, String cell) {
+        return cellBorderStates.get(getAboveCellAddress(cell));
+    }
+
+    private BorderState getLeftCellState(
+        Map<String, BorderState> cellBorderStates, String cell) {
+        return cellBorderStates.get(getLeftCellAddress(cell));
+    }
+
+    private BorderState getBelowCellState(
+        Map<String, BorderState> cellBorderStates, String cell) {
+        return cellBorderStates.get(getBelowCellAddress(cell));
+    }
+
+    private BorderState getRightCellState(
+        Map<String, BorderState> cellBorderStates, String cell) {
+        return cellBorderStates.get(getRightCellAddress(cell));
+    }
+
+    //// Gived the address of a cell, compute the above/right/below/left cell address 
+
+    private String getAboveCellAddress(String cellAddress) {
+        int row = Integer
+            .parseInt(cellAddress.substring(1, cellAddress.length()));
+        int aboveRow = row - 1;
+        return String.valueOf(cellAddress.charAt(0)) + aboveRow;
+    }
+
+    private String getRightCellAddress(String cellAddress) {
+        char column = cellAddress.charAt(0);
+        char rightColum = (char) (column + 1);
+        return String.valueOf(rightColum) + Integer
+            .parseInt(cellAddress.substring(1, cellAddress.length()));
+    }
+
+    private String getBelowCellAddress(String cellAddress) {
+        int row = Integer
+            .parseInt(cellAddress.substring(1, cellAddress.length()));
+        int belowRow = row + 1;
+        return String.valueOf(cellAddress.charAt(0)) + belowRow;
+    }
+
+    private String getLeftCellAddress(String cellAddress) {
+        char column = cellAddress.charAt(0);
+        char leftColumn = (char) (column - 1);
+        return String.valueOf(leftColumn) + Integer
+            .parseInt(cellAddress.substring(1, cellAddress.length()));
     }
 }
