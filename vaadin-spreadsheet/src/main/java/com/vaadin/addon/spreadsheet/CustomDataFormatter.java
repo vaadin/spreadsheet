@@ -2,6 +2,7 @@ package com.vaadin.addon.spreadsheet;
 
 import java.util.regex.Pattern;
 
+import org.apache.poi.ss.format.CellFormat;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -21,7 +22,6 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  * formatting.
  */
 class CustomDataFormatter extends DataFormatter {
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
 
     // In a custom format the first part represents a format for positive numbers,
     // the second for negative numbers, the third for zero and the fourth a plain text
@@ -45,6 +45,10 @@ class CustomDataFormatter extends DataFormatter {
             .lastIndexOf(';');
     }
 
+    private String[] getCustomFormatParts(String format) {
+        return format.split(";");
+    }
+
     /**
      * If a cell has a custom format with three or more parts
      * and it contains a numeric value,
@@ -57,17 +61,72 @@ class CustomDataFormatter extends DataFormatter {
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
         String dataFormatString = cell.getCellStyle().getDataFormatString();
-        CellType cellType = getCellType(cell, evaluator);
-        if (hasThreeParts(dataFormatString) && cellType == CellType.NUMERIC) {
-            String newFormatString = changeFormat(cell, evaluator);
-            double numericCellValue = cell.getNumericCellValue();
-            //if it is negative remove the - sign
-            numericCellValue = Math.abs(numericCellValue);
-            return formatter
-                .formatRawCellContents(numericCellValue, -1, newFormatString);
+
+        String[] parts = dataFormatString.split(";", -1);
+
+//        if (parts.length < 3) {
+//            return formatter.formatCellValue(cell, evaluator);
+//        }
+
+        if (getCellType(cell, evaluator) == CellType.NUMERIC) {
+
+            final double value = cell.getNumericCellValue();
+            return formatDataUsingFormatPart(Math.abs(value),
+                getNumericFormat(value, parts));
+
+
+//            if (value > 0.0) {
+//                return formatDataUsingFormatPart(value, parts[0]);
+//            } else if (value < 0.0) {
+//                return formatDataUsingFormatPart(value, parts[1]);
+//            } else { // value == 0.0
+//                return formatDataUsingFormatPart(value, parts[2]);
+//            }
+        }
+
+        if (parts.length == 4 && getCellType(cell, evaluator) == CellType.STRING) {
+            if (parts[3].isEmpty()) {
+                return "";
+            }
+
+            return CellFormat.getInstance(dataFormatString).apply(cell).text;
         }
 
         return formatter.formatCellValue(cell, evaluator);
+
+        //        CellType cellType = getCellType(cell, evaluator);
+//
+//        if (hasThreeParts(dataFormatString)) {
+//            CellFormat cfmt = CellFormat.getInstance("# ##0 _€;[Red]-# ##0 _€");
+//
+//            System.out.println(dataFormatString);
+//            System.out.println(cfmt.apply(cell).textColor);
+//
+//            return cfmt.apply(cell).text + cfmt.apply(cell).textColor;
+//
+////            String newFormatString = changeFormat(cell, evaluator);
+////            //double numericCellValue = cell.getNumericCellValue();
+////            //if it is negative remove the - sign
+////            //numericCellValue = Math.abs(numericCellValue);
+////            return formatter
+////                .formatRawCellContents(numericCellValue, -1, newFormatString);
+//        }
+//
+//        return formatter.formatCellValue(cell, evaluator);
+    }
+
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
+    private String formatDataUsingFormatPart(double value, String format) {
+
+        if (format.isEmpty()) {
+            return "";
+        }
+
+        if (!NUMBER_PATTERN.matcher(format).find()) {
+            format = format + ";" + format + ";" + format;
+        }
+
+        return formatter.formatRawCellContents(value, 0, format);
     }
 
     /**
@@ -87,6 +146,22 @@ class CustomDataFormatter extends DataFormatter {
         return newFormatString;
     }
 
+    private String getNumericFormat(double value, String[] formatParts) {
+        // fall through intended
+        switch (formatParts.length) {
+        case 3:
+        case 4:
+            if (value == 0)
+                return formatParts[2];
+        case 2:
+            if (value < 0)
+                return formatParts[1];
+        case 1:
+        default:
+            return formatParts[0];
+        }
+    }
+
     private int getFormatIndex(Cell cell, FormulaEvaluator evaluator) {
 
         CellType cellType = getCellType(cell, evaluator);
@@ -96,6 +171,7 @@ class CustomDataFormatter extends DataFormatter {
         double numericCellValue = cell.getNumericCellValue();
         if (numericCellValue > 0)
             return POSITIVE_FORMAT_INDEX;
+
         return numericCellValue < 0 ? NEGATIVE_FORMAT_INDEX : ZERO_FORMAT_INDEX;
     }
 

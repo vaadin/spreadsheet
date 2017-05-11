@@ -1,10 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.Locale;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -49,7 +47,6 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    @Ignore("not supported")
     public void customFormatCellWithFourParts_enterText_noChange() throws Exception {
         //adds a double quote on text values
         assertCellFormat("C4", "text", "\"text\"", Locale.US);
