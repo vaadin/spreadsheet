@@ -1,5 +1,6 @@
 package com.vaadin.addon.spreadsheet;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.format.CellFormat;
@@ -46,10 +47,11 @@ class CustomDataFormatter extends DataFormatter {
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
 
-    private final DataFormatter formatter;
+    public CustomDataFormatter() {
+    }
 
-    public CustomDataFormatter(DataFormatter formatter) {
-        this.formatter = formatter;
+    public CustomDataFormatter(Locale locale) {
+        super(locale);
     }
 
     /**
@@ -80,7 +82,7 @@ class CustomDataFormatter extends DataFormatter {
             return formatStringCellValue(cell, dataFormatString, parts);
         }
 
-        return formatter.formatCellValue(cell, evaluator);
+        return super.formatCellValue(cell, evaluator);
     }
 
     private CellType getCellType(Cell cell, FormulaEvaluator evaluator) {
@@ -99,11 +101,11 @@ class CustomDataFormatter extends DataFormatter {
         }
 
         if (isOnlyLiteralFormat(format)) {
-            // CellFormat can format literals
+            // CellFormat can format literals correctly
             return CellFormat.getInstance(format).apply(cell).text;
         } else {
             // DataFormatter can format numbers correctly
-            return formatter.formatRawCellContents(value, 0, format);
+            return super.formatRawCellContents(value, 0, format);
         }
     }
 

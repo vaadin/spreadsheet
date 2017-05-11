@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -276,7 +275,7 @@ public class SpreadsheetUtil implements Serializable {
             return null;
         }
         if (cell.getCellStyle().getDataFormatString() != null) {
-            CustomDataFormatter df = new CustomDataFormatter(new DataFormatter(locale));
+            CustomDataFormatter df = new CustomDataFormatter(locale);
             try {
                 Method formatter = df.getClass().getDeclaredMethod("getFormat",
                         Cell.class);
