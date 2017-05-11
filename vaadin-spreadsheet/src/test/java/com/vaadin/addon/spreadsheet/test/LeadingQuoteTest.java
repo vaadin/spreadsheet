@@ -66,6 +66,22 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues(cell, "'567", "''567", "''567");
     }
 
+    @Test
+    public void existingCell_selectedCellWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuoteAfterSheetSelection()
+        throws Exception {
+
+        final String cell = "B3";
+
+        spreadsheetPage.selectSheetAt(0);
+        sheetController.selectCell(cell);
+
+        // Switch to another sheet and then switching again to the initial one
+        spreadsheetPage.selectSheetAt(1);
+        spreadsheetPage.selectSheetAt(0);
+
+        assertCellValues(cell, "01", "'01", "'01");
+    }
+
     private void assertCellValues(String cell, String cellValue,
         String formulaBarValue, String inlineEditorValue) {
 
