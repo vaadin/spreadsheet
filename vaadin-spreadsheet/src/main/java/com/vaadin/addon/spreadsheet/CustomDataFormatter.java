@@ -11,15 +11,31 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 /**
  * TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
  *
- * {@Link org.apache.poi.ss.usermodel.DataFormatter} doesn't consider
- * Locale while formatting three part custom format (eg. #.##0,00#;(#.##0,00);"-").
+ * POI library has two classes {@Link org.apache.poi.ss.format.CellFormat} and
+ * {@Link org.apache.poi.ss.usermodel.DataFormatter} to deal with custom formatting.
+ * The implementation is very buggy!
  *
- * However, a custom format that has one or two parts is treated correctly
- * with regards to Locale.
+ * This class work around the following bugs:
  *
- * This class is used as workaround for 3-4 part custom formats, which is done
- * only one option based on the cell content and treating it as a one-part
- * formatting.
+ * 1) {@Link org.apache.poi.ss.format.CellFormat} does not use the Locale info.
+ * Therefore cells having three or four part custom format
+ * (eg. #.##0,00#;(#.##0,00);"-") are not correctly formatted.
+ *
+ * 2) If a custom format has only one part and this part is literal (e.g. does
+ * not refer to the number being entered), the formatting is not done correctly.
+ *
+ * 3) Custom formats that have empty parts (i.e. they render a certain value as
+ * empty) are not rendered correctly.
+ *
+ * CellFormat does okay job for text formatting and literals, but for numbers it
+ * fails to consider the locale.
+ *
+ * DataFormatter can correctly format numbers using the locale, but cannot format
+ * text or literals.
+ *
+ * This class tries to work around the most use cases by delegating a certain case to
+ * one parser or another and changing the format string to be compatible with
+ * the parser.
  */
 class CustomDataFormatter extends DataFormatter {
 
@@ -37,19 +53,6 @@ class CustomDataFormatter extends DataFormatter {
     }
 
     /**
-     * Returns true if the formatting contains 3 or more parts.
-     */
-    private boolean hasThreeParts(String dataFormatString) {
-        return dataFormatString.contains(";")
-            && dataFormatString.indexOf(';') != dataFormatString
-            .lastIndexOf(';');
-    }
-
-    private String[] getCustomFormatParts(String format) {
-        return format.split(";");
-    }
-
-    /**
      * If a cell has a custom format with three or more parts
      * and it contains a numeric value,
      * then this method formats it as if it had only one part by
@@ -60,90 +63,60 @@ class CustomDataFormatter extends DataFormatter {
     @Override
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
-        String dataFormatString = cell.getCellStyle().getDataFormatString();
+        final String dataFormatString = cell.getCellStyle().getDataFormatString();
 
-        String[] parts = dataFormatString.split(";", -1);
+        final String[] parts = dataFormatString.split(";", -1);
 
-//        if (parts.length < 3) {
-//            return formatter.formatCellValue(cell, evaluator);
-//        }
+        final CellType cellType = getCellType(cell, evaluator);
 
-        if (getCellType(cell, evaluator) == CellType.NUMERIC) {
-
+        if (cellType == CellType.NUMERIC) {
             final double value = cell.getNumericCellValue();
-            return formatDataUsingFormatPart(Math.abs(value),
+
+            return formatNumericValueUsingFormatPart(cell, Math.abs(value),
                 getNumericFormat(value, parts));
-
-
-//            if (value > 0.0) {
-//                return formatDataUsingFormatPart(value, parts[0]);
-//            } else if (value < 0.0) {
-//                return formatDataUsingFormatPart(value, parts[1]);
-//            } else { // value == 0.0
-//                return formatDataUsingFormatPart(value, parts[2]);
-//            }
         }
 
-        if (parts.length == 4 && getCellType(cell, evaluator) == CellType.STRING) {
-            if (parts[3].isEmpty()) {
-                return "";
-            }
-
-            return CellFormat.getInstance(dataFormatString).apply(cell).text;
+        if (parts.length == 4 && cellType == CellType.STRING) {
+            return formatStringCellValue(cell, dataFormatString, parts);
         }
 
         return formatter.formatCellValue(cell, evaluator);
-
-        //        CellType cellType = getCellType(cell, evaluator);
-//
-//        if (hasThreeParts(dataFormatString)) {
-//            CellFormat cfmt = CellFormat.getInstance("# ##0 _€;[Red]-# ##0 _€");
-//
-//            System.out.println(dataFormatString);
-//            System.out.println(cfmt.apply(cell).textColor);
-//
-//            return cfmt.apply(cell).text + cfmt.apply(cell).textColor;
-//
-////            String newFormatString = changeFormat(cell, evaluator);
-////            //double numericCellValue = cell.getNumericCellValue();
-////            //if it is negative remove the - sign
-////            //numericCellValue = Math.abs(numericCellValue);
-////            return formatter
-////                .formatRawCellContents(numericCellValue, -1, newFormatString);
-//        }
-//
-//        return formatter.formatCellValue(cell, evaluator);
     }
 
-    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
-    private String formatDataUsingFormatPart(double value, String format) {
+    private CellType getCellType(Cell cell, FormulaEvaluator evaluator) {
+
+        CellType cellType = cell.getCellTypeEnum();
+        if (cellType == CellType.FORMULA) {
+            cellType = evaluator.evaluateFormulaCellEnum(cell);
+        }
+        return cellType;
+    }
+
+    private String formatNumericValueUsingFormatPart(Cell cell, double value, String format) {
 
         if (format.isEmpty()) {
             return "";
         }
 
-        if (!NUMBER_PATTERN.matcher(format).find()) {
-            format = format + ";" + format + ";" + format;
+        if (isOnlyLiteralFormat(format)) {
+            // CellFormat can format literals
+            return CellFormat.getInstance(format).apply(cell).text;
+        } else {
+            // DataFormatter can format numbers correctly
+            return formatter.formatRawCellContents(value, 0, format);
         }
-
-        return formatter.formatRawCellContents(value, 0, format);
     }
 
     /**
-     * Given a Cell with a custom format having 3 (or in some cases 4) parts,
-     * returns only one part (according to the value of the cell)
+     * Best attempt to check if the format contains numbers that
+     * we are formatting or is purely literal.
+     * Known issue that is does not consider possible escaped/inside string
+     * characters, but it's a very rare case.
      */
-    private String changeFormat(Cell cell, FormulaEvaluator evalueator) {
-        int index = getFormatIndex(cell, evalueator);
-        String oldFormatString = cell.getCellStyle().getDataFormatString();
-        String newFormatString = getFormatPart(oldFormatString, index);
+    private boolean isOnlyLiteralFormat(String format) {
+        final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
 
-        //POI doesn't format string literals having 1 part, repeat it three times
-        if (!NUMBER_PATTERN.matcher(newFormatString).find()) {
-            newFormatString += ";" + newFormatString + ";" + newFormatString;
-        }
-
-        return newFormatString;
+        return !NUMBER_PATTERN.matcher(format).find();
     }
 
     private String getNumericFormat(double value, String[] formatParts) {
@@ -152,39 +125,24 @@ class CustomDataFormatter extends DataFormatter {
         case 3:
         case 4:
             if (value == 0)
-                return formatParts[2];
+                return formatParts[ZERO_FORMAT_INDEX];
         case 2:
             if (value < 0)
-                return formatParts[1];
+                return formatParts[NEGATIVE_FORMAT_INDEX];
         case 1:
         default:
-            return formatParts[0];
+            return formatParts[POSITIVE_FORMAT_INDEX];
         }
     }
 
-    private int getFormatIndex(Cell cell, FormulaEvaluator evaluator) {
-
-        CellType cellType = getCellType(cell, evaluator);
-
-        if (cellType != CellType.NUMERIC)
-            return TEXT_FORMAT_INDEX;
-        double numericCellValue = cell.getNumericCellValue();
-        if (numericCellValue > 0)
-            return POSITIVE_FORMAT_INDEX;
-
-        return numericCellValue < 0 ? NEGATIVE_FORMAT_INDEX : ZERO_FORMAT_INDEX;
-    }
-
-    private CellType getCellType(Cell cell, FormulaEvaluator evaluator) {
-        CellType cellType = cell.getCellTypeEnum();
-        if (cellType == CellType.FORMULA) {
-            cellType = evaluator.evaluateFormulaCellEnum(cell);
+    /**
+     * DataFormatter cannot format strings, but CellFormat can.
+     */
+    private String formatStringCellValue(Cell cell, String formatString, String[] parts) {
+        if (parts[TEXT_FORMAT_INDEX].isEmpty()) {
+            return "";
         }
-        return cellType;
-    }
 
-    private String getFormatPart(String threePartFormat, int i) {
-        String[] parts = threePartFormat.split(";");
-        return parts[i];
+        return CellFormat.getInstance(formatString).apply(cell).text;
     }
 }
