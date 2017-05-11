@@ -133,7 +133,10 @@ class CustomDataFormatter extends DataFormatter {
                 return formatParts[NEGATIVE_FORMAT_INDEX];
         case 1:
         default:
-            return formatParts[POSITIVE_FORMAT_INDEX];
+            if (value < 0)
+                return "-" + formatParts[POSITIVE_FORMAT_INDEX];
+            else
+                return formatParts[POSITIVE_FORMAT_INDEX];
         }
     }
 
