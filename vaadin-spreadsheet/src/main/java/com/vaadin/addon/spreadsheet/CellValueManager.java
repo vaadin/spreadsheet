@@ -345,33 +345,6 @@ public class CellValueManager implements Serializable {
         return cellData;
     }
 
-    private boolean needsLeadingQuote(Cell cell) {
-        if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
-            return false;
-        }
-
-        if (cell.getStringCellValue() == null) {
-            return false;
-        }
-
-        return styleHasQuotePrefix(cell);
-    }
-
-    private boolean styleHasQuotePrefix(Cell cell) {
-        if (!(cell instanceof XSSFCell)) {
-            // in 97 format all strings are prefixed
-            return true;
-        }
-
-        XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
-
-        if (cellStyle == null) {
-            return false;
-        }
-
-        return cellStyle.getCoreXf().getQuotePrefix();
-    }
-
     private void setLeadingQuoteStyle(Cell cell, boolean leadingQuote) {
         if (cell instanceof XSSFCell) {
             ((XSSFCell) cell).getCellStyle().getCoreXf()
@@ -424,7 +397,7 @@ public class CellValueManager implements Serializable {
                     .format(cell.getNumericCellValue());
         case Cell.CELL_TYPE_STRING:
             String stringCellValue = cell.getStringCellValue();
-            if (needsLeadingQuote(cell)) {
+            if (SpreadsheetUtil.needsLeadingQuote(cell)) {
                 return "'" + stringCellValue;
             }
             return stringCellValue;
