@@ -113,34 +113,30 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void customFormatFourParts_enterNumberWith_getsFormatted()
-        throws Exception {
-        assertCellNumberFormatAfterEntry("C1", "=5555555.5", "5.555.555,5",
+    public void customFormatFourParts_enterNumberAndChangeLocale_getsFormatted() {
+        assertCellFormatAfterLocaleChange("C1", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
-    public void customFormatThreeParts_enterNumber_getsFormatted()
-        throws Exception {
-        assertCellNumberFormatAfterEntry("C6", "=5555555.5", "5.555.555,5",
+    public void customFormatThreeParts_enterNumberAndChangeLocale_getsFormatted() {
+        assertCellFormatAfterLocaleChange("C6", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
-    public void customFormatTwoParts_enterNumber_getsFormatted()
-        throws Exception {
-        assertCellNumberFormatAfterEntry("C11", "=5555555.5", "5.555.555,5",
+    public void customFormatTwoParts_enterNumberAndChangeLocale_getsFormatted() {
+        assertCellFormatAfterLocaleChange("C11", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
-    public void customFormatOnePart_enterNumber_getsFormatted()
-        throws Exception {
-        assertCellNumberFormatAfterEntry("C16", "=5555555.5", "5.555.555,5",
+    public void customFormatOnePart_enterNumberAndChangeLocale_getsFormatted() {
+        assertCellFormatAfterLocaleChange("C16", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
-    private void assertCellNumberFormatAfterEntry(String cellID, String value,
+    private void assertCellFormatAfterLocaleChange(String cellID, String value,
         String expected, Locale locale) {
         SheetCellElement formatCell = spreadSheet.getCellAt(cellID);
         formatCell.setValue(value);
