@@ -103,7 +103,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
             return "";
         }
 
-        if (value < 0 && !isGeneralFormat(format)) {
+        if (value < 0.0 && !isGeneralFormat(format)) {
             value = Math.abs(value);
             format = "-" + format;
         }
@@ -138,11 +138,13 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         switch (formatParts.length) {
         case 3:
         case 4:
-            if (value == 0)
+            if (value == 0.0) {
                 return formatParts[ZERO_FORMAT_INDEX];
+            }
         case 2:
-            if (value < 0)
+            if (value < 0.0) {
                 return formatParts[NEGATIVE_FORMAT_INDEX];
+            }
         case 1:
         default:
             return formatParts[POSITIVE_FORMAT_INDEX];
