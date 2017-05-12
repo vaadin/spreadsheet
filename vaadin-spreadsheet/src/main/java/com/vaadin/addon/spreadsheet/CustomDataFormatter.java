@@ -1,5 +1,6 @@
 package com.vaadin.addon.spreadsheet;
 
+import java.io.Serializable;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  * one parser or another and changing the format string to be compatible with
  * the parser.
  */
-class CustomDataFormatter extends DataFormatter {
+class CustomDataFormatter extends DataFormatter implements Serializable {
 
     // In a custom format the first part represents a format for positive numbers,
     // the second for negative numbers, the third for zero and the fourth a plain text
