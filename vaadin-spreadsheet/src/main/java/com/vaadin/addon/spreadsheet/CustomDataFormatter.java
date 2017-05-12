@@ -11,29 +11,29 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
  * TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
- *
+ * <p>
  * POI library has two classes {@Link org.apache.poi.ss.format.CellFormat} and
  * {@Link org.apache.poi.ss.usermodel.DataFormatter} to deal with custom formatting.
  * The implementation is very buggy!
- *
+ * <p>
  * This class work around the following bugs:
- *
+ * <p>
  * 1) {@Link org.apache.poi.ss.format.CellFormat} does not use the Locale info.
  * Therefore cells having three or four part custom format
  * (eg. #.##0,00#;(#.##0,00);"-") are not correctly formatted.
- *
+ * <p>
  * 2) If a custom format has only one part and this part is literal (e.g. does
  * not refer to the number being entered), the formatting is not done correctly.
- *
+ * <p>
  * 3) Custom formats that have empty parts (i.e. they render a certain value as
  * empty) are not rendered correctly.
- *
+ * <p>
  * CellFormat does okay job for text formatting and literals, but for numbers it
  * fails to consider the locale.
- *
+ * <p>
  * DataFormatter can correctly format numbers using the locale, but cannot format
  * text or literals.
- *
+ * <p>
  * This class tries to work around the most use cases by delegating a certain case to
  * one parser or another and changing the format string to be compatible with
  * the parser.
@@ -59,13 +59,14 @@ class CustomDataFormatter extends DataFormatter {
      * and it contains a numeric value,
      * then this method formats it as if it had only one part by
      * choosing the format based on the value (i.e. positive, negative or 0).
-     *
+     * <p>
      * Otherwise use <code>DataFormatter#formatCellValue</code>
      **/
     @Override
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
-        final String dataFormatString = cell.getCellStyle().getDataFormatString();
+        final String dataFormatString = cell.getCellStyle()
+            .getDataFormatString();
 
         final String[] parts = dataFormatString.split(";", -1);
 
@@ -94,7 +95,8 @@ class CustomDataFormatter extends DataFormatter {
         return cellType;
     }
 
-    private String formatNumericValueUsingFormatPart(Cell cell, double value, String format) {
+    private String formatNumericValueUsingFormatPart(Cell cell, double value,
+        String format) {
 
         if (format.isEmpty()) {
             return "";
@@ -143,7 +145,8 @@ class CustomDataFormatter extends DataFormatter {
     /**
      * DataFormatter cannot format strings, but CellFormat can.
      */
-    private String formatStringCellValue(Cell cell, String formatString, String[] parts) {
+    private String formatStringCellValue(Cell cell, String formatString,
+        String[] parts) {
         if (parts[TEXT_FORMAT_INDEX].isEmpty()) {
             return "";
         }
