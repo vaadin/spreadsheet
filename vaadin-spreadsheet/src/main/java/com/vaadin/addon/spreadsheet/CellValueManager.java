@@ -96,8 +96,7 @@ public class CellValueManager implements Serializable {
     private CellValueHandler customCellValueHandler;
     private CellDeletionHandler customCellDeletionHandler;
 
-    //TODO: change to DataFormatter when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
-    private CustomDataFormatter formatter;
+    private DataFormatter formatter;
 
     /** Cell keys that have values sent to client side and are cached there. */
     private final HashSet<String> sentCells = new HashSet<String>();
@@ -161,7 +160,7 @@ public class CellValueManager implements Serializable {
         return formatter;
     }
 
-    public void setDataFormatter(CustomDataFormatter dataFormatter) {
+    public void setDataFormatter(DataFormatter dataFormatter) {
         formatter = dataFormatter;
     }
 
@@ -723,7 +722,6 @@ public class CellValueManager implements Serializable {
      */
     private String getFormattedCellValue(Cell cell) {
         try {
-
             return formatter.formatCellValue(cell, getFormulaEvaluator());
         } catch (RuntimeException rte) {
             return null;
