@@ -41,6 +41,8 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  */
 class CustomDataFormatter extends DataFormatter implements Serializable {
 
+    private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
+
     // In a custom format the first part represents a format for positive numbers,
     // the second for negative numbers, the third for zero and the fourth a plain text
     private final int POSITIVE_FORMAT_INDEX = 0;
@@ -128,8 +130,6 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
      * characters, but it's a very rare case.
      */
     private boolean isOnlyLiteralFormat(String format) {
-        final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
-
         return !NUMBER_PATTERN.matcher(format).find();
     }
 
