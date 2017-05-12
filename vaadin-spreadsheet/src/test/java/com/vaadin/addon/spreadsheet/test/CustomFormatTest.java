@@ -115,36 +115,39 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
     @Test
     public void customFormatFourParts_enterNumberWith_getsFormatted()
         throws Exception {
-        assertCellFormatAfterEntry("C1", "=5555555.5", "5.555.555,5",
+        assertCellNumberFormatAfterEntry("C1", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
     public void customFormatThreeParts_enterNumber_getsFormatted()
         throws Exception {
-        assertCellFormatAfterEntry("C6", "=5555555.5", "5.555.555,5",
+        assertCellNumberFormatAfterEntry("C6", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
     public void customFormatTwoParts_enterNumber_getsFormatted()
         throws Exception {
-        assertCellFormatAfterEntry("C11", "=5555555.5", "5.555.555,5",
+        assertCellNumberFormatAfterEntry("C11", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
     @Test
     public void customFormatOnePart_enterNumber_getsFormatted()
         throws Exception {
-        assertCellFormatAfterEntry("C16", "=5555555.5", "5.555.555,5",
+        assertCellNumberFormatAfterEntry("C16", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
-    private void assertCellFormatAfterEntry(String cellID, String value,
+    private void assertCellNumberFormatAfterEntry(String cellID, String value,
         String expected, Locale locale) {
         SheetCellElement formatCell = spreadSheet.getCellAt(cellID);
         formatCell.setValue(value);
         setLocale(locale);
+
+        // numbers are right-aligned
+        assertEquals("right", formatCell.getCssValue("text-align"));
         assertEquals(expected, formatCell.getValue());
     }
 
