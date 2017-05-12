@@ -433,7 +433,7 @@ public class SpreadsheetUtil implements Serializable {
 
         XSSFCellStyle cellStyle = (XSSFCellStyle) cell.getCellStyle();
 
-        if (cellStyle == null) {
+        if (cellStyle == null || cellStyle.getCoreXf() == null) {
             return false;
         }
 
