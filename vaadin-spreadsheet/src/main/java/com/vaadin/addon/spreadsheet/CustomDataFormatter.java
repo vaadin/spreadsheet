@@ -76,13 +76,13 @@ class CustomDataFormatter extends DataFormatter {
 
             return formatNumericValueUsingFormatPart(cell, Math.abs(value),
                 getNumericFormat(value, parts));
-        }
+        } else if (cellType == CellType.STRING && parts.length == 4) {
 
-        if (parts.length == 4 && cellType == CellType.STRING) {
             return formatStringCellValue(cell, dataFormatString, parts);
-        }
+        } else {
 
-        return super.formatCellValue(cell, evaluator);
+            return super.formatCellValue(cell, evaluator);
+        }
     }
 
     private CellType getCellType(Cell cell, FormulaEvaluator evaluator) {
