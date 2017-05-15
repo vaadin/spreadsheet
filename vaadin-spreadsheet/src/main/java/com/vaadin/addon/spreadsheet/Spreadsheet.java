@@ -40,6 +40,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -130,6 +131,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Pixel width of the filter popup button
      */
     private static final int FILTER_BUTTON_PIXEL_WIDTH = 14;
+
+    /**
+     * Map of autofitted column widths in points
+     */
+    private Map<CellReference, Integer> autofittedColumnWidths = new WeakHashMap<>();
 
     /**
      * An interface for handling the edited cell value from user input.
@@ -1996,8 +2002,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         return sheetOverlays != null && sheetOverlays.size() > 0;
     }
 
-    private Map<CellReference, Integer> autofittedColumnWidths = new HashMap<>();
-
     /**
      * Checks if the current column has a filter popup button and calculates
      * extra width to accommodate when to include it in autofit.
@@ -2019,7 +2023,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             SpreadsheetFilterTable ft = (SpreadsheetFilterTable) st;
             PopupButton popupButton = ft.getPopupButton(cr);
             if (popupButton != null) {
-                // TODO: fetch button width from client side?
                 return autofitWidth + FILTER_BUTTON_PIXEL_WIDTH;
             }
         }
