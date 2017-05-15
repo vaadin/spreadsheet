@@ -78,7 +78,8 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         if (cellType == CellType.NUMERIC) {
             final double value = cell.getNumericCellValue();
 
-            return formatNumericValueUsingFormatPart(cell, value, parts);
+            return formatNumericValueUsingFormatPart(cell, value, parts,
+                evaluator);
         } else if (cellType == CellType.STRING && parts.length == 4) {
 
             return formatStringCellValue(cell, dataFormatString, parts);
@@ -98,7 +99,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     }
 
     private String formatNumericValueUsingFormatPart(Cell cell, double value,
-        String[] formatParts) {
+        String[] formatParts, FormulaEvaluator evaluator) {
 
         final String format = getNumericFormat(value, formatParts);
 
@@ -110,11 +111,15 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
             // CellFormat can format literals correctly
             return CellFormat.getInstance(format).apply(cell).text;
         } else {
-            // possible minus is already taken into account in the format
-            final double absValue = Math.abs(value);
+            if (formatParts.length <= 2) {
+                return super.formatCellValue(cell, evaluator);
+            } else {
+                // possible minus is already taken into account in the format
+                final double absValue = Math.abs(value);
 
-            // DataFormatter can format numbers correctly
-            return super.formatRawCellContents(absValue, 0, format);
+                // DataFormatter can format numbers correctly
+                return super.formatRawCellContents(absValue, 0, format);
+            }
         }
     }
 

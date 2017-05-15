@@ -10,7 +10,10 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class GeneralRoundingTest extends AbstractSpreadsheetTestCase {
 
     @Test
