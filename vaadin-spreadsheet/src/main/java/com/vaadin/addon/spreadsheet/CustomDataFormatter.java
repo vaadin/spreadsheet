@@ -78,8 +78,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         if (cellType == CellType.NUMERIC) {
             final double value = cell.getNumericCellValue();
 
-            return formatNumericValueUsingFormatPart(cell, value,
-                getNumericFormat(value, parts));
+            return formatNumericValueUsingFormatPart(cell, value, parts);
         } else if (cellType == CellType.STRING && parts.length == 4) {
 
             return formatStringCellValue(cell, dataFormatString, parts);
@@ -99,23 +98,23 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     }
 
     private String formatNumericValueUsingFormatPart(Cell cell, double value,
-        String format) {
+        String[] formatParts) {
+
+        final String format = getNumericFormat(value, formatParts);
 
         if (format.isEmpty()) {
             return "";
-        }
-
-        if (value < 0.0 && !isGeneralFormat(format)) {
-            value = Math.abs(value);
-            format = "-" + format;
         }
 
         if (isOnlyLiteralFormat(format)) {
             // CellFormat can format literals correctly
             return CellFormat.getInstance(format).apply(cell).text;
         } else {
+            // possible minus is already taken into account in the format
+            final double absValue = Math.abs(value);
+
             // DataFormatter can format numbers correctly
-            return super.formatRawCellContents(value, 0, format);
+            return super.formatRawCellContents(absValue, 0, format);
         }
     }
 
@@ -146,6 +145,10 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
                 return formatParts[NEGATIVE_FORMAT_INDEX];
             }
         case 1:
+            if (value < 0.0 && !isGeneralFormat(
+                formatParts[POSITIVE_FORMAT_INDEX])) {
+                return "-" + formatParts[POSITIVE_FORMAT_INDEX];
+            }
         default:
             return formatParts[POSITIVE_FORMAT_INDEX];
         }
