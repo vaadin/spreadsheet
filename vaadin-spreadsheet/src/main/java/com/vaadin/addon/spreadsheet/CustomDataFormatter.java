@@ -134,7 +134,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
      * characters, but it's a very rare case.
      */
     private boolean isOnlyLiteralFormat(String format) {
-        return !NUMBER_PATTERN.matcher(format).find();
+        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(format);
     }
 
     private String getNumericFormat(double value, String[] formatParts) {
