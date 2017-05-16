@@ -130,7 +130,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     /**
      * Best attempt to check if the format contains numbers that
      * we are formatting or is purely literal.
-     * Known issue that is does not consider possible escaped/inside string
+     * Known issue is that it does not consider possible escaped/inside string
      * characters, but it's a very rare case.
      */
     private boolean isOnlyLiteralFormat(String format) {
