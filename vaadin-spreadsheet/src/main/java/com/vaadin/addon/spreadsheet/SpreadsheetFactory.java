@@ -957,13 +957,13 @@ public class SpreadsheetFactory implements Serializable {
         if (paneInformation != null && paneInformation.isFreezePane()) {
 
             /*
-             * In POI, HorizontalSplitPosition means rows and
-             * VerticalSplitPosition means columns. Changed the meaning for the
-             * component internals. The left split column / top split row is the
-             * *absolute* index of the first unfrozen column / row.
+             * In POI, HorizontalSplit means rows and VerticalSplit means columns.
+             *
+             * In Spreadsheet the meaning is the opposite.
              */
             spreadsheet.getState().horizontalSplitPosition = paneInformation
                 .getVerticalSplitPosition() + sheet.getLeftCol();
+
             spreadsheet.getState().verticalSplitPosition = paneInformation
                 .getHorizontalSplitPosition() + sheet.getTopRow();
 
