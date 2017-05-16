@@ -75,6 +75,10 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         final String dataFormatString = cell.getCellStyle()
             .getDataFormatString();
 
+        if (isGeneralFormat(dataFormatString)) {
+            return super.formatCellValue(cell, evaluator);
+        }
+
         final String[] parts = dataFormatString.split(";", -1);
 
         final CellType cellType = getCellType(cell, evaluator);
@@ -135,8 +139,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
                 return formatParts[NEGATIVE_FORMAT_INDEX];
             }
         case 1:
-            if (value < 0.0 && !isGeneralFormat(
-                formatParts[POSITIVE_FORMAT_INDEX])) {
+            if (value < 0.0) {
                 return "-" + formatParts[POSITIVE_FORMAT_INDEX];
             }
         default:
@@ -151,8 +154,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
      * characters, but it's a very rare case.
      */
     private boolean isOnlyLiteralFormat(String format) {
-        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(
-            format);
+        return !NUMBER_PATTERN.matcher(format).find();
     }
 
     private boolean isGeneralFormat(String format) {
