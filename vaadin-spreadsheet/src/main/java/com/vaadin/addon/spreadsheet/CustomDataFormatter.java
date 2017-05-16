@@ -118,21 +118,6 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         }
     }
 
-    private boolean isGeneralFormat(String format) {
-        return "General".equals(format);
-    }
-
-    /**
-     * Best attempt to check if the format contains numbers that
-     * we are formatting or is purely literal.
-     * Known issue is that it does not consider possible escaped/inside string
-     * characters, but it's a very rare case.
-     */
-    private boolean isOnlyLiteralFormat(String format) {
-        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(
-            format);
-    }
-
     private String getNumericFormat(double value, String[] formatParts) {
         // fall through intended
         switch (formatParts.length) {
@@ -153,6 +138,21 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         default:
             return formatParts[POSITIVE_FORMAT_INDEX];
         }
+    }
+
+    /**
+     * Best attempt to check if the format contains numbers that
+     * we are formatting or is purely literal.
+     * Known issue is that it does not consider possible escaped/inside string
+     * characters, but it's a very rare case.
+     */
+    private boolean isOnlyLiteralFormat(String format) {
+        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(
+            format);
+    }
+
+    private boolean isGeneralFormat(String format) {
+        return "General".equals(format);
     }
 
     /**
