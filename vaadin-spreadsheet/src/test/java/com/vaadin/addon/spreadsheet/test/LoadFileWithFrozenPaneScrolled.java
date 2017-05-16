@@ -4,10 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class LoadFileWithFrozenPaneScrolled
     extends AbstractSpreadsheetTestCase {
 
