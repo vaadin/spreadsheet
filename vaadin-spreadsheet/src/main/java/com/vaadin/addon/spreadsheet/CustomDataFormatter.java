@@ -99,7 +99,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     }
 
     private String formatNumericValueUsingFormatPart(Cell cell, double value,
-        String[] formatParts, FormulaEvaluator evaluator) {
+        String[] formatParts) {
 
         final String format = getNumericFormat(value, formatParts);
 
