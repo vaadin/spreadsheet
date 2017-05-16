@@ -111,15 +111,11 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
             // CellFormat can format literals correctly
             return CellFormat.getInstance(format).apply(cell).text;
         } else {
-            if (formatParts.length <= 2) {
-                return super.formatCellValue(cell, evaluator);
-            } else {
-                // possible minus is already taken into account in the format
-                final double absValue = Math.abs(value);
+            // possible minus is already taken into account in the format
+            final double absValue = Math.abs(value);
 
-                // DataFormatter can format numbers correctly
-                return super.formatRawCellContents(absValue, 0, format);
-            }
+            // DataFormatter can format numbers correctly
+            return super.formatRawCellContents(absValue, 0, format);
         }
     }
 
@@ -134,7 +130,8 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
      * characters, but it's a very rare case.
      */
     private boolean isOnlyLiteralFormat(String format) {
-        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(format);
+        return !NUMBER_PATTERN.matcher(format).find() && !isGeneralFormat(
+            format);
     }
 
     private String getNumericFormat(double value, String[] formatParts) {
