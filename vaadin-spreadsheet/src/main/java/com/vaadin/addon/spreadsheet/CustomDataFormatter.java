@@ -78,8 +78,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         if (cellType == CellType.NUMERIC) {
             final double value = cell.getNumericCellValue();
 
-            return formatNumericValueUsingFormatPart(cell, value, parts,
-                evaluator);
+            return formatNumericValueUsingFormatPart(cell, value, parts);
         } else if (cellType == CellType.STRING && parts.length == 4) {
 
             return formatStringCellValue(cell, dataFormatString, parts);
