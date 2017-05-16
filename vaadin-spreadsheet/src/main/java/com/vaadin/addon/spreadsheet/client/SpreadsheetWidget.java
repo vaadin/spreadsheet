@@ -370,6 +370,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
                 @Override
                 public void execute() {
                     sheetWidget.setScrollPosition(scrollLeft, scrollTop);
+                    relayoutSheet();
                 }
             });
         }
