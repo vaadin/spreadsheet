@@ -68,7 +68,7 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     @Override
     public String formatCellValue(Cell cell, FormulaEvaluator evaluator) {
 
-        if (cell.getCellStyle() == null) {
+        if (cell == null || cell.getCellStyle() == null) {
             return super.formatCellValue(cell, evaluator);
         }
 
