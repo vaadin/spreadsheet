@@ -3,7 +3,6 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
-
 import java.util.Locale;
 
 import org.junit.Test;
