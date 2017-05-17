@@ -3,6 +3,8 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,6 +15,8 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+// FIXME REMOVE BEFORE PULL REQUEST 12 asdfasdf test conflict
+@RunLocally(Browser.PHANTOMJS)
 public class CellShiftingTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
