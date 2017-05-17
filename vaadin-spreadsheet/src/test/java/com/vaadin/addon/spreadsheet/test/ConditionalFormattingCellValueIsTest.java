@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTestCase {
 
     private static final String STRING_VALUE = "'Foo";
@@ -74,9 +77,23 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
     }
 
     @Test
-    public void loadSpreadsheetWithNotEqualConditionFormattingInBlankCell_insertIncoherentValue_CellB4FilledRed() {
+    public void loadSpreadsheetWithNotEqualToNumberZeroConditionFormattingRuleInBlankCell_insertValue_CellB5FilledRed() {
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
+        spreadsheetPage.setCellValue("B5", NUMBER_VALUE);
+        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
+    }
+
+    @Test
+    public void loadSpreadsheetWithEqualToNumberZeroConditionFormattingRuleInBlankCell_insertValue_CellB6FilledWhite() {
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B6"));
+        spreadsheetPage.setCellValue("B6", NUMBER_VALUE);
+        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B6"));
+    }
+
+    @Test
+    public void loadSpreadsheetWithNotEqualToBooleanFalseConditionFormattingRuleInBlankCell_insertValue_CellB7FilledRed() {
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B7"));
+        spreadsheetPage.setCellValue("B7", FALSE_VALUE);
+        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B7"));
     }
 }
