@@ -15,7 +15,8 @@ public enum TestFixtures {
             StyleMergeReigions.class), RemoveFixture(RemoveFixture.class), DefaultStyleUnlocked(
             DefaultStyleUnlockedFixture.class), HideSecondRow(
             HideSecondRowFixture.class), LargeSpreadsheet(
-            LargeSpreadsheetFixture.class);
+        LargeSpreadsheetFixture.class), RowHeaderDoubleClick(
+        RowHeaderDoubleClickFixture.class);
 
     public final SpreadsheetFixtureFactory factory;
 
