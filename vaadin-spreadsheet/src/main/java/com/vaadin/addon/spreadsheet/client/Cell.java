@@ -23,14 +23,12 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
-public class Cell {
+class Cell {
 
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
-    private static final int ZINDEXVALUE = 2;
-    private final DivElement element;
-    private DivElement cellCommentTriangle;
-    private DivElement invalidFormulaTriangle;
+    private static final int Z_INDEX_VALUE = 2;
+
     /**
      * 1-based
      */
@@ -39,14 +37,21 @@ public class Cell {
      * 1-based
      */
     private int row;
-    private Element popupButtonElement;
     private String value;
 
     private String cellStyle = "cs0";
-    private boolean needsMeasure;
-    private SheetWidget sheetWidget;
+    /**
+     * Numeric values never overflow or wrap lines, they turn to ### if not fit
+     */
+    private boolean isNumeric;
+
     private boolean overflowDirty = true;
-    private boolean overflowing;
+
+    private final DivElement element;
+    private final SheetWidget sheetWidget;
+    private DivElement cellCommentTriangle;
+    private DivElement invalidFormulaTriangle;
+    private Element popupButtonElement;
 
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
@@ -54,53 +59,48 @@ public class Cell {
         this.row = row;
 
         element = Document.get().createDivElement();
-        updateCellValues();
+
+        updateClassName();
     }
 
     public Cell(SheetWidget sheetWidget, int col, int row, CellData cellData) {
-        this.sheetWidget = sheetWidget;
-        this.col = col;
-        this.row = row;
-        element = Document.get().createDivElement();
-        if (cellData == null) {
-            value = null;
-        } else {
-            needsMeasure = cellData.needsMeasure;
-            value = cellData.value;
-            cellStyle = cellData.cellStyle;
-        }
-        updateCellValues();
-        updateInnerText();
+        this(sheetWidget, col, row);
+
+        updateCellData(col, row, cellData);
     }
 
     public DivElement getElement() {
         return element;
     }
 
-    public void update(int col, int row, CellData cellData) {
+    public void updateCellData(int col, int row, CellData cellData) {
+        resetCellValues();
+
+        // cellData could be null, so we can't use cellData.col/row
         this.col = col;
         this.row = row;
-        cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
-        value = cellData == null ? null : cellData.value;
+
+        if (cellData != null) {
+            cellStyle = cellData.cellStyle;
+            value = cellData.value;
+            isNumeric = cellData.needsMeasure;
+        }
+
+        updateClassName();
 
         updateInnerText();
-        updateCellValues();
-
-        markAsOverflowDirty();
     }
 
     private void updateInnerText() {
-        element.getStyle().setOverflow(Overflow.HIDDEN);
+        element.getStyle().setOverflow(Overflow.VISIBLE);
+
         if (value == null || value.isEmpty()) {
             element.setInnerText("");
             element.getStyle().clearZIndex();
         } else {
-            element.getStyle().setZIndex(ZINDEXVALUE);
-            if (needsMeasure
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
-                            .getClientWidth()) {
-                element.setInnerText("###");
-            } else if (value.startsWith("'")) {
+            element.getStyle().setZIndex(Z_INDEX_VALUE);
+
+            if (value.startsWith("'")) {
                 element.setInnerText(value.substring(1, value.length()));
             } else {
                 element.setInnerText(value);
@@ -113,64 +113,75 @@ public class Cell {
         boolean rightAligned = element.getAttribute("class").contains(" r ")
                 || element.getAttribute("class").endsWith(" r");
 
-        int columnWidth = sheetWidget.actionHandler.getColWidth(col);
+        if (rightAligned)
+            return;
 
-        Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
-        if (scrollW == null) {
-            scrollW = measureOverflow();
-        }
-        int overflowPx = scrollW - columnWidth;
-        if (!rightAligned && overflowPx > 0) {
-            // Increase overflow by cell left padding (2px)
-            overflowPx += 2;
-            int colIndex = col;
-            int width = 0;
-            int[] colW = sheetWidget.actionHandler.getColWidths();
-            boolean inFreezePane = col <= sheetWidget.verticalSplitPosition;
+        int overflowPx = measureScrollWidth() - getColumnWidth();
 
-            while (colIndex < colW.length && width < overflowPx) {
-                if (inFreezePane
-                        && colIndex >= sheetWidget.verticalSplitPosition) {
-                    break;
-                }
-                Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
-                if (nextCell != null && nextCell.hasValue()) {
-                    break;
-                }
-                width += colW[colIndex];
-                colIndex++;
+        // Increase overflow by cell left padding (2px)
+        overflowPx += 2;
+
+        if (overflowPx > 0) {
+            if (isNumeric) {
+                setElementText("###");
+            } else {
+                int width = getOverflowingDivWidth(overflowPx);
+                createOverflowingDiv(width);
             }
-            // columnWidth is added after calculating the overflowing width
-            width += columnWidth;
-
-            // create element to contain the text, so we can apply overflow
-            // rules
-            DivElement overflowDiv = Document.get().createDivElement();
-            overflowDiv.getStyle().setProperty("pointerEvents", "none");
-            overflowDiv.getStyle().setWidth(width, Style.Unit.PX);
-            overflowDiv.getStyle().setOverflow(Overflow.HIDDEN);
-            overflowDiv.getStyle().setTextOverflow(Style.TextOverflow.ELLIPSIS);
-            overflowDiv.setInnerText(element.getInnerText());
-            element.setInnerText(null);
-            element.appendChild(overflowDiv);
-
-            overflowing = true;
-        } else {
-            overflowing = false;
         }
-        if (sheetWidget.isMergedCell(SheetWidget.toKey(col, row))
-                && !(this instanceof MergedCell)) {
-            element.getStyle().setOverflow(Overflow.HIDDEN);
-        } else {
-            element.getStyle().setOverflow(Overflow.VISIBLE);
-        }
+
+        // FIXME: is this whole thing necessary here?
+//        if (sheetWidget.isMergedCell(SheetWidget.toKey(col, row))
+//                && !(this instanceof MergedCell)) {
+//            element.getStyle().setOverflow(Overflow.HIDDEN);
+//        } else {
+//            element.getStyle().setOverflow(Overflow.VISIBLE);
+//        }
+
         overflowDirty = false;
     }
 
-    int measureOverflow() {
-        if (overflowing) {
-            updateInnerText();
+    private void createOverflowingDiv(int width) {
+        // create element to contain the text, so we can apply overflow
+        // rules
+        DivElement overflowDiv = Document.get().createDivElement();
+        overflowDiv.getStyle().setProperty("pointerEvents", "none");
+        overflowDiv.getStyle().setWidth(width, Style.Unit.PX);
+        overflowDiv.getStyle().setOverflow(Overflow.HIDDEN);
+        overflowDiv.getStyle().setTextOverflow(Style.TextOverflow.ELLIPSIS);
+        overflowDiv.setInnerText(element.getInnerText());
+        element.setInnerText(null);
+        element.appendChild(overflowDiv);
+    }
+
+    private int getColumnWidth() {
+        return sheetWidget.actionHandler.getColWidth(col);
+    }
+
+    private int getOverflowingDivWidth(int overflowPx) {
+        int colIndex = col;
+        int width = 0;
+        int[] colW = sheetWidget.actionHandler.getColWidths();
+        boolean inFreezePane = col <= sheetWidget.verticalSplitPosition;
+
+        while (colIndex < colW.length && width < overflowPx) {
+            if (inFreezePane
+                    && colIndex >= sheetWidget.verticalSplitPosition) {
+                break;
+            }
+            Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
+            if (nextCell != null && nextCell.hasValue()) {
+                break;
+            }
+            width += colW[colIndex];
+            colIndex++;
         }
+        // columnWidth is added after calculating the overflowing width
+        width += getColumnWidth();
+        return width;
+    }
+
+    int measureScrollWidth() {
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
             scrollW = element.getScrollWidth();
@@ -179,10 +190,18 @@ public class Cell {
         return scrollW;
     }
 
-    protected void updateCellValues() {
+    private void resetCellValues() {
+        row = -1;
+        col = -1;
+
+        cellStyle = "cs0";
+        value = null;
+        isNumeric = false;
+        overflowDirty = true;
+
         removeCellCommentMark();
         removePopupButton();
-        updateClassName();
+        removeInvalidFormulaIndicator();
     }
 
     protected void updateClassName() {
@@ -210,7 +229,7 @@ public class Cell {
             this.cellStyle = cellStyle;
             updateClassName();
         }
-        this.needsMeasure = needsMeasure;
+        this.isNumeric = needsMeasure;
         setValue(value);
     }
 
@@ -273,29 +292,6 @@ public class Cell {
         }
     }
 
-    public boolean isNeedsMeasure() {
-        return needsMeasure;
-    }
-
-    /**
-     * @param sizes
-     * @param beginIndex
-     *            1-based inclusive
-     * @param endIndex
-     *            1-based exclusive
-     * @return
-     */
-    public int countSum(int[] sizes, int beginIndex, int endIndex) {
-        if (sizes == null || sizes.length < endIndex - 1) {
-            return 0;
-        }
-        int pos = 0;
-        for (int i = beginIndex; i < endIndex; i++) {
-            pos += sizes[i - 1];
-        }
-        return pos;
-    }
-
     public boolean isOverflowDirty() {
         return value != null && !value.isEmpty() && overflowDirty;
     }
@@ -312,4 +308,8 @@ public class Cell {
         return 31 * (value.hashCode() + cellStyle.hashCode());
     }
 
+    private void setElementText(String elementText) {
+        // FIXME: make all set inner text calls use this method and add overlays
+        element.setInnerText(elementText);
+    }
 }
