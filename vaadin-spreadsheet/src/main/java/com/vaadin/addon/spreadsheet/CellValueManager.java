@@ -293,7 +293,9 @@ public class CellValueManager implements Serializable {
                                                             .getIndex()),
                                             spreadsheet.getState(false).colW[cell
                                                     .getColumnIndex()] - 10);
-                        } else if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
+                        } else if (cell.getCellType() != Cell.CELL_TYPE_STRING
+                                && (cell.getCellType() == Cell.CELL_TYPE_FORMULA
+                                        && cell.getCachedFormulaResultType() != Cell.CELL_TYPE_STRING)) {
                             cellData.needsMeasure = true;
                         }
                     }
@@ -837,9 +839,9 @@ public class CellValueManager implements Serializable {
         }
         // removeCell and removeCells makes sure that cells are removed and
         // cleared from client side cache.
-        updateMarkedCellValues();
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
+        spreadsheet.updateMarkedCells();
         spreadsheet.loadHyperLinks();
     }
 
