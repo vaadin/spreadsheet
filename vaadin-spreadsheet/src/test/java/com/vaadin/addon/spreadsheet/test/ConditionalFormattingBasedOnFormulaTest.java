@@ -20,7 +20,6 @@ public class ConditionalFormattingBasedOnFormulaTest
     private static final String DIFFERENT_FROM_ZERO_CONDITION_COLOR = "rgba(255, 255, 0, 1)";
     
     private SpreadsheetPage spreadsheetPage;
-    static final boolean DEFAULT_STATE = false;
 
     @Override
     public void setUp() throws Exception {
@@ -59,7 +58,7 @@ public class ConditionalFormattingBasedOnFormulaTest
     enum BorderState {
         BORDERED(true),
         BORDERLESS(false),
-        DEFAULT_BORDER_STATE(DEFAULT_STATE);
+        DEFAULT_BORDER_STATE(false);
 
         boolean hasBorder;
 
