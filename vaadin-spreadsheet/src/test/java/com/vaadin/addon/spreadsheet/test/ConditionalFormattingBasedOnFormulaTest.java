@@ -67,23 +67,33 @@ public class ConditionalFormattingBasedOnFormulaTest
         }
     }
 
+    final String[] cells = { "D14", "D15", "D16", "C14" };
+
+    final Map<String, BorderState> borderRuleValues = new HashMap<String, BorderState>() {{
+        put("D14", BORDERLESS);
+        put("D15", BORDERLESS);
+        put("D16", BORDERED);
+        put("C14", BORDERED);
+    }};
+
+    final Map<String, Boolean> matchRuleValues = new HashMap<String, Boolean>() {{
+        put("D14", false);
+        put("D15", false);
+        put("D16", true);
+        put("C14", true);
+    }};
+
     @Test
     public void loadSpreadsheetWithConditionalFormattingCellBorderRulesInD14D15D16_EvaluateFormatting_CheckBorderOfCells() {
-        String[] cells = { "D14", "D15", "D16", "C14" };
-        Map<String, BorderState> borderRuleValues = new HashMap<String, BorderState>() {{
-            put("D14", BORDERLESS);
-            put("D15", BORDERLESS);
-            put("D16", BORDERED);
-            put("C14", BORDERED);
-        }};
 
-        Map<String, Boolean> matchRuleValues = new HashMap<String, Boolean>() {{
-            put("D14", false);
-            put("D15", false);
-            put("D16", true);
-            put("C14", true);
-        }};
+        testInitialState();
 
+        testD16changeToBorderless();
+
+        testD14changedToBorderless();
+    }
+
+    private void testInitialState() {
         Map<String, BorderState> cellStates = computeCellBorderStates(cells,
             borderRuleValues, matchRuleValues);
 
@@ -94,9 +104,13 @@ public class ConditionalFormattingBasedOnFormulaTest
             checkBordersState(cell, matchRuleValues.get(cell),
                 cellStates.get(cell), neighbourCellsStates.get(cell));
         }
+    }
 
-        spreadsheetPage.setCellValue("D16", "borderless");
-        matchRuleValues.put("D16", false);
+    private void testD14changedToBorderless() {
+        Map<String, BorderState> cellStates;
+        Map<String, Map<String, BorderState>> neighbourCellsStates;
+        spreadsheetPage.setCellValue("D14", "borderless");
+        matchRuleValues.put("D14", true);
         cellStates = computeCellBorderStates(cells, borderRuleValues,
             matchRuleValues);
         neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
@@ -105,9 +119,13 @@ public class ConditionalFormattingBasedOnFormulaTest
             checkBordersState(cell, matchRuleValues.get(cell),
                 cellStates.get(cell), neighbourCellsStates.get(cell));
         }
+    }
 
-        spreadsheetPage.setCellValue("D14", "borderless");
-        matchRuleValues.put("D14", true);
+    private void testD16changeToBorderless() {
+        Map<String, BorderState> cellStates;
+        Map<String, Map<String, BorderState>> neighbourCellsStates;
+        spreadsheetPage.setCellValue("D16", "borderless");
+        matchRuleValues.put("D16", false);
         cellStates = computeCellBorderStates(cells, borderRuleValues,
             matchRuleValues);
         neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
