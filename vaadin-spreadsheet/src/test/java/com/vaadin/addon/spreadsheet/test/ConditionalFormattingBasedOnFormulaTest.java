@@ -101,7 +101,7 @@ public class ConditionalFormattingBasedOnFormulaTest
             cells, cellStates);
 
         for (String cell : cells) {
-            checkBordersState(cell, matchRuleValues.get(cell),
+            assertBorderStates(cell, matchRuleValues.get(cell),
                 cellStates.get(cell), neighbourCellsStates.get(cell));
         }
     }
@@ -116,7 +116,7 @@ public class ConditionalFormattingBasedOnFormulaTest
         neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
 
         for (String cell : cells) {
-            checkBordersState(cell, matchRuleValues.get(cell),
+            assertBorderStates(cell, matchRuleValues.get(cell),
                 cellStates.get(cell), neighbourCellsStates.get(cell));
         }
     }
@@ -131,7 +131,7 @@ public class ConditionalFormattingBasedOnFormulaTest
         neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
 
         for (String cell : cells) {
-            checkBordersState(cell, matchRuleValues.get(cell),
+            assertBorderStates(cell, matchRuleValues.get(cell),
                 cellStates.get(cell), neighbourCellsStates.get(cell));
         }
     }
@@ -150,7 +150,7 @@ public class ConditionalFormattingBasedOnFormulaTest
      * @param borderingCellState
      *     Current border cell states of the four neighbours of <code>cell</code>
      */
-    private void checkBordersState(String cell, boolean matchRule,
+    private void assertBorderStates(String cell, boolean matchRule,
         BorderState cellState, Map<String, BorderState> borderingCellState) {
         // In the testing sheet, conditional formatting rules are growing priority
         // going from top to bottom and from right to left
