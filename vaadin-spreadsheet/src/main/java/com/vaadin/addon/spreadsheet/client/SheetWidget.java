@@ -4365,7 +4365,7 @@ public class SheetWidget extends Panel {
             }
         }
     }
-    
+
     public String getSelectedCellKey() {
         return toKey(selectedCellCol, selectedCellRow);
     }
