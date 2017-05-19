@@ -226,12 +226,15 @@ public class ConditionalFormattingBasedOnFormulaTest
         Map<String, BorderState> borderRuleValues,
         Map<String, Boolean> matchRuleValues) {
         Map<String, BorderState> cellBorderStates = new HashMap<String, BorderState>();
+
         for (String c : cells) {
-            BorderState borderState = (matchRuleValues.get(c)) ?
-                borderRuleValues.get(c) :
-                BorderState.DEFAULT_BORDER_STATE;
-            cellBorderStates.put(c, borderState);
+            if (matchRuleValues.get(c)) {
+                cellBorderStates.put(c, borderRuleValues.get(c));
+            } else {
+                cellBorderStates.put(c, BorderState.DEFAULT_BORDER_STATE);
+            }
         }
+
         return cellBorderStates;
     }
 
