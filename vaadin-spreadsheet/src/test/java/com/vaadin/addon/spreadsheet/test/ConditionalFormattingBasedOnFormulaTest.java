@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -74,6 +77,7 @@ public class ConditionalFormattingBasedOnFormulaTest
             put("D16", BORDERED);
             put("C14", BORDERED);
         }};
+
         Map<String, Boolean> matchRuleValues = new HashMap<String, Boolean>() {{
             put("D14", false);
             put("D15", false);
@@ -83,6 +87,7 @@ public class ConditionalFormattingBasedOnFormulaTest
 
         Map<String, BorderState> cellStates = computeCellBorderStates(cells,
             borderRuleValues, matchRuleValues);
+
         Map<String, Map<String, BorderState>> neighbourCellsStates = computeNeighbourCellStates(
             cells, cellStates);
 
@@ -261,19 +266,19 @@ public class ConditionalFormattingBasedOnFormulaTest
         return bottomBorderState(getAboveCellAddress(cellAddress));
     }
 
-    private boolean rightBorderState(String cellAdress) {
-        return spreadsheetPage.hasBorderRight(cellAdress);
+    private boolean rightBorderState(String cellAddress) {
+        return spreadsheetPage.hasBorderRight(cellAddress);
     }
 
-    private boolean bottomBorderState(String cellAdress) {
-        return spreadsheetPage.hasBorderBottom(cellAdress);
+    private boolean bottomBorderState(String cellAddress) {
+        return spreadsheetPage.hasBorderBottom(cellAddress);
     }
 
-    private boolean leftBorderState(String cellAdress) {
-        return rightBorderState(getLeftCellAddress(cellAdress));
+    private boolean leftBorderState(String cellAddress) {
+        return rightBorderState(getLeftCellAddress(cellAddress));
     }
-    ///// Give the border state of a cell neighbor  
 
+    ///// Give the border state of a cell neighbor
     private BorderState getAboveCellState(
         Map<String, BorderState> cellBorderStates, String cell) {
         return cellBorderStates.get(getAboveCellAddress(cell));
@@ -294,8 +299,7 @@ public class ConditionalFormattingBasedOnFormulaTest
         return cellBorderStates.get(getRightCellAddress(cell));
     }
 
-    //// Gived the address of a cell, compute the above/right/below/left cell address 
-
+    //// Given the address of a cell, compute the above/right/below/left cell address
     private String getAboveCellAddress(String cellAddress) {
         int row = Integer
             .parseInt(cellAddress.substring(1, cellAddress.length()));
@@ -305,8 +309,8 @@ public class ConditionalFormattingBasedOnFormulaTest
 
     private String getRightCellAddress(String cellAddress) {
         char column = cellAddress.charAt(0);
-        char rightColum = (char) (column + 1);
-        return String.valueOf(rightColum) + Integer
+        char rightColumn = (char) (column + 1);
+        return String.valueOf(rightColumn) + Integer
             .parseInt(cellAddress.substring(1, cellAddress.length()));
     }
 
