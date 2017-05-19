@@ -5,12 +5,11 @@ import static com.vaadin.addon.spreadsheet.test.ConditionalFormattingBasedOnForm
 import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.Test;
-import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
+import org.junit.Test;
+
+import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -78,7 +77,7 @@ public class ConditionalFormattingBasedOnFormulaTest
 
     final Map<String, Boolean> matchRuleValues = new HashMap<String, Boolean>() {{
         put("D14", false);
-        put("D15", false);
+        put("D15", true);
         put("D16", true);
         put("C14", true);
     }};
