@@ -838,8 +838,18 @@ public class CellValueManager implements Serializable {
         // cleared from client side cache.
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
+        markSelectedCellsAsDeleted();
         spreadsheet.updateMarkedCells();
         spreadsheet.loadHyperLinks();
+    }
+
+    private void markSelectedCellsAsDeleted() {
+        for (CellReference cellRef : spreadsheet.getSelectedCellReferences()) {
+            final Cell cell = spreadsheet.getCell(cellRef);
+            if (cell != null) {
+                spreadsheet.markCellAsDeleted(cell, true);
+            }
+        }
     }
 
     /**
