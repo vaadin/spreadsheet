@@ -877,17 +877,14 @@ public class ConditionalFormatter implements Serializable {
 
     private boolean isCoherentWithBlankType(ValueEval eval) {
         if (eval instanceof BoolEval) {
-            return !((BoolEval) eval).getBooleanValue();
+            return ((BoolEval) eval).getBooleanValue() == false;
+        } else if (eval instanceof NumericValueEval) {
+            return ((NumericValueEval) eval).getNumberValue() == 0;
+        } else if (eval instanceof StringEval) {
+            return ((StringEval) eval).getStringValue().isEmpty();
         } else {
-            if (eval instanceof NumericValueEval) {
-                return ((NumericValueEval) eval).getNumberValue() == 0;
-            } else {
-                if (eval instanceof StringEval) {
-                    return ((StringEval) eval).getStringValue().isEmpty();
-                }
-            }
+            return false;
         }
-        return false;
     }
 
     private boolean isCoherentTypeFormula(ValueEval eval,
