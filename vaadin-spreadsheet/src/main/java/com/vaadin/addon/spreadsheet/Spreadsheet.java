@@ -1815,7 +1815,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * adds a {@link RowHeaderDoubleClickListner} to the Spreadsheet
+     * adds a {@link RowHeaderDoubleClickListener} to the Spreadsheet
      *
      * @param listener
      *     The listener to add
