@@ -1,7 +1,6 @@
 package com.vaadin.addon.spreadsheet.test.fixtures;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
@@ -15,13 +14,10 @@ public class RowHeaderDoubleClickFixture implements SpreadsheetFixture {
                 public void onRowHeaderDoubleClick(
                     Spreadsheet.RowHeaderDoubleClickEvent event) {
 
-                    final Cell cell = spreadsheet.getActiveSheet()
-                        .getRow(event.getRowIndex())
-                        .getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    Cell cell = spreadsheet.createCell(event.getRowIndex(), 0,
+                        "Double-click on row header");
 
-                    cell.setCellValue("Double-click on row header");
-
-                    spreadsheet.refreshAllCellValues();
+                    spreadsheet.refreshCells(cell);
                 }
             });
     }
