@@ -1806,7 +1806,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @param rowIndex
      *     Index of the target rowIndex, 0-based
      */
-    public void onRowHeaderDoubleClick(int rowIndex) {
+    protected void onRowHeaderDoubleClick(int rowIndex) {
         fireRowHeaderDoubleClick(rowIndex);
     }
 
@@ -1817,13 +1817,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * adds a {@link RowHeaderDoubleClickListner} to the Spreadsheet
      *
-     * @param listner
+     * @param listener
      *     The listener to add
      **/
-    public void addRowHeaderDoubleClickListner(
-        RowHeaderDoubleClickListner listner) {
-        addListener(RowHeaderDoubleClickEvent.class, listner,
-            RowHeaderDoubleClickListner.ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK);
+    public void addRowHeaderDoubleClickListener(
+        RowHeaderDoubleClickListener listener) {
+        addListener(RowHeaderDoubleClickEvent.class, listener,
+            RowHeaderDoubleClickListener.ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK);
     }
 
     /**
@@ -5156,9 +5156,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Interface for listening a {@Link RowHeaderDoubleClickEvent} event
      **/
-    public interface RowHeaderDoubleClickListner extends Serializable {
-        public static final Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
-            .findMethod(RowHeaderDoubleClickListner.class,
+    public interface RowHeaderDoubleClickListener extends Serializable {
+        Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
+            .findMethod(RowHeaderDoubleClickListener.class,
                 "onRowHeaderDoubleClick", RowHeaderDoubleClickEvent.class);
 
         /**
@@ -5167,6 +5167,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
          * @param event
          *     The RowHeaderDoubleClilckEvent that happened
          **/
-        public void onRowHeaderDoubleClick(RowHeaderDoubleClickEvent event);
+        void onRowHeaderDoubleClick(RowHeaderDoubleClickEvent event);
     }
 }

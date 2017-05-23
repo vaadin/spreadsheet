@@ -10,8 +10,8 @@ public class RowHeaderDoubleClickFixture implements SpreadsheetFixture {
 
         final Cell cell = spreadsheet.createCell(1, 1, "EMPTY");
 
-        spreadsheet.addRowHeaderDoubleClickListner(
-            new Spreadsheet.RowHeaderDoubleClickListner() {
+        spreadsheet.addRowHeaderDoubleClickListener(
+            new Spreadsheet.RowHeaderDoubleClickListener() {
                 @Override
                 public void onRowHeaderDoubleClick(
                     Spreadsheet.RowHeaderDoubleClickEvent event) {
@@ -20,6 +20,7 @@ public class RowHeaderDoubleClickFixture implements SpreadsheetFixture {
                     spreadsheet.refreshAllCellValues();
                 }
             });
+
         spreadsheet.refreshAllCellValues();
     }
 }
