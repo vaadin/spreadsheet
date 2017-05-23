@@ -1829,7 +1829,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * This method is called when column auto-fit has been initiated from the
      * browser by double-clicking the border of the target column header.
-     *
+     * 
      * @param columnIndex
      *            Index of the target column, 0-based
      */
