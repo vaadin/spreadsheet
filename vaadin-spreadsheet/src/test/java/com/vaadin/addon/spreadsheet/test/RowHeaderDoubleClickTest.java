@@ -31,8 +31,10 @@ public class RowHeaderDoubleClickTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public List<DesiredCapabilities> getBrowsersToTest() {
-        // Chrome and IE10 fail for some reason
-        // at least Chrome on Mac works in manual testing
-        return getBrowserCapabilities(Browser.IE11, Browser.FIREFOX);
+        // Double click is not supported by PhantomJS.
+        // Chrome fails for some reason, it never gets the row header double-click event 
+        // probably because of faulty logic in SheetWidget that cancels it.
+        // In manual testing Chrome works fine
+        return getBrowserCapabilities(Browser.IE10, Browser.IE11, Browser.FIREFOX);
     }
 }
