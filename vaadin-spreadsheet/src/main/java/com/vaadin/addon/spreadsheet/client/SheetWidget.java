@@ -1663,7 +1663,7 @@ public class SheetWidget extends Panel {
                                             }
                                             if (i > 0) {
                                                 actionHandler
-                                                    .onRowHeaderResizeDoubleClick(i);
+                                                    .onRowHeaderDoubleClick(i);
                                             }
                                         } else if (i == 2) { // col
                                             i = jsniUtil
@@ -1692,7 +1692,7 @@ public class SheetWidget extends Panel {
                                             }
                                             if (i > 0) {
                                                 actionHandler
-                                                    .onRowHeaderResizeDoubleClick(i);
+                                                    .onRowHeaderDoubleClick(i);
                                             }
                                         } else if (i == 2) { // col
                                             i = jsniUtil

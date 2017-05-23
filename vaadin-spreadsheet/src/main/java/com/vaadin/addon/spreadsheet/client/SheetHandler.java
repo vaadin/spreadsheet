@@ -195,7 +195,7 @@ public interface SheetHandler extends GroupingHandler {
      * @param rowIndex
      *     1-based
      */
-    void onRowHeaderResizeDoubleClick(int rowIndex);
+    void onRowHeaderDoubleClick(int rowIndex);
 
     /**
      *
