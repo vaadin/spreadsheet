@@ -5145,11 +5145,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * This event is fired when the border of a row header is double clicked
      **/
     public static class RowHeaderDoubleClickEvent extends Component.Event {
-        public final int rowIndex;
+        private final int rowIndex;
 
         public RowHeaderDoubleClickEvent(Component source, int row) {
             super(source);
             this.rowIndex = row;
+        }
+
+        public int getRowIndex() {
+            return rowIndex;
         }
     }
 
