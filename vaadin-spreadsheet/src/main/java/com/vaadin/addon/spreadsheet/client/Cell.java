@@ -282,29 +282,6 @@ public class Cell {
         }
     }
 
-    public boolean isNeedsMeasure() {
-        return needsMeasure;
-    }
-
-    /**
-     * @param sizes
-     * @param beginIndex
-     *            1-based inclusive
-     * @param endIndex
-     *            1-based exclusive
-     * @return
-     */
-    public int countSum(int[] sizes, int beginIndex, int endIndex) {
-        if (sizes == null || sizes.length < endIndex - 1) {
-            return 0;
-        }
-        int pos = 0;
-        for (int i = beginIndex; i < endIndex; i++) {
-            pos += sizes[i - 1];
-        }
-        return pos;
-    }
-
     public boolean isOverflowDirty() {
         return value != null && !value.isEmpty() && overflowDirty;
     }
