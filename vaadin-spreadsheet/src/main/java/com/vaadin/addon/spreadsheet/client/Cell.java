@@ -316,8 +316,9 @@ public class Cell {
     private int getUniqueKey() {
         // from SpreadsheetVersion class
         final int MAX_NUM_COLUMNS = 0x4000;
-        
-        return row * MAX_NUM_COLUMNS + col;
+        final int cellUniqueId = row * MAX_NUM_COLUMNS + col;
+
+        return 31 * (value.hashCode() + cellStyle.hashCode() + cellUniqueId);
     }
 
 }
