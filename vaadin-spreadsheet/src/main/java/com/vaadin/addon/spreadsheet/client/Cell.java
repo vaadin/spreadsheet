@@ -164,7 +164,14 @@ public class Cell {
                 && !(this instanceof MergedCell)) {
             element.getStyle().setOverflow(Overflow.HIDDEN);
         } else {
-            element.getStyle().setOverflow(Overflow.VISIBLE);
+            if (overflowPx > 0) {
+                element.getStyle().setOverflow(Overflow.VISIBLE);
+            } else {
+                // in this case we have a line wrapping enabled cell, 
+                // so if there is overflow it is only vertical and 
+                // it is always hidden in Excel
+                element.getStyle().setOverflow(Overflow.HIDDEN);
+            }
         }
         overflowDirty = false;
     }
