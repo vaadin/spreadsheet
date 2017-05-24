@@ -58,7 +58,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -856,18 +855,8 @@ public class CellValueManager implements Serializable {
         // cleared from client side cache.
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
-        markSelectedCellsAsDeleted();
         spreadsheet.updateMarkedCells();
         spreadsheet.loadHyperLinks();
-    }
-
-    private void markSelectedCellsAsDeleted() {
-        for (CellReference cellRef : spreadsheet.getSelectedCellReferences()) {
-            final Cell cell = spreadsheet.getCell(cellRef);
-            if (cell != null) {
-                spreadsheet.markCellAsDeleted(cell, true);
-            }
-        }
     }
 
     /**
