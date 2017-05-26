@@ -185,6 +185,7 @@ public class Cell {
     protected void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
+        removeInvalidFormulaIndicator();
         updateClassName();
     }
 
