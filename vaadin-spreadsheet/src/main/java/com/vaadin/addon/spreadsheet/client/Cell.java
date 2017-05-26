@@ -106,6 +106,8 @@ public class Cell {
                 element.setInnerText(value);
             }
         }
+        
+        appendOverlayElements();
     }
 
     void updateOverflow() {
@@ -153,6 +155,7 @@ public class Cell {
             overflowDiv.setInnerText(element.getInnerText());
             element.setInnerText(null);
             element.appendChild(overflowDiv);
+            appendOverlayElements();
 
             overflowing = true;
         } else {
