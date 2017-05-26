@@ -174,7 +174,6 @@ public class Cell {
         if (overflowing) {
             updateInnerText();
         }
-        appendOverlayElements();
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
             scrollW = element.getScrollWidth();
@@ -221,8 +220,6 @@ public class Cell {
     public void setValue(String value) {
         this.value = value;
         updateInnerText();
-
-        appendOverlayElements();
 
         markAsOverflowDirty();
     }
