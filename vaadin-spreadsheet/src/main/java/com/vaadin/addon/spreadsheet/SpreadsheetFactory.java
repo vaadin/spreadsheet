@@ -26,8 +26,10 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -69,6 +71,7 @@ import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTTwoCellAn
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAutoFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilterColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTOutlinePr;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTSheetProtection;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTWorksheet;
@@ -422,25 +425,43 @@ public class SpreadsheetFactory implements Serializable {
          if (spreadsheet.getActiveSheet() instanceof HSSFSheet)
              return;
 
-         // add the sheet filter as a SpreadsheetFilterTable
          XSSFSheet sheet = (XSSFSheet) spreadsheet.getActiveSheet();
          CTAutoFilter autoFilter = sheet.getCTWorksheet().getAutoFilter();
 
          if (autoFilter != null) {
              SpreadsheetTable sheetFilterTable = new SpreadsheetFilterTable(
                  spreadsheet, CellRangeAddress.valueOf(autoFilter.getRef()));
+             
              spreadsheet.registerTable(sheetFilterTable);
+
+             markActiveButtons(sheetFilterTable, autoFilter);             
          }
 
-         //add all tables in the active sheet
-         List<XSSFTable> tables = sheet.getTables();
-         for (XSSFTable table : tables) {
+         for (XSSFTable table : sheet.getTables()) {
              SpreadsheetTable spreadsheetTable = new SpreadsheetFilterTable(
                  spreadsheet,
                  CellRangeAddress.valueOf(table.getCTTable().getRef()));
 
              spreadsheet.registerTable(spreadsheetTable);
          }
+    }
+
+    private static void markActiveButtons(SpreadsheetTable sheetFilterTable,
+        CTAutoFilter autoFilter) {
+
+        final int offset = sheetFilterTable.getFullTableRegion()
+            .getFirstColumn();
+
+        Map<Integer, PopupButton> buttons = new HashMap<Integer, PopupButton>();
+        
+        for (PopupButton button : sheetFilterTable.getPopupButtons()) {
+            buttons.put(button.getColumn() - offset, button);
+        }
+        
+        for (CTFilterColumn column : autoFilter.getFilterColumnList()) {
+            final int colId = (int) column.getColId();
+            buttons.get(colId).markActive(true);
+        }
     }
 
     /**
