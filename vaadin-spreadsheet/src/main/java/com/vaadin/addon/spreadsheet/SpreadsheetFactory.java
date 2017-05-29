@@ -26,10 +26,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Level;
@@ -452,15 +450,9 @@ public class SpreadsheetFactory implements Serializable {
         final int offset = sheetFilterTable.getFullTableRegion()
             .getFirstColumn();
 
-        Map<Integer, PopupButton> buttons = new HashMap<Integer, PopupButton>();
-        
-        for (PopupButton button : sheetFilterTable.getPopupButtons()) {
-            buttons.put(button.getColumn() - offset, button);
-        }
-        
         for (CTFilterColumn column : autoFilter.getFilterColumnList()) {
-            final int colId = (int) column.getColId();
-            buttons.get(colId).markActive(true);
+            final int colId = offset + (int) column.getColId();
+            sheetFilterTable.getPopupButton(colId).markActive(true);
         }
     }
 
