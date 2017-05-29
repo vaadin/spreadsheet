@@ -95,7 +95,7 @@ public class ColumnFiltersTest {
     }
     
     @Test
-    public void test() throws Exception {
+    public void loadFile_filteredColumnsLoadedAsActive() throws Exception {
         Spreadsheet spr = new Spreadsheet(
             getTestSheetFile("autofilter_with_active_column.xlsx"));
 
