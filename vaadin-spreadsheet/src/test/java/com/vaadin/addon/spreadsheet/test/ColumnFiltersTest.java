@@ -1,10 +1,14 @@
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
+import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFTable;
@@ -14,15 +18,18 @@ import org.junit.Test;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTable;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
+import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 
 public class ColumnFiltersTest {
+
+    final String TABLE1_RANGE = "B2:B4";
+    final String TABLE2_RANGE = "B6:B8";
 
     private XSSFWorkbook workbook;
     private Spreadsheet spreadsheet;
 
-
     @Before
-    public void setUp(){
+    public void setUp() {
         workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet();
 
@@ -52,24 +59,35 @@ public class ColumnFiltersTest {
     }
 
     @Test
-    public void sheetWithFilters_loadWorkbook_filtersPreserved(){
+    public void sheetWithFilters_loadWorkbook_filtersPreserved() {
         assertNotNull(spreadsheet.getTables());
         assertEquals(1, spreadsheet.getTables().size());
-        assertEquals(CellRangeAddress.valueOf("B2:B4"),
+        assertEquals(CellRangeAddress.valueOf(TABLE1_RANGE),
             spreadsheet.getTables().iterator().next().getFullTableRegion());
     }
 
     @Test
-    public void sheetWithTables_loadWorkbook_tablesPreserved(){
+    public void sheetWithTables_loadWorkbook_tablesPreserved() {
         XSSFTable table = workbook.getSheetAt(0).createTable();
         CTTable ctTable = table.getCTTable();
-        ctTable.setRef("B6:B8");
+        ctTable.setRef(TABLE2_RANGE);
 
         spreadsheet.setWorkbook(workbook);
 
         assertNotNull(spreadsheet.getTables());
         assertEquals(2, spreadsheet.getTables().size());
-        assertEquals(CellRangeAddress.valueOf("B6:B8"),
-            spreadsheet.getTables().iterator().next().getFullTableRegion());
+
+        final Iterator<SpreadsheetTable> iterator = spreadsheet.getTables()
+            .iterator();
+
+        final CellRangeAddress table1 = iterator.next().getFullTableRegion();
+        
+        final CellRangeAddress table2 = iterator.next().getFullTableRegion();
+
+        assertThat(CellRangeAddress.valueOf(TABLE1_RANGE),
+            anyOf(is(table1), is(table2)));
+        
+        assertThat(CellRangeAddress.valueOf(TABLE2_RANGE),
+            anyOf(is(table1), is(table2)));
     }
 }
