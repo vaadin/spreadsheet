@@ -157,19 +157,40 @@ public class ConditionalFormattingBasedOnFormulaTest
         boolean winOnRightCell = cellStateWinOnNeighbour(matchRule, false);
         boolean winOnBelowCell = cellStateWinOnNeighbour(matchRule, false);
         boolean winOnLeftCell = cellStateWinOnNeighbour(matchRule, true);
+        
+        boolean expectedTopState = borderState(winOnAboveCell, cellState,
+            getAboveCellState(borderingCellState, cell));
+        boolean expectedRightState = borderState(winOnRightCell, cellState,
+            getRightCellState(borderingCellState, cell));
+        boolean expectedBottomState = borderState(winOnBelowCell, cellState,
+            getBelowCellState(borderingCellState, cell));
+        boolean expectedLeftState = borderState(winOnLeftCell, cellState,
+            getLeftCellState(borderingCellState, cell));
 
-        assertEquals(topBorderState(cell),
-            borderState(winOnAboveCell, cellState,
-                getAboveCellState(borderingCellState, cell)));     // top
-        assertEquals(rightBorderState(cell),
-            borderState(winOnRightCell, cellState,
-                getRightCellState(borderingCellState, cell)));   // right
-        assertEquals(bottomBorderState(cell),
-            borderState(winOnBelowCell, cellState,
-                getBelowCellState(borderingCellState, cell)));  // bottom
-        assertEquals(leftBorderState(cell),
-            borderState(winOnLeftCell, cellState,
-                getLeftCellState(borderingCellState, cell)));      // left
+        boolean actualTopState = topBorderState(cell);
+        boolean actualRightState = rightBorderState(cell);
+        boolean actualBottomState = bottomBorderState(cell);
+        boolean actualLeftState = leftBorderState(cell);
+
+        assertEquals(createMessage(cell, "top", expectedRightState,
+            actualRightState),
+            expectedTopState, actualTopState);     // top
+        assertEquals(createMessage(cell, "right", actualRightState,
+            expectedRightState),
+            expectedRightState, actualRightState);   // right
+        assertEquals(createMessage(cell, "bottom", actualBottomState,
+            expectedBottomState),
+            expectedBottomState, actualBottomState);  // bottom
+        assertEquals(createMessage(cell, "right", actualRightState,
+            expectedRightState),
+            expectedLeftState, actualLeftState);      // left
+    }
+
+    private String createMessage(String cell, String position, boolean actualRightState,
+        boolean expectedRightState) {
+        String actualNot = (!actualRightState) ? " not" : "";
+        String expectedNot = (!expectedRightState) ? " not" : "";
+        return "The "+position+" border of "+cell+" is"+actualNot+" present, but it is"+expectedNot+" expected";
     }
 
     private boolean cellStateWinOnNeighbour(boolean match,
