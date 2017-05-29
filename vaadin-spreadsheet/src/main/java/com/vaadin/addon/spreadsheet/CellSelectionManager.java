@@ -19,21 +19,15 @@ package com.vaadin.addon.spreadsheet;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.ss.util.CellReference.NameType;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
@@ -216,10 +210,54 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onSheetAddressChanged(String value, boolean initialSelection) {
         try {
-            if (value.contains(":")) {
-                onRangeAddressEntered(value);
-            } else {
-                onNonRangeAddressEntered(value, initialSelection);
+            CellReferenceUtils utils = new CellReferenceUtils(spreadsheet);
+            
+            if (utils.isNamedRange(value)) {
+                utils.onNamedRange(value);
+            }
+            else if (value.contains(":")) {
+                CellRangeAddress cra = spreadsheet
+                        .createCorrectCellRangeAddress(value);
+                // need to check the range for merged regions
+                MergedRegion region = MergedRegionUtil.findIncreasingSelection(
+                        spreadsheet.getMergedRegionContainer(),
+                        cra.getFirstRow() + 1, cra.getLastRow() + 1,
+                        cra.getFirstColumn() + 1, cra.getLastColumn() + 1);
+                if (region != null) {
+                    cra = new CellRangeAddress(region.row1 - 1,
+                            region.row2 - 1, region.col1 - 1, region.col2 - 1);
+                }
+                handleCellRangeSelection(cra);
+                selectedCellReference = new CellReference(cra.getFirstRow(),
+                        cra.getFirstColumn());
+                paintedCellRange = cra;
+                cellRangeAddresses.clear();
+                cellRangeAddresses.add(cra);
+            } else if (utils.isCellReference(value)) {
+                final CellReference cellReference = new CellReference(value);
+                MergedRegion region = MergedRegionUtil.findIncreasingSelection(
+                        spreadsheet.getMergedRegionContainer(),
+                        cellReference.getRow() + 1, cellReference.getRow() + 1,
+                        cellReference.getCol() + 1, cellReference.getCol() + 1);
+                if (region != null
+                        && (region.col1 != region.col2 || region.row1 != region.row2)) {
+                    CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(
+                            region.row1, region.col1, region.row2, region.col2);
+                    handleCellRangeSelection(cra);
+                    selectedCellReference = new CellReference(cra.getFirstRow(),
+                            cra.getFirstColumn());
+                    paintedCellRange = cra;
+                    cellRangeAddresses.clear();
+                    cellRangeAddresses.add(cra);
+                } else {
+                    handleCellAddressChange(cellReference.getRow() + 1,
+                            cellReference.getCol() + 1, initialSelection);
+                    paintedCellRange = spreadsheet.createCorrectCellRangeAddress(
+                            cellReference.getRow() + 1, cellReference.getCol() + 1,
+                            cellReference.getRow() + 1, cellReference.getCol() + 1);
+                    selectedCellReference = cellReference;
+                    cellRangeAddresses.clear();
+                }
             }
             individualSelectedCells.clear();
             spreadsheet.loadCustomEditorOnSelectedCell();
@@ -229,230 +267,7 @@ public class CellSelectionManager implements Serializable {
             spreadsheet.getRpcProxy().invalidCellAddress();
         }
     }
-
-    private void onNonRangeAddressEntered(String value,
-            boolean initialSelection) {
-        if (isCellReference(value)) {
-            onSingleCellSelected(value, initialSelection);
-        } else if (isNamedRange(value)) {
-            onNamedRange(value);
-        }
-    }
-
-    /**
-     * Get cell reference type
-     * 
-     * @param value
-     *            New value of the address field
-     * @return NameType of cell
-     */
-    private NameType getCellReferenceType(String value) {
-        SpreadsheetVersion spreadsheetVersion = spreadsheet
-                .getSpreadsheetVersion();
-        return CellReference.classifyCellReference(value, spreadsheetVersion);
-    }
-
-    /**
-     * Check if entered range is cell reference
-     * 
-     * @param value
-     *            New value of the address field
-     * @return
-     */
-    private boolean isCellReference(String value) {
-        NameType nameType = getCellReferenceType(value);
-        List<NameType> cellColRowTypes = Arrays.asList(NameType.CELL,
-                NameType.COLUMN, NameType.ROW);
-        if (cellColRowTypes.contains(nameType)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check if entered range is cell reference
-     * 
-     * @param value
-     *            New value of the address field
-     * @return
-     */
-    private boolean isNamedRange(String value) {
-        NameType nameType = getCellReferenceType(value);
-        if (NameType.NAMED_RANGE.equals(nameType)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Called when single cell was selected. Selector ":" was not used.
-     * 
-     * @param value
-     *            New value of the address field
-     * @param initialSelectionNew
-     *            value of the address field
-     */
-    private void onSingleCellSelected(String value, boolean initialSelection) {
-        CellReference cellReference = new CellReference(value);
-        MergedRegion region = MergedRegionUtil.findIncreasingSelection(
-                spreadsheet.getMergedRegionContainer(),
-                cellReference.getRow() + 1, cellReference.getRow() + 1,
-                cellReference.getCol() + 1, cellReference.getCol() + 1);
-        if (region != null
-                && (region.col1 != region.col2 || region.row1 != region.row2)) {
-            CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(
-                    region.row1, region.col1, region.row2, region.col2);
-            handleCellRangeSelection(cra);
-            selectedCellReference = new CellReference(cra.getFirstRow(),
-                    cra.getFirstColumn());
-            paintedCellRange = cra;
-            cellRangeAddresses.clear();
-            cellRangeAddresses.add(cra);
-        } else {
-            handleCellAddressChange(cellReference.getRow() + 1,
-                    cellReference.getCol() + 1, initialSelection);
-            paintedCellRange = spreadsheet.createCorrectCellRangeAddress(
-                    cellReference.getRow() + 1, cellReference.getCol() + 1,
-                    cellReference.getRow() + 1, cellReference.getCol() + 1);
-            selectedCellReference = cellReference;
-            cellRangeAddresses.clear();
-        }
-    }
-
-    /**
-     * This is called when address field contains ":"
-     * 
-     * @param value
-     *            New value of the address field
-     */
-    private void onRangeAddressEntered(String value) {
-        CellRangeAddress cra = spreadsheet
-                .createCorrectCellRangeAddress(value);
-        // need to check the range for merged regions
-        MergedRegion region = MergedRegionUtil.findIncreasingSelection(
-                spreadsheet.getMergedRegionContainer(),
-                cra.getFirstRow() + 1, cra.getLastRow() + 1,
-                cra.getFirstColumn() + 1, cra.getLastColumn() + 1);
-        if (region != null) {
-            cra = new CellRangeAddress(region.row1 - 1,
-                    region.row2 - 1, region.col1 - 1, region.col2 - 1);
-        }
-        handleCellRangeSelection(cra);
-        selectedCellReference = new CellReference(cra.getFirstRow(),
-                cra.getFirstColumn());
-        paintedCellRange = cra;
-        cellRangeAddresses.clear();
-        cellRangeAddresses.add(cra);
-    }
-
-    /**
-     * Run when address field contains named range This creates new range or
-     * selects already existing one.
-     * 
-     * @param value
-     *            Address field value
-     */
-    private void onNamedRange(String value) {
-        Workbook workbook = spreadsheet.getWorkbook();
-        Name name = workbook.getName(value);
-        if (name == null) {
-            createNewNamedRange(value);
-        } else {
-            selectExistingNameRange(name);
-        }
-    }
-
-    /**
-     * Create new named range
-     * 
-     * @param value
-     *            Name of value range
-     */
-    private void createNewNamedRange(String value) {
-        Workbook workbook = spreadsheet.getWorkbook();
-
-        Name name = workbook.createName();
-        name.setNameName(value);
-        name.setRefersToFormula(getSelectedRangeFormula());
-    }
-
-    /**
-     * Get formula for currently selected range(s)
-     * 
-     * @return
-     */
-    private String getSelectedRangeFormula() {
-        if (cellRangeAddresses.isEmpty()) {
-            return getIndividualCellFormula();
-        } else {
-            return getRangeCellFormula();
-        }
-    }
-    private String getIndividualCellFormula() {
-        Sheet activeSheet = spreadsheet.getActiveSheet();
-        String sheetName = activeSheet.getSheetName();
-        String selectedCell = selectedCellReference.formatAsString();
-        return sheetName + "!" + selectedCell;
-    }
-
-    private String getRangeCellFormula() {
-        StringBuilder rangeFromula = new StringBuilder();
-        Sheet activeSheet = spreadsheet.getActiveSheet();
-        String sheetName = activeSheet.getSheetName();
-        for (CellRangeAddress cellRangeAddress : cellRangeAddresses) {
-            if (rangeFromula.length() != 0) {
-                rangeFromula.append(","); // TODO
-            }
-            rangeFromula
-                    .append(cellRangeAddress.formatAsString(sheetName, false));
-        }
-        return rangeFromula.toString();
-    }
-
-    private void selectExistingNameRange(Name name) {
-        String rangeFormula = name.getRefersToFormula();
-        String formulasSheet = name.getSheetName();
-        switchSheet(formulasSheet);
-        for (AreaReference aref : getAreaReferences(rangeFormula)) {
-            if (aref.isSingleCell()) {
-                selectSingleRange(aref);
-            } else {
-                selectMultipleRanges(aref);
-            }
-        }
-    }
-
-    private void switchSheet(String formulasSheet) {
-        if (!spreadsheet.getActiveSheet().getSheetName()
-                .equals(formulasSheet)) {
-            spreadsheet.switchSheet(formulasSheet); // named range defines sheet
-        }
-    }
-
-    private void selectMultipleRanges(AreaReference aref) {
-        String areaString = aref.formatAsString();
-        CellRangeAddress cra = spreadsheet
-                .createCorrectCellRangeAddress(areaString);
-        handleCellRangeSelection(cra);
-    }
-
-    private void selectSingleRange(AreaReference aref) {
-        CellReference cell = aref.getFirstCell();
-        handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
-                false);
-    }
-
-    private AreaReference[] getAreaReferences(String rangeFormula) {
-        if (!AreaReference.isContiguous(rangeFormula)) {
-            return AreaReference.generateContiguous(rangeFormula);
-        } else {
-            return new AreaReference[] { new AreaReference(rangeFormula,
-                    spreadsheet.getSpreadsheetVersion()) };
-        }
-    }
-
+    
     /**
      * Reports the correct cell selection value (formula/data) and selection.
      * This method is called when the cell selection has changed via the address
@@ -463,7 +278,7 @@ public class CellSelectionManager implements Serializable {
      * @param colIndex
      *            Index of column, 1-based
      */
-    private void handleCellAddressChange(int rowIndex, int colIndex,
+     void handleCellAddressChange(int rowIndex, int colIndex,
             boolean initialSelection) {
         if (rowIndex >= spreadsheet.getState().rows) {
             rowIndex = spreadsheet.getState().rows;
