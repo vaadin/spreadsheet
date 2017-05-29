@@ -3,9 +3,12 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-
+import static org.junit.Assert.assertTrue;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -89,5 +92,23 @@ public class ColumnFiltersTest {
         
         assertThat(CellRangeAddress.valueOf(TABLE2_RANGE),
             anyOf(is(table1), is(table2)));
+    }
+    
+    @Test
+    public void test() throws Exception {
+        Spreadsheet spr = new Spreadsheet(
+            getTestSheetFile("autofilter_with_active_column.xlsx"));
+
+        final SpreadsheetTable table = spr.getTables().iterator().next();
+
+        assertTrue(table.getPopupButton(1).isActive());
+        assertFalse(table.getPopupButton(2).isActive());
+    }
+
+    private File getTestSheetFile(String name)
+        throws URISyntaxException {
+        return new File(getClass().getClassLoader()
+            .getResource("test_sheets" + File.separator + name)
+            .toURI());
     }
 }
