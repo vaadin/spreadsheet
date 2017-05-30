@@ -142,7 +142,7 @@ class CellReferenceUtils {
     private void selectExistingNameRange(Name name) {
         String rangeFormula = name.getRefersToFormula();
         String formulasSheet = name.getSheetName();
-        switchSheet(formulasSheet);
+        switchSheet(formulasSheet, rangeFormula);
         for (AreaReference aref : getAreaReferences(rangeFormula)) {
             if (aref.isSingleCell()) { // bug?
                 selectSingleRange(aref);
@@ -152,10 +152,11 @@ class CellReferenceUtils {
         }
     }
 
-    private void switchSheet(String formulasSheet) {
+    private void switchSheet(String formulasSheet, String range) {
         if (!spreadsheet.getActiveSheet().getSheetName()
             .equals(formulasSheet)) {
             spreadsheet.switchSheet(formulasSheet); // named range defines sheet
+            spreadsheet.initialSheetSelection = range;
         }
     }
 
