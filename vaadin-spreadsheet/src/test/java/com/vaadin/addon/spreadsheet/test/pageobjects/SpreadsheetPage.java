@@ -155,7 +155,7 @@ public class SpreadsheetPage extends Page {
     }
 
     /**
-     * Exception will be thrown if you try it with top row
+     * NoSuchElementException will be thrown if you call it with topmost row
      */
     private SheetCellElement getCellAbove(String address) {
         Point point = AddressUtil.addressToPoint(address);
@@ -163,7 +163,7 @@ public class SpreadsheetPage extends Page {
     }
 
     /**
-     * Exception will be thrown if you try it with left column
+     * NoSuchElementException will be thrown if call it with leftmost column
      */
     private SheetCellElement getCellToTheLeft(String address) {
         Point point = AddressUtil.addressToPoint(address);
