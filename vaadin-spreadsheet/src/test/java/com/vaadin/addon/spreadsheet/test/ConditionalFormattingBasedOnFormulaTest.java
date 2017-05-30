@@ -1,8 +1,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.junit.Ignore;
@@ -46,9 +45,9 @@ public class ConditionalFormattingBasedOnFormulaTest
         spreadsheetPage.setCellValue("A2", VALUE);
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
-    
-    @Test
+
     @Ignore
+    @Test
     public void loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells(){
         String a10WithConditionEqualsToOne = spreadsheetPage.getCellColor("A10");
         String b10WithConditionEqualsToZero = spreadsheetPage.getCellColor("B10");
@@ -75,7 +74,7 @@ public class ConditionalFormattingBasedOnFormulaTest
     }
 
     // these maps represent the initial state as in xlsx
-    final private Map<String, BorderState> cellBorders = new HashMap<String, BorderState>() {{
+    final private Map<String, BorderState> cellBorders = new LinkedHashMap<String, BorderState>() {{
         put("C14", new BorderState(true, true, true, true));
         put("C15", new BorderState(false, true, false, false));
         put("C16", new BorderState(false, false, true, false));
@@ -88,17 +87,16 @@ public class ConditionalFormattingBasedOnFormulaTest
     }};
 
     @Test
-    public void formattingRulesInD14D15D16_EvaluateFormatting_assertBorders() {
+    public void formattingRulesInRedRegion_assertBorders() {
 
-        testInitialState();
+        assertAllBorders();
 
-//        testD16changeToBorderless();
+        testD16changeToBorderless();
 
-//        testD14changedToBorderless();
+        testD14changeToBorderless();
     }
 
-    private void testInitialState() {
-        
+    private void assertAllBorders() {
         for (String cell : cellBorders.keySet()) {
             assertBorderState(cell, cellBorders.get(cell));
         }
@@ -114,102 +112,33 @@ public class ConditionalFormattingBasedOnFormulaTest
         final String messageRight =
             "Right border for cell " + cell + " does not match";
         
-        assertTrue(messageTop, topBorderState(cell) == borderState.top);
-        assertTrue(messageBottom, bottomBorderState(cell) == borderState.bottom);
-        assertTrue(messageLeft, leftBorderState(cell) == borderState.left);
-        assertTrue(messageRight,rightBorderState(cell) == borderState.right);
+        assertEquals(messageTop, borderState.top, topBorderState(cell));
+        assertEquals(messageBottom, borderState.bottom, bottomBorderState(cell));
+        assertEquals(messageLeft, borderState.left, leftBorderState(cell));
+        assertEquals(messageRight, borderState.right, rightBorderState(cell));
     }
 
-//    private void testD14changedToBorderless() {
-//        Map<String, BorderState> cellStates;
-//        Map<String, Map<String, BorderState>> neighbourCellsStates;
-//        spreadsheetPage.setCellValue("D14", "borderless");
-//        matchCondition.put("D14", true);
-//        cellStates = computeCellBorderStates(cells,
-//            conditionalFormattingBorders, matchCondition);
-//        neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
-//
-//        for (String cell : cells) {
-//            assertBorderStates(cell, matchCondition.get(cell),
-//                cellStates.get(cell), neighbourCellsStates.get(cell));
-//        }
-//    }
-//
-//    private void testD16changeToBorderless() {
-//        Map<String, BorderState> cellStates;
-//        Map<String, Map<String, BorderState>> neighbourCellsStates;
-//        spreadsheetPage.setCellValue("D16", "borderless");
-//        matchCondition.put("D16", false);
-//        cellStates = computeCellBorderStates(cells,
-//            conditionalFormattingBorders, matchCondition);
-//        neighbourCellsStates = computeNeighbourCellStates(cells, cellStates);
-//
-//        for (String cell : cells) {
-//            assertBorderStates(cell, matchCondition.get(cell),
-//                cellStates.get(cell), neighbourCellsStates.get(cell));
-//        }
-//    }
-//
-//    /// Check Cell States
-//
-//    /**
-//     * Check method that compare the current and the expected cell states
-//     *
-//     * @param cell
-//     *     Address of the cell "subject of the test"
-//     * @param matchRule
-//     *     Conditional formatting rule state
-//     * @param cellState
-//     *     Current border cell state
-//     * @param borderingCellState
-//     *     Current border cell states of the four neighbours of <code>cell</code>
-//     */
-//    private void assertBorderStates(String cell, boolean matchRule,
-//        BorderState cellState, Map<String, BorderState> borderingCellState) {
-//        // In the testing sheet, conditional formatting rules are growing priority
-//        // going from top to bottom and from right to left
-//        boolean winOnAboveCell = cellStateWinOnNeighbour(matchRule, true);
-//        boolean winOnRightCell = cellStateWinOnNeighbour(matchRule, false);
-//        boolean winOnBelowCell = cellStateWinOnNeighbour(matchRule, false);
-//        boolean winOnLeftCell = cellStateWinOnNeighbour(matchRule, true);
-//        
-//        boolean expectedTopState = borderState(winOnAboveCell, cellState,
-//            getAboveCellState(borderingCellState, cell));
-//        boolean expectedRightState = borderState(winOnRightCell, cellState,
-//            getRightCellState(borderingCellState, cell));
-//        boolean expectedBottomState = borderState(winOnBelowCell, cellState,
-//            getBelowCellState(borderingCellState, cell));
-//        boolean expectedLeftState = borderState(winOnLeftCell, cellState,
-//            getLeftCellState(borderingCellState, cell));
-//
-//        boolean actualTopState = topBorderState(cell);
-//        boolean actualRightState = rightBorderState(cell);
-//        boolean actualBottomState = bottomBorderState(cell);
-//        boolean actualLeftState = leftBorderState(cell);
-//
-//        assertEquals(createMessage(cell, "top", expectedRightState,
-//            actualRightState),
-//            expectedTopState, actualTopState);     // top
-//        assertEquals(createMessage(cell, "right", actualRightState,
-//            expectedRightState),
-//            expectedRightState, actualRightState);   // right
-//        assertEquals(createMessage(cell, "bottom", actualBottomState,
-//            expectedBottomState),
-//            expectedBottomState, actualBottomState);  // bottom
-//        assertEquals(createMessage(cell, "right", actualRightState,
-//            expectedRightState),
-//            expectedLeftState, actualLeftState);      // left
-//    }
-//
-//    private String createMessage(String cell, String position, boolean actualRightState,
-//        boolean expectedRightState) {
-//        String actualNot = (!actualRightState) ? " not" : "";
-//        String expectedNot = (!expectedRightState) ? " not" : "";
-//        return "The " + position + " border of " + cell + " is" + actualNot
-//            + " present, but it is" + expectedNot + " expected";
-//    }
+    private void testD14changeToBorderless() {
+        spreadsheetPage.setCellValue("D14", "borderless");
 
-    ////// CURRENT Border State of a cell at cellAddress  
+        cellBorders.get("D14").left = false;
+        cellBorders.get("C14").right = false;
+        
+        assertAllBorders();
+    }
+
+    private void testD16changeToBorderless() {
+        spreadsheetPage.setCellValue("D16", "borderless");
+
+        cellBorders.put("D16", new BorderState(false, false, false, false));
+        cellBorders.get("C16").right = false;
+        cellBorders.get("E16").left = false;
+        cellBorders.get("D15").bottom = false;
+
+        assertAllBorders();
+    }
+
+
     private boolean topBorderState(String cellAddress) {
         return bottomBorderState(getAboveCellAddress(cellAddress));
     }
@@ -226,47 +155,11 @@ public class ConditionalFormattingBasedOnFormulaTest
         return rightBorderState(getLeftCellAddress(cellAddress));
     }
 
-    ///// Give the border state of a cell neighbor
-    private BorderState getAboveCellState(
-        Map<String, BorderState> cellBorderStates, String cell) {
-        return cellBorderStates.get(getAboveCellAddress(cell));
-    }
-
-    private BorderState getLeftCellState(
-        Map<String, BorderState> cellBorderStates, String cell) {
-        return cellBorderStates.get(getLeftCellAddress(cell));
-    }
-
-    private BorderState getBelowCellState(
-        Map<String, BorderState> cellBorderStates, String cell) {
-        return cellBorderStates.get(getBelowCellAddress(cell));
-    }
-
-    private BorderState getRightCellState(
-        Map<String, BorderState> cellBorderStates, String cell) {
-        return cellBorderStates.get(getRightCellAddress(cell));
-    }
-
-    //// Given the address of a cell, compute the above/right/below/left cell address
     private String getAboveCellAddress(String cellAddress) {
         int row = Integer
             .parseInt(cellAddress.substring(1, cellAddress.length()));
         int aboveRow = row - 1;
         return String.valueOf(cellAddress.charAt(0)) + aboveRow;
-    }
-
-    private String getRightCellAddress(String cellAddress) {
-        char column = cellAddress.charAt(0);
-        char rightColumn = (char) (column + 1);
-        return String.valueOf(rightColumn) + Integer
-            .parseInt(cellAddress.substring(1, cellAddress.length()));
-    }
-
-    private String getBelowCellAddress(String cellAddress) {
-        int row = Integer
-            .parseInt(cellAddress.substring(1, cellAddress.length()));
-        int belowRow = row + 1;
-        return String.valueOf(cellAddress.charAt(0)) + belowRow;
     }
 
     private String getLeftCellAddress(String cellAddress) {
