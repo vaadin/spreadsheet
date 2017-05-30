@@ -31,6 +31,8 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.TextAlign;
+import com.google.gwt.event.dom.client.ChangeEvent;
+import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
@@ -39,6 +41,7 @@ import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.vaadin.addon.spreadsheet.client.SheetWidget.CellCoord;
 
@@ -73,6 +76,7 @@ public class FormulaBarWidget extends Composite {
     }
 
     private final TextBox formulaField;
+    private final ListBox namedRangeBox;
     private final TextBox addressField;
     private final Element formulaOverlay = DOM.createDiv();
 
@@ -151,12 +155,18 @@ public class FormulaBarWidget extends Composite {
         formulaField.setStyleName("functionfield");
         addressField.setStyleName("addressfield");
 
+        namedRangeBox = new ListBox();
+        namedRangeBox.setMultipleSelect(false);
+
+        createListBoxAndTextFieldValueBinding();
+
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
         FlowPanel right = new FlowPanel();
         left.setStyleName("fixed-left-panel");
         right.setStyleName("adjusting-right-panel");
         left.add(addressField);
+        left.add(namedRangeBox);
         right.add(formulaField);
         panel.add(left);
         panel.add(right);
@@ -169,6 +179,33 @@ public class FormulaBarWidget extends Composite {
 
         formulaOverlay.setClassName("formulaoverlay");
         getElement().appendChild(formulaOverlay);
+    }
+
+    private void createListBoxAndTextFieldValueBinding() {
+        namedRangeBox.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                addressField.setValue(namedRangeBox.getSelectedValue());
+            }
+        });
+
+        formulaField.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent event) {
+                final int size = namedRangeBox.getItemCount();
+                final String typedValue = formulaField.getValue();
+
+                for (int i = 0; i < size; i++) {
+                    if (namedRangeBox.getItemText(i).equals(
+                        typedValue)) {
+                        namedRangeBox.setSelectedIndex(i);
+                        return;
+                    }
+                }
+                
+//                namedRangeBox.setSelectedIndex(0);
+            }
+        });
     }
 
     /**
@@ -1126,5 +1163,15 @@ public class FormulaBarWidget extends Composite {
                 checkForCoordsAtCaret();
             }
         });
+    }
+
+    public void setNameRanges(List<String> nameRanges) {
+        namedRangeBox.clear();
+        
+        if (nameRanges != null) {
+            for (String name : nameRanges) {
+                namedRangeBox.addItem(name);
+            }
+        }
     }
 }

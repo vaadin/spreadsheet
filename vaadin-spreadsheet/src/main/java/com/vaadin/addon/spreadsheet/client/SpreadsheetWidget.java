@@ -2042,4 +2042,8 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     public void setRowGroupingInversed(boolean inversed) {
         sheetWidget.setRowGroupingInversed(inversed);
     }
+    
+    public void setNamedRanges(List<String> namedRanges) {
+        formulaBarWidget.setNameRanges(namedRanges);
+    }
 }

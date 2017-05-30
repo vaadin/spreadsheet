@@ -44,6 +44,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -403,10 +404,24 @@ public class SpreadsheetFactory implements Serializable {
             loadMergedRegions(spreadsheet);
             loadFreezePane(spreadsheet);
             loadGrouping(spreadsheet);
+            loadNameRanges(spreadsheet);
         } catch (NullPointerException npe) {
             LOGGER.log(Level.WARNING, npe.getMessage(), npe);
         }
         logMemoryUsage();
+    }
+
+    private static void loadNameRanges(Spreadsheet spreadsheet) {
+        final List<? extends Name> namedRanges = spreadsheet.getWorkbook()
+            .getAllNames();
+        
+        final List<String> names = new ArrayList<String>();
+
+        for (Name name : namedRanges) {
+            names.add(name.getNameName());
+        }
+
+        spreadsheet.getState().namedRanges = names;
     }
 
     /**
