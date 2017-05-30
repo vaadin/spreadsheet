@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
@@ -27,7 +26,6 @@ public class ConditionalFormattingBasedOnFormulaTest
         spreadsheetPage.selectSheetAt(1);
     }
 
-    @Ignore
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionFalse_CellA2FilledWhite() {
         spreadsheetPage.setCellValue("A1", VALUE);
@@ -35,7 +33,6 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
 
-    @Ignore
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed() {
         spreadsheetPage.setCellValue("A1", VALUE);
@@ -43,7 +40,6 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
 
-    @Ignore
     @Test
     public void loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells(){
         String a10WithConditionEqualsToOne = spreadsheetPage.getCellColor("A10");
@@ -108,11 +104,18 @@ public class ConditionalFormattingBasedOnFormulaTest
             "Left border for cell " + cell + " does not match";
         final String messageRight =
             "Right border for cell " + cell + " does not match";
-        
-        assertEquals(messageTop, borderState.top, topBorderState(cell));
-        assertEquals(messageBottom, borderState.bottom, bottomBorderState(cell));
-        assertEquals(messageLeft, borderState.left, leftBorderState(cell));
-        assertEquals(messageRight, borderState.right, rightBorderState(cell));
+
+        assertEquals(messageTop, borderState.top,
+            spreadsheetPage.hasBorderTop(cell));
+
+        assertEquals(messageBottom, borderState.bottom,
+            spreadsheetPage.hasBorderBottom(cell));
+
+        assertEquals(messageLeft, borderState.left,
+            spreadsheetPage.hasBorderLeft(cell));
+
+        assertEquals(messageRight, borderState.right,
+            spreadsheetPage.hasBorderRight(cell));
     }
 
     private void testD14changeToBorderless() {
@@ -133,36 +136,5 @@ public class ConditionalFormattingBasedOnFormulaTest
         cellBorders.get("D15").bottom = false;
 
         assertAllBorders();
-    }
-
-
-    private boolean topBorderState(String cellAddress) {
-        return bottomBorderState(getAboveCellAddress(cellAddress));
-    }
-
-    private boolean rightBorderState(String cellAddress) {
-        return spreadsheetPage.hasBorderRight(cellAddress);
-    }
-
-    private boolean bottomBorderState(String cellAddress) {
-        return spreadsheetPage.hasBorderBottom(cellAddress);
-    }
-
-    private boolean leftBorderState(String cellAddress) {
-        return rightBorderState(getLeftCellAddress(cellAddress));
-    }
-
-    private String getAboveCellAddress(String cellAddress) {
-        int row = Integer
-            .parseInt(cellAddress.substring(1, cellAddress.length()));
-        int aboveRow = row - 1;
-        return String.valueOf(cellAddress.charAt(0)) + aboveRow;
-    }
-
-    private String getLeftCellAddress(String cellAddress) {
-        char column = cellAddress.charAt(0);
-        char leftColumn = (char) (column - 1);
-        return String.valueOf(leftColumn) + Integer
-            .parseInt(cellAddress.substring(1, cellAddress.length()));
     }
 }

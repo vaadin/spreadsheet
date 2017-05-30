@@ -133,7 +133,7 @@ public class SpreadsheetPage extends Page {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return cellAt.getCssValue(BACKGROUND_COLOR);
     }
-    
+
     public boolean hasBorderRight(String cellAddress) {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return !cellAt.getCssValue(BORDER_RIGHT_WIDTH).equals("0px");
@@ -142,6 +142,32 @@ public class SpreadsheetPage extends Page {
     public boolean hasBorderBottom(String cellAddress) {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return !cellAt.getCssValue(BORDER_BOTTOM_WIDTH).equals("0px");
+    }
+
+    public boolean hasBorderTop(String cellAddress) {
+        SheetCellElement cellAt = getCellAbove(cellAddress);
+        return !cellAt.getCssValue(BORDER_BOTTOM_WIDTH).equals("0px");
+    }
+
+    public boolean hasBorderLeft(String cellAddress) {
+        SheetCellElement cellAt = getCellToTheLeft(cellAddress);
+        return !cellAt.getCssValue(BORDER_RIGHT_WIDTH).equals("0px");
+    }
+
+    /**
+     * Exception will be thrown if you try it with top row
+     */
+    private SheetCellElement getCellAbove(String address) {
+        Point point = AddressUtil.addressToPoint(address);
+        return getCellAt(point.getX(), point.getY() - 1);
+    }
+
+    /**
+     * Exception will be thrown if you try it with left column
+     */
+    private SheetCellElement getCellToTheLeft(String address) {
+        Point point = AddressUtil.addressToPoint(address);
+        return getCellAt(point.getX() - 1, point.getY());
     }
 
     public boolean isCellActiveWithinSelection(String address) {
