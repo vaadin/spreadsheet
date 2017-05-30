@@ -934,10 +934,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         valueManager.updateLocale(getLocale());
     }
     
-    void markCellForUpdate(Cell cell){
-        valueManager.markCellForUpdate(cell);
-    }
-
     /**
      * See {@link Workbook#setSheetHidden(int, int)}.
      * <p>
@@ -948,7 +944,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * active sheet automatically. At least one sheet should be always visible.
      * 
      * @param hidden
-     *            Visibility state to set: 0-visible, 1-hidden,tus 2-very hidden.
+     *            Visibility state to set: 0-visible, 1-hidden, 2-very hidden.
      * @param sheetPOIIndex
      *            Index of the target sheet within the POI model, 0-based
      * @throws IllegalArgumentException

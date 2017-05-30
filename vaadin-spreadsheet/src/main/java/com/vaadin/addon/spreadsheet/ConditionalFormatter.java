@@ -595,10 +595,10 @@ public class ConditionalFormatter implements Serializable {
                         // to other cells too (cell on top and cell on left) 
                         if (rule.getBorderFormatting() != null){
                             if (cellToLeft != null) {
-                                spreadsheet.markCellForUpdate(cellToLeft);
+                                spreadsheet.getCellValueManager().markCellForUpdate(cellToLeft);
                             }
                             if (cellOnTop != null) {
-                                spreadsheet.markCellForUpdate(cellOnTop);
+                                spreadsheet.getCellValueManager().markCellForUpdate(cellOnTop);
                             }
                         }
                     }
