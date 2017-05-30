@@ -1,17 +1,14 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -74,7 +71,7 @@ public class ConditionalFormattingBasedOnFormulaTest
     }
 
     // these maps represent the initial state as in xlsx
-    final private Map<String, BorderState> cellBorders = new LinkedHashMap<String, BorderState>() {{
+    final private Map<String, BorderState> cellBorders = new HashMap<String, BorderState>() {{
         put("C14", new BorderState(true, true, true, true));
         put("C15", new BorderState(false, true, false, false));
         put("C16", new BorderState(false, false, true, false));
