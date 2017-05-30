@@ -83,7 +83,7 @@ public class ConditionalFormattingBasedOnFormulaTest
     }};
 
     @Test
-    public void loadSpreadsheetWithConditionalFormattingCellBorderRulesInD14D15D16_EvaluateFormatting_CheckBorderOfCells() {
+    public void formattingRulesInD14D15D16_EvaluateFormatting_assertBorders() {
 
         testInitialState();
 
