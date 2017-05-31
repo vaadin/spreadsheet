@@ -48,6 +48,8 @@ public class CellSelectionManager implements Serializable {
     private CellRangeAddress paintedCellRange;
     private SelectionChangeEvent latestSelectionEvent;
 
+    private final NamedRangeUtils namedRangeUtils;
+
     private final ArrayList<CellRangeAddress> cellRangeAddresses = new ArrayList<CellRangeAddress>();
     private final ArrayList<CellReference> individualSelectedCells = new ArrayList<CellReference>();
 
@@ -58,6 +60,7 @@ public class CellSelectionManager implements Serializable {
      */
     public CellSelectionManager(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
+        this.namedRangeUtils = new NamedRangeUtils(spreadsheet);
     }
 
     /**
@@ -210,10 +213,8 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onSheetAddressChanged(String value, boolean initialSelection) {
         try {
-            CellReferenceUtils utils = new CellReferenceUtils(spreadsheet);
-            
-            if (utils.isNamedRange(value)) {
-                utils.onNamedRange(value);
+            if (namedRangeUtils.isNamedRange(value)) {
+                namedRangeUtils.onNamedRange(value);
             }
             else if (value.contains(":")) {
                 CellRangeAddress cra = spreadsheet
@@ -233,7 +234,7 @@ public class CellSelectionManager implements Serializable {
                 paintedCellRange = cra;
                 cellRangeAddresses.clear();
                 cellRangeAddresses.add(cra);
-            } else if (utils.isCellReference(value)) {
+            } else if (namedRangeUtils.isCellReference(value)) {
                 final CellReference cellReference = new CellReference(value);
                 MergedRegion region = MergedRegionUtil.findIncreasingSelection(
                         spreadsheet.getMergedRegionContainer(),

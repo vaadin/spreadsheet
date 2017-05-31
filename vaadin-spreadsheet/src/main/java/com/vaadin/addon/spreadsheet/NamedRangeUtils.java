@@ -12,12 +12,12 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellReference.NameType;
 
-class CellReferenceUtils {
+class NamedRangeUtils {
 
     private Spreadsheet spreadsheet;
     private CellSelectionManager cellSelectionManager;
 
-    public CellReferenceUtils(Spreadsheet spreadsheet) {
+    public NamedRangeUtils(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
         cellSelectionManager = spreadsheet.getCellSelectionManager();
 
