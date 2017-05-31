@@ -469,17 +469,6 @@ public class CellSelectionManager implements Serializable {
     }
 
     /**
-     * Sets the given range as the current selection
-     * 
-     * @param cra
-     *            New cell range to be selected
-     */
-    protected void cellRangeSelected(CellRangeAddress cra) {
-        onCellRangeSelected(cra.getFirstRow() + 1, cra.getFirstColumn() + 1,
-                cra.getLastRow() + 1, cra.getLastColumn() + 1);
-    }
-
-    /**
      * Sets the given range as the current selection.
      * 
      * @param row1
