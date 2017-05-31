@@ -2044,6 +2044,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     }
     
     public void setNamedRanges(List<String> namedRanges) {
-        formulaBarWidget.setNameRanges(namedRanges);
+        formulaBarWidget.setNamedRanges(namedRanges);
     }
 }

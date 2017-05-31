@@ -404,14 +404,14 @@ public class SpreadsheetFactory implements Serializable {
             loadMergedRegions(spreadsheet);
             loadFreezePane(spreadsheet);
             loadGrouping(spreadsheet);
-            loadNameRanges(spreadsheet);
+            loadNamedRanges(spreadsheet);
         } catch (NullPointerException npe) {
             LOGGER.log(Level.WARNING, npe.getMessage(), npe);
         }
         logMemoryUsage();
     }
 
-    private static void loadNameRanges(Spreadsheet spreadsheet) {
+    static void loadNamedRanges(Spreadsheet spreadsheet) {
         final List<? extends Name> namedRanges = spreadsheet.getWorkbook()
             .getAllNames();
         

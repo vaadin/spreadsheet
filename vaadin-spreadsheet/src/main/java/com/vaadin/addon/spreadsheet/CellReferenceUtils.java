@@ -99,6 +99,8 @@ class CellReferenceUtils {
         Name name = workbook.createName();
         name.setNameName(value);
         name.setRefersToFormula(getSelectedRangeFormula());
+
+        SpreadsheetFactory.loadNamedRanges(spreadsheet);
     }
 
     /**

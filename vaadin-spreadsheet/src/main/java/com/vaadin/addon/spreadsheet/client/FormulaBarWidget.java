@@ -1162,14 +1162,16 @@ public class FormulaBarWidget extends Composite {
         });
     }
 
-    public void setNameRanges(List<String> nameRanges) {
+    public void setNamedRanges(List<String> namedRanges) {
         namedRangeBox.clear();
         namedRangeBox.addItem("");
 
-        if (nameRanges != null) {
-            for (String name : nameRanges) {
+        if (namedRanges != null) {
+            for (String name : namedRanges) {
                 namedRangeBox.addItem(name);
             }
         }
+        
+        trySelectNamedRangeBoxValue(addressField.getValue());
     }
 }
