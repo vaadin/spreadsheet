@@ -31,8 +31,6 @@ import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.Style.TextAlign;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.user.client.DOM;
@@ -156,9 +154,10 @@ public class FormulaBarWidget extends Composite {
         addressField.setStyleName("addressfield");
 
         namedRangeBox = new ListBox();
+        namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
 
-        createListBoxAndTextFieldValueBinding();
+        bindAddressToListBox();
 
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
@@ -181,31 +180,31 @@ public class FormulaBarWidget extends Composite {
         getElement().appendChild(formulaOverlay);
     }
 
-    private void createListBoxAndTextFieldValueBinding() {
-        namedRangeBox.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                addressField.setValue(namedRangeBox.getSelectedValue());
-            }
-        });
+    private void trySelectNamedRangeBoxValue(String value) {
+        final int size = namedRangeBox.getItemCount();
 
-        formulaField.addChangeHandler(new ChangeHandler() {
-            @Override
-            public void onChange(ChangeEvent event) {
-                final int size = namedRangeBox.getItemCount();
-                final String typedValue = formulaField.getValue();
-
-                for (int i = 0; i < size; i++) {
-                    if (namedRangeBox.getItemText(i).equals(
-                        typedValue)) {
-                        namedRangeBox.setSelectedIndex(i);
-                        return;
-                    }
-                }
-                
-//                namedRangeBox.setSelectedIndex(0);
+        for (int i = 0; i < size; i++) {
+            if (namedRangeBox.getItemText(i).equals(value)) {
+                namedRangeBox.setSelectedIndex(i);
+                return;
             }
-        });
+        }
+        
+        namedRangeBox.setSelectedIndex(0);
+    }
+    
+    private void bindAddressToListBox() {
+        // GWT listener doesn't fire for some reason, commented out below
+        namedRangeBox.getElement().setAttribute("onchange",
+            "document.getElementsByClassName('addressfield')[0].value = " 
+                + "this.value;");
+
+//        namedRangeBox.addChangeHandler(new ChangeHandler() {
+//            @Override
+//            public void onChange(ChangeEvent event) {
+//                addressField.setValue(namedRangeBox.getSelectedValue());
+//            }
+//        });
     }
 
     /**
@@ -287,6 +286,7 @@ public class FormulaBarWidget extends Composite {
                         // submit address value
                         handler.onAddressEntered(addressField.getValue()
                                 .replaceAll(" ", ""));
+                        trySelectNamedRangeBoxValue(addressField.getValue());
                         addressField.setFocus(false);
                     } else if (keyCode == KeyCodes.KEY_ESCAPE) {
                         revertCellAddressValue();
@@ -1167,7 +1167,8 @@ public class FormulaBarWidget extends Composite {
 
     public void setNameRanges(List<String> nameRanges) {
         namedRangeBox.clear();
-        
+        namedRangeBox.addItem("");
+
         if (nameRanges != null) {
             for (String name : nameRanges) {
                 namedRangeBox.addItem(name);
