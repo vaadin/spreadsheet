@@ -157,8 +157,6 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
 
-        bindAddressToListBox();
-
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
         FlowPanel right = new FlowPanel();
@@ -193,20 +191,6 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.setSelectedIndex(0);
     }
     
-    private void bindAddressToListBox() {
-        // GWT listener doesn't fire for some reason, commented out below
-        namedRangeBox.getElement().setAttribute("onchange",
-            "document.getElementsByClassName('addressfield')[0].value = " 
-                + "this.value;");
-
-//        namedRangeBox.addChangeHandler(new ChangeHandler() {
-//            @Override
-//            public void onChange(ChangeEvent event) {
-//                addressField.setValue(namedRangeBox.getSelectedValue());
-//            }
-//        });
-    }
-
     /**
      * Removes all keyboard selection variables, clears paint
      */
@@ -274,6 +258,15 @@ public class FormulaBarWidget extends Composite {
     }
 
     private void initListeners() {
+        Event.sinkEvents(namedRangeBox.getElement(), Event.ONCHANGE);
+        Event.setEventListener(namedRangeBox.getElement(), new EventListener() {
+            @Override
+            public void onBrowserEvent(Event event) {
+                addressField.setValue(namedRangeBox.getSelectedValue());
+                submitAddressValue();
+            }
+        });
+
         Event.sinkEvents(addressField.getElement(), Event.ONKEYUP
                 | Event.FOCUSEVENTS);
         Event.setEventListener(addressField.getElement(), new EventListener() {
@@ -284,8 +277,7 @@ public class FormulaBarWidget extends Composite {
                     final int keyCode = event.getKeyCode();
                     if (keyCode == KeyCodes.KEY_ENTER) {
                         // submit address value
-                        handler.onAddressEntered(addressField.getValue()
-                                .replaceAll(" ", ""));
+                        submitAddressValue();
                         trySelectNamedRangeBoxValue(addressField.getValue());
                         addressField.setFocus(false);
                     } else if (keyCode == KeyCodes.KEY_ESCAPE) {
@@ -354,6 +346,11 @@ public class FormulaBarWidget extends Composite {
             }
 
         });
+    }
+
+    private void submitAddressValue() {
+        handler.onAddressEntered(addressField.getValue()
+                .replaceAll(" ", ""));
     }
 
     /**
