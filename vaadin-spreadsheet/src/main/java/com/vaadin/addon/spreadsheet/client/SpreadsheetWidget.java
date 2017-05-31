@@ -409,8 +409,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         sheetWidget.removePopupButton(popupButton);
     }
 
-    public void showCellValue(String value, int col, int row, boolean formula,
-            boolean locked) {
+    public void showCellValue(int col, int row) {
         // do check in case the user has changed the selected cell before the
         // formula was sent
         if (sheetWidget.getSelectedCellColumn() == col

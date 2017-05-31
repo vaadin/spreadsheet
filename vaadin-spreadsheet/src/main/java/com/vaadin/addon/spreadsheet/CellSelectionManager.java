@@ -364,31 +364,7 @@ public class CellSelectionManager implements Serializable {
      *            1-based
      */
     private void handleCellSelection(int rowIndex, int columnIndex) {
-        Workbook workbook = spreadsheet.getWorkbook();
-        final Row row = workbook.getSheetAt(workbook.getActiveSheetIndex())
-                .getRow(rowIndex - 1);
-        if (row != null) {
-            final Cell cell = row.getCell(columnIndex - 1);
-            if (cell != null) {
-                String value = "";
-                boolean formula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
-                if (!spreadsheet.isCellHidden(cell)) {
-                    if (formula) {
-                        value = cell.getCellFormula();
-                    } else {
-                        value = spreadsheet.getCellValue(cell);
-                    }
-                }
-                spreadsheet.getRpcProxy().showCellValue(value, columnIndex,
-                        rowIndex, formula, spreadsheet.isCellLocked(cell));
-            } else {
-                spreadsheet.getRpcProxy().showCellValue("", columnIndex,
-                        rowIndex, false, spreadsheet.isCellLocked(cell));
-            }
-        } else {
-            spreadsheet.getRpcProxy().showCellValue("", columnIndex, rowIndex,
-                    false, spreadsheet.isActiveSheetProtected());
-        }
+        spreadsheet.getRpcProxy().showCellValue(columnIndex, rowIndex);
     }
 
     /**
@@ -422,41 +398,15 @@ public class CellSelectionManager implements Serializable {
      */
     protected void handleCellRangeSelection(CellReference startingPoint,
             CellRangeAddress cellsToSelect, boolean scroll) {
-        int row1 = cellsToSelect.getFirstRow();
-        int row2 = cellsToSelect.getLastRow();
-        int col1 = cellsToSelect.getFirstColumn();
-        int col2 = cellsToSelect.getLastColumn();
-        Workbook workbook = spreadsheet.getWorkbook();
-        final Row row = workbook.getSheetAt(workbook.getActiveSheetIndex())
-                .getRow(startingPoint.getRow());
-        if (row != null) {
-            final Cell cell = row.getCell(startingPoint.getCol());
-            if (cell != null) {
-                String value = "";
-                boolean formula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
-                if (!spreadsheet.isCellHidden(cell)) {
-                    if (formula) {
-                        value = cell.getCellFormula();
-                    } else {
-                        value = spreadsheet.getCellValue(cell);
-                    }
-                }
-                spreadsheet.getRpcProxy().setSelectedCellAndRange(
-                        startingPoint.getCol() + 1, startingPoint.getRow() + 1,
-                        col1 + 1, col2 + 1, row1 + 1, row2 + 1, value, formula,
-                        spreadsheet.isCellLocked(cell), scroll);
-            } else {
-                spreadsheet.getRpcProxy().setSelectedCellAndRange(
-                        startingPoint.getCol() + 1, startingPoint.getRow() + 1,
-                        col1 + 1, col2 + 1, row1 + 1, row2 + 1, "", false,
-                        spreadsheet.isCellLocked(cell), scroll);
-            }
-        } else {
-            spreadsheet.getRpcProxy().setSelectedCellAndRange(
-                    startingPoint.getCol() + 1, startingPoint.getRow() + 1,
-                    col1 + 1, col2 + 1, row1 + 1, row2 + 1, "", false,
-                    spreadsheet.isActiveSheetProtected(), scroll);
-        }
+        int row1 = cellsToSelect.getFirstRow() + 1;
+        int row2 = cellsToSelect.getLastRow() + 1;
+        int col1 = cellsToSelect.getFirstColumn() + 1;
+        int col2 = cellsToSelect.getLastColumn() + 1;
+        
+        spreadsheet.getRpcProxy().setSelectedCellAndRange(
+                startingPoint.getCol() + 1, startingPoint.getRow() + 1,
+                col1, col2, row1, row2, scroll);
+        
         selectedCellReference = startingPoint;
         cellRangeAddresses.clear();
         individualSelectedCells.clear();

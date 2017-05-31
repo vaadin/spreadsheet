@@ -58,9 +58,8 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     SpreadsheetClientRpc clientRPC = new SpreadsheetClientRpc() {
 
         @Override
-        public void showCellValue(String value, int col, int row,
-                boolean formula, boolean locked) {
-            getWidget().showCellValue(value, col, row, formula, locked);
+        public void showCellValue(int col, int row) {
+            getWidget().showCellValue(col, row);
         }
 
         @Override
@@ -134,8 +133,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
 
         @Override
         public void setSelectedCellAndRange(int col, int row, int c1, int c2,
-                int r1, int r2, String value, boolean formula,
-                boolean cellLocked, boolean scroll) {
+                int r1, int r2, boolean scroll) {
             getWidget().selectCellRange(null, col, row, c1, c2, r1, r2, scroll);
         }
 

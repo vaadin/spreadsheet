@@ -32,17 +32,12 @@ public interface SpreadsheetClientRpc extends ClientRpc {
     void updateBottomLeftCellValues(ArrayList<CellData> cellData);
 
     /**
-     * 
-     * @param value
      * @param col
      *            1-based
      * @param row
      *            1-based
-     * @param formula
-     * @param locked
      */
-    void showCellValue(String value, int col, int row, boolean formula,
-            boolean locked);
+    void showCellValue(int col, int row);
 
     void invalidCellAddress();
 
@@ -62,26 +57,9 @@ public interface SpreadsheetClientRpc extends ClientRpc {
     /**
      * Updates the selected cell and painted range. Displays the selected cell
      * value. Indexes 1-based.
-     * 
-     * @param col
-     *            selected
-     * @param row
-     *            selected
-     * @param c1
-     *            painted
-     * @param c2
-     *            painted
-     * @param r1
-     *            painted
-     * @param r2
-     *            painted
-     * @param value
-     * @param formula
-     * @param cellLocked
      */
     void setSelectedCellAndRange(int col, int row, int c1, int c2, int r1,
-            int r2, String value, boolean formula, boolean cellLocked,
-            boolean scroll);
+            int r2, boolean scroll);
 
     void cellsUpdated(ArrayList<CellData> updatedCellData);
 
