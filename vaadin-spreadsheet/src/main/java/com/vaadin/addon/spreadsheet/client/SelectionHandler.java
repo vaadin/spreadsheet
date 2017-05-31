@@ -132,7 +132,7 @@ public class SelectionHandler {
         sheetWidget.focusSheet();
     }
 
-    public void selectCell(int col, int row, String value, boolean formula,
+    public void selectCell(String name, int col, int row, String value, boolean formula,
             boolean locked, boolean initialSelection) {
         if (spreadsheet.customCellEditorDisplayed) {
             spreadsheet.customCellEditorDisplayed = false;
@@ -157,8 +157,12 @@ public class SelectionHandler {
             spreadsheet.formulaBarWidget.setCellPlainValue(value);
         }
         spreadsheet.formulaBarWidget.setFormulaFieldEnabled(!locked);
-        spreadsheet.formulaBarWidget.setSelectedCellAddress(spreadsheet
-                .createCellAddress(col, row));
+        if (name != null) {
+            spreadsheet.formulaBarWidget.setSelectedCellAddress(name);
+        } else {
+            spreadsheet.formulaBarWidget
+                .setSelectedCellAddress(spreadsheet.createCellAddress(col, row));
+        }
 
         // scroll the cell into view
         if (!sheetWidget.isSelectedCellCompletelyVisible()) {

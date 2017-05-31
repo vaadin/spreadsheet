@@ -147,7 +147,7 @@ class CellReferenceUtils {
         switchSheet(formulasSheet, rangeFormula);
         for (AreaReference aref : getAreaReferences(rangeFormula)) {
             if (aref.isSingleCell()) { // bug?
-                selectSingleRange(aref);
+                selectSingleRange(aref, name.getNameName());
             } else {
                 selectMultipleRanges(aref, name.getNameName());
             }
@@ -170,11 +170,11 @@ class CellReferenceUtils {
         cellSelectionManager.handleCellRangeSelection(cra, name);
     }
 
-    private void selectSingleRange(AreaReference aref) {
+    private void selectSingleRange(AreaReference aref, String name) {
         CellReference cell = aref.getFirstCell();
         cellSelectionManager
             .handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
-                false);
+                false, name);
     }
 
     private AreaReference[] getAreaReferences(String rangeFormula) {

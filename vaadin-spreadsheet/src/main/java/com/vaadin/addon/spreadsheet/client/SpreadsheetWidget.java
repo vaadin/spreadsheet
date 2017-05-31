@@ -1909,9 +1909,9 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    public void selectCell(int col, int row, String value, boolean formula,
+    public void selectCell(String name, int col, int row, String value, boolean formula,
             boolean locked, boolean initialSelection) {
-        selectionHandler.selectCell(col, row, value, formula, locked,
+        selectionHandler.selectCell(name, col, row, value, formula, locked,
                 initialSelection);
     }
 

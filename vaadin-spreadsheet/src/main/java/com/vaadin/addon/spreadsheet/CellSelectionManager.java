@@ -267,7 +267,12 @@ public class CellSelectionManager implements Serializable {
             spreadsheet.getRpcProxy().invalidCellAddress();
         }
     }
-    
+
+    private void handleCellAddressChange(int rowIndex, int colIndex,
+        boolean initialSelection) {
+        handleCellAddressChange(rowIndex, colIndex, initialSelection, null);
+    }
+
     /**
      * Reports the correct cell selection value (formula/data) and selection.
      * This method is called when the cell selection has changed via the address
@@ -278,8 +283,8 @@ public class CellSelectionManager implements Serializable {
      * @param colIndex
      *            Index of column, 1-based
      */
-     void handleCellAddressChange(int rowIndex, int colIndex,
-            boolean initialSelection) {
+    void handleCellAddressChange(int rowIndex, int colIndex,
+            boolean initialSelection, String name) {
         if (rowIndex >= spreadsheet.getState().rows) {
             rowIndex = spreadsheet.getState().rows;
         }
@@ -312,16 +317,16 @@ public class CellSelectionManager implements Serializable {
                             value = spreadsheet.getCellValue(cell);
                         }
                     }
-                    spreadsheet.getRpcProxy().showSelectedCell(colIndex,
+                    spreadsheet.getRpcProxy().showSelectedCell(name, colIndex,
                             rowIndex, value, formula,
                             spreadsheet.isCellLocked(cell), initialSelection);
                 } else {
-                    spreadsheet.getRpcProxy().showSelectedCell(colIndex,
+                    spreadsheet.getRpcProxy().showSelectedCell(name, colIndex,
                             rowIndex, "", false,
                             spreadsheet.isCellLocked(cell), initialSelection);
                 }
             } else {
-                spreadsheet.getRpcProxy().showSelectedCell(colIndex, rowIndex,
+                spreadsheet.getRpcProxy().showSelectedCell(name, colIndex, rowIndex,
                         "", false, spreadsheet.isActiveSheetProtected(),
                         initialSelection);
             }
