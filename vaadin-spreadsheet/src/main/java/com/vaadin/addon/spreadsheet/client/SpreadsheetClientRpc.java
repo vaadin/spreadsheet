@@ -49,8 +49,8 @@ public interface SpreadsheetClientRpc extends ClientRpc {
     void showSelectedCell(int col, int row, String cellValue, boolean function,
             boolean locked, boolean initialSelection);
 
-    void showSelectedCellRange(int firstColumn, int lastColumn, int firstRow,
-            int lastRow, String value, boolean formula, boolean locked);
+    void showSelectedCellRange(String name, int firstColumn, int lastColumn, int firstRow,
+            int lastRow);
 
     /**
      * The String arrays contain the caption and the icon resource key.

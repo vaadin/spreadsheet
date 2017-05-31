@@ -100,11 +100,10 @@ public class SelectionHandler {
         }
     }
 
-    public void selectCellRange(int selectedCellColumn, int selectedCellRow,
-            int firstColumn, int lastColumn, int firstRow, int lastRow,
-            String value, boolean formula, boolean locked, boolean scroll) {
+    public void selectCellRange(String name, int selectedCellColumn, int selectedCellRow,
+            int firstColumn, int lastColumn, int firstRow, int lastRow, boolean scroll) {
         spreadsheet.updateSelectedCellValues(selectedCellColumn,
-                selectedCellRow);
+                selectedCellRow, name);
         if (!sheetWidget.isCoherentSelection()) {
             sheetWidget.setCoherentSelection(true);
         }

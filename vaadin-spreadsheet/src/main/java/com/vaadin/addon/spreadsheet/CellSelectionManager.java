@@ -181,6 +181,8 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onCellSelected(int row, int column,
             boolean discardOldRangeSelection) {
+        System.out.println("cell selected");
+        
         CellReference cellReference = new CellReference(row - 1, column - 1);
         CellReference previousCellReference = selectedCellReference;
         if (!cellReference.equals(previousCellReference)
@@ -397,38 +399,17 @@ public class CellSelectionManager implements Serializable {
      *            Range of cells to select
      */
     protected void handleCellRangeSelection(CellRangeAddress cra) {
-        int row1 = cra.getFirstRow();
-        int row2 = cra.getLastRow();
-        int col1 = cra.getFirstColumn();
-        int col2 = cra.getLastColumn();
-        Workbook workbook = spreadsheet.getWorkbook();
-        final Row row = workbook.getSheetAt(workbook.getActiveSheetIndex())
-                .getRow(row1);
-        if (row != null) {
-            final Cell cell = row.getCell(col1);
-            if (cell != null) {
-                String value = "";
-                boolean formula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
-                if (!spreadsheet.isCellHidden(cell)) {
-                    if (formula) {
-                        value = cell.getCellFormula();
-                    } else {
-                        value = spreadsheet.getCellValue(cell);
-                    }
-                }
-                spreadsheet.getRpcProxy().showSelectedCellRange(col1 + 1,
-                        col2 + 1, row1 + 1, row2 + 1, value, formula,
-                        spreadsheet.isCellLocked(cell));
-            } else {
-                spreadsheet.getRpcProxy().showSelectedCellRange(col1 + 1,
-                        col2 + 1, row1 + 1, row2 + 1, "", false,
-                        spreadsheet.isCellLocked(cell));
-            }
-        } else {
-            spreadsheet.getRpcProxy().showSelectedCellRange(col1 + 1, col2 + 1,
-                    row1 + 1, row2 + 1, "", false,
-                    spreadsheet.isActiveSheetProtected());
-        }
+        handleCellRangeSelection(cra, null);
+    }
+    
+    protected void handleCellRangeSelection(CellRangeAddress cra, String name) {
+        int row1 = cra.getFirstRow() + 1;
+        int row2 = cra.getLastRow() + 1;
+        int col1 = cra.getFirstColumn() + 1;
+        int col2 = cra.getLastColumn() + 1;
+        
+        spreadsheet.getRpcProxy()
+            .showSelectedCellRange(name, col1, col2, row1, row2);
     }
 
     /**

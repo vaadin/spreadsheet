@@ -149,7 +149,7 @@ class CellReferenceUtils {
             if (aref.isSingleCell()) { // bug?
                 selectSingleRange(aref);
             } else {
-                selectMultipleRanges(aref);
+                selectMultipleRanges(aref, name.getNameName());
             }
         }
     }
@@ -162,11 +162,12 @@ class CellReferenceUtils {
         }
     }
 
-    private void selectMultipleRanges(AreaReference aref) {
+    private void selectMultipleRanges(AreaReference aref, String name) {
         String areaString = aref.formatAsString();
         CellRangeAddress cra = spreadsheet
             .createCorrectCellRangeAddress(areaString);
-        cellSelectionManager.handleCellRangeSelection(cra);
+        
+        cellSelectionManager.handleCellRangeSelection(cra, name);
     }
 
     private void selectSingleRange(AreaReference aref) {

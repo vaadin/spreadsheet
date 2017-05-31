@@ -707,6 +707,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     }
 
     public void updateSelectedCellValues(int column, int row) {
+        updateSelectedCellValues(column, row, null);
+    }
+
+    public void updateSelectedCellValues(int column, int row, String name) {
         if (!sheetWidget.isEditingCell()) {
             String formulaValue = sheetWidget.getCellFormulaValue(column, row);
             if (formulaValue != null && !formulaValue.isEmpty()) {
@@ -724,7 +728,12 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
             sheetWidget.displayCustomCellEditor(customEditorFactory
                     .getCustomEditor(sheetWidget.getSelectedCellKey()));
         }
-        formulaBarWidget.setSelectedCellAddress(createCellAddress(column, row));
+        if (name != null) {
+            formulaBarWidget.setSelectedCellAddress(name);
+        } else {
+            formulaBarWidget
+                .setSelectedCellAddress(createCellAddress(column, row));
+        }
     }
 
     @Override
@@ -1907,12 +1916,11 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
                 initialSelection);
     }
 
-    public void selectCellRange(int selectedCellColumn, int selectedCellRow,
-            int firstColumn, int lastColumn, int firstRow, int lastRow,
-            String value, boolean formula, boolean locked, boolean scroll) {
-        selectionHandler.selectCellRange(selectedCellColumn, selectedCellRow,
-                firstColumn, lastColumn, firstRow, lastRow, value, formula,
-                locked, scroll);
+    public void selectCellRange(String name, int selectedCellColumn, int selectedCellRow,
+            int firstColumn, int lastColumn, int firstRow, int lastRow, boolean scroll) {
+        
+        selectionHandler.selectCellRange(name, selectedCellColumn, selectedCellRow,
+                firstColumn, lastColumn, firstRow, lastRow, scroll);
     }
 
     public void refreshCellStyles() {
