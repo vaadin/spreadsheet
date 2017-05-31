@@ -181,8 +181,6 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onCellSelected(int row, int column,
             boolean discardOldRangeSelection) {
-        System.out.println("cell selected");
-        
         CellReference cellReference = new CellReference(row - 1, column - 1);
         CellReference previousCellReference = selectedCellReference;
         if (!cellReference.equals(previousCellReference)
