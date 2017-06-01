@@ -9,7 +9,7 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.FIREFOX)
+@RunLocally(Browser.PHANTOMJS)
 public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     @Test
@@ -19,12 +19,10 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
         spreadsheetPage.setAddressFieldValue("john");
         
-        Thread.sleep(10000);
-
         waitUntil(new ExpectedCondition<Boolean>() {
             @Override
             public Boolean apply(WebDriver arg0) {
-                return spreadsheetPage.getSelectionFormula().equals("A1");
+                return !spreadsheetPage.getSelectionFormula().equals("A1");
             }
 
             @Override
@@ -35,9 +33,6 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         
         String selection = spreadsheetPage.getSelectionFormula();
 
-        System.out.println(selection);
-
-//        assertEquals("File opened", spreadsheetPage.getCellValue("A1"));
-        Assert.fail();
+        Assert.assertEquals("G7:M16", selection);
     }
 }

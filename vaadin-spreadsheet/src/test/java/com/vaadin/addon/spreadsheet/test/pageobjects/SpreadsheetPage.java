@@ -89,7 +89,7 @@ public class SpreadsheetPage extends Page {
     public void setAddressFieldValue(String address) {
         WebElement addressField = getAddressField();
         addressField.clear();
-        addressField.sendKeys(address + Keys.RETURN);
+        addressField.sendKeys(address + Keys.ENTER);
     }
 
     public void dragFromCellToCell(String from, String to) {
@@ -220,7 +220,7 @@ public class SpreadsheetPage extends Page {
         }
         endColumn--;
 
-        return new CellRangeAddress(startRow - 1, startColumn - 1, endRow - 1,
+        return new CellRangeAddress(startRow - 1, endRow - 1, startColumn - 1,
             endColumn - 1).formatAsString();
     }
 }
