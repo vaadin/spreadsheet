@@ -37,11 +37,16 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.loadFile("named_ranges.xlsx", this);
     }
 
+    /**
+     * I put all testing in one method because it runs much faster instead 
+     * of running a new browser windows for each minor test.
+     * --Michael
+     */
     @Test
-    public void test() throws Exception {
+    public void testNamedRanges() throws Exception {
         assertNamedRangeSelectValues(rangesOnSheet1);
 
-        testTypingExisingSheet1NamedRanges();
+        testTypingExistingSheet1NamedRanges();
 
         testSelectingExistingSheet1Ranges();
 
@@ -53,7 +58,21 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
         selectAndAssertJohnRange();
         
+        testCreatingNewRange();
+    }
+
+    private void testCreatingNewRange() {
+        final String newCellRange = "E3:F4";
+        final String newCellRangeName = "new_range";
         
+        spreadsheetPage.setAddressFieldValue(newCellRange);
+        spreadsheetPage.setAddressFieldValue(newCellRangeName);
+        
+        spreadsheetPage.getNamedRanges().contains(newCellRangeName);
+
+        selectAndAssertNameRange("john", sheet1ranges.get("john"));
+
+        selectAndAssertNameRange(newCellRangeName, newCellRange);
     }
 
     private void selectAndAssertJohnRange() {
@@ -80,7 +99,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         assertEquals("Sheet2", spreadsheetPage.getSelectedSheetName());
     }
 
-    private void testTypingExisingSheet1NamedRanges() {
+    private void testTypingExistingSheet1NamedRanges() {
         for (String name : sheet1ranges.keySet()) {
             typeAndAssertNameRange(name, sheet1ranges.get(name));
         }
