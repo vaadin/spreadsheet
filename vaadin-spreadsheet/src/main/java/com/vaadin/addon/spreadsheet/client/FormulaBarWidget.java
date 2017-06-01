@@ -157,6 +157,7 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.setStyleName("namedrangebox");
         namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
+        namedRangeBox.setVisible(false);
 
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
