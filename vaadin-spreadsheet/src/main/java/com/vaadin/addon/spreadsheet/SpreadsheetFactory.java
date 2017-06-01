@@ -60,13 +60,16 @@ import org.apache.poi.xssf.usermodel.XSSFPictureData;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.xmlbeans.XmlCursor;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTOneCellAnchor;
 import org.openxmlformats.schemas.drawingml.x2006.spreadsheetDrawing.CTTwoCellAnchor;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTAutoFilter;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCol;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCols;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFilterColumn;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTOutlinePr;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTSheetProtection;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTWorksheet;
@@ -400,6 +403,7 @@ public class SpreadsheetFactory implements Serializable {
             setDefaultColumnWidth(spreadsheet, sheet);
             calculateSheetSizes(spreadsheet, sheet);
             loadSheetOverlays(spreadsheet);
+            loadSheetTables(spreadsheet);
             loadMergedRegions(spreadsheet);
             loadFreezePane(spreadsheet);
             loadGrouping(spreadsheet);
@@ -407,6 +411,49 @@ public class SpreadsheetFactory implements Serializable {
             LOGGER.log(Level.WARNING, npe.getMessage(), npe);
         }
         logMemoryUsage();
+    }
+
+    /**
+     * Load the sheet filter and tables in the given sheet
+     *
+     * @param spreadsheet
+     *            Target Spreadsheet
+     */
+    private static void loadSheetTables(Spreadsheet spreadsheet) {
+         if (spreadsheet.getActiveSheet() instanceof HSSFSheet)
+             return;
+
+         XSSFSheet sheet = (XSSFSheet) spreadsheet.getActiveSheet();
+         CTAutoFilter autoFilter = sheet.getCTWorksheet().getAutoFilter();
+
+         if (autoFilter != null) {
+             SpreadsheetTable sheetFilterTable = new SpreadsheetFilterTable(
+                 spreadsheet, CellRangeAddress.valueOf(autoFilter.getRef()));
+             
+             spreadsheet.registerTable(sheetFilterTable);
+
+             markActiveButtons(sheetFilterTable, autoFilter);             
+         }
+
+         for (XSSFTable table : sheet.getTables()) {
+             SpreadsheetTable spreadsheetTable = new SpreadsheetFilterTable(
+                 spreadsheet,
+                 CellRangeAddress.valueOf(table.getCTTable().getRef()));
+
+             spreadsheet.registerTable(spreadsheetTable);
+         }
+    }
+
+    private static void markActiveButtons(SpreadsheetTable sheetFilterTable,
+        CTAutoFilter autoFilter) {
+
+        final int offset = sheetFilterTable.getFullTableRegion()
+            .getFirstColumn();
+
+        for (CTFilterColumn column : autoFilter.getFilterColumnList()) {
+            final int colId = offset + (int) column.getColId();
+            sheetFilterTable.getPopupButton(colId).markActive(true);
+        }
     }
 
     /**
@@ -952,32 +999,30 @@ public class SpreadsheetFactory implements Serializable {
     static void loadFreezePane(Spreadsheet spreadsheet) {
         final Sheet sheet = spreadsheet.getActiveSheet();
         PaneInformation paneInformation = sheet.getPaneInformation();
+
         // only freeze panes supported
         if (paneInformation != null && paneInformation.isFreezePane()) {
+
             /*
-             * In POI, HorizontalSplitPosition means rows and
-             * VerticalSplitPosition means columns. Changed the meaning for the
-             * component internals. The left split column / top split row is the
-             * *absolute* index of the first unfrozen column / row.
+             * In POI, HorizontalSplit means rows and VerticalSplit means columns.
+             *
+             * In Spreadsheet the meaning is the opposite.
              */
             spreadsheet.getState().horizontalSplitPosition = paneInformation
-                    .getVerticalSplitLeftColumn();
+                .getVerticalSplitPosition() + sheet.getLeftCol();
+
             spreadsheet.getState().verticalSplitPosition = paneInformation
-                    .getHorizontalSplitTopRow();
+                .getHorizontalSplitPosition() + sheet.getTopRow();
 
             /*
              * If the view was scrolled down / right when panes were frozen, the
              * invisible frozen rows/columns are effectively hidden in Excel. We
              * mimic this behavior here.
              */
-            for (int col = 0; col < Math.max(0,
-                    paneInformation.getVerticalSplitLeftColumn()
-                            - paneInformation.getVerticalSplitPosition()); col++) {
+            for (int col = 0; col < sheet.getLeftCol(); col++) {
                 spreadsheet.setColumnHidden(col, true);
             }
-            for (int row = 0; row < Math.max(0,
-                    paneInformation.getHorizontalSplitTopRow()
-                            - paneInformation.getHorizontalSplitPosition()); row++) {
+            for (int row = 0; row < sheet.getTopRow(); row++) {
                 spreadsheet.setRowHidden(row, true);
             }
         } else {
