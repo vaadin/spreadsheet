@@ -1,9 +1,11 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.annotations.RunLocally;
@@ -12,27 +14,49 @@ import com.vaadin.testbench.parallel.Browser;
 @RunLocally(Browser.PHANTOMJS)
 public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
+    private SpreadsheetPage spreadsheetPage;
+    
+    // named ranges defined in the xlsx
+    private Map<String, String> sheet1ranges = new HashMap<String, String>() {
+        {
+            put("john", "G7:M16");
+            put("local", "G2:H3");
+            put("numbers", "C3:C9");
+        }
+    };
+
+    @Before
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
+        spreadsheetPage = headerPage.loadFile("named_ranges.xlsx", this);
+    }
+
     @Test
     public void test() throws Exception {
-        final SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "named_ranges.xlsx", this);
-
-        spreadsheetPage.setAddressFieldValue("john");
+        assertExistingSheet1Ranges();
         
-        waitUntil(new ExpectedCondition<Boolean>() {
-            @Override
-            public Boolean apply(WebDriver arg0) {
-                return !spreadsheetPage.getSelectionFormula().equals("A1");
-            }
+        selectAndAssertSheet2Range();
+    }
 
-            @Override
-            public String toString() {
-                return "Selection to be updated";
-            }
-        });
+    private void selectAndAssertSheet2Range() {
+        selectAndAssertNameRange("sheet2", "B3:D9");
+        
+        assertEquals("Sheet2", spreadsheetPage.getSelectedSheetName());
+    }
+
+    private void assertExistingSheet1Ranges() {
+        for (String name : sheet1ranges.keySet()) {
+            selectAndAssertNameRange(name, sheet1ranges.get(name));
+        }
+    }
+
+    private void selectAndAssertNameRange(String name, String expected) {
+        
+        spreadsheetPage.setAddressFieldValue(name);
         
         String selection = spreadsheetPage.getSelectionFormula();
-
-        Assert.assertEquals("G7:M16", selection);
+        
+        assertEquals("Named range " + name, expected, selection);
     }
 }

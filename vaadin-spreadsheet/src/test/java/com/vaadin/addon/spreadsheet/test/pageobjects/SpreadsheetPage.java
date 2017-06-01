@@ -223,4 +223,12 @@ public class SpreadsheetPage extends Page {
         return new CellRangeAddress(startRow - 1, endRow - 1, startColumn - 1,
             endColumn - 1).formatAsString();
     }
+
+    public String getSelectedSheetName() {
+        WebElement selectedSheetTab = findElement(org.openqa.selenium.By
+            .cssSelector(".sheet-tabsheet-tab.selected-tab"));
+        
+        return selectedSheetTab.getText();
+    }
+
 }
