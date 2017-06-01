@@ -379,7 +379,10 @@ public class CellSelectionManager implements Serializable {
      *            Range of cells to select
      */
     protected void handleCellRangeSelection(CellRangeAddress cra) {
-        handleCellRangeSelection(cra, null);
+        final String possibleName = namedRangeUtils
+            .getNameForFormulaIfExists(cra.formatAsString());
+        
+        handleCellRangeSelection(cra, possibleName);
     }
     
     protected void handleCellRangeSelection(CellRangeAddress cra, String name) {

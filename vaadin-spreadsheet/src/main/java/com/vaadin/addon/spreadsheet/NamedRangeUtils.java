@@ -186,4 +186,36 @@ class NamedRangeUtils {
         }
     }
 
+    public String getNameForFormulaIfExists(String formula) {
+        for (Name name : spreadsheet.getWorkbook().getAllNames()) {
+            if (name.getSheetIndex() == -1
+                || name.getSheetIndex() == spreadsheet.getActiveSheetIndex()) {
+                
+                String refersToFormula = name.getRefersToFormula()
+                    .replace("$", "");
+
+                final boolean hasSheetName = formula.contains("!");
+                if (!hasSheetName) {
+                    refersToFormula = removeSheetName(refersToFormula);
+                }
+
+                if (refersToFormula.equals(formula)) {
+                    return name.getNameName();
+                }
+            }
+        }
+            
+        return null;
+    }
+
+    private String removeSheetName(String refersToFormula) {
+        final int sheetNameSeparatorIndex = refersToFormula.indexOf("!");
+        
+        if (sheetNameSeparatorIndex != 1) {
+            return refersToFormula.substring(sheetNameSeparatorIndex + 1);
+        }
+        else {
+            return refersToFormula;
+        }
+    }
 }
