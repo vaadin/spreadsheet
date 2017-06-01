@@ -154,6 +154,7 @@ public class FormulaBarWidget extends Composite {
         addressField.setStyleName("addressfield");
 
         namedRangeBox = new ListBox();
+        namedRangeBox.setStyleName("namedrangebox");
         namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
 
