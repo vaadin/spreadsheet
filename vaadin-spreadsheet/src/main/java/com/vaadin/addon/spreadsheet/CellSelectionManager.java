@@ -368,9 +368,19 @@ public class CellSelectionManager implements Serializable {
      *            1-based
      */
     private void handleCellSelection(int rowIndex, int columnIndex) {
-        spreadsheet.getRpcProxy().showCellValue(columnIndex, rowIndex);
+        spreadsheet.getRpcProxy()
+            .showCellValue(null, columnIndex, rowIndex);
     }
 
+    private void handleCellSelection(int rowIndex, int columnIndex,
+        CellRangeAddress cra) {
+        final String possibleName = namedRangeUtils
+            .getNameForFormulaIfExists(cra.formatAsString());
+
+        spreadsheet.getRpcProxy()
+            .showCellValue(possibleName, columnIndex, rowIndex);
+    }
+    
     /**
      * Handles the new cell range that was given in the address field, returns
      * the range and new selected cell formula/value (if any)
@@ -474,10 +484,11 @@ public class CellSelectionManager implements Serializable {
         selectedCellReference = new CellReference(selectedCellRow - 1,
                 selectedCellColumn - 1);
 
-        handleCellSelection(selectedCellRow, selectedCellColumn);
-
         CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(row1,
                 col1, row2, col2);
+
+        handleCellSelection(selectedCellRow, selectedCellColumn, cra);
+        
         paintedCellRange = cra;
         cellRangeAddresses.add(cra);
 

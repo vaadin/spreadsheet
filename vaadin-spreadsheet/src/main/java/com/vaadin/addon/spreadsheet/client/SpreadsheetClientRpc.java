@@ -37,7 +37,7 @@ public interface SpreadsheetClientRpc extends ClientRpc {
      * @param row
      *            1-based
      */
-    void showCellValue(int col, int row);
+    void showCellValue(String possibleName, int col, int row);
 
     void invalidCellAddress();
 
