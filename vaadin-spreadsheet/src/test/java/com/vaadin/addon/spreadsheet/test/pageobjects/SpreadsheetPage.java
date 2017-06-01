@@ -1,11 +1,15 @@
 package com.vaadin.addon.spreadsheet.test.pageobjects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 
 import com.vaadin.addon.spreadsheet.elements.AddressUtil;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -225,10 +229,27 @@ public class SpreadsheetPage extends Page {
     }
 
     public String getSelectedSheetName() {
-        WebElement selectedSheetTab = findElement(org.openqa.selenium.By
-            .cssSelector(".sheet-tabsheet-tab.selected-tab"));
-        
+        WebElement selectedSheetTab = findElement(
+            By.cssSelector(".sheet-tabsheet-tab.selected-tab"));
+
         return selectedSheetTab.getText();
     }
 
+    public List<String> getNamedRanges() {
+        final List<WebElement> options = new Select(
+            findElement(By.className("namedrangebox"))).getOptions();
+
+        final List<String> optionStrings = new ArrayList<String>();
+        
+        for (WebElement option : options) {
+            optionStrings.add(option.getText());
+        }
+
+        return optionStrings;
+    }
+
+    public void selectNamedRange(String name) {
+        new Select(findElement(By.className("namedrangebox")))
+            .selectByVisibleText(name);
+    }
 }

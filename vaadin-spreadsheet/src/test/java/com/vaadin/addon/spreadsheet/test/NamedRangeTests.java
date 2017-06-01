@@ -1,17 +1,16 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
@@ -25,6 +24,12 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         }
     };
 
+    private List<String> rangesOnSheet1 = Arrays
+        .asList("", "john", "local", "noncont", "numbers", "sheet2");
+
+    private List<String> rangesOnSheet2 = Arrays
+        .asList("", "john", "noncont", "numbers", "sheet2");
+
     @Before
     @Override
     public void setUp() throws Exception {
@@ -34,29 +39,86 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     @Test
     public void test() throws Exception {
-        assertExistingSheet1Ranges();
-        
+        assertNamedRangeSelectValues(rangesOnSheet1);
+
+        assertExistingSheet1RangesByTyping();
+
+        assertExistingSheet1RangesBySelecting();
+
+        assertExistingSheet1RangesByEnteringCellRangesAndAssertNameIsCorrect();
+
         selectAndAssertSheet2Range();
+
+        assertNamedRangeSelectValues(rangesOnSheet2);
+
+        selectAndAssertJohnRange();
+    }
+
+    private void selectAndAssertJohnRange() {
+        typeAndAssertNameRange("john", sheet1ranges.get("john"));
+
+        assertEquals("Sheet1", spreadsheetPage.getSelectedSheetName());
+    }
+
+    private void assertExistingSheet1RangesByEnteringCellRangesAndAssertNameIsCorrect() {
+        for (String name : sheet1ranges.keySet()) {
+            typeCellRangeAndAssertNameRange(sheet1ranges.get(name), name);
+        }
+    }
+
+    private void assertNamedRangeSelectValues(List<String> expectedNamedRanges) {
+        final List<String> actualNamedRanges = spreadsheetPage.getNamedRanges();
+
+        assertEquals(expectedNamedRanges, actualNamedRanges);
     }
 
     private void selectAndAssertSheet2Range() {
-        selectAndAssertNameRange("sheet2", "B3:D9");
+        typeAndAssertNameRange("sheet2", "B3:D9");
         
         assertEquals("Sheet2", spreadsheetPage.getSelectedSheetName());
     }
 
-    private void assertExistingSheet1Ranges() {
+    private void assertExistingSheet1RangesByTyping() {
+        for (String name : sheet1ranges.keySet()) {
+            typeAndAssertNameRange(name, sheet1ranges.get(name));
+        }
+    }
+
+    private void assertExistingSheet1RangesBySelecting() {
         for (String name : sheet1ranges.keySet()) {
             selectAndAssertNameRange(name, sheet1ranges.get(name));
         }
     }
 
-    private void selectAndAssertNameRange(String name, String expected) {
+    private void typeAndAssertNameRange(String name, String expected) {
         
         spreadsheetPage.setAddressFieldValue(name);
+
+        assertSelectedRange(name, expected);
+    }
+
+    private void typeCellRangeAndAssertNameRange(String cellRange, String name) {
+
+        spreadsheetPage.setAddressFieldValue(cellRange);
+
+        assertSelectedRange(name, cellRange);
+    }
+
+    private void selectAndAssertNameRange(String name, String expected) {
+
+        spreadsheetPage.selectNamedRange(name);
+
+        assertSelectedRange(name, expected);
+    }
+
+    private void assertSelectedRange(String name, String expected) {
         
         String selection = spreadsheetPage.getSelectionFormula();
-        
-        assertEquals("Named range " + name, expected, selection);
+
+        assertEquals("Wrong selection for range " + name, expected, selection);
+
+        assertEquals("Wrong address field for name", name,
+            spreadsheetPage.getAddressFieldValue());
     }
+
 }
