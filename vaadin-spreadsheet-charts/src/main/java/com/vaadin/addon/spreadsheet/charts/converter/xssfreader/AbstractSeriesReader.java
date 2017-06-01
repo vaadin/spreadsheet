@@ -28,6 +28,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTAxDataSource;
+import org.openxmlformats.schemas.drawingml.x2006.chart.CTMultiLvlStrRef;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTNumDataSource;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTSerTx;
 
@@ -149,7 +150,9 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
     private List<CellReference> tryHandleMultilevelCategories(
             CTAxDataSource axisDataSource) {
         // HighChart doesn't support multilevel, take only the first one
-        String formula = axisDataSource.getMultiLvlStrRef().getF();
+        final CTMultiLvlStrRef multiLvlStrRef = axisDataSource
+            .getMultiLvlStrRef();
+        String formula = multiLvlStrRef.getF();
 
         final List<CellReference> allReferencedCells = Utils
                 .getAllReferencedCells(formula, spreadsheet,
@@ -163,7 +166,12 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         final int width = lastCell.getCol() - firstCell.getCol() + 1;
         final int height = lastCell.getRow() - firstCell.getRow() + 1;
 
-        final int numOfPointsInCache = (int) axisDataSource.getMultiLvlStrRef()
+        if (!multiLvlStrRef.getMultiLvlStrCache().isSetPtCount()) {
+            return Utils.getAllReferencedCells(formula, spreadsheet,
+                showDataInHiddenCells);
+        }
+
+        final int numOfPointsInCache = (int) multiLvlStrRef
                 .getMultiLvlStrCache().getPtCount().getVal();
         final int numOfLevels = allReferencedCells.size() / numOfPointsInCache;
 
