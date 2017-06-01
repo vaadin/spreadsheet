@@ -193,6 +193,21 @@
         color: $spreadsheet-functionbar-font-color;
         outline: none;
       }
+      
+      .addressfield {
+        width: calc(100% - 25px);
+      }
+      
+      .namedrangebox {
+        width: 25px;
+        float: right;
+        border: none;
+        height: 100%;
+        background: none;
+        &:focus {
+          box-shadow: none;
+        }
+      }
 
       .fixed-left-panel {
         @include box-sizing(border-box);
