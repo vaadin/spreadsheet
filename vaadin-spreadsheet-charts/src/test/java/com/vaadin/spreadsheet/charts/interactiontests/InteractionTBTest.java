@@ -202,7 +202,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userClicksColumn_spreadsheetSelectionUpdated()
             throws Exception {
-        headerPage.loadFile("TestClickOnCharts.xlsx", this);
+        headerPage.loadFile("chart_with_filtered_out_column.xlsx", this);
 
         overlayHelper.getOverlayElement("G11")
                 .findElements(By.cssSelector(".highcharts-series-0 > rect"))

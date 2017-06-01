@@ -87,15 +87,16 @@ public class Utils {
         return cellRefs;
     }
 
-    /*
+    /**
      * Returns an array of contiguous area references addressed by the given
-     * formula. Parenthesis will be stripped out, if they are present.
+     * formula.
      */
     public static AreaReference[] getAreaReferences(String formula) {
-        // generateContiguous cannot parse a forumula in parentheses
+        // generateContiguous cannot parse a formula in parentheses
         if (formula.startsWith("(") && formula.endsWith(")")) {
             formula = formula.substring(1, formula.length() - 1);
         }
+        
         return AreaReference.generateContiguous(formula);
     }
 
