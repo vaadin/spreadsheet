@@ -15,12 +15,13 @@ import org.apache.poi.ss.util.CellReference.NameType;
 class NamedRangeUtils {
 
     private Spreadsheet spreadsheet;
-    private CellSelectionManager cellSelectionManager;
 
     public NamedRangeUtils(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
-        cellSelectionManager = spreadsheet.getCellSelectionManager();
-
+    }
+    
+    private CellSelectionManager getSelectionManager() {
+        return spreadsheet.getCellSelectionManager();
     }
 
     /**
@@ -109,7 +110,7 @@ class NamedRangeUtils {
      * @return
      */
     private String getSelectedRangeFormula() {
-        if (cellSelectionManager.getCellRangeAddresses().isEmpty()) {
+        if (getSelectionManager().getCellRangeAddresses().isEmpty()) {
             return getIndividualCellFormula();
         } else {
             return getRangeCellFormula();
@@ -119,7 +120,7 @@ class NamedRangeUtils {
     private String getIndividualCellFormula() {
         Sheet activeSheet = spreadsheet.getActiveSheet();
         String sheetName = activeSheet.getSheetName();
-        String selectedCell = cellSelectionManager.getSelectedCellRange()
+        String selectedCell = getSelectionManager().getSelectedCellRange()
             .formatAsString();
         return sheetName + "!" + selectedCell;
     }
@@ -128,7 +129,7 @@ class NamedRangeUtils {
         StringBuilder rangeFormula = new StringBuilder();
         Sheet activeSheet = spreadsheet.getActiveSheet();
         String sheetName = activeSheet.getSheetName();
-        for (CellRangeAddress cellRangeAddress : cellSelectionManager
+        for (CellRangeAddress cellRangeAddress : getSelectionManager()
             .getCellRangeAddresses()) {
             
             if (rangeFormula.length() != 0) {
@@ -167,12 +168,12 @@ class NamedRangeUtils {
         CellRangeAddress cra = spreadsheet
             .createCorrectCellRangeAddress(areaString);
         
-        cellSelectionManager.handleCellRangeSelection(cra, name);
+        getSelectionManager().handleCellRangeSelection(cra, name);
     }
 
     private void selectSingleRange(AreaReference aref, String name) {
         CellReference cell = aref.getFirstCell();
-        cellSelectionManager
+        getSelectionManager()
             .handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
                 false, name);
     }
