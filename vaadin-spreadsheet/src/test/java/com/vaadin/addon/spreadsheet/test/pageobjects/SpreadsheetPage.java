@@ -1,5 +1,6 @@
 package com.vaadin.addon.spreadsheet.test.pageobjects;
 
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
@@ -14,11 +15,9 @@ import com.vaadin.testbench.By;
 public class SpreadsheetPage extends Page {
 
     public static final String BACKGROUND_COLOR = "background-color";
-    private final SheetSelection selection;
 
     public SpreadsheetPage(WebDriver driver) {
         super(driver);
-        selection = new SheetSelection(driver, this);
     }
 
     public boolean isDisplayed() {
@@ -189,5 +188,39 @@ public class SpreadsheetPage extends Page {
     private SheetCellElement getCellAt(String address) {
         Point point = AddressUtil.addressToPoint(address);
         return getCellAt(point.getX(), point.getY());
+    }
+
+    public String getSelectionFormula() {
+        final SpreadsheetElement sprElement = $(SpreadsheetElement.class).first();
+
+        WebElement selection = findElement(org.openqa.selenium.By.className("sheet-selection"));
+        final String[] classes = selection.getAttribute("class").split(" ");
+
+        int startRow = -1;
+        int startColumn = -1;
+
+        for (String c : classes) {
+            if (c.startsWith("row")) {
+                startRow = Integer.parseInt(c.substring(3));
+            }
+            if (c.startsWith("col")) {
+                startColumn = Integer.parseInt(c.substring(3));
+            }
+        }
+
+        int endRow = startRow + 1;
+        while (sprElement.getCellAt(endRow, startColumn).isCellSelected()) {
+            endRow++;
+        }
+        endRow--;
+
+        int endColumn = startColumn;
+        while (sprElement.getCellAt(startRow, endColumn).isCellSelected()) {
+            endColumn++;
+        }
+        endColumn--;
+
+        return new CellRangeAddress(startRow - 1, startColumn - 1, endRow - 1,
+            endColumn - 1).formatAsString();
     }
 }
