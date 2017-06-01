@@ -41,17 +41,19 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
     public void test() throws Exception {
         assertNamedRangeSelectValues(rangesOnSheet1);
 
-        assertExistingSheet1RangesByTyping();
+        testTypingExisingSheet1NamedRanges();
 
-        assertExistingSheet1RangesBySelecting();
+        testSelectingExistingSheet1Ranges();
 
-        assertExistingSheet1RangesByEnteringCellRangesAndAssertNameIsCorrect();
+        testEnteringRangeAndAssertNameIsSelected();
 
-        selectAndAssertSheet2Range();
+        testSheetSwitch_selectSheet2Range_assertSheet2AndCorrectSelection();
 
         assertNamedRangeSelectValues(rangesOnSheet2);
 
         selectAndAssertJohnRange();
+        
+        
     }
 
     private void selectAndAssertJohnRange() {
@@ -60,7 +62,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         assertEquals("Sheet1", spreadsheetPage.getSelectedSheetName());
     }
 
-    private void assertExistingSheet1RangesByEnteringCellRangesAndAssertNameIsCorrect() {
+    private void testEnteringRangeAndAssertNameIsSelected() {
         for (String name : sheet1ranges.keySet()) {
             typeCellRangeAndAssertNameRange(sheet1ranges.get(name), name);
         }
@@ -72,19 +74,19 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         assertEquals(expectedNamedRanges, actualNamedRanges);
     }
 
-    private void selectAndAssertSheet2Range() {
+    private void testSheetSwitch_selectSheet2Range_assertSheet2AndCorrectSelection() {
         typeAndAssertNameRange("sheet2", "B3:D9");
         
         assertEquals("Sheet2", spreadsheetPage.getSelectedSheetName());
     }
 
-    private void assertExistingSheet1RangesByTyping() {
+    private void testTypingExisingSheet1NamedRanges() {
         for (String name : sheet1ranges.keySet()) {
             typeAndAssertNameRange(name, sheet1ranges.get(name));
         }
     }
 
-    private void assertExistingSheet1RangesBySelecting() {
+    private void testSelectingExistingSheet1Ranges() {
         for (String name : sheet1ranges.keySet()) {
             selectAndAssertNameRange(name, sheet1ranges.get(name));
         }
