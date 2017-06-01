@@ -1168,11 +1168,16 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.addItem("");
 
         if (namedRanges != null) {
+            namedRangeBox.setVisible(true);
+            
             for (String name : namedRanges) {
                 namedRangeBox.addItem(name);
             }
+            
+            trySelectNamedRangeBoxValue(addressField.getValue());
+        } else {
+            namedRangeBox.setVisible(false);
         }
         
-        trySelectNamedRangeBoxValue(addressField.getValue());
     }
 }
