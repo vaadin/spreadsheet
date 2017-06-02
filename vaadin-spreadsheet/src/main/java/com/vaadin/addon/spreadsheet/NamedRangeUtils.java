@@ -63,6 +63,23 @@ class NamedRangeUtils implements Serializable {
     }
 
     /**
+     * Run when address field contains named range This creates new range or
+     * selects already existing one.
+     *
+     * @param value
+     *     Address field value
+     */
+    public void onNamedRange(String value) {
+        Workbook workbook = spreadsheet.getWorkbook();
+        Name name = workbook.getName(value);
+        if (name == null) {
+            createNewNamedRange(value);
+        } else {
+            selectExistingNameRange(name);
+        }
+    }
+    
+    /**
      * Check if entered range is cell reference
      *
      * @param value
@@ -92,23 +109,6 @@ class NamedRangeUtils implements Serializable {
 
     private SpreadsheetVersion getSpreadsheetVersion() {
         return spreadsheet.getWorkbook().getSpreadsheetVersion();
-    }
-
-    /**
-     * Run when address field contains named range This creates new range or
-     * selects already existing one.
-     *
-     * @param value
-     *     Address field value
-     */
-    public void onNamedRange(String value) {
-        Workbook workbook = spreadsheet.getWorkbook();
-        Name name = workbook.getName(value);
-        if (name == null) {
-            createNewNamedRange(value);
-        } else {
-            selectExistingNameRange(name);
-        }
     }
 
     /**
