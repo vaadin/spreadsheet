@@ -39,6 +39,7 @@ import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.vaadin.addon.spreadsheet.client.SheetWidget.CellCoord;
@@ -159,12 +160,16 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.setMultipleSelect(false);
         namedRangeBox.setVisible(false);
 
+        HTML namedRangeBoxArrow = new HTML("▼");
+        namedRangeBoxArrow.setStyleName("arrow");
+        
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
         FlowPanel right = new FlowPanel();
         left.setStyleName("fixed-left-panel");
         right.setStyleName("adjusting-right-panel");
         left.add(addressField);
+        left.add(namedRangeBoxArrow);
         left.add(namedRangeBox);
         right.add(formulaField);
         panel.add(left);
