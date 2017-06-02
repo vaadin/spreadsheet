@@ -6,9 +6,7 @@ import java.util.List;
 
 import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.usermodel.Name;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellReference.NameType;
@@ -20,7 +18,7 @@ class NamedRangeUtils implements Serializable {
     public NamedRangeUtils(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
     }
-    
+
     private CellSelectionManager getSelectionManager() {
         return spreadsheet.getCellSelectionManager();
     }
@@ -77,7 +75,7 @@ class NamedRangeUtils implements Serializable {
             selectExistingNameRange(name);
         }
     }
-    
+
     /**
      * Check if entered range is cell reference
      *
@@ -92,14 +90,7 @@ class NamedRangeUtils implements Serializable {
             return false;
         }
     }
-    
-    /**
-     * Get cell reference type
-     *
-     * @param value
-     *     New value of the address field
-     * @return NameType of cell
-     */
+
     private CellReference.NameType getCellReferenceType(String value) {
         SpreadsheetVersion spreadsheetVersion = getSpreadsheetVersion();
         return CellReference.classifyCellReference(value, spreadsheetVersion);
@@ -109,9 +100,6 @@ class NamedRangeUtils implements Serializable {
         return spreadsheet.getWorkbook().getSpreadsheetVersion();
     }
 
-    /**
-     * Create new named range
-     */
     private void createNewNamedRange(String newName) {
         Workbook workbook = spreadsheet.getWorkbook();
 
@@ -122,85 +110,48 @@ class NamedRangeUtils implements Serializable {
         SpreadsheetFactory.loadNamedRanges(spreadsheet);
     }
 
-    /**
-     * Get formula for currently selected range(s)
-     */
     private String getSelectedRangeFormula() {
-        if (getSelectionManager().getCellRangeAddresses().isEmpty()) {
-            return getIndividualCellFormula();
-        } else {
-            return getRangeCellFormula();
-        }
-    }
+        String sheetName = spreadsheet.getActiveSheet().getSheetName();
 
-    private String getIndividualCellFormula() {
-        Sheet activeSheet = spreadsheet.getActiveSheet();
-        String sheetName = activeSheet.getSheetName();
-        String selectedCell = getSelectionManager().getSelectedCellRange()
-            .formatAsString();
-        return sheetName + "!" + selectedCell;
-    }
-
-    private String getRangeCellFormula() {
-        StringBuilder rangeFormula = new StringBuilder();
-        Sheet activeSheet = spreadsheet.getActiveSheet();
-        String sheetName = activeSheet.getSheetName();
-        for (CellRangeAddress cellRangeAddress : getSelectionManager()
-            .getCellRangeAddresses()) {
-            
-            if (rangeFormula.length() != 0) {
-                rangeFormula.append(","); // TODO
-            }
-            
-            rangeFormula
-                .append(cellRangeAddress.formatAsString(sheetName, false));
-        }
-        return rangeFormula.toString();
+        return getSelectionManager().getSelectedCellRange()
+            .formatAsString(sheetName, true);
     }
 
     private void selectExistingNameRange(Name name) {
         String rangeFormula = name.getRefersToFormula();
         String formulaSheet = name.getSheetName();
-        switchSheet(formulaSheet, rangeFormula);
-        for (AreaReference aref : getAreaReferences(rangeFormula)) {
-            if (aref.isSingleCell()) { // bug?
-                selectSingleRange(aref, name.getNameName());
-            } else {
-                selectMultipleRanges(aref, name.getNameName());
-            }
+
+        final boolean rangeIsOnDifferentSheet = !name.getSheetName()
+            .equals(spreadsheet.getActiveSheet().getSheetName());
+
+        if (rangeIsOnDifferentSheet) {
+            switchSheet(formulaSheet, rangeFormula);
+        } else {
+            selectFormula(rangeFormula, name.getNameName());
         }
     }
 
     private void switchSheet(String formulaSheet, String range) {
-        if (!spreadsheet.getActiveSheet().getSheetName()
-            .equals(formulaSheet)) {
-            int sheetIndex = spreadsheet.getWorkbook().getSheetIndex(formulaSheet);
+        if (!spreadsheet.getActiveSheet().getSheetName().equals(formulaSheet)) {
+            int sheetIndex = spreadsheet.getWorkbook()
+                .getSheetIndex(formulaSheet);
             spreadsheet.setActiveSheetIndex(sheetIndex);
             spreadsheet.initialSheetSelection = range;
         }
     }
 
-    private void selectMultipleRanges(AreaReference aref, String name) {
-        String areaString = aref.formatAsString();
-        CellRangeAddress cra = spreadsheet
-            .createCorrectCellRangeAddress(areaString);
-        
-        getSelectionManager().handleCellRangeSelection(cra, name);
-    }
+    private void selectFormula(String formula, String name) {
+        if (formula.indexOf(":") == -1) {
+            final CellReference cell = new CellReference(formula);
 
-    private void selectSingleRange(AreaReference aref, String name) {
-        CellReference cell = aref.getFirstCell();
-        getSelectionManager()
-            .handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
-                false, name);
-    }
-
-    private AreaReference[] getAreaReferences(String rangeFormula) {
-        if (!AreaReference.isContiguous(rangeFormula)) {
-            return AreaReference.generateContiguous(rangeFormula);
+            getSelectionManager()
+                .handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
+                    false, name);
         } else {
-            return new AreaReference[] { new AreaReference(rangeFormula,
-                getSpreadsheetVersion()) };
+            CellRangeAddress cra = spreadsheet
+                .createCorrectCellRangeAddress(formula);
+
+            getSelectionManager().handleCellRangeSelection(cra, name);
         }
     }
 }
