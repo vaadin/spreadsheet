@@ -25,20 +25,23 @@ class NamedRangeUtils implements Serializable {
         return spreadsheet.getCellSelectionManager();
     }
 
-    /**
-     * Get cell reference type
-     *
-     * @param value
-     *     New value of the address field
-     * @return NameType of cell
-     */
-    private CellReference.NameType getCellReferenceType(String value) {
-        SpreadsheetVersion spreadsheetVersion = getSpreadsheetVersion();
-        return CellReference.classifyCellReference(value, spreadsheetVersion);
-    }
+    public String getNameForFormulaIfExists(CellRangeAddress cra) {
+        final String sheetName = spreadsheet.getActiveSheet().getSheetName();
+        final String formula = cra.formatAsString(sheetName, true);
 
-    private SpreadsheetVersion getSpreadsheetVersion() {
-        return spreadsheet.getWorkbook().getSpreadsheetVersion();
+        for (Name name : spreadsheet.getWorkbook().getAllNames()) {
+            final boolean globalName = name.getSheetIndex() == -1;
+            final boolean nameRefersToThisSheet =
+                name.getSheetIndex() == spreadsheet.getActiveSheetIndex();
+
+            if (globalName || nameRefersToThisSheet) {
+                if (formula.equals(name.getRefersToFormula())) {
+                    return name.getNameName();
+                }
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -73,6 +76,22 @@ class NamedRangeUtils implements Serializable {
         } else {
             return false;
         }
+    }
+    
+    /**
+     * Get cell reference type
+     *
+     * @param value
+     *     New value of the address field
+     * @return NameType of cell
+     */
+    private CellReference.NameType getCellReferenceType(String value) {
+        SpreadsheetVersion spreadsheetVersion = getSpreadsheetVersion();
+        return CellReference.classifyCellReference(value, spreadsheetVersion);
+    }
+
+    private SpreadsheetVersion getSpreadsheetVersion() {
+        return spreadsheet.getWorkbook().getSpreadsheetVersion();
     }
 
     /**
@@ -190,24 +209,5 @@ class NamedRangeUtils implements Serializable {
             return new AreaReference[] { new AreaReference(rangeFormula,
                 getSpreadsheetVersion()) };
         }
-    }
-
-    public String getNameForFormulaIfExists(CellRangeAddress cra) {
-        final String sheetName = spreadsheet.getActiveSheet().getSheetName();
-        final String formula = cra.formatAsString(sheetName, true);
-
-        for (Name name : spreadsheet.getWorkbook().getAllNames()) {
-            final boolean globalName = name.getSheetIndex() == -1;
-            final boolean nameRefersToThisSheet =
-                name.getSheetIndex() == spreadsheet.getActiveSheetIndex();
-
-            if (globalName || nameRefersToThisSheet) {
-                if (formula.equals(name.getRefersToFormula())) {
-                    return name.getNameName();
-                }
-            }
-        }
-            
-        return null;
     }
 }
