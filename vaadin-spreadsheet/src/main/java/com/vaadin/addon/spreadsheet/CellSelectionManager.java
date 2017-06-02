@@ -242,20 +242,24 @@ public class CellSelectionManager implements Serializable {
                         cellReference.getCol() + 1, cellReference.getCol() + 1);
                 if (region != null
                         && (region.col1 != region.col2 || region.row1 != region.row2)) {
-                    CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(
-                            region.row1, region.col1, region.row2, region.col2);
+                    CellRangeAddress cra = spreadsheet
+                            .createCorrectCellRangeAddress(
+                                    region.row1, region.col1, region.row2, region.col2);
                     handleCellRangeSelection(cra);
-                    selectedCellReference = new CellReference(cra.getFirstRow(),
-                            cra.getFirstColumn());
+                    selectedCellReference = new CellReference(
+                            cra.getFirstRow(), cra.getFirstColumn());
                     paintedCellRange = cra;
                     cellRangeAddresses.clear();
                     cellRangeAddresses.add(cra);
                 } else {
                     handleCellAddressChange(cellReference.getRow() + 1,
                             cellReference.getCol() + 1, initialSelection);
-                    paintedCellRange = spreadsheet.createCorrectCellRangeAddress(
-                            cellReference.getRow() + 1, cellReference.getCol() + 1,
-                            cellReference.getRow() + 1, cellReference.getCol() + 1);
+                    paintedCellRange = spreadsheet
+                            .createCorrectCellRangeAddress(
+                                cellReference.getRow() + 1,
+                                cellReference.getCol() + 1,
+                                cellReference.getRow() + 1,
+                                cellReference.getCol() + 1);
                     selectedCellReference = cellReference;
                     cellRangeAddresses.clear();
                 }
