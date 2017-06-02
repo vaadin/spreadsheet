@@ -49,7 +49,6 @@ class NamedRangeUtils implements Serializable {
      *
      * @param value
      *     New value of the address field
-     * @return
      */
     public boolean isCellReference(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);
@@ -84,7 +83,6 @@ class NamedRangeUtils implements Serializable {
      *
      * @param value
      *     New value of the address field
-     * @return
      */
     public boolean isNamedRange(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);
@@ -113,15 +111,12 @@ class NamedRangeUtils implements Serializable {
 
     /**
      * Create new named range
-     *
-     * @param value
-     *     Name of value range
      */
-    private void createNewNamedRange(String value) {
+    private void createNewNamedRange(String newName) {
         Workbook workbook = spreadsheet.getWorkbook();
 
         Name name = workbook.createName();
-        name.setNameName(value);
+        name.setNameName(newName);
         name.setRefersToFormula(getSelectedRangeFormula());
 
         SpreadsheetFactory.loadNamedRanges(spreadsheet);
@@ -129,8 +124,6 @@ class NamedRangeUtils implements Serializable {
 
     /**
      * Get formula for currently selected range(s)
-     *
-     * @return
      */
     private String getSelectedRangeFormula() {
         if (getSelectionManager().getCellRangeAddresses().isEmpty()) {
