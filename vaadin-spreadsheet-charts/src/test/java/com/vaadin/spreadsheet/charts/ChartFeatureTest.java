@@ -1,17 +1,13 @@
 package com.vaadin.spreadsheet.charts;
 
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.AxisType;
 import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.DataSeries;
 import com.vaadin.addon.charts.model.HorizontalAlign;
 import com.vaadin.addon.charts.model.LayoutDirection;
-import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.charts.model.VerticalAlign;
 
 public class ChartFeatureTest extends ChartTestBase {
@@ -274,7 +270,7 @@ public class ChartFeatureTest extends ChartTestBase {
     public void multiLevelCategoryWithNoCache_loadSample_chartRendered()
         throws Exception {
         Configuration conf = getChartFromSampleFile(
-            "ChartsWithNoCachedCategoreis.xlsm", "L2").getConfiguration();
+            "MultilevelCategoriesWithNoCachedData.xlsm", "L2").getConfiguration();
         Assert.assertEquals(AxisType.CATEGORY, conf.getxAxis().getType());
     }
 }
