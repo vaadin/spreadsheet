@@ -152,12 +152,28 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         // HighChart doesn't support multilevel, take only the first one
         final CTMultiLvlStrRef multiLvlStrRef = axisDataSource
             .getMultiLvlStrRef();
+        
         String formula = multiLvlStrRef.getF();
 
         final List<CellReference> allReferencedCells = Utils
                 .getAllReferencedCells(formula, spreadsheet,
                         showDataInHiddenCells);
 
+        if (!multiLvlStrRef.getMultiLvlStrCache().isSetPtCount()) {
+            return allReferencedCells;
+        } else {
+            return getCategoryCellsFromMultilevelReferences(multiLvlStrRef,
+                allReferencedCells);
+        }
+    }
+
+    /**
+     * This method tries to calculate the last level of categories from all
+     * multilevel category cells and cached values.
+     */
+    private List<CellReference> getCategoryCellsFromMultilevelReferences(
+        CTMultiLvlStrRef multiLvlStrRef,
+        final List<CellReference> allReferencedCells) {
         final CellReference firstCell = allReferencedCells.get(0);
         final CellReference lastCell = allReferencedCells
                 .get(allReferencedCells
@@ -165,11 +181,6 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
 
         final int width = lastCell.getCol() - firstCell.getCol() + 1;
         final int height = lastCell.getRow() - firstCell.getRow() + 1;
-
-        if (!multiLvlStrRef.getMultiLvlStrCache().isSetPtCount()) {
-            return Utils.getAllReferencedCells(formula, spreadsheet,
-                showDataInHiddenCells);
-        }
 
         final int numOfPointsInCache = (int) multiLvlStrRef
                 .getMultiLvlStrCache().getPtCount().getVal();
