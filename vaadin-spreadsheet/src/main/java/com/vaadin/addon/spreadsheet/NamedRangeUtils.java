@@ -32,9 +32,12 @@ class NamedRangeUtils {
      * @return NameType of cell
      */
     private CellReference.NameType getCellReferenceType(String value) {
-        SpreadsheetVersion spreadsheetVersion = spreadsheet
-            .getSpreadsheetVersion();
+        SpreadsheetVersion spreadsheetVersion = getSpreadsheetVersion();
         return CellReference.classifyCellReference(value, spreadsheetVersion);
+    }
+
+    private SpreadsheetVersion getSpreadsheetVersion() {
+        return spreadsheet.getWorkbook().getSpreadsheetVersion();
     }
 
     /**
@@ -183,7 +186,7 @@ class NamedRangeUtils {
             return AreaReference.generateContiguous(rangeFormula);
         } else {
             return new AreaReference[] { new AreaReference(rangeFormula,
-                spreadsheet.getSpreadsheetVersion()) };
+                getSpreadsheetVersion()) };
         }
     }
 
