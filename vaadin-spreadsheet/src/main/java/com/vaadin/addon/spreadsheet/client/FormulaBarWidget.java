@@ -78,6 +78,7 @@ public class FormulaBarWidget extends Composite {
     private final ListBox namedRangeBox;
     private final TextBox addressField;
     private final Element formulaOverlay = DOM.createDiv();
+    private final HTML namedRangeBoxArrow;
 
     private String cachedAddressFieldValue;
     private String cachedFunctionFieldValue;
@@ -158,11 +159,12 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.setStyleName("namedrangebox");
         namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
-        namedRangeBox.setVisible(false);
 
-        HTML namedRangeBoxArrow = new HTML("▼");
+        namedRangeBoxArrow = new HTML("▼");
         namedRangeBoxArrow.setStyleName("arrow");
-        
+
+        setNamedRangeBoxVisible(false);
+
         FlowPanel panel = new FlowPanel();
         FlowPanel left = new FlowPanel();
         FlowPanel right = new FlowPanel();
@@ -1173,17 +1175,22 @@ public class FormulaBarWidget extends Composite {
         namedRangeBox.clear();
         namedRangeBox.addItem("");
 
-        if (namedRanges != null) {
-            namedRangeBox.setVisible(true);
-            
+        if (namedRanges != null && !namedRanges.isEmpty()) {
+            setNamedRangeBoxVisible(true);
+
             for (String name : namedRanges) {
                 namedRangeBox.addItem(name);
             }
             
             trySelectNamedRangeBoxValue(addressField.getValue());
         } else {
-            namedRangeBox.setVisible(false);
+            setNamedRangeBoxVisible(false);
         }
         
+    }
+
+    private void setNamedRangeBoxVisible(boolean visible) {
+        namedRangeBox.setVisible(visible);
+        namedRangeBoxArrow.setVisible(visible);
     }
 }
