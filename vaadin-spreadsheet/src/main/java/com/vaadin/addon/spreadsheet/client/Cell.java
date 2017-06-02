@@ -24,7 +24,7 @@ import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
 public class Cell {
-
+    
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
     private static final int ZINDEXVALUE = 2;
@@ -114,8 +114,11 @@ public class Cell {
 
     void updateOverflow() {
 
-        boolean rightAligned = element.getAttribute("class").contains(" r ")
-                || element.getAttribute("class").endsWith(" r");
+        String classAttribute = element.getAttribute("class");
+        boolean rightAligned = classAttribute.contains(" r ")
+                || classAttribute.endsWith(" r");
+
+        boolean wrapped = classAttribute.contains(CellData.CELL_WRAP_TEXT_CLASSNAME);
 
         int columnWidth = sheetWidget.actionHandler.getColWidth(col);
 
@@ -124,7 +127,8 @@ public class Cell {
             scrollW = measureOverflow();
         }
         int overflowPx = scrollW - columnWidth;
-        if (!rightAligned && overflowPx > 0) {
+
+        if (!rightAligned && !wrapped && overflowPx > 0) {
             // Increase overflow by cell left padding (2px)
             overflowPx += 2;
             int colIndex = col;
