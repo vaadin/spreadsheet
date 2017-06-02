@@ -76,9 +76,9 @@ public class FormulaBarWidget extends Composite {
 
     private final TextBox formulaField;
     private final ListBox namedRangeBox;
+    private final HTML namedRangeBoxArrow;
     private final TextBox addressField;
     private final Element formulaOverlay = DOM.createDiv();
-    private final HTML namedRangeBoxArrow;
 
     private String cachedAddressFieldValue;
     private String cachedFunctionFieldValue;
@@ -157,8 +157,8 @@ public class FormulaBarWidget extends Composite {
 
         namedRangeBox = new ListBox();
         namedRangeBox.setStyleName("namedrangebox");
-        namedRangeBox.addItem("");
         namedRangeBox.setMultipleSelect(false);
+        namedRangeBox.addItem("");
 
         namedRangeBoxArrow = new HTML("▼");
         namedRangeBoxArrow.setStyleName("arrow");
@@ -1186,7 +1186,6 @@ public class FormulaBarWidget extends Composite {
         } else {
             setNamedRangeBoxVisible(false);
         }
-        
     }
 
     private void setNamedRangeBoxVisible(boolean visible) {
