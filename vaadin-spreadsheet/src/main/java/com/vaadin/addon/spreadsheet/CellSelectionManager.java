@@ -378,8 +378,9 @@ public class CellSelectionManager implements Serializable {
 
     private void handleCellSelection(int rowIndex, int columnIndex,
         CellRangeAddress cra) {
+        
         final String possibleName = namedRangeUtils
-            .getNameForFormulaIfExists(cra.formatAsString());
+            .getNameForFormulaIfExists(cra);
 
         spreadsheet.getRpcProxy()
             .showCellValue(possibleName, columnIndex, rowIndex);
@@ -393,10 +394,10 @@ public class CellSelectionManager implements Serializable {
      *            Range of cells to select
      */
     protected void handleCellRangeSelection(CellRangeAddress cra) {
-        // TODO: call formatAsString(String, boolean)
-        final String possibleName = namedRangeUtils
-            .getNameForFormulaIfExists(cra.formatAsString());
         
+        final String possibleName = namedRangeUtils
+            .getNameForFormulaIfExists(cra);
+
         handleCellRangeSelection(cra, possibleName);
     }
     
