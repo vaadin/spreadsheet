@@ -243,8 +243,8 @@ public class CellSelectionManager implements Serializable {
                 if (region != null
                         && (region.col1 != region.col2 || region.row1 != region.row2)) {
                     CellRangeAddress cra = spreadsheet
-                            .createCorrectCellRangeAddress(
-                                    region.row1, region.col1, region.row2, region.col2);
+                            .createCorrectCellRangeAddress(region.row1, 
+                                    region.col1, region.row2, region.col2);
                     handleCellRangeSelection(cra);
                     selectedCellReference = new CellReference(
                             cra.getFirstRow(), cra.getFirstColumn());
