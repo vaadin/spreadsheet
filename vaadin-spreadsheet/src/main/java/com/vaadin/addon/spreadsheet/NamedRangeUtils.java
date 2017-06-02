@@ -1,5 +1,6 @@
 package com.vaadin.addon.spreadsheet;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellReference.NameType;
 
-class NamedRangeUtils {
+class NamedRangeUtils implements Serializable {
 
     private Spreadsheet spreadsheet;
 
