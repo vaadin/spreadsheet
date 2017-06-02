@@ -147,8 +147,8 @@ class NamedRangeUtils {
 
     private void selectExistingNameRange(Name name) {
         String rangeFormula = name.getRefersToFormula();
-        String formulasSheet = name.getSheetName();
-        switchSheet(formulasSheet, rangeFormula);
+        String formulaSheet = name.getSheetName();
+        switchSheet(formulaSheet, rangeFormula);
         for (AreaReference aref : getAreaReferences(rangeFormula)) {
             if (aref.isSingleCell()) { // bug?
                 selectSingleRange(aref, name.getNameName());
@@ -158,10 +158,11 @@ class NamedRangeUtils {
         }
     }
 
-    private void switchSheet(String formulasSheet, String range) {
+    private void switchSheet(String formulaSheet, String range) {
         if (!spreadsheet.getActiveSheet().getSheetName()
-            .equals(formulasSheet)) {
-            spreadsheet.switchSheet(formulasSheet); // named range defines sheet
+            .equals(formulaSheet)) {
+            int sheetIndex = spreadsheet.getWorkbook().getSheetIndex(formulaSheet);
+            spreadsheet.setActiveSheetIndex(sheetIndex);
             spreadsheet.initialSheetSelection = range;
         }
     }

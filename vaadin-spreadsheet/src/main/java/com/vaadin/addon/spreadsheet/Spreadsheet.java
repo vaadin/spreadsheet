@@ -5113,21 +5113,4 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             final int minimumRowHeightForComponents) {
         this.minimumRowHeightForComponents = minimumRowHeightForComponents;
     }
-
-    /**
-     * Switch to another sheet
-     * 
-     * @param sheetName
-     *            name of the sheet to switch to
-     */
-    void switchSheet(String sheetName) {
-        int sheetIndex = getWorkbook().getSheetIndex(sheetName);
-        if (sheetIndex != -1) {
-            Sheet oldSheet = getActiveSheet();
-            setActiveSheetIndex(sheetIndex);
-            Sheet newSheet = getActiveSheet();
-            fireSheetChangeEvent(oldSheet, newSheet);
-            reloadVisibleCellContents();// ??????
-        }
-    }
 }
