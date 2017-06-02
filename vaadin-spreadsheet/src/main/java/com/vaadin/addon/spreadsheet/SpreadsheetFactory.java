@@ -422,7 +422,6 @@ public class SpreadsheetFactory implements Serializable {
         final List<String> names = new ArrayList<String>();
 
         for (Name name : namedRanges) {
-
             final int nameLocalTo = name.getSheetIndex();
             final int activeSheet = spreadsheet.getWorkbook()
                 .getActiveSheetIndex();
