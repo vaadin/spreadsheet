@@ -17,10 +17,6 @@ package com.vaadin.addon.spreadsheet;
  * #L%
  */
 
-import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueChangeEvent;
-import com.vaadin.addon.spreadsheet.Spreadsheet.ProtectedEditEvent;
-import com.vaadin.addon.spreadsheet.client.SpreadsheetServerRpc;
-import com.vaadin.addon.spreadsheet.command.CellValueCommand;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.RichTextString;
@@ -38,6 +34,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueChangeEvent;
+import com.vaadin.addon.spreadsheet.Spreadsheet.ProtectedEditEvent;
+import com.vaadin.addon.spreadsheet.client.SpreadsheetServerRpc;
+import com.vaadin.addon.spreadsheet.command.CellValueCommand;
 
 /**
  * Implementation of the Spreadsheet Server RPC interface.
@@ -207,6 +207,11 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
     public void columnResized(Map<Integer, Integer> newColumnSizes, int row1,
             int col1, int row2, int col2) {
         spreadsheet.onColumnResized(newColumnSizes, row1, col1, row2, col2);
+    }
+
+    @Override
+    public void onRowAutofit(int rowIndex) {
+        spreadsheet.onRowAutofit(rowIndex - 1);
     }
 
     @Override

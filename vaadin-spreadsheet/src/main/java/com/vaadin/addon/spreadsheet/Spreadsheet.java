@@ -76,8 +76,8 @@ import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.MergedRegionUtil.MergedRegionContainer;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc;
-import com.vaadin.addon.spreadsheet.command.SizeChangeCommand;
-import com.vaadin.addon.spreadsheet.command.SizeChangeCommand.Type;
+import com.vaadin.addon.spreadsheet.command.ColumnSizeChangeCommand;
+import com.vaadin.addon.spreadsheet.command.RowSizeChangeCommand;
 import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
@@ -121,6 +121,24 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private static final Logger LOGGER = Logger.getLogger(Spreadsheet.class
             .getName());
 
+    /**
+     * The value of CSS line-height attribute as set on Spreadsheet cells
+     * Must be specified as percentage (1.0f = 100%)
+     */
+    private static final float CSS_LINE_HEIGHT_PERCENTAGE = 1.1f;
+
+    /**
+     * The margin in terms of percentage of the full cell width/height 
+     * that must be taken into account when autofitting.
+     */
+    private static final float ROW_AUTOFIT_SECURITY_MARGIN = 0.15f;
+
+    /**
+     * The value of CSS letter-spacing attribute as set on Spreadsheet cells
+     * Must be specified in points
+     */
+    private static final float CSS_LETTER_SPACING_IN_POINTS = 0.1f;
+    
     /**
      * A common formula evaluator for this Spreadsheet
      */
@@ -333,6 +351,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private String srcUri;
 
     private boolean defaultColWidthSet, defaultRowHeightSet;
+
+    private RowsAutofitUtil rowsAutofitUtil = new RowsAutofitUtil(
+        ROW_AUTOFIT_SECURITY_MARGIN, CSS_LINE_HEIGHT_PERCENTAGE,
+        CSS_LETTER_SPACING_IN_POINTS);
 
     /**
      * Container for merged regions for the currently active sheet.
@@ -1800,14 +1822,28 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
+     * This method is called when row auto-fit has been initiated from the
+     * browser by double-clicking the border of the target row header.
+     *
+     * @param rowIndex
+     *     Index of the target row, 0-based
+     */
+    public void onRowAutofit(int rowIndex) {
+        RowSizeChangeCommand command = new RowSizeChangeCommand(this);
+        command.captureValues(new Integer[] { rowIndex + 1 });
+        autofitRow(rowIndex);
+        historyManager.addCommand(command);
+    }
+
+    /**
      * This method is called when column auto-fit has been initiated from the
      * browser by double-clicking the border of the target column header.
-     * 
+     *
      * @param columnIndex
-     *            Index of the target column, 0-based
+     *     Index of the target column, 0-based
      */
     protected void onColumnAutofit(int columnIndex) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
+        ColumnSizeChangeCommand command = new ColumnSizeChangeCommand(this);
         command.captureValues(new Integer[] { columnIndex + 1 });
         autofitColumn(columnIndex);
         historyManager.addCommand(command);
@@ -1833,6 +1869,36 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         getCellValueManager().clearCacheForColumn(columnIndex + 1);
         getCellValueManager().loadCellData(firstRow, columnIndex + 1, lastRow,
                 columnIndex + 1);
+
+        if (hasSheetOverlays()) {
+            reloadImageSizesFromPOI = true;
+            loadOrUpdateOverlays();
+        }
+    }
+
+    /**
+     * Sets the row to automatically adjust the row height to fit the
+     * highest cell content within the column.
+     * <p>
+     * This does not take into account cells that have custom Vaadin components
+     * inside them and merged cells
+     *
+     * @param rowIndex
+     *            Index of the target row, 0-based
+     */
+    public void autofitRow(int rowIndex) {
+        final Sheet activeSheet = getActiveSheet();
+        rowsAutofitUtil.autoSizeRow(activeSheet, rowIndex);
+
+        // Once the user autofit a row
+        // the row becomes "autoresizable"
+        RowsAutofitUtil.setCustomHeight(activeSheet, rowIndex, false);
+
+        getState().rowH[rowIndex] = activeSheet.getRow(rowIndex)
+            .getHeightInPoints();
+        getCellValueManager().clearCacheForRow(rowIndex + 1);
+        getCellValueManager().loadCellData(rowIndex + 1, firstColumn,
+                rowIndex + 1, lastColumn);
 
         if (hasSheetOverlays()) {
             reloadImageSizesFromPOI = true;
@@ -3011,7 +3077,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     void onRowResized(Map<Integer, Float> newRowSizes, int row1, int col1,
             int row2, int col2) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.ROW);
+        RowSizeChangeCommand command = new RowSizeChangeCommand(this);
         command.captureValues(newRowSizes.keySet().toArray(
                 new Integer[newRowSizes.size()]));
         historyManager.addCommand(command);
@@ -3019,6 +3085,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             int index = entry.getKey();
             float height = entry.getValue();
             setRowHeight(index - 1, height);
+
+            // When the user manually sizes the row height
+            // then the row is marked with customHeight=true
+            // and is not auto-resizable anymore
+            RowsAutofitUtil.setCustomHeight(getActiveSheet(), index - 1, true);
         }
 
         if (hasSheetOverlays()) {
@@ -3056,9 +3127,23 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
     }
 
+    /**
+     * Activates or deactivates the "customHeight" attribute
+     * for the specified row in currently active sheet.
+     *
+     * @param index
+     *     Index of target row, 0-based
+     * @param customHeight
+     *     True if the specified row must have a fixed height,
+     *     False if it has to be auto-resizable depending on its content.
+     */
+    public void setRowCustomHeight(int index, boolean customHeight) {
+        RowsAutofitUtil.setCustomHeight(getActiveSheet(), index, customHeight);
+    }
+
     void onColumnResized(Map<Integer, Integer> newColumnSizes, int row1,
             int col1, int row2, int col2) {
-        SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
+        ColumnSizeChangeCommand command = new ColumnSizeChangeCommand(this);
         command.captureValues(newColumnSizes.keySet().toArray(
                 new Integer[newColumnSizes.size()]));
         historyManager.addCommand(command);
