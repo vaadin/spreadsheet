@@ -167,7 +167,15 @@ public class Cell {
                 && !(this instanceof MergedCell)) {
             element.getStyle().setOverflow(Overflow.HIDDEN);
         } else {
-            element.getStyle().setOverflow(Overflow.VISIBLE);
+            // if there is a horizontal overflow
+            if (overflowPx > 0) {
+                // show it
+                element.getStyle().setOverflow(Overflow.VISIBLE);
+            } else {
+                // for the rest of cases hide it
+                // (vertical overflow is never shown in Excel)
+                element.getStyle().setOverflow(Overflow.HIDDEN);
+            }
         }
         overflowDirty = false;
     }
