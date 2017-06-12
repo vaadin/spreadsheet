@@ -104,6 +104,8 @@ public class Cell {
                 element.setInnerText(value);
             }
         }
+        
+        appendOverlayElements();
     }
 
     protected int getCellWidth() {
@@ -155,6 +157,7 @@ public class Cell {
             overflowDiv.setInnerText(element.getInnerText());
             element.setInnerText(null);
             element.appendChild(overflowDiv);
+            appendOverlayElements();
 
             overflowing = true;
         } else {
@@ -184,6 +187,7 @@ public class Cell {
     protected void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
+        removeInvalidFormulaIndicator();
         updateClassName();
     }
 
@@ -220,6 +224,10 @@ public class Cell {
         this.value = value;
         updateInnerText();
 
+        markAsOverflowDirty();
+    }
+
+    private void appendOverlayElements() {
         if (cellCommentTriangle != null) {
             element.appendChild(cellCommentTriangle);
         }
@@ -229,8 +237,6 @@ public class Cell {
         if (popupButtonElement != null) {
             element.appendChild(popupButtonElement);
         }
-
-        markAsOverflowDirty();
     }
 
     public void showPopupButton(Element popupButtonElement) {
