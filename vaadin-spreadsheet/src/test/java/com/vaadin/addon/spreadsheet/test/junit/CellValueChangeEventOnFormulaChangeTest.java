@@ -1,6 +1,9 @@
 package com.vaadin.addon.spreadsheet.test.junit;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
+import static org.junit.Assert.assertEquals;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -10,15 +13,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
  * Unit test for fix for issue #550.
- *
- * @author Ian Scriven
  */
 public class CellValueChangeEventOnFormulaChangeTest {
 
@@ -38,20 +36,24 @@ public class CellValueChangeEventOnFormulaChangeTest {
     }
 
     /**
-     * Verify that a CellValueChangeEvent is fired when a cell's formula changes, but the new formula still produces
-     * the same result as the previous formula.
+     * Verify that a CellValueChangeEvent is fired when a cell's formula
+     * changes, but the new formula still produces the same result as the
+     * previous formula.
      */
     @Test
     public void formulaChangeResultingInSameValue() {
         List<CellReference> changedCells = new LinkedList<>();
 
-        spreadsheet.addCellValueChangeListener(event -> changedCells.addAll(event.getChangedCells()));
+        spreadsheet.addCellValueChangeListener(
+                event -> changedCells.addAll(event.getChangedCells()));
 
         spreadsheet.setSelection("C1");
-        spreadsheet.getCellValueManager().onCellValueChange(3, 1, "=A1+2*B1"); // B1 is 0, so the result doesn't change
+        // B1 is 0, so the result doesn't change
+        spreadsheet.getCellValueManager().onCellValueChange(3, 1, "=A1+2*B1");
 
         assertEquals("There should be 1 changed cell", 1, changedCells.size());
-        assertEquals("The changed cell should be C1", new CellReference("C1"), changedCells.get(0));
+        assertEquals("The changed cell should be C1", new CellReference("C1"),
+                changedCells.get(0));
     }
 
 }
