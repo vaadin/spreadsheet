@@ -82,6 +82,7 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
+        needsMeasure = cellData == null ? false : cellData.needsMeasure;
 
         updateInnerText();
         updateCellValues();
@@ -97,13 +98,18 @@ public class Cell {
         } else {
             element.getStyle().setZIndex(ZINDEXVALUE);
             if (needsMeasure
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
-                            .getClientWidth()) {
+                    && sheetWidget.measureValueWidth(cellStyle, value) > getCellWidth()) {
                 element.setInnerText("###");
             } else {
                 element.setInnerText(value);
             }
         }
+        
+        appendOverlayElements();
+    }
+
+    protected int getCellWidth() {
+        return sheetWidget.actionHandler.getColWidth(col);
     }
 
     void updateOverflow() {
@@ -151,6 +157,7 @@ public class Cell {
             overflowDiv.setInnerText(element.getInnerText());
             element.setInnerText(null);
             element.appendChild(overflowDiv);
+            appendOverlayElements();
 
             overflowing = true;
         } else {
@@ -180,6 +187,7 @@ public class Cell {
     protected void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
+        removeInvalidFormulaIndicator();
         updateClassName();
     }
 
@@ -216,6 +224,10 @@ public class Cell {
         this.value = value;
         updateInnerText();
 
+        markAsOverflowDirty();
+    }
+
+    private void appendOverlayElements() {
         if (cellCommentTriangle != null) {
             element.appendChild(cellCommentTriangle);
         }
@@ -225,8 +237,6 @@ public class Cell {
         if (popupButtonElement != null) {
             element.appendChild(popupButtonElement);
         }
-
-        markAsOverflowDirty();
     }
 
     public void showPopupButton(Element popupButtonElement) {
