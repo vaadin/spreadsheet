@@ -58,15 +58,14 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     SpreadsheetClientRpc clientRPC = new SpreadsheetClientRpc() {
 
         @Override
-        public void showCellValue(String value, int col, int row,
-                boolean formula, boolean locked) {
-            getWidget().showCellValue(value, col, row, formula, locked);
+        public void showCellValue(String possibleName, int col, int row) {
+            getWidget().showCellValue(possibleName, col, row);
         }
 
         @Override
-        public void showSelectedCell(int col, int row, String value,
+        public void showSelectedCell(String name, int col, int row, String value,
                 boolean formula, boolean locked, boolean initialSelection) {
-            getWidget().selectCell(col, row, value, formula, locked,
+            getWidget().selectCell(name, col, row, value, formula, locked,
                     initialSelection);
         }
 
@@ -76,13 +75,11 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         }
 
         @Override
-        public void showSelectedCellRange(int firstColumn, int lastColumn,
-                int firstRow, int lastRow, String value, boolean formula,
-                boolean locked) {
+        public void showSelectedCellRange(String name, int firstColumn, int lastColumn,
+                int firstRow, int lastRow) {
             getWidget()
-                    .selectCellRange(firstColumn, firstRow, firstColumn,
-                            lastColumn, firstRow, lastRow, value, formula,
-                            locked, true);
+                    .selectCellRange(name, firstColumn, firstRow, firstColumn,
+                            lastColumn, firstRow, lastRow,true);
         }
 
         @Override
@@ -136,10 +133,8 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
 
         @Override
         public void setSelectedCellAndRange(int col, int row, int c1, int c2,
-                int r1, int r2, String value, boolean formula,
-                boolean cellLocked, boolean scroll) {
-            getWidget().selectCellRange(col, row, c1, c2, r1, r2, value,
-                    formula, cellLocked, scroll);
+                int r1, int r2, boolean scroll) {
+            getWidget().selectCellRange(null, col, row, c1, c2, r1, r2, scroll);
         }
 
         @Override
