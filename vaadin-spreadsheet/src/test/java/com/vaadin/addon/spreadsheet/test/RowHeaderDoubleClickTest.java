@@ -1,6 +1,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import org.junit.Test;
@@ -16,25 +17,27 @@ public class RowHeaderDoubleClickTest extends AbstractSpreadsheetTestCase {
     @Test
     public void loadFixture_doubleClickOnRowHeader_rowHeaderDoubleClickEventFired() {
         final SpreadsheetPage spreadsheetPage = headerPage
-            .createNewSpreadsheet();
+                .createNewSpreadsheet();
 
         headerPage.loadTestFixture(TestFixtures.RowHeaderDoubleClick);
 
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
-            .first();
+                .first();
 
         spreadsheet.getRowHeader(3).getResizeHandle().doubleClick();
 
         assertEquals("Double-click on row header",
-            spreadsheetPage.getCellAt(1, 3).getValue());
+                spreadsheetPage.getCellAt(1, 3).getValue());
     }
 
     @Override
     public List<DesiredCapabilities> getBrowsersToTest() {
+        List<DesiredCapabilities> result = super.getBrowsersToTest();
         // Double click is not supported by PhantomJS.
-        // Chrome fails for some reason, it never gets the row header double-click event 
-        // probably because of faulty logic in SheetWidget that cancels it.
+        result.remove(Browser.PHANTOMJS.getDesiredCapabilities());
         // In manual testing Chrome works fine
-        return getBrowserCapabilities(Browser.IE10, Browser.IE11, Browser.FIREFOX);
+        result.remove(Browser.CHROME.getDesiredCapabilities());
+        return result;
+
     }
 }
