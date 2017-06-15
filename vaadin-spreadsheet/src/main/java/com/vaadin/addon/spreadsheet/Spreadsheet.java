@@ -5218,7 +5218,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         public RowHeaderDoubleClickEvent(Component source, int row) {
             super(source);
-            this.rowIndex = row;
+            rowIndex = row;
         }
 
         public int getRowIndex() {
@@ -5227,7 +5227,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * Interface for listening a {@Link RowHeaderDoubleClickEvent} event
+     * Interface for listening a {@link RowHeaderDoubleClickEvent} event
      **/
     public interface RowHeaderDoubleClickListener extends Serializable {
         Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
