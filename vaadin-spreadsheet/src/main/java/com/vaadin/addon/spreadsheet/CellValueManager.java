@@ -57,6 +57,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
@@ -134,9 +136,9 @@ public class CellValueManager implements Serializable {
         this.spreadsheet = spreadsheet;
         UI current = UI.getCurrent();
         if (current != null) {
-            formatter = new DataFormatter(current.getLocale());
+            formatter = new CustomDataFormatter(current.getLocale());
         } else {
-            formatter = new DataFormatter();
+            formatter = new CustomDataFormatter();
         }
     }
 
@@ -169,7 +171,7 @@ public class CellValueManager implements Serializable {
     }
 
     protected void updateLocale(Locale locale) {
-        formatter = new DataFormatter(locale);
+        formatter = new CustomDataFormatter(locale);
         localeDecimalSymbols = DecimalFormatSymbols.getInstance(locale);
         originalValueDecimalFormat = new DecimalFormat(
                 EXCEL_FORMULA_BAR_DECIMAL_FORMAT, localeDecimalSymbols);
@@ -345,6 +347,13 @@ public class CellValueManager implements Serializable {
         return cellData;
     }
 
+    private void setLeadingQuoteStyle(Cell cell, boolean leadingQuote) {
+        if (cell instanceof XSSFCell) {
+            ((XSSFCell) cell).getCellStyle().getCoreXf()
+                .setQuotePrefix(leadingQuote);
+        }
+    }
+
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
         boolean isCellNumeric = cell.getCellType() == Cell.CELL_TYPE_NUMERIC;
         boolean isCellFormula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
@@ -389,7 +398,11 @@ public class CellValueManager implements Serializable {
             return originalValueDecimalFormat
                     .format(cell.getNumericCellValue());
         case Cell.CELL_TYPE_STRING:
-            return cell.getStringCellValue();
+            String stringCellValue = cell.getStringCellValue();
+            if (SpreadsheetUtil.needsLeadingQuote(cell)) {
+                return "'" + stringCellValue;
+            }
+            return stringCellValue;
         case Cell.CELL_TYPE_BOOLEAN:
             return String.valueOf(cell.getBooleanCellValue());
         case Cell.CELL_TYPE_BLANK:
@@ -569,6 +582,7 @@ public class CellValueManager implements Serializable {
         command.captureCellValues(new CellReference(row - 1, col - 1));
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
         boolean updateHyperlinks = false;
+        boolean formulaChanged = false;
 
         if (getCustomCellValueHandler() == null
                 || getCustomCellValueHandler().cellValueUpdated(cell,
@@ -596,16 +610,21 @@ public class CellValueManager implements Serializable {
                             && cell.getCellFormula().startsWith("HYPERLINK")) {
                         updateHyperlinks = true;
                     }
+                    setLeadingQuoteStyle(cell, false);
                 }
                 if (formulaFormatter.isFormulaFormat(value)) {
                     if (formulaFormatter.isValidFormulaFormat(value,
                             spreadsheetLocale)) {
                         spreadsheet.removeInvalidFormulaMark(col, row);
                         getFormulaEvaluator().notifyUpdateCell(cell);
+                        String newFormula = formulaFormatter
+                            .unFormatFormulaValue(value.substring(1),
+                                                  spreadsheetLocale);
+                        formulaChanged =
+                            ((cell.getCellType() == Cell.CELL_TYPE_FORMULA)
+                                && !newFormula.equals(cell.getCellFormula()));
                         cell.setCellType(Cell.CELL_TYPE_FORMULA);
-                        cell.setCellFormula(formulaFormatter
-                                .unFormatFormulaValue(value.substring(1),
-                                        spreadsheetLocale));
+                        cell.setCellFormula(newFormula);
                         getFormulaEvaluator().notifySetFormula(cell);
                         if (value.startsWith("=HYPERLINK(")
                                 && cell.getCellStyle().getIndex() != hyperlinkStyleIndex) {
@@ -661,6 +680,10 @@ public class CellValueManager implements Serializable {
                     } else if (oldCellType == Cell.CELL_TYPE_BOOLEAN) {
                         cell.setCellValue(Boolean.parseBoolean(value));
                     } else {
+                        if (value.startsWith("'")) {
+                            value = value.substring(1, value.length());
+                            setLeadingQuoteStyle(cell, true);
+                        }
                         cell.setCellType(Cell.CELL_TYPE_STRING);
                         cell.setCellValue(value);
                     }
@@ -697,7 +720,8 @@ public class CellValueManager implements Serializable {
                 if (formattedCellValue == null
                         || !formattedCellValue
                                 .equals(getFormattedCellValue(cell))
-                        || oldCellType != cell.getCellType()) {
+                        || oldCellType != cell.getCellType()
+                        || formulaChanged) {
                     fireCellValueChangeEvent(cell);
                 }
             }

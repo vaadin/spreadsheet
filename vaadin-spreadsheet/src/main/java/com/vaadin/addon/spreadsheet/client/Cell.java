@@ -86,6 +86,7 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
+        needsMeasure = cellData == null ? false : cellData.needsMeasure;
 
         updateInnerText();
         updateCellValues();
@@ -101,15 +102,16 @@ public class Cell {
         } else {
             element.getStyle().setZIndex(ZINDEXVALUE);
             if (needsMeasure
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
-                            .getClientWidth()) {
+                    && sheetWidget.measureValueWidth(cellStyle, value) > getCellWidth()) {
                 element.setInnerText("###");
-            } else if (value.startsWith("'")) {
-                element.setInnerText(value.substring(1, value.length()));
             } else {
                 element.setInnerText(value);
             }
         }
+    }
+
+    protected int getCellWidth() {
+        return sheetWidget.actionHandler.getColWidth(col);
     }
 
     void updateOverflow() {
