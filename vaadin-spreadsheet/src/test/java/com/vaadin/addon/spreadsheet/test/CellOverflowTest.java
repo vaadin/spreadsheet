@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.testbench.parallel.Browser;
 
 public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
@@ -57,5 +58,12 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
         a1.setValue("=B1");
         assertEquals(valueToTest, a1.getValue());
+    }
+
+    @Test
+    public void frozenRows_LongValueInCell_CellOverflows() throws IOException {
+        skipBrowser("IE fails to select correct file", Browser.IE11);
+        headerPage.loadFile("frozen-rows-overflow.xlsx", this);
+        compareScreen("overflow");
     }
 }
