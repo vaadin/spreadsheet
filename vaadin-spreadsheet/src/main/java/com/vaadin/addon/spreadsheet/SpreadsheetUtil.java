@@ -58,7 +58,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Translates cell coordinates to a cell key used to identify cells in the
-     * server-client communication.
+     * server<->client communiScation.
      * 
      * @param col
      *            Column index, 1-based
@@ -72,7 +72,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Translates cell coordinates from the given Cell object to a cell key used
-     * to identify cells in the server-client communication.
+     * to identify cells in the server<->client communiScation.
      * 
      * @param cell
      *            Cell to fetch the coordinates from

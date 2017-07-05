@@ -159,13 +159,13 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     /**
      * Temp structure for shiftedBorderTopStyles that keeps track of the
-     * association between: StyleId to ColumnId to Rows
+     * association between: StyleId -> ColumnId -> Rows
      */
     private final HashMap<Integer, HashMap<Integer, HashSet<Integer>>> shiftedBorderTopStylesMap = new HashMap<Integer, HashMap<Integer, HashSet<Integer>>>();
 
     /**
      * Temp structure for shiftedBorderLeftStyles that keeps track of the
-     * association between: StyleId to ColumnId to Rows
+     * association between: StyleId -> ColumnId -> Rows
      */
     private final HashMap<Integer, HashMap<Integer, HashSet<Integer>>> shiftedBorderLeftStylesMap = new HashMap<Integer, HashMap<Integer, HashSet<Integer>>>();
 
@@ -608,7 +608,7 @@ public class SpreadsheetStyleFactory implements Serializable {
                 VERTICAL_ALIGN);
 
         if (cellStyle.getWrapText()) { // default is to overflow
-            sb.append("overflow:hidden;white-space:normal;word-wrap:break-word;");
+            sb.append("overflow:hidden;white-space:normal;");
         }
 
         if (cellStyle.getIndention() > 0) {

@@ -198,17 +198,4 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
 
         return element;
     }
-
-    @Test
-    public void userClicksColumn_spreadsheetSelectionUpdated()
-            throws Exception {
-        headerPage.loadFile("chart_with_filtered_out_column.xlsx", this);
-
-        overlayHelper.getOverlayElement("G11")
-                .findElements(By.cssSelector(".highcharts-series-0 > rect"))
-                .get(0).click();
-
-        assertSelection("G4", "H4", "I4", "J4", "K4", "L4", "M4", "N4", "O4");
-
-    }
 }

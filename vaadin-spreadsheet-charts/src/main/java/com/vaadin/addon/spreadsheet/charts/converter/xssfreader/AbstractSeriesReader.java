@@ -25,11 +25,9 @@ import java.util.List;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.xmlbeans.XmlObject;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTAxDataSource;
-import org.openxmlformats.schemas.drawingml.x2006.chart.CTMultiLvlStrRef;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTNumDataSource;
 import org.openxmlformats.schemas.drawingml.x2006.chart.CTSerTx;
 
@@ -151,30 +149,12 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
     private List<CellReference> tryHandleMultilevelCategories(
             CTAxDataSource axisDataSource) {
         // HighChart doesn't support multilevel, take only the first one
-        final CTMultiLvlStrRef multiLvlStrRef = axisDataSource
-            .getMultiLvlStrRef();
-        
-        String formula = multiLvlStrRef.getF();
+        String formula = axisDataSource.getMultiLvlStrRef().getF();
 
         final List<CellReference> allReferencedCells = Utils
                 .getAllReferencedCells(formula, spreadsheet,
                         showDataInHiddenCells);
 
-        if (!multiLvlStrRef.getMultiLvlStrCache().isSetPtCount()) {
-            return allReferencedCells;
-        } else {
-            return getCategoryCellsFromMultilevelReferences(multiLvlStrRef,
-                allReferencedCells);
-        }
-    }
-
-    /**
-     * This method tries to calculate the last level of categories from all
-     * multilevel category cells and cached values.
-     */
-    private List<CellReference> getCategoryCellsFromMultilevelReferences(
-        CTMultiLvlStrRef multiLvlStrRef,
-        final List<CellReference> allReferencedCells) {
         final CellReference firstCell = allReferencedCells.get(0);
         final CellReference lastCell = allReferencedCells
                 .get(allReferencedCells
@@ -183,7 +163,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         final int width = lastCell.getCol() - firstCell.getCol() + 1;
         final int height = lastCell.getRow() - firstCell.getRow() + 1;
 
-        final int numOfPointsInCache = (int) multiLvlStrRef
+        final int numOfPointsInCache = (int) axisDataSource.getMultiLvlStrRef()
                 .getMultiLvlStrCache().getPtCount().getVal();
         final int numOfLevels = allReferencedCells.size() / numOfPointsInCache;
 
@@ -242,16 +222,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         seriesData.dataSelectListener = new DataSelectListener() {
             @Override
             public void dataSelected() {
-                AreaReference[] areaReferences = Utils
-                        .getAreaReferences(formula);
-
-                spreadsheet.setSelectionRange(
-                        areaReferences[0].getFirstCell().getRow(),
-                        areaReferences[0].getFirstCell().getCol(),
-                        areaReferences[areaReferences.length - 1].getLastCell()
-                                .getRow(),
-                        areaReferences[areaReferences.length - 1].getLastCell()
-                                .getCol());
+                spreadsheet.setSelection(formula);
             }
         };
     }
