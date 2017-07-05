@@ -248,8 +248,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     /**
      * Enable or disable Formatting columns locking.
      *
-     * @param value
-     *            the new content. Can not be HTML.
+     * @param enabled
      */
     public void setLockFormatColumns(boolean enabled) {
         lockFormatColumns = enabled;
@@ -265,8 +264,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     /**
      * Enable or disable Formatting rows locking.
      *
-     * @param value
-     *            the new content. Can not be HTML.
+     * @param enabled
      */
     public void setLockFormatRows(boolean enabled) {
         lockFormatRows = enabled;
@@ -853,6 +851,11 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
             spreadsheetHandler.columnSelected(column, firstRowIndex);
         }
         startDelayedSendingTimer();
+    }
+
+    @Override
+    public void onRowHeaderDoubleClick(int rowIndex) {
+        spreadsheetHandler.onRowAutofit(rowIndex);
     }
 
     @Override
