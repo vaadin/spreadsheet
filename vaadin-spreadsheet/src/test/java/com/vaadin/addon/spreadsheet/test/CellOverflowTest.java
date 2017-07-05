@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -65,5 +66,39 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         skipBrowser("IE fails to select correct file", Browser.IE11);
         headerPage.loadFile("frozen-rows-overflow.xlsx", this);
         compareScreen("overflow");
+    }
+
+    @Test
+    public void verticalOverflowCells_noOverflow() {
+        loadWrapTextTest();
+
+        assertNoOverflowForCell("C4");
+        assertNoOverflowForCell("C13");
+    }
+
+    @Test
+    public void longWordInCellWithWrapText_noOverflow() {
+        loadWrapTextTest();
+        assertNoOverflowForCell("E8");
+    }
+
+    @Test
+    public void sameContentInTwoCellsWithDifferentWidths_noOverflow() {
+        loadWrapTextTest();
+
+        assertNoOverflowForCell("E4");
+        assertNoOverflowForCell("E13");
+    }
+
+    private void assertNoOverflowForCell(String cell) {
+        final SpreadsheetElement spr = $(SpreadsheetElement.class).first();
+
+        final SheetCellElement cellElement = spr.getCellAt(cell);
+
+        Assert.assertEquals("hidden", cellElement.getCssValue("overflow"));
+    }
+
+    private void loadWrapTextTest() {
+        headerPage.loadFile("wrap_text_test.xlsx", this);
     }
 }
