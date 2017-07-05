@@ -80,24 +80,17 @@ public class Utils {
     }
 
     public static List<CellReference> getAllReferencedCells(String formula) {
+
+        // generateContiguous cannot parse a forumula in parentheses.
+        if (formula.startsWith("(") && formula.endsWith("")) {
+            formula = formula.substring(1, formula.length() - 1);
+        }
+
         ArrayList<CellReference> cellRefs = new ArrayList<CellReference>();
-        for (AreaReference area : getAreaReferences(formula)) {
+        for (AreaReference area : AreaReference.generateContiguous(formula)) {
             cellRefs.addAll(Arrays.asList(area.getAllReferencedCells()));
         }
         return cellRefs;
-    }
-
-    /**
-     * Returns an array of contiguous area references addressed by the given
-     * formula.
-     */
-    public static AreaReference[] getAreaReferences(String formula) {
-        // generateContiguous cannot parse a formula in parentheses
-        if (formula.startsWith("(") && formula.endsWith(")")) {
-            formula = formula.substring(1, formula.length() - 1);
-        }
-        
-        return AreaReference.generateContiguous(formula);
     }
 
     /**

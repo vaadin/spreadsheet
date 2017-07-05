@@ -82,7 +82,6 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
-        needsMeasure = cellData == null ? false : cellData.needsMeasure;
 
         updateInnerText();
         updateCellValues();
@@ -98,18 +97,13 @@ public class Cell {
         } else {
             element.getStyle().setZIndex(ZINDEXVALUE);
             if (needsMeasure
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getCellWidth()) {
+                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
+                            .getClientWidth()) {
                 element.setInnerText("###");
             } else {
                 element.setInnerText(value);
             }
         }
-        
-        appendOverlayElements();
-    }
-
-    protected int getCellWidth() {
-        return sheetWidget.actionHandler.getColWidth(col);
     }
 
     void updateOverflow() {
@@ -157,7 +151,6 @@ public class Cell {
             overflowDiv.setInnerText(element.getInnerText());
             element.setInnerText(null);
             element.appendChild(overflowDiv);
-            appendOverlayElements();
 
             overflowing = true;
         } else {
@@ -167,14 +160,7 @@ public class Cell {
                 && !(this instanceof MergedCell)) {
             element.getStyle().setOverflow(Overflow.HIDDEN);
         } else {
-            if (overflowPx > 0) {
-                element.getStyle().setOverflow(Overflow.VISIBLE);
-            } else {
-                // in this case we have a line wrapping enabled cell,
-                // so if there is overflow it is only vertical and
-                // it is always hidden in Excel
-                element.getStyle().setOverflow(Overflow.HIDDEN);
-            }
+            element.getStyle().setOverflow(Overflow.VISIBLE);
         }
         overflowDirty = false;
     }
@@ -194,7 +180,6 @@ public class Cell {
     protected void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
-        removeInvalidFormulaIndicator();
         updateClassName();
     }
 
@@ -231,10 +216,6 @@ public class Cell {
         this.value = value;
         updateInnerText();
 
-        markAsOverflowDirty();
-    }
-
-    private void appendOverlayElements() {
         if (cellCommentTriangle != null) {
             element.appendChild(cellCommentTriangle);
         }
@@ -244,6 +225,8 @@ public class Cell {
         if (popupButtonElement != null) {
             element.appendChild(popupButtonElement);
         }
+
+        markAsOverflowDirty();
     }
 
     public void showPopupButton(Element popupButtonElement) {
@@ -288,6 +271,29 @@ public class Cell {
         }
     }
 
+    public boolean isNeedsMeasure() {
+        return needsMeasure;
+    }
+
+    /**
+     * @param sizes
+     * @param beginIndex
+     *            1-based inclusive
+     * @param endIndex
+     *            1-based exclusive
+     * @return
+     */
+    public int countSum(int[] sizes, int beginIndex, int endIndex) {
+        if (sizes == null || sizes.length < endIndex - 1) {
+            return 0;
+        }
+        int pos = 0;
+        for (int i = beginIndex; i < endIndex; i++) {
+            pos += sizes[i - 1];
+        }
+        return pos;
+    }
+
     public boolean isOverflowDirty() {
         return value != null && !value.isEmpty() && overflowDirty;
     }
@@ -301,10 +307,7 @@ public class Cell {
     }
 
     private int getUniqueKey() {
-        final int MAX_NUM_COLUMNS = 0x4000;
-        final int cellUniqueId = row * MAX_NUM_COLUMNS + col;
-
-        return 31 * (value.hashCode() + cellStyle.hashCode() + cellUniqueId);
+        return 31 * (value.hashCode() + cellStyle.hashCode());
     }
 
 }

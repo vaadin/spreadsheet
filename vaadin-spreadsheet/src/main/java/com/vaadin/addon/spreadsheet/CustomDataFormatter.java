@@ -11,18 +11,17 @@ import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
- * TODO: to be removed when the bug
- * (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
+ * TODO: to be removed when the bug (https://bz.apache.org/bugzilla/show_bug.cgi?id=60040) is resolved
  * <p>
- * POI library has two classes {@link org.apache.poi.ss.format.CellFormat} and
- * {@link org.apache.poi.ss.usermodel.DataFormatter} to deal with custom
- * formatting. The implementation is very buggy!
+ * POI library has two classes {@Link org.apache.poi.ss.format.CellFormat} and
+ * {@Link org.apache.poi.ss.usermodel.DataFormatter} to deal with custom formatting.
+ * The implementation is very buggy!
  * <p>
  * This class work around the following bugs:
  * <p>
- * 1) {@link org.apache.poi.ss.format.CellFormat} does not use the Locale info.
- * Therefore cells having three or four part custom format (eg.
- * #.##0,00#;(#.##0,00);"-") are not correctly formatted.
+ * 1) {@Link org.apache.poi.ss.format.CellFormat} does not use the Locale info.
+ * Therefore cells having three or four part custom format
+ * (eg. #.##0,00#;(#.##0,00);"-") are not correctly formatted.
  * <p>
  * 2) If a custom format has only one part and this part is literal (e.g. does
  * not refer to the number being entered), the formatting is not done correctly.
@@ -33,12 +32,12 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  * CellFormat does okay job for text formatting and literals, but for numbers it
  * fails to consider the locale.
  * <p>
- * DataFormatter can correctly format numbers using the locale, but cannot
- * format text or literals.
+ * DataFormatter can correctly format numbers using the locale, but cannot format
+ * text or literals.
  * <p>
- * This class tries to work around the most use cases by delegating a certain
- * case to one parser or another and changing the format string to be compatible
- * with the parser.
+ * This class tries to work around the most use cases by delegating a certain case to
+ * one parser or another and changing the format string to be compatible with
+ * the parser.
  */
 class CustomDataFormatter extends DataFormatter implements Serializable {
 
