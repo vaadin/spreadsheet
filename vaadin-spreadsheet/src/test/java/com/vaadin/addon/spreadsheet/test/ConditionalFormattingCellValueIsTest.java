@@ -5,10 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 
-@RunLocally(Browser.PHANTOMJS)
 public class ConditionalFormattingCellValueIsTest
     extends AbstractSpreadsheetTestCase {
 
@@ -89,6 +86,11 @@ public class ConditionalFormattingCellValueIsTest
         spreadsheetPage.setCellValue("B5", "1");
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
 
+//        Currently deleting a cell does not affect its own color (bug), although
+//        all other cells are updated.
+//        Commenting out cell deletion test here and in all other methods until this issue is resolved.
+//        https://github.com/vaadin/spreadsheet/issues/577
+//        
 //        spreadsheetPage.deleteCellValue("B5");
 //        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
     }
