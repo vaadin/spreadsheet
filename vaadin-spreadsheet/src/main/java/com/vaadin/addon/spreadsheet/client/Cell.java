@@ -22,6 +22,8 @@ import java.util.Objects;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Node;
+import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
@@ -84,6 +86,7 @@ public class Cell {
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
         value = cellData == null ? null : cellData.value;
+        needsMeasure = cellData == null ? false : cellData.needsMeasure;
 
         updateInnerText();
         updateCellValues();
@@ -99,13 +102,16 @@ public class Cell {
         } else {
             element.getStyle().setZIndex(ZINDEXVALUE);
             if (needsMeasure
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getElement()
-                            .getClientWidth()) {
+                    && sheetWidget.measureValueWidth(cellStyle, value) > getCellWidth()) {
                 element.setInnerText("###");
             } else {
                 element.setInnerText(value);
             }
         }
+    }
+
+    protected int getCellWidth() {
+        return sheetWidget.actionHandler.getColWidth(col);
     }
 
     void updateOverflow() {
@@ -150,8 +156,15 @@ public class Cell {
             overflowDiv.getStyle().setWidth(width, Style.Unit.PX);
             overflowDiv.getStyle().setOverflow(Overflow.HIDDEN);
             overflowDiv.getStyle().setTextOverflow(Style.TextOverflow.ELLIPSIS);
-            overflowDiv.setInnerText(element.getInnerText());
-            element.setInnerText(null);
+
+            NodeList<Node> childNodes = element.getChildNodes();
+            if (childNodes != null) {
+                for (int i = childNodes.getLength() -1; i >= 0 ; i--) {
+                    overflowDiv.appendChild(childNodes
+                        .getItem(i));
+                }
+            }
+            element.setInnerHTML(null);
             element.appendChild(overflowDiv);
 
             overflowing = true;
@@ -162,7 +175,14 @@ public class Cell {
                 && !(this instanceof MergedCell)) {
             element.getStyle().setOverflow(Overflow.HIDDEN);
         } else {
-            element.getStyle().setOverflow(Overflow.VISIBLE);
+            if (overflowPx > 0) {
+                element.getStyle().setOverflow(Overflow.VISIBLE);
+            } else {
+                // in this case we have a line wrapping enabled cell,
+                // so if there is overflow it is only vertical and
+                // it is always hidden in Excel
+                element.getStyle().setOverflow(Overflow.HIDDEN);
+            }
         }
         overflowDirty = false;
     }
@@ -170,6 +190,9 @@ public class Cell {
     int measureOverflow() {
         if (overflowing) {
             updateInnerText();
+            if (popupButtonElement != null) {
+                element.appendChild(popupButtonElement);
+            }
         }
         Integer scrollW = sheetWidget.scrollWidthCache.get(getUniqueKey());
         if (scrollW == null) {
@@ -273,29 +296,6 @@ public class Cell {
         }
     }
 
-    public boolean isNeedsMeasure() {
-        return needsMeasure;
-    }
-
-    /**
-     * @param sizes
-     * @param beginIndex
-     *            1-based inclusive
-     * @param endIndex
-     *            1-based exclusive
-     * @return
-     */
-    public int countSum(int[] sizes, int beginIndex, int endIndex) {
-        if (sizes == null || sizes.length < endIndex - 1) {
-            return 0;
-        }
-        int pos = 0;
-        for (int i = beginIndex; i < endIndex; i++) {
-            pos += sizes[i - 1];
-        }
-        return pos;
-    }
-
     public boolean isOverflowDirty() {
         return value != null && !value.isEmpty() && overflowDirty;
     }
@@ -309,23 +309,27 @@ public class Cell {
     }
 
     private CellValueStyleKey getUniqueKey() {
-        return new CellValueStyleKey(value, cellStyle);
+        return new CellValueStyleKey(value, cellStyle, row, col);
     }
 
     static class CellValueStyleKey {
         private String value;
-
         private String cellStyle;
+        private int row;
+        private int col;
 
-        public CellValueStyleKey(String value, String cellStyle) {
+        public CellValueStyleKey(String value, String cellStyle, int row,
+                int col) {
             super();
             this.value = value;
             this.cellStyle = cellStyle;
+            this.row = row;
+            this.col = col;
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(value, cellStyle);
+            return Objects.hash(value, cellStyle, row, col);
         }
 
         @Override
@@ -341,9 +345,10 @@ public class Cell {
             }
             CellValueStyleKey other = (CellValueStyleKey) obj;
             return Objects.equals(value, other.value)
-                    && Objects.equals(cellStyle, other.cellStyle);
+                    && Objects.equals(cellStyle, other.cellStyle)
+                    && Objects.equals(row, other.row)
+                    && Objects.equals(col, other.col);
         }
-
     }
 
 }
