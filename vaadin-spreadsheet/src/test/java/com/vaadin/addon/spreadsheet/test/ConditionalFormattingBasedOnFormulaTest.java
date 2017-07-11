@@ -1,13 +1,17 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 
+@RunLocally(Browser.FIREFOX)
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -26,31 +30,31 @@ public class ConditionalFormattingBasedOnFormulaTest
         spreadsheetPage.selectSheetAt(1);
     }
 
-    @Test
-    public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionFalse_CellA2FilledWhite() {
-        spreadsheetPage.setCellValue("A1", VALUE);
-        spreadsheetPage.setCellValue("A2", "Not"+VALUE);
-        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
-    }
-
-    @Test
-    public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed() {
-        spreadsheetPage.setCellValue("A1", VALUE);
-        spreadsheetPage.setCellValue("A2", VALUE);
-        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
-    }
-
-    @Test
-    public void loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells(){
-        String a10WithConditionEqualsToOne = spreadsheetPage.getCellColor("A10");
-        String b10WithConditionEqualsToZero = spreadsheetPage.getCellColor("B10");
-        String c10WithConditionGreaterOfZero = spreadsheetPage.getCellColor("C10");
-        String d10WithConditionLowerOfZero = spreadsheetPage.getCellColor("D10");
-        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, a10WithConditionEqualsToOne);
-        assertEquals(FALSE_CONDITION_COLOR, b10WithConditionEqualsToZero);
-        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, c10WithConditionGreaterOfZero);
-        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, d10WithConditionLowerOfZero);
-    }
+//    @Test
+//    public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionFalse_CellA2FilledWhite() {
+//        spreadsheetPage.setCellValue("A1", VALUE);
+//        spreadsheetPage.setCellValue("A2", "Not"+VALUE);
+//        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
+//    }
+//
+//    @Test
+//    public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed() {
+//        spreadsheetPage.setCellValue("A1", VALUE);
+//        spreadsheetPage.setCellValue("A2", VALUE);
+//        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
+//    }
+//    
+//    @Test
+//    public void loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells(){
+//        String a10WithConditionEqualsToOne = spreadsheetPage.getCellColor("A10");
+//        String b10WithConditionEqualsToZero = spreadsheetPage.getCellColor("B10");
+//        String c10WithConditionGreaterOfZero = spreadsheetPage.getCellColor("C10");
+//        String d10WithConditionLowerOfZero = spreadsheetPage.getCellColor("D10");
+//        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, a10WithConditionEqualsToOne);
+//        assertEquals(FALSE_CONDITION_COLOR, b10WithConditionEqualsToZero);
+//        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, c10WithConditionGreaterOfZero);
+//        assertEquals(DIFFERENT_FROM_ZERO_CONDITION_COLOR, d10WithConditionLowerOfZero);
+//    }
     
     private class BorderState {
         public boolean left;
@@ -67,7 +71,8 @@ public class ConditionalFormattingBasedOnFormulaTest
     }
 
     // these maps represent the initial state as in xlsx
-    final private Map<String, BorderState> cellBorders = new HashMap<String, BorderState>() {{
+    final private Map<String, BorderState> initialCellBorders = Collections
+        .unmodifiableMap(new HashMap() {{
         put("C14", new BorderState(true, true, true, true));
         put("C15", new BorderState(false, true, false, false));
         put("C16", new BorderState(false, false, true, false));
@@ -77,21 +82,26 @@ public class ConditionalFormattingBasedOnFormulaTest
         put("E14", new BorderState(false, false, false, false));
         put("E15", new BorderState(false, false, false, false));
         put("E16", new BorderState(true, false, false, false));
-    }};
+    }});
+    
+    
 
     @Test
     public void formattingRulesInRedRegion_assertBorders() {
 
-        assertAllBorders();
+        assertAllBorders(initialCellBorders);
 
         testD16changeToBorderless();
 
         testD14changeToBorderless();
+        
+//        spreadsheetPage.undo()
+        
     }
 
-    private void assertAllBorders() {
-        for (String cell : cellBorders.keySet()) {
-            assertBorderState(cell, cellBorders.get(cell));
+    private void assertAllBorders(Map<String, BorderState> expectedBorders) {
+        for (String cell : expectedBorders.keySet()) {
+            assertBorderState(cell, expectedBorders.get(cell));
         }
     }
 
@@ -121,20 +131,26 @@ public class ConditionalFormattingBasedOnFormulaTest
     private void testD14changeToBorderless() {
         spreadsheetPage.setCellValue("D14", "borderless");
 
-        cellBorders.get("D14").left = false;
-        cellBorders.get("C14").right = false;
+        Map<String, BorderState> expectedCellBorders = new HashMap<String, BorderState>(
+            initialCellBorders);
+
+        expectedCellBorders.get("D14").left = false;
+        expectedCellBorders.get("C14").right = false;
         
-        assertAllBorders();
+        assertAllBorders(expectedCellBorders);
     }
 
     private void testD16changeToBorderless() {
         spreadsheetPage.setCellValue("D16", "borderless");
 
-        cellBorders.put("D16", new BorderState(false, false, false, false));
-        cellBorders.get("C16").right = false;
-        cellBorders.get("E16").left = false;
-        cellBorders.get("D15").bottom = false;
+        Map<String, BorderState> expectedCellBorders = new HashMap<String, BorderState>(
+            initialCellBorders);
 
-        assertAllBorders();
+        expectedCellBorders.put("D16", new BorderState(false, false, false, false));
+        expectedCellBorders.get("C16").right = false;
+        expectedCellBorders.get("E16").left = false;
+        expectedCellBorders.get("D15").bottom = false;
+
+        assertAllBorders(expectedCellBorders);
     }
 }
