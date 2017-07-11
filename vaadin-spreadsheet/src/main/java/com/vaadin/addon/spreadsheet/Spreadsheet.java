@@ -933,7 +933,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         super.attach();
         valueManager.updateLocale(getLocale());
     }
-    
+
     /**
      * See {@link Workbook#setSheetHidden(int, int)}.
      * <p>
