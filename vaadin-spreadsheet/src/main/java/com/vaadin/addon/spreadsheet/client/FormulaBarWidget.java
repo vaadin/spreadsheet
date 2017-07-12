@@ -979,6 +979,7 @@ public class FormulaBarWidget extends Composite {
     public void setSelectedCellAddress(String selection) {
         cachedAddressFieldValue = selection;
         addressField.setValue(selection);
+        trySelectNamedRangeBoxValue(selection);
     }
 
     public void setCellPlainValue(String plainValue) {
