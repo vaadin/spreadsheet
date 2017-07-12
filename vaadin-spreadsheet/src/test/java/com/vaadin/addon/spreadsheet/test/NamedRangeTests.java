@@ -1,6 +1,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -57,8 +58,26 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         assertNamedRangeSelectValues(rangesOnSheet2);
 
         selectAndAssertJohnRange();
-        
+
         testCreatingNewRange();
+        
+        testCreatingNewRangeAfterSelectingRange();
+    }
+
+    private void testCreatingNewRangeAfterSelectingRange() {
+        final String newCellRangeName = "numbers2";
+
+        spreadsheetPage.setAddressFieldValue("A2");
+        
+        selectAndAssertNameRange("numbers", sheet1ranges.get("numbers"));
+
+        spreadsheetPage.setAddressFieldValue(newCellRangeName);
+
+        assertTrue(spreadsheetPage.getNamedRanges().contains(newCellRangeName));
+
+        spreadsheetPage.setAddressFieldValue("A3");
+
+        selectAndAssertNameRange(newCellRangeName, sheet1ranges.get("numbers"));
     }
 
     private void testCreatingNewRange() {
@@ -68,7 +87,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         spreadsheetPage.setAddressFieldValue(newCellRange);
         spreadsheetPage.setAddressFieldValue(newCellRangeName);
         
-        spreadsheetPage.getNamedRanges().contains(newCellRangeName);
+        assertTrue(spreadsheetPage.getNamedRanges().contains(newCellRangeName));
 
         selectAndAssertNameRange("john", sheet1ranges.get("john"));
 
