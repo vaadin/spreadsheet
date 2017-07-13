@@ -409,6 +409,16 @@ public class CellSelectionManager implements Serializable {
         
         spreadsheet.getRpcProxy()
             .showSelectedCellRange(name, col1, col2, row1, row2);
+
+        selectedCellReference = new CellReference(row1, col1);
+        cellRangeAddresses.clear();
+        individualSelectedCells.clear();
+        paintedCellRange = cra;
+        if (col1 != col2 || row1 != row2) {
+            cellRangeAddresses.add(cra);
+        }
+        ensureClientHasSelectionData();
+        fireNewSelectionChangeEvent();
     }
 
     /**
