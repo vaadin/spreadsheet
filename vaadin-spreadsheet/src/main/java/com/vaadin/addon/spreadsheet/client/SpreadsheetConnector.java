@@ -75,14 +75,6 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         }
 
         @Override
-        public void showSelectedCellRange(String name, int firstColumn, int lastColumn,
-                int firstRow, int lastRow) {
-            getWidget()
-                    .selectCellRange(name, firstColumn, firstRow, firstColumn,
-                            lastColumn, firstRow, lastRow,true);
-        }
-
-        @Override
         public void showActions(
                 final ArrayList<SpreadsheetActionDetails> actionDetails) {
             int left;
@@ -130,11 +122,11 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 }
             }, left, top);
         }
-
+        
         @Override
-        public void setSelectedCellAndRange(int col, int row, int c1, int c2,
+        public void setSelectedCellAndRange(String name, int col, int row, int c1, int c2,
                 int r1, int r2, boolean scroll) {
-            getWidget().selectCellRange(null, col, row, c1, c2, r1, r2, scroll);
+            getWidget().selectCellRange(name, col, row, c1, c2, r1, r2, scroll);
         }
 
         @Override

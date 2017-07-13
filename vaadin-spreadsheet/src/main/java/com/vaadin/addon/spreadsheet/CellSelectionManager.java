@@ -150,7 +150,7 @@ public class CellSelectionManager implements Serializable {
             if (selectedCellReference != null) {
                 if (paintedCellRange.isInRange(selectedCellReference.getRow(),
                         selectedCellReference.getCol())) {
-                    handleCellRangeSelection(selectedCellReference,
+                    handleCellRangeSelection(null, selectedCellReference,
                             paintedCellRange, true);
                 } else {
                     paintedCellRange = null;
@@ -158,10 +158,7 @@ public class CellSelectionManager implements Serializable {
                             selectedCellReference.getCol() + 1, false);
                 }
             } else {
-                handleCellRangeSelection(
-                        new CellReference(paintedCellRange.getFirstRow(),
-                                paintedCellRange.getFirstColumn()),
-                        paintedCellRange, true);
+                handleCellRangeSelection(paintedCellRange);
             }
         } else if (selectedCellReference != null) {
             handleCellAddressChange(selectedCellReference.getRow() + 1,
@@ -398,27 +395,15 @@ public class CellSelectionManager implements Serializable {
         final String possibleName = namedRangeUtils
             .getNameForFormulaIfExists(cra);
 
-        handleCellRangeSelection(cra, possibleName);
+        handleCellRangeSelection(possibleName, cra);
     }
     
-    protected void handleCellRangeSelection(CellRangeAddress cra, String name) {
-        int row1 = cra.getFirstRow() + 1;
-        int row2 = cra.getLastRow() + 1;
-        int col1 = cra.getFirstColumn() + 1;
-        int col2 = cra.getLastColumn() + 1;
-        
-        spreadsheet.getRpcProxy()
-            .showSelectedCellRange(name, col1, col2, row1, row2);
+    protected void handleCellRangeSelection(String name, CellRangeAddress cra) {
 
-        selectedCellReference = new CellReference(row1, col1);
-        cellRangeAddresses.clear();
-        individualSelectedCells.clear();
-        paintedCellRange = cra;
-        if (col1 != col2 || row1 != row2) {
-            cellRangeAddresses.add(cra);
-        }
-        ensureClientHasSelectionData();
-        fireNewSelectionChangeEvent();
+        final CellReference firstCell = new CellReference(cra.getFirstRow(),
+            cra.getFirstColumn());
+        
+        handleCellRangeSelection(name, firstCell, cra, true);        
     }
 
     /**
@@ -429,14 +414,14 @@ public class CellSelectionManager implements Serializable {
      * @param cellsToSelect
      *            Selection area
      */
-    protected void handleCellRangeSelection(CellReference startingPoint,
+    protected void handleCellRangeSelection(String name, CellReference startingPoint,
             CellRangeAddress cellsToSelect, boolean scroll) {
         int row1 = cellsToSelect.getFirstRow() + 1;
         int row2 = cellsToSelect.getLastRow() + 1;
         int col1 = cellsToSelect.getFirstColumn() + 1;
         int col2 = cellsToSelect.getLastColumn() + 1;
         
-        spreadsheet.getRpcProxy().setSelectedCellAndRange(
+        spreadsheet.getRpcProxy().setSelectedCellAndRange(name, 
                 startingPoint.getCol() + 1, startingPoint.getRow() + 1,
                 col1, col2, row1, row2, scroll);
         

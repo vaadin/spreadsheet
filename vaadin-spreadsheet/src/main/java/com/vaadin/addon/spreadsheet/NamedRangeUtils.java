@@ -151,7 +151,7 @@ class NamedRangeUtils implements Serializable {
             CellRangeAddress cra = spreadsheet
                 .createCorrectCellRangeAddress(formula);
 
-            getSelectionManager().handleCellRangeSelection(cra, name);
+            getSelectionManager().handleCellRangeSelection(name, cra);
         }
     }
 }

@@ -133,7 +133,7 @@ public class CellSelectionShifter implements Serializable {
                 }
                 CellRangeAddress newPaintedCellRange = spreadsheet
                         .createCorrectCellRangeAddress(r1, c1, r2, c2);
-                getCellSelectionManager().handleCellRangeSelection(
+                getCellSelectionManager().handleCellRangeSelection(null,
                         spreadsheet.getSelectedCellReference(),
                         newPaintedCellRange, false);
                 spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
@@ -415,7 +415,7 @@ public class CellSelectionShifter implements Serializable {
                                 newPaintedCellRange.getFirstRow(),
                                 newPaintedCellRange.getFirstColumn());
                     }
-                    getCellSelectionManager().handleCellRangeSelection(
+                    getCellSelectionManager().handleCellRangeSelection(null,
                             selectedCellReference, newPaintedCellRange, false);
                 }
                 // the selected cell might or might not have changed.. need to
