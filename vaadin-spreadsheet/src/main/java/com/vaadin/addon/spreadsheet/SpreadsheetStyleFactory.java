@@ -645,6 +645,12 @@ public class SpreadsheetStyleFactory implements Serializable {
         // the actual merged cell
         final int columnIndex = cell.getColumnIndex();
         final int rowIndex = cell.getRowIndex();
+
+        if (spreadsheet.isColumnHidden(columnIndex) || spreadsheet
+            .isRowHidden(rowIndex)) {
+            return;
+        }
+
         MergedRegion region = spreadsheet.mergedRegionContainer
                 .getMergedRegion((columnIndex + 1), (rowIndex + 1));
         if (region != null) {
