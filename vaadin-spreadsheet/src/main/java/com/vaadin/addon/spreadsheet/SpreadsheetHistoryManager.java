@@ -230,7 +230,7 @@ public class SpreadsheetHistoryManager implements Serializable {
                                     false);
                 } else {
                     spreadsheet.getCellSelectionManager()
-                            .handleCellRangeSelection(null, selectedCellReference,
+                            .handleCellRangeSelection(selectedCellReference,
                                     paintedCellRange, true);
                 }
             } else {

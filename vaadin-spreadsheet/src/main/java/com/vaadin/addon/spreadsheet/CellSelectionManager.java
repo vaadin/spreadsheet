@@ -150,7 +150,7 @@ public class CellSelectionManager implements Serializable {
             if (selectedCellReference != null) {
                 if (paintedCellRange.isInRange(selectedCellReference.getRow(),
                         selectedCellReference.getCol())) {
-                    handleCellRangeSelection(null, selectedCellReference,
+                    handleCellRangeSelection(selectedCellReference,
                             paintedCellRange, true);
                 } else {
                     paintedCellRange = null;
@@ -383,13 +383,6 @@ public class CellSelectionManager implements Serializable {
             .updateFormulaBar(possibleName, columnIndex, rowIndex);
     }
     
-    /**
-     * Handles the new cell range that was given in the address field, returns
-     * the range and new selected cell formula/value (if any)
-     * 
-     * @param cra
-     *            Range of cells to select
-     */
     protected void handleCellRangeSelection(CellRangeAddress cra) {
         
         final String possibleName = namedRangeUtils
@@ -406,15 +399,13 @@ public class CellSelectionManager implements Serializable {
         handleCellRangeSelection(name, firstCell, cra, true);        
     }
 
-    /**
-     * Sets the given range and starting point as the current selection.
-     * 
-     * @param startingPoint
-     *            Reference to starting point
-     * @param cellsToSelect
-     *            Selection area
-     */
-    protected void handleCellRangeSelection(String name, CellReference startingPoint,
+    protected void handleCellRangeSelection(CellReference startingPoint,
+        CellRangeAddress cellsToSelect, boolean scroll) {
+
+        handleCellRangeSelection(null, startingPoint, cellsToSelect, scroll);
+    }
+
+    private void handleCellRangeSelection(String name, CellReference startingPoint,
             CellRangeAddress cellsToSelect, boolean scroll) {
         int row1 = cellsToSelect.getFirstRow() + 1;
         int row2 = cellsToSelect.getLastRow() + 1;
