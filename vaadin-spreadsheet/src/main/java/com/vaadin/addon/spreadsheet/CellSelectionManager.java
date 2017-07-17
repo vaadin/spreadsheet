@@ -370,7 +370,7 @@ public class CellSelectionManager implements Serializable {
      */
     private void handleCellSelection(int rowIndex, int columnIndex) {
         spreadsheet.getRpcProxy()
-            .showCellValue(null, columnIndex, rowIndex);
+            .updateFormulaBar(null, columnIndex, rowIndex);
     }
 
     private void handleCellSelection(int rowIndex, int columnIndex,
@@ -380,7 +380,7 @@ public class CellSelectionManager implements Serializable {
             .getNameForFormulaIfExists(cra);
 
         spreadsheet.getRpcProxy()
-            .showCellValue(possibleName, columnIndex, rowIndex);
+            .updateFormulaBar(possibleName, columnIndex, rowIndex);
     }
     
     /**

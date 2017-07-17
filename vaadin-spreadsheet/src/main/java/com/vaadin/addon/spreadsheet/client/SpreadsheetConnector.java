@@ -58,8 +58,8 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     SpreadsheetClientRpc clientRPC = new SpreadsheetClientRpc() {
 
         @Override
-        public void showCellValue(String possibleName, int col, int row) {
-            getWidget().showCellValue(possibleName, col, row);
+        public void updateFormulaBar(String possibleName, int col, int row) {
+            getWidget().updateFormulaBar(possibleName, col, row);
         }
 
         @Override

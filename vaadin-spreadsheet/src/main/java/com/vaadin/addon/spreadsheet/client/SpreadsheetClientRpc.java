@@ -33,11 +33,11 @@ public interface SpreadsheetClientRpc extends ClientRpc {
 
     /**
      * @param col
-     *            1-based
+     *            Selected cell's column. 1-based
      * @param row
-     *            1-based
+     *            Selected cell's row. 1-based
      */
-    void showCellValue(String possibleName, int col, int row);
+    void updateFormulaBar(String possibleName, int col, int row);
 
     void invalidCellAddress();
 
