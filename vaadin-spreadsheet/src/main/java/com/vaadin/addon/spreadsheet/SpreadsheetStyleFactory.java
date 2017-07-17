@@ -704,6 +704,9 @@ public class SpreadsheetStyleFactory implements Serializable {
                         row = previousRegion.row1;
                     } else {
                         col = columnIndex;
+                        while (spreadsheet.isColumnHidden(col - 1)) {
+                            col--;
+                        }
                         row = rowIndex + 1;
                     }
                     insertMapEntryIfNeeded(shiftedBorderLeftStylesMap, key,
@@ -724,6 +727,9 @@ public class SpreadsheetStyleFactory implements Serializable {
                     } else {
                         col = columnIndex + 1;
                         row = rowIndex;
+                        while (spreadsheet.isRowHidden(row - 1)) {
+                            row--;
+                        }
                     }
                     insertMapEntryIfNeeded(shiftedBorderTopStylesMap, key, row,
                             col);
