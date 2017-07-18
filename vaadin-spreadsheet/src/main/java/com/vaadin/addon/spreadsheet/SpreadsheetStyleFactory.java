@@ -728,20 +728,20 @@ public class SpreadsheetStyleFactory implements Serializable {
                 if (rowIndex > 0) {
                     int row, col;
 
-                    int upperVisibleRowIndex = rowIndex;
-                    while (spreadsheet.isRowHidden(upperVisibleRowIndex - 1)) {
-                        upperVisibleRowIndex--;
+                    int prevVisibleRowIndex = rowIndex;
+                    while (spreadsheet.isRowHidden(prevVisibleRowIndex - 1)) {
+                        prevVisibleRowIndex--;
                     }
 
                     MergedRegion previousRegion = spreadsheet.mergedRegionContainer
-                            .getMergedRegion(columnIndex + 1, upperVisibleRowIndex);
+                            .getMergedRegion(columnIndex + 1, prevVisibleRowIndex);
 
                     if (previousRegion != null) {
                         col = previousRegion.col1;
                         row = previousRegion.row1;
                     } else {
                         col = columnIndex + 1;
-                        row = upperVisibleRowIndex;
+                        row = prevVisibleRowIndex;
                     }
                     insertMapEntryIfNeeded(shiftedBorderTopStylesMap, key, row,
                             col);
