@@ -703,16 +703,19 @@ public class SpreadsheetStyleFactory implements Serializable {
                 if (columnIndex > 0) {
                     int row, col;
 
+                    int upperVisibleColumnIndex = columnIndex;
+                    while (spreadsheet.isColumnHidden(upperVisibleColumnIndex - 1)) {
+                        upperVisibleColumnIndex--;
+                    }
+
                     MergedRegion previousRegion = spreadsheet.mergedRegionContainer
-                            .getMergedRegion(columnIndex, rowIndex + 1);
+                            .getMergedRegion(upperVisibleColumnIndex, rowIndex + 1);
+
                     if (previousRegion != null) {
                         col = previousRegion.col1;
                         row = previousRegion.row1;
                     } else {
-                        col = columnIndex;
-                        while (spreadsheet.isColumnHidden(col - 1)) {
-                            col--;
-                        }
+                        col = upperVisibleColumnIndex;
                         row = rowIndex + 1;
                     }
                     insertMapEntryIfNeeded(shiftedBorderLeftStylesMap, key,
@@ -724,18 +727,21 @@ public class SpreadsheetStyleFactory implements Serializable {
                 // row, which might be a merged cell
                 if (rowIndex > 0) {
                     int row, col;
+
+                    int upperVisibleRowIndex = rowIndex;
+                    while (spreadsheet.isRowHidden(upperVisibleRowIndex - 1)) {
+                        upperVisibleRowIndex--;
+                    }
+
                     MergedRegion previousRegion = spreadsheet.mergedRegionContainer
-                            .getMergedRegion(columnIndex + 1, rowIndex);
+                            .getMergedRegion(columnIndex + 1, upperVisibleRowIndex);
 
                     if (previousRegion != null) {
                         col = previousRegion.col1;
                         row = previousRegion.row1;
                     } else {
                         col = columnIndex + 1;
-                        row = rowIndex;
-                        while (spreadsheet.isRowHidden(row - 1)) {
-                            row--;
-                        }
+                        row = upperVisibleRowIndex;
                     }
                     insertMapEntryIfNeeded(shiftedBorderTopStylesMap, key, row,
                             col);
