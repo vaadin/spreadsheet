@@ -1629,7 +1629,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *            Column index of the new cell, 0-based
      * @return The newly created cell
      * @throws IllegalArgumentException
-     *             If columnIndex < 0 or greater than the maximum number of
+     *             If columnIndex &lt; 0 or greater than the maximum number of
      *             supported columns (255 for *.xls, 1048576 for *.xlsx)
      */
     public Cell createBlankCell(int row, int col) throws IllegalArgumentException {
