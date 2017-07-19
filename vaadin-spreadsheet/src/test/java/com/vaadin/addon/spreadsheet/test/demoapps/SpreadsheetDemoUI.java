@@ -26,6 +26,7 @@ import org.apache.poi.ss.usermodel.ExcelStyleDateFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -34,6 +35,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SheetChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SheetChangeListener;
 import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
 import com.vaadin.addon.spreadsheet.SpreadsheetFactory;
+import com.vaadin.addon.spreadsheet.SpreadsheetFilterTable;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.annotations.Theme;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -612,12 +614,15 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         private final Object[][] data = {
                 { "Testing custom editors", "Boolean", "Date", "Numeric",
-                        "Button", "ComboBox" },
-                { "nulls:", false, null, 0, null, null },
+                        "Button", "ComboBox", "Long text in this header",
+                        "last one" },
+                { "nulls:", false, null, 0, null, null, null, null },
                 { "", true, new Date(), 5, "here is a button",
-                        comboBoxValues[0] },
+                        comboBoxValues[0], "some value", "" },
                 { "", true, Calendar.getInstance(), 500.0D,
-                        "here is another button", comboBoxValues[1] } };
+                        "here is another button", comboBoxValues[1], "some "
+                    + "value", ""
+                } };
 
         private final ComboBox comboBox;
 
@@ -633,11 +638,55 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         private Button button5;
 
-        private boolean hidden = false;
+        private Button button6;
 
+        private Button button7;
+
+        private SpreadsheetFilterTable filterableTable;
+
+        private boolean hidden = false;
         private NativeSelect nativeSelect;
 
         private ComboBox comboBox2;
+
+
+        private NativeSelect createNativeSelect() {
+            if (nativeSelect == null) {
+                nativeSelect = new NativeSelect();
+                nativeSelect.addItem("JEE");
+                nativeSelect.setWidth("100%");
+            }
+            return nativeSelect;
+        }
+
+        private ComboBox createCombobox() {
+            final ComboBox comboBox = new ComboBox();
+            comboBox.setImmediate(true);
+            comboBox.setBuffered(false);
+            for (String s : comboBoxValues) {
+                comboBox.addItem(s);
+            }
+            comboBox.addValueChangeListener(new ValueChangeListener() {
+
+                @Override
+                public void valueChange(ValueChangeEvent event) {
+                    if (!initializingComboBoxValue) {
+                        String s = (String) comboBox.getValue();
+                        CellReference cr = spreadsheet
+                                .getSelectedCellReference();
+                        Cell cell = spreadsheet.getCell(cr.getRow(),
+                                cr.getCol());
+                        if (cell != null) {
+                            cell.setCellValue(s);
+                            spreadsheet.refreshCells(cell);
+                        }
+                    }
+                }
+            });
+            comboBox.setWidth("100%");
+            return comboBox;
+
+        }
 
         public SpreadsheetEditorComponentFactoryTest() {
             testWorkbook = new XSSFWorkbook();
@@ -651,6 +700,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             sheet.setColumnWidth(3, 6000);
             sheet.setColumnWidth(4, 6000);
             sheet.setColumnWidth(5, 6000);
+            sheet.setColumnWidth(6, 4000);
+            sheet.setColumnWidth(7, 7000);
 
             for (int i = 0; i < data.length; i++) {
                 Row row = sheet.createRow(i);
@@ -714,30 +765,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             cell2.setCellStyle(lockedCellStyle);
             Row row6 = sheet.createRow(6);
             row6.setHeightInPoints(22F);
-            comboBox = new ComboBox();
-            for (String s : comboBoxValues) {
-                comboBox.addItem(s);
-            }
-            comboBox.setImmediate(true);
-            comboBox.setBuffered(false);
-            comboBox.addValueChangeListener(new ValueChangeListener() {
 
-                @Override
-                public void valueChange(ValueChangeEvent event) {
-                    if (!initializingComboBoxValue) {
-                        String s = (String) comboBox.getValue();
-                        CellReference cr = spreadsheet
-                                .getSelectedCellReference();
-                        Cell cell = spreadsheet.getCell(cr.getRow(),
-                                cr.getCol());
-                        if (cell != null) {
-                            cell.setCellValue(s);
-                            spreadsheet.refreshCells(cell);
-                        }
-                    }
-                }
-            });
-            comboBox.setWidth("100%");
+            comboBox = createCombobox();
 
             dateField.setImmediate(true);
             dateField.addValueChangeListener(new ValueChangeListener() {
@@ -992,21 +1021,45 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     }
                     return button5;
                 }
+                if (columnIndex == 6) {
+                    if (button6 == null) {
+                        button6 = new Button("Autofit columns 1-7",
+                                new Button.ClickListener() {
+
+                                    @Override
+                                    public void buttonClick(ClickEvent event) {
+                                        for (int i = 0; i < 7; i++) {
+                                            spreadsheet.autofitColumn(i);
+                                        }
+                                    }
+                                });
+                    }
+                    return button6;
+                }
+                if (columnIndex == 7) {
+                    if (button7 == null) {
+                        button7 = new Button("Add filter to column 6",
+                                new Button.ClickListener() {
+
+                                    @Override
+                                    public void buttonClick(ClickEvent event) {
+                                        if (filterableTable != null) {
+                                            spreadsheet.unregisterTable(filterableTable);
+                                        }
+                                        filterableTable = new SpreadsheetFilterTable(spreadsheet, sheet,
+                                                new CellRangeAddress(0, 100, 6, 6));
+                                        spreadsheet.registerTable(filterableTable);
+                                    }
+                                });
+                    }
+                    return button7;
+                }
             } else if (!hidden && rowIndex == 6) {
                 if (columnIndex == 1) {
-                    if (nativeSelect == null) {
-                        nativeSelect = new NativeSelect();
-                        nativeSelect.addItem("JEE");
-                        nativeSelect.setWidth("100%");
-                    }
-                    return nativeSelect;
+                    return createNativeSelect();
                 } else if (columnIndex == 2) {
                     if (comboBox2 == null) {
-                        comboBox2 = new ComboBox();
-                        for (String s : comboBoxValues) {
-                            comboBox2.addItem(s);
-                        }
-                        comboBox2.setWidth("100%");
+                        comboBox2 = createCombobox();
                     }
                     return comboBox2;
                 }
