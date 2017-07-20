@@ -207,4 +207,14 @@ public class SpreadsheetPage extends Page {
 
         contextMenu.clickItem(caption);
     }
+    
+    public void unhideRow(int i) {
+        contextClickOnRowHeader(i + 1);
+        clickContextMenuItem("Unhide row " + i);
+    }
+
+    public void unhideColumn(char c) {
+        contextClickOnColumnHeader((char) (c + 1));
+        clickContextMenuItem("Unhide column " + c);
+    }
 }
