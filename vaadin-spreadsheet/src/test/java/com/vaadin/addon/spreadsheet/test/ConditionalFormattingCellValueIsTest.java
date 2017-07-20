@@ -85,14 +85,6 @@ public class ConditionalFormattingCellValueIsTest
 
         spreadsheetPage.setCellValue("B5", "1");
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
-
-//        Currently deleting a cell does not affect its own color (bug), although
-//        all other cells are updated.
-//        Commenting out cell deletion test here and in all other methods until this issue is resolved.
-//        https://github.com/vaadin/spreadsheet/issues/577
-//        
-//        spreadsheetPage.deleteCellValue("B5");
-//        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B5"));
     }
 
     @Test
@@ -102,9 +94,6 @@ public class ConditionalFormattingCellValueIsTest
 
         spreadsheetPage.setCellValue("B6", "1");
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B6"));
-
-//        spreadsheetPage.deleteCellValue("B6");
-//        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B6"));
     }
 
     @Test
@@ -114,9 +103,6 @@ public class ConditionalFormattingCellValueIsTest
 
         spreadsheetPage.setCellValue("B7", TRUE_VALUE);
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B7"));
-
-//        spreadsheetPage.deleteCellValue("B7");
-//        assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B7"));
     }
 
     @Test
@@ -124,9 +110,5 @@ public class ConditionalFormattingCellValueIsTest
         spreadsheetPage.setCellValue("B2", "1");
         spreadsheetPage.setCellValue("B3", "2");
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("B3"));
-
-//        spreadsheetPage.deleteCellValue("B2");
-//        spreadsheetPage.deleteCellValue("B3");
-//        assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("B3"));
     }
 }
