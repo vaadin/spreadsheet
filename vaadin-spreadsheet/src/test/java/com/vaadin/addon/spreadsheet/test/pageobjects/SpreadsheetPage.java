@@ -9,6 +9,7 @@ import org.openqa.selenium.interactions.Actions;
 import com.vaadin.addon.spreadsheet.elements.AddressUtil;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.testutil.ContextMenuHelper;
 import com.vaadin.testbench.By;
 
 public class SpreadsheetPage extends Page {
@@ -189,5 +190,21 @@ public class SpreadsheetPage extends Page {
     private SheetCellElement getCellAt(String address) {
         Point point = AddressUtil.addressToPoint(address);
         return getCellAt(point.getX(), point.getY());
+    }
+
+    public void contextClickOnRowHeader(int i) {
+        $(SpreadsheetElement.class).first().getRowHeader(i).contextClick();
+    }
+
+    public void contextClickOnColumnHeader(char column) {
+        $(SpreadsheetElement.class).first().getColumnHeader(column - 'A' + 1)
+            .contextClick();
+    }
+    
+    public void clickContextMenuItem(String caption) {
+        final ContextMenuHelper contextMenu = new ContextMenuHelper(
+            getDriver());
+
+        contextMenu.clickItem(caption);
     }
 }
