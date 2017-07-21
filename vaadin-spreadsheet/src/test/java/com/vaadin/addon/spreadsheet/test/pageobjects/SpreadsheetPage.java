@@ -219,6 +219,7 @@ public class SpreadsheetPage extends Page {
     public void unhideColumn(char c) {
         contextClickOnColumnHeader((char) (c + 1));
         clickContextMenuItem("Unhide column " + c);
+    }
         
     public String getSelectionFormula() {
         final SpreadsheetElement sprElement = $(SpreadsheetElement.class).first();
