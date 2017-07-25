@@ -19,7 +19,9 @@ package com.vaadin.addon.spreadsheet;
 
 import static org.apache.poi.common.usermodel.Hyperlink.LINK_DOCUMENT;
 
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Hyperlink;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet.HyperlinkCellClickHandler;
@@ -55,7 +57,7 @@ public class DefaultHyperlinkCellClickHandler implements
     public void onHyperLinkCellClick(Cell cell, Hyperlink hyperlink,
             Spreadsheet spreadsheet) {
         if (hyperlink != null) {
-            if (hyperlink.getType() == LINK_DOCUMENT) { // internal
+            if (hyperlink.getTypeEnum() == HyperlinkType.DOCUMENT) { // internal
                 navigateTo(cell, spreadsheet, hyperlink.getAddress());
             } else {
                 spreadsheet.getUI().getPage()
@@ -133,7 +135,7 @@ public class DefaultHyperlinkCellClickHandler implements
      * @return True if hyperlink is found
      */
     public final static boolean isHyperlinkFormulaCell(Cell cell) {
-        return cell != null && cell.getCellType() == Cell.CELL_TYPE_FORMULA
+        return cell != null && cell.getCellTypeEnum() == CellType.FORMULA
                 && cell.getCellFormula().startsWith("HYPERLINK(");
     }
 

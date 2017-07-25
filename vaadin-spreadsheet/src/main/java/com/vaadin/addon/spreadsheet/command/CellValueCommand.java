@@ -25,6 +25,7 @@ import java.util.Set;
 
 import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -299,16 +300,16 @@ public class CellValueCommand extends SpreadsheetCommand implements
         if (cell == null) {
             return null;
         } else {
-            switch (cell.getCellType()) {
-            case Cell.CELL_TYPE_BOOLEAN:
+            switch (cell.getCellTypeEnum()) {
+            case BOOLEAN:
                 return cell.getBooleanCellValue();
-            case Cell.CELL_TYPE_ERROR:
+            case ERROR:
                 return cell.getErrorCellValue();
-            case Cell.CELL_TYPE_FORMULA:
+            case FORMULA:
                 return "=" + cell.getCellFormula();
-            case Cell.CELL_TYPE_NUMERIC:
+            case NUMERIC:
                 return cell.getNumericCellValue();
-            case Cell.CELL_TYPE_STRING:
+            case STRING:
                 return cell.getStringCellValue();
             default:
                 return null;

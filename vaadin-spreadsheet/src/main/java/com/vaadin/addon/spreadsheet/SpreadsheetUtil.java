@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -88,7 +89,7 @@ public class SpreadsheetUtil implements Serializable {
      * @return true if the cell contains a date
      */
     public static boolean cellContainsDate(Cell cell) {
-        return cell.getCellType() == Cell.CELL_TYPE_NUMERIC
+        return cell.getCellTypeEnum() == CellType.NUMERIC
                 && DateUtil.isCellDateFormatted(cell);
     }
 

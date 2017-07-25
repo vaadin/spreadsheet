@@ -47,13 +47,16 @@ import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
@@ -951,10 +954,19 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *             If the index or state is invalid, or if trying to hide the
      *             only visible sheet.
      */
-    public void setSheetHidden(int sheetPOIIndex, int hidden)
+    public void setSheetHidden(int sheetPOIIndex, int hidden) {
+    	setSheetHidden(sheetPOIIndex, SheetVisibility.values()[hidden]);
+    }
+    
+    /**
+     * @param sheetPOIIndex
+     * @param visibility
+     * @throws IllegalArgumentException
+     */
+    public void setSheetHidden(int sheetPOIIndex, SheetVisibility visibility)
             throws IllegalArgumentException {
         // POI allows user to hide all sheets ...
-        if (hidden != 0
+        if (visibility != SheetVisibility.VISIBLE
                 && SpreadsheetUtil.getNumberOfVisibleSheets(workbook) == 1
                 && !workbook.isSheetHidden(sheetPOIIndex)) {
             throw new IllegalArgumentException(
@@ -963,17 +975,17 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        workbook.setSheetHidden(sheetPOIIndex, hidden);
+        workbook.setSheetVisibility(sheetPOIIndex, visibility);
 
         // skip component reload if "nothing changed"
-        if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0
+        if (visibility == SheetVisibility.VISIBLE && (isHidden || isVeryHidden) || visibility != SheetVisibility.VISIBLE
                 && !(isHidden && isVeryHidden)) {
             if (sheetPOIIndex != activeSheetIndex) {
                 reloadSheetNames();
                 getState().sheetIndex = getSpreadsheetSheetIndex(activeSheetIndex) + 1;
             } else { // the active sheet can be only set as hidden
                 int oldVisibleSheetIndex = getState().sheetIndex - 1;
-                if (hidden != 0
+                if (visibility != SheetVisibility.VISIBLE
                         && activeSheetIndex == (workbook.getNumberOfSheets() - 1)) {
                     // hiding the active sheet, and it was the last sheet
                     oldVisibleSheetIndex--;
@@ -1606,11 +1618,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
         Cell cell = r.getCell(col);
         if (cell == null) {
-            cell = r.createCell(col, Cell.CELL_TYPE_FORMULA);
+            cell = r.createCell(col, CellType.FORMULA);
         } else {
             final String key = SpreadsheetUtil.toKey(col + 1, row + 1);
             valueManager.clearCellCache(key);
-            cell.setCellType(Cell.CELL_TYPE_FORMULA);
+            cell.setCellType(CellType.FORMULA);
         }
         cell.setCellFormula(formula);
         valueManager.cellUpdated(cell);
@@ -2086,7 +2098,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 for (short c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
                     Cell cell = row.getCell(c);
                     if (cell != null
-                            && cell.getCellType() != Cell.CELL_TYPE_BLANK) {
+                            && cell.getCellTypeEnum() != CellType.BLANK) {
                         return r;
                     }
                 }
@@ -3423,7 +3435,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 // shifting etc.) from merged cell into basic or vice versa.
                 if (region == null || region.col1 == c_one_based
                         && region.row1 == row_one_based) {
-                    Comment comment = sheet.getCellComment(r, c);
+                    Comment comment = sheet.getCellComment(new CellAddress(r, c));
                     String key = SpreadsheetUtil.toKey(c_one_based,
                             row_one_based);
                     if (comment != null) {
