@@ -6,6 +6,7 @@ import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFShape;
 
@@ -93,7 +94,7 @@ public abstract class SheetOverlayWrapper implements Serializable {
      */
     float getDx1(Sheet sheet) {
         if (anchor instanceof XSSFClientAnchor) {
-            return anchor.getDx1() / XSSFShape.EMU_PER_PIXEL;
+            return anchor.getDx1() / Units.EMU_PER_PIXEL;
         } else {
             return ExcelToHtmlUtils.getColumnWidthInPx(sheet
                     .getColumnWidth(anchor.getCol1())) * anchor.getDx1() / 1023;
@@ -110,7 +111,7 @@ public abstract class SheetOverlayWrapper implements Serializable {
      */
     private float getDx2(Sheet sheet) {
         if (anchor instanceof XSSFClientAnchor) {
-            return anchor.getDx2() / XSSFShape.EMU_PER_PIXEL;
+            return anchor.getDx2() / Units.EMU_PER_PIXEL;
         } else {
             return ExcelToHtmlUtils.getColumnWidthInPx(sheet
                     .getColumnWidth(anchor.getCol2())) * anchor.getDx2() / 1023;
@@ -127,7 +128,7 @@ public abstract class SheetOverlayWrapper implements Serializable {
      */
     float getDy1(Sheet sheet) {
         if (anchor instanceof XSSFClientAnchor) {
-            return anchor.getDy1() / XSSFShape.EMU_PER_POINT;
+            return anchor.getDy1() / Units.EMU_PER_POINT;
         } else {
             Row row = sheet.getRow(anchor.getRow1());
             return (row == null ? sheet.getDefaultRowHeightInPoints() : row
@@ -145,7 +146,7 @@ public abstract class SheetOverlayWrapper implements Serializable {
      */
     private float getDy2(Sheet sheet) {
         if (anchor instanceof XSSFClientAnchor) {
-            return anchor.getDy2() / XSSFShape.EMU_PER_POINT;
+            return anchor.getDy2() / Units.EMU_PER_POINT;
         } else {
             Row row = sheet.getRow(anchor.getRow2());
             return (row == null ? sheet.getDefaultRowHeightInPoints() : row

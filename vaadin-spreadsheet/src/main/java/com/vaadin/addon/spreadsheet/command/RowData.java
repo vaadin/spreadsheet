@@ -20,6 +20,7 @@ package com.vaadin.addon.spreadsheet.command;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -29,6 +30,7 @@ import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.io.Serializable;
@@ -94,7 +96,7 @@ class RowData implements Serializable {
         }
 
         for(int i = 0; i < maxCol; ++i) {
-            Comment cellComment = row.getSheet().getCellComment(row.getRowNum(), i);
+            Comment cellComment = row.getSheet().getCellComment(new CellAddress(row.getRowNum(), i));
             Cell cell = row.getCell(i);
             if(cellComment != null && cell == null) {
                 CommentData commenData = new CommentData();
@@ -141,7 +143,7 @@ class RowData implements Serializable {
 
         private int columnIndex;
         private int rowIndex;
-        private int cellType;
+        private CellType cellType;
         private String cellFormula;
         private double numericCellValue;
         private Date dateCellValue;
@@ -176,22 +178,23 @@ class RowData implements Serializable {
             }
             hyperlink = cell.getHyperlink();
             cellStyle = cell.getCellStyle();
-            cellType = cell.getCellType();
+            cellType = cell.getCellTypeEnum();
 
             switch (cellType) {
-                case Cell.CELL_TYPE_BLANK:
+            	case _NONE:
+                case BLANK:
                     stringCellValue = cell.getStringCellValue();
                     break;
-                case Cell.CELL_TYPE_BOOLEAN:
+                case BOOLEAN:
                     booleanCellValue = cell.getBooleanCellValue();
                     break;
-                case Cell.CELL_TYPE_ERROR:
+                case ERROR:
                     errorCellValue = cell.getErrorCellValue();
                     break;
-                case Cell.CELL_TYPE_FORMULA:
+                case FORMULA:
                     cellFormula = cell.getCellFormula();
                     break;
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     if (DateUtil.isCellDateFormatted(cell)) {
                         if (DateUtil.isCellDateFormatted(cell)) {
                             dateCellValue = cell.getDateCellValue();
@@ -200,7 +203,7 @@ class RowData implements Serializable {
                         numericCellValue = cell.getNumericCellValue();
                     }
                     break;
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     richTextCellValue = cell.getRichStringCellValue();
                     break;
             }
@@ -218,26 +221,27 @@ class RowData implements Serializable {
             cell.setCellType(cellType);
 
             switch (cellType) {
-                case Cell.CELL_TYPE_BLANK:
+            	case _NONE:
+                case BLANK:
                     cell.setCellValue(stringCellValue);
                     break;
-                case Cell.CELL_TYPE_BOOLEAN:
+                case BOOLEAN:
                     cell.setCellValue(booleanCellValue);
                     break;
-                case Cell.CELL_TYPE_ERROR:
+                case ERROR:
                     cell.setCellErrorValue(errorCellValue);
                     break;
-                case Cell.CELL_TYPE_FORMULA:
+                case FORMULA:
                     cell.setCellFormula(cellFormula);
                     break;
-                case Cell.CELL_TYPE_NUMERIC:
+                case NUMERIC:
                     if(dateCellValue != null) {
                         cell.setCellValue(dateCellValue);
                     } else {
                         cell.setCellValue(numericCellValue);
                     }
                     break;
-                case Cell.CELL_TYPE_STRING:
+                case STRING:
                     cell.setCellValue(richTextCellValue);
                     break;
             }
@@ -265,7 +269,7 @@ class RowData implements Serializable {
         }
 
         public void writeTo(Cell cell) {
-            Drawing drawingPatriarch = cell.getSheet().createDrawingPatriarch();
+            Drawing<?> drawingPatriarch = cell.getSheet().createDrawingPatriarch();
             CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
 
             Comment newCellComment = drawingPatriarch.createCellComment(clientAnchor);
