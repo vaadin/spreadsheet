@@ -55,7 +55,6 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -971,19 +970,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *             If the index or state is invalid, or if trying to hide the
      *             only visible sheet.
      */
-    public void setSheetHidden(int sheetPOIIndex, int hidden) {
-    	setSheetHidden(sheetPOIIndex, SheetVisibility.values()[hidden]);
-    }
-    
-    /**
-     * @param sheetPOIIndex
-     * @param visibility
-     * @throws IllegalArgumentException
-     */
-    public void setSheetHidden(int sheetPOIIndex, SheetVisibility visibility)
+    public void setSheetHidden(int sheetPOIIndex, int hidden)
             throws IllegalArgumentException {
         // POI allows user to hide all sheets ...
-        if (visibility != SheetVisibility.VISIBLE
+        if (hidden != 0
                 && SpreadsheetUtil.getNumberOfVisibleSheets(workbook) == 1
                 && !workbook.isSheetHidden(sheetPOIIndex)) {
             throw new IllegalArgumentException(
@@ -992,17 +982,17 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        workbook.setSheetVisibility(sheetPOIIndex, visibility);
+        workbook.setSheetHidden(sheetPOIIndex, hidden);
 
         // skip component reload if "nothing changed"
-        if (visibility == SheetVisibility.VISIBLE && (isHidden || isVeryHidden) || visibility != SheetVisibility.VISIBLE
+        if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0
                 && !(isHidden && isVeryHidden)) {
             if (sheetPOIIndex != activeSheetIndex) {
                 reloadSheetNames();
                 getState().sheetIndex = getSpreadsheetSheetIndex(activeSheetIndex) + 1;
             } else { // the active sheet can be only set as hidden
                 int oldVisibleSheetIndex = getState().sheetIndex - 1;
-                if (visibility != SheetVisibility.VISIBLE
+                if (hidden != 0
                         && activeSheetIndex == (workbook.getNumberOfSheets() - 1)) {
                     // hiding the active sheet, and it was the last sheet
                     oldVisibleSheetIndex--;

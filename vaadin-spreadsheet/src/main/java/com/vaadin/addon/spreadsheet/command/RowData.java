@@ -1,5 +1,25 @@
 package com.vaadin.addon.spreadsheet.command;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.DateUtil;
+import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.RichTextString;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellAddress;
+import org.apache.poi.ss.util.CellRangeAddress;
+
 /*
  * #%L
  * Vaadin Spreadsheet
@@ -18,25 +38,6 @@ package com.vaadin.addon.spreadsheet.command;
  */
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.Comment;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.DateUtil;
-import org.apache.poi.ss.usermodel.Drawing;
-import org.apache.poi.ss.usermodel.Hyperlink;
-import org.apache.poi.ss.usermodel.RichTextString;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.util.CellAddress;
-import org.apache.poi.ss.util.CellRangeAddress;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * This class is used to store the data of removed row so that it can be restored. This feature
@@ -60,7 +61,7 @@ class RowData implements Serializable {
     public void copy(int rowIndex) {
         isCopied = true;
         this.rowIndex = rowIndex;
-        this.maxCol = spreadsheet.getLastColumn();
+        maxCol = spreadsheet.getLastColumn();
         cellsData.clear();
         mergedCells.clear();
         commentsWithoutCell.clear();
@@ -269,7 +270,7 @@ class RowData implements Serializable {
         }
 
         public void writeTo(Cell cell) {
-            Drawing<?> drawingPatriarch = cell.getSheet().createDrawingPatriarch();
+            Drawing drawingPatriarch = cell.getSheet().createDrawingPatriarch();
             CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
 
             Comment newCellComment = drawingPatriarch.createCellComment(clientAnchor);
