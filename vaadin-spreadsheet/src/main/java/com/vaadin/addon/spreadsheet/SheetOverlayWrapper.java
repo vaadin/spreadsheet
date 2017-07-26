@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
-import org.apache.poi.xssf.usermodel.XSSFShape;
 
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.server.Resource;
@@ -66,8 +65,9 @@ public abstract class SheetOverlayWrapper implements Serializable {
         int row2 = anchor.getRow2() + 1;
 
         // sanity check
-        if (r2 - r1 < 0 || c2 - c1 < 0)
+        if (r2 - r1 < 0 || c2 - c1 < 0) {
             return false;
+        }
 
         boolean col1isBetweenc1andc2 = c1 <= col1 && col1 <= c2;
 

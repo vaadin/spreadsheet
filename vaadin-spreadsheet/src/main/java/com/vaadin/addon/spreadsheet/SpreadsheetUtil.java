@@ -414,7 +414,7 @@ public class SpreadsheetUtil implements Serializable {
      *         every string.
      */
     public static boolean needsLeadingQuote(Cell cell) {
-        if (cell.getCellType() != Cell.CELL_TYPE_STRING) {
+        if (cell.getCellTypeEnum() != CellType.STRING) {
             return false;
         }
 

@@ -17,7 +17,6 @@ package com.vaadin.addon.spreadsheet;
  * #L%
  */
 
-import static org.apache.poi.common.usermodel.Hyperlink.LINK_DOCUMENT;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
