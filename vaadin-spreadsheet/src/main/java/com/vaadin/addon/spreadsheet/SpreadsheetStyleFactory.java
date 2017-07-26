@@ -117,9 +117,9 @@ public class SpreadsheetStyleFactory implements Serializable {
     		VerticalAlignment.TOP, "flex-start");
 
     static final Map<org.apache.poi.ss.usermodel.BorderStyle, BorderStyle> BORDER = mapFor(
-    		org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT, BorderStyle.DASHED_THIN, 
-    		org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT_DOT, BorderStyle.DASHED_THIN, 
-    		org.apache.poi.ss.usermodel.BorderStyle.DASHED, BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT, BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT_DOT, BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DASHED, BorderStyle.DASHED_THIN,
             org.apache.poi.ss.usermodel.BorderStyle.DOTTED, BorderStyle.DOTTED_THIN, 
             org.apache.poi.ss.usermodel.BorderStyle.DOUBLE, BorderStyle.DOUBLE, 
             org.apache.poi.ss.usermodel.BorderStyle.HAIR, BorderStyle.SOLID_THIN,
@@ -774,7 +774,7 @@ public class SpreadsheetStyleFactory implements Serializable {
                     cellStyle.getFontIndex());
             defaultFontFamily = styleFontFamily(defaultFont);
             sb.append(defaultFontFamily);
-            if (! defaultFont.getBold() ) {
+            if (defaultFont.getBold()) {
                 sb.append("font-weight:bold;");
             }
             if (defaultFont.getItalic()) {
@@ -804,7 +804,7 @@ public class SpreadsheetStyleFactory implements Serializable {
             if (!fontFamily.equals(defaultFontFamily)) {
                 sb.append(fontFamily);
             }
-            if (! font.getBold()) {
+            if (font.getBold()) {
                 sb.append("font-weight:bold;");
             }
             if (font.getItalic()) {
