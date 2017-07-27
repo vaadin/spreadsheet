@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -60,7 +61,7 @@ public class CellSelectionManager implements Serializable {
      */
     public CellSelectionManager(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
-        this.namedRangeUtils = new NamedRangeUtils(spreadsheet);
+        namedRangeUtils = new NamedRangeUtils(spreadsheet);
     }
 
     /**
@@ -309,7 +310,8 @@ public class CellSelectionManager implements Serializable {
                 final Cell cell = row.getCell(colIndex - 1);
                 if (cell != null) {
                     String value = "";
-                    boolean formula = cell.getCellType() == Cell.CELL_TYPE_FORMULA;
+                    boolean formula = cell
+                            .getCellTypeEnum() == CellType.FORMULA;
                     if (!spreadsheet.isCellHidden(cell)) {
                         if (formula) {
                             value = cell.getCellFormula();
