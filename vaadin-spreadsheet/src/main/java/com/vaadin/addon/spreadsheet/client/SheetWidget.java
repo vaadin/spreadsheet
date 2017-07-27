@@ -1505,7 +1505,14 @@ public class SheetWidget extends Panel {
                         int eventTypeInt = event.getTypeInt();
                         final NativeEvent nativeEvent = event.getNativeEvent();
                         Element target = nativeEvent.getEventTarget().cast();
-                        String className = target.getAttribute("class");
+                        String className;
+                        try {
+                            className = target.getAttribute("class");
+                        } catch (JavaScriptException e) {
+                            // for some reason if target is the HTML element
+                            // getAttribute is not a function in Firefox
+                            className = "";
+                        }
 
                         if (getElement().isOrHasChild(
                                 (Node) nativeEvent.getEventTarget().cast())) {
@@ -1731,9 +1738,12 @@ public class SheetWidget extends Panel {
                      * @see {@link SheetJsniUtil.isHeader(String)}
                      */
                     private int isHeader(Element target) {
-                        String className = target.getParentElement()
-                                .getAttribute("class");
-                        return jsniUtil.isHeader(className);
+                        if (target.getParentElement() != null) {
+                            return jsniUtil.isHeader(target.getParentElement()
+                                    .getAttribute("class"));
+                        } else {
+                            return 0;
+                        }
                     }
                 });
         addDomHandler(new ContextMenuHandler() {
