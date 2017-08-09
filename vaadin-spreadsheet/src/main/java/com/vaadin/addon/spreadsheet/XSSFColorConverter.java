@@ -350,7 +350,7 @@ public class XSSFColorConverter implements ColorConverter {
      * @return CSS or null
      */
     public String getColorCSS(XSSFColor color) {
-    	if (color == null) return null;
+    	if (color == null || color.getCTColor() == null) return null;
     	
     	if (color.isThemed()) {
     		XSSFColor themeColor = workbook.getTheme().getThemeColor(color.getTheme());
