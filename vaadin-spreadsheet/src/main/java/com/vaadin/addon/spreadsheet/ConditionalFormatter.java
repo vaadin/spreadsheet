@@ -31,6 +31,7 @@ import org.apache.poi.ss.SpreadsheetVersion;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.formula.EvaluationConditionalFormatRule;
+import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
@@ -237,12 +238,13 @@ public class ConditionalFormatter implements Serializable {
 	private Set<Integer> getCellFormattingIndexInternal(CellReference ref) {
 		Set<Integer> styles = cellToCssIndex.get(ref);
 
-		if (styles == null) {
+		if (styles == null) try {
+			// get the empty set in there now, so if there is an unimplemented function somewhere we don't have to hit it every time
+			styles = new TreeSet<>();
+			cellToCssIndex.put(ref, styles);
+			
 			List<EvaluationConditionalFormatRule> rules = cfEvaluator.getConditionalFormattingForCell(ref);
 			if (rules == null) rules = Collections.emptyList();
-			styles = new TreeSet<>();
-			
-			cellToCssIndex.put(ref, styles);
 			for (EvaluationConditionalFormatRule rule : rules) {
 				styles.add(Integer.valueOf(getCssIndex(rule, IncrementalStyleBuilder.StyleType.BASE)));
 				styles.add(Integer.valueOf(getCssIndex(rule, IncrementalStyleBuilder.StyleType.BOTTOM)));
@@ -260,6 +262,10 @@ public class ConditionalFormatter implements Serializable {
 					}
 				}
 			}
+		} catch (NotImplementedException e) {
+			// treat formulas we can't evaluate as non-matches
+			// TODO: should probably log this
+			
 		}
 		
 		return styles;
