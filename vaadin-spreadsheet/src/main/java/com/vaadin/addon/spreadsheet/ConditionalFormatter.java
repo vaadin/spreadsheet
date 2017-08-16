@@ -225,24 +225,20 @@ public class ConditionalFormatter implements Serializable {
 		
 		// calculate for cells to the right and below first, so this can have the proper border IDs if needed
 		if (cell.getRowIndex() < cell.getSheet().getLastRowNum() && cell.getRowIndex() < SpreadsheetVersion.EXCEL2007.getLastRowIndex() -1) {
-			Row row = cell.getSheet().getRow(cell.getRowIndex() + 1);
-			if (row == null) row = cell.getSheet().createRow(cell.getRowIndex() + 1);
-			getCellFormattingIndexInternal(CellUtil.getCell(row, cell.getColumnIndex()));
+			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex() + 1, cell.getColumnIndex(), false, false));
 		}
 		if (cell.getColumnIndex() < SpreadsheetVersion.EXCEL2007.getLastColumnIndex() -1) {
-			getCellFormattingIndexInternal(CellUtil.getCell(cell.getRow(), cell.getColumnIndex() + 1));
+			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex() + 1, false, false));
 		}
 		
-		return getCellFormattingIndexInternal(cell);
+		return getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex(), false, false));
 	}
 
-	private Set<Integer> getCellFormattingIndexInternal(Cell cell) {
-		CellReference ref = new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex(), false, false);
-
+	private Set<Integer> getCellFormattingIndexInternal(CellReference ref) {
 		Set<Integer> styles = cellToCssIndex.get(ref);
 
 		if (styles == null) {
-			List<EvaluationConditionalFormatRule> rules = cfEvaluator.getConditionalFormattingForCell(cell);
+			List<EvaluationConditionalFormatRule> rules = cfEvaluator.getConditionalFormattingForCell(ref);
 			if (rules == null) rules = Collections.emptyList();
 			styles = new TreeSet<>();
 			
@@ -256,11 +252,11 @@ public class ConditionalFormatter implements Serializable {
 				final BorderFormatting borderFormatting = rule.getRule().getBorderFormatting();
 				if (borderFormatting != null) {
 					if (borderFormatting.getBorderLeftEnum() != BorderStyle.NONE) {
-						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.LEFT), cell.getRowIndex(), cell.getColumnIndex() - 1);
+						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.LEFT), ref.getRow(), ref.getCol() - 1);
 					}
 					// TOP border CSS goes on the cell above!
 					if (borderFormatting.getBorderTopEnum() != BorderStyle.NONE) {
-						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.TOP), cell.getRowIndex() - 1, cell.getColumnIndex());
+						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.TOP), ref.getRow() - 1, ref.getCol());
 					}
 				}
 			}
@@ -270,18 +266,14 @@ public class ConditionalFormatter implements Serializable {
 	}
 
 	/**
-	 * Adds the proper border style ID to the given cell, creating it if needed.
+	 * Adds the proper border style ID to the given cell.
 	 * @param ruleCSSIndex
 	 * @param row
 	 * @param col
 	 */
 	protected void addBorderStyleId(int ruleCSSIndex, int row, int col) {
 		if (row < 0 || col < 0) return; // out of bounds
-		Cell cell = spreadsheet.getCell(row, col);
-		if (cell == null) {
-			cell = spreadsheet.createCell(row, col, "");
-		}
-		Set<Integer> styles = getCellFormattingIndexInternal(cell);
+		Set<Integer> styles = getCellFormattingIndexInternal(new CellReference(spreadsheet.getActiveSheet().getSheetName(), row, col, false, false));
 		styles.add(new Integer(ruleCSSIndex));
 	}
 	

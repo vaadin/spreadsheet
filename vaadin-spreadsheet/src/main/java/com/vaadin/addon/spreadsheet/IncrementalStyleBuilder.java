@@ -1,5 +1,7 @@
 package com.vaadin.addon.spreadsheet;
 
+import java.io.Serializable;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 /*
@@ -32,9 +34,12 @@ import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
  * IncrementalStyleBuilder converts a POI {@link DifferentialStyleProvider} (conditional format rule or table style element) to CSS.
  * note: Create a new instance if the workbook changes, since the colorConverter field relies on the workbook theme
  */
-public class IncrementalStyleBuilder {
+public class IncrementalStyleBuilder implements Serializable {
 
-    /**
+    /** default */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * used to generate unique CSS style IDs for the different types of styles needed
 	 */
 	static enum StyleType {
