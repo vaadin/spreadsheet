@@ -89,6 +89,7 @@ public class FormulaBarWidget extends Composite {
     private boolean editingFormula;
     private boolean enableKeyboardNavigation;
     private TextBox currentEditor;
+    private boolean doubleClickOrEditMode;
 
     private SheetInputEventListener sheetInputEventListener;
 
@@ -588,28 +589,28 @@ public class FormulaBarWidget extends Composite {
             break;
 
         case KeyCodes.KEY_UP:
-            if (isEditingFormula() && enableKeyboardNavigation) {
+            if (enableKeyboardNavigation) {
                 moveFormulaCellSelection(event.getShiftKey(), true, false,
                         false);
                 event.preventDefault();
             }
             break;
         case KeyCodes.KEY_RIGHT:
-            if (isEditingFormula() && enableKeyboardNavigation) {
+            if (enableKeyboardNavigation) {
                 moveFormulaCellSelection(event.getShiftKey(), false, true,
                         false);
                 event.preventDefault();
             }
             break;
         case KeyCodes.KEY_DOWN:
-            if (isEditingFormula() && enableKeyboardNavigation) {
+            if (enableKeyboardNavigation) {
                 moveFormulaCellSelection(event.getShiftKey(), false, false,
                         true);
                 event.preventDefault();
             }
             break;
         case KeyCodes.KEY_LEFT:
-            if (isEditingFormula() && enableKeyboardNavigation) {
+            if (enableKeyboardNavigation) {
                 moveFormulaCellSelection(event.getShiftKey(), false, false,
                         false);
                 event.preventDefault();
@@ -633,7 +634,6 @@ public class FormulaBarWidget extends Composite {
         formulaLastKnownPos = -1;
         formulaStartPos = -1;
         clearFormulaSelection();
-
     }
 
     private void checkFormulaEdit(final TextBox editor) {
@@ -653,9 +653,7 @@ public class FormulaBarWidget extends Composite {
 
                         parseAndPaintCellRefs(val);
                         checkForCoordsAtCaret();
-
                     }
-
                 }
             }
         });
@@ -1038,7 +1036,8 @@ public class FormulaBarWidget extends Composite {
     }
 
     public void stopInlineEdit() {
-        sheetInputEventListener.cellEditingStopped();
+        sheetInputEventListener.setInputFullFocus(false);
+        setDoubleClickOrEditMode(false);
         stopEditing();
     }
 
@@ -1192,5 +1191,13 @@ public class FormulaBarWidget extends Composite {
     private void setNamedRangeBoxVisible(boolean visible) {
         namedRangeBox.setVisible(visible);
         namedRangeBoxArrow.setVisible(visible);
+    }
+
+    public boolean isDoubleClickOrEditMode() {
+        return doubleClickOrEditMode;
+    }
+
+    public void setDoubleClickOrEditMode(boolean doubleClickOrEditMode) {
+        this.doubleClickOrEditMode = doubleClickOrEditMode;
     }
 }

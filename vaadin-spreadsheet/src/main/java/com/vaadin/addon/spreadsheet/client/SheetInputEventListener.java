@@ -45,8 +45,8 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
     private FormulaBarWidget formulaBarWidget;
 
     /**
-     * Input has full focus only when it has been clicked. Otherwise i.e. arrow
-     * keys change cell selection instead of input caret position.
+     * Input has full focus only when it has been double-clicked or in 'edit' mode.
+     * Otherwise the arrow keys should change cell selection instead of input caret position.
      */
     private boolean inputFullFocus;
 
@@ -70,10 +70,6 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
 
     public void setInputFullFocus(boolean inputFullFocus) {
         this.inputFullFocus = inputFullFocus;
-    }
-
-    protected void cellEditingStopped() {
-        inputFullFocus = false;
     }
 
     @Override
@@ -131,7 +127,7 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 event.preventDefault();
                 break;
             case KeyCodes.KEY_UP:
-                if (!inputFullFocus) {
+                if (!inputFullFocus || (inputFullFocus && !formulaBarWidget.isDoubleClickOrEditMode())) {
                     handler.onCellInputEnter(widget.getInlineEditor()
                             .getValue(), true);
                     event.preventDefault();
@@ -142,7 +138,7 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 }
                 break;
             case KeyCodes.KEY_DOWN:
-                if (!inputFullFocus) {
+                if (!inputFullFocus || (inputFullFocus && !formulaBarWidget.isDoubleClickOrEditMode())) {
                     handler.onCellInputEnter(widget.getInlineEditor()
                             .getValue(), false);
                     event.preventDefault();
@@ -153,7 +149,7 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 }
                 break;
             case KeyCodes.KEY_LEFT:
-                if (!inputFullFocus) {
+                if (!inputFullFocus || (inputFullFocus && !formulaBarWidget.isDoubleClickOrEditMode())) {
                     handler.onCellInputTab(widget.getInlineEditor().getValue(),
                             true);
                     event.preventDefault();
@@ -170,7 +166,7 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 }
                 break;
             case KeyCodes.KEY_RIGHT:
-                if (!inputFullFocus) {
+                if (!inputFullFocus || (inputFullFocus && !formulaBarWidget.isDoubleClickOrEditMode())) {
                     handler.onCellInputTab(widget.getInlineEditor().getValue(),
                             false);
                     event.preventDefault();
