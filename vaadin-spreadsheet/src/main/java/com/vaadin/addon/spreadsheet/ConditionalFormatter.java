@@ -20,6 +20,7 @@ package com.vaadin.addon.spreadsheet;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -36,11 +37,9 @@ import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.ss.util.CellUtil;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -84,6 +83,13 @@ public class ConditionalFormatter implements Serializable {
 	 * cache cell CSS style ID lists (1:N), style ID# determines CSS priority order
 	 */
 	private Map<CellReference, Set<Integer>> cellToCssIndex = new HashMap<CellReference, Set<Integer>>();
+	
+	/**
+	 * for performance, since we always check cells next to a given cell to manage borders, don't evaluate each one multiple times
+	 * per pass.  Passes calling {@link #getCellFormattingIndex(Cell)} inside loops should call
+	 *  {@link #startEvaluationRun()} first to reset and allow picking up changes to conditional formatting state based on formula value changes.
+	 */
+	private Set<CellReference> cellsEvaluatedInThisRun = new HashSet<>();
 
     /**
      * Excel colors to CSS color definitions
@@ -238,8 +244,9 @@ public class ConditionalFormatter implements Serializable {
 	}
 
 	private Set<Integer> getCellFormattingIndexInternal(CellReference ref) {
-		cellToCssIndex.get(ref);
-
+		// performance optimization - only evaluate a cell once per response loop
+		if (cellsEvaluatedInThisRun.contains(ref)) return cellToCssIndex.get(ref);
+		
 		Set<Integer> styles = new TreeSet<>();
 		// always recalculate, but track previous values to see if the cell style changed or not
 		Set<Integer> currentStyles = cellToCssIndex.put(ref, styles);
@@ -267,7 +274,8 @@ public class ConditionalFormatter implements Serializable {
 		} catch (NotImplementedException e) {
 			// treat formulas we can't evaluate as non-matches
 			// TODO: should probably log this
-			
+			// turns out POI caches something somewhere the first time this is evaluated
+			//e.printStackTrace(); // TODO: temporary!
 		}
 		
 		// if previously calculated (not null) and has changed, mark cell as having styles updated
@@ -278,6 +286,7 @@ public class ConditionalFormatter implements Serializable {
 			// don't need to update formula cache, just tell the framework to send the new styles
 			if (cell != null) spreadsheet.getCellValueManager().markCellForUpdate(cell);
 		}
+		cellsEvaluatedInThisRun.add(ref);
 		return styles;
 	}
 
@@ -316,5 +325,22 @@ public class ConditionalFormatter implements Serializable {
 				+ rule.getRuleIndex() * 10 // room for 999 rules per formatting (HSSF max 3, XSSF unlimited)
 				+ type.ordinal(); // 0-2
 	}
+
+	/**
+	 * Called before cell conditional formats are evaluated for a given response after changes are complete.
+	 * This initializes any state necessary to optimize performance and behavior. 
+	 * <p>
+	 * The default is to cache cells that have been previously evaluated, and not update their rule IDs.
+	 * Calling this clears that tracking so changes to conditional format rule evaluation results can be displayed. 
+	 */
+	public void startEvaluationRun() {
+		cellsEvaluatedInThisRun = new HashSet<>();
+	}
 	
+	/**
+	 * Allow resources to be garbage collected before the next run starts
+	 */
+	public void endEvaluationRun() {
+		cellsEvaluatedInThisRun = new HashSet<>();
+	}
 }
