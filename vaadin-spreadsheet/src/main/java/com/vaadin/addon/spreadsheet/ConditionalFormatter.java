@@ -179,28 +179,30 @@ public class ConditionalFormatter implements Serializable {
 	 * if needed from the ID.
 	 */
 	public void createConditionalFormatterRules() {
-        // make sure old styles are cleared
-        if (cellToCssIndex != null) {
-            for (CellReference key : cellToCssIndex.keySet()) {
-                int col = key.getCol();
-                int row = key.getRow();
-                
-                // note: this is for the active sheet!  If that has changed, it's the right coordinates
-                // for the UI, but not the cell specified by the key!
-                Cell cell = spreadsheet.getCell(row, col);
-                if (cell != null) {
-                    spreadsheet.markCellAsUpdated(cell, true);
-                }
-            }
-        }
-
-        cellToCssIndex.clear();
         
+		// only do this if the formula evaluator instance doesn't match (i.e. first call, and if the spreadsheet workbook ref. is different)
 		if (! init()) {
-			// rules already in place, but data may have changed, re-evaluate cells
-			cfEvaluator.clearAllCachedValues();
 			return;
 		}
+		
+		// no-op on first call, nothing's been done yet
+		cfEvaluator.clearAllCachedValues();
+		// make sure old styles are cleared
+		if (cellToCssIndex != null) {
+			for (CellReference key : cellToCssIndex.keySet()) {
+				int col = key.getCol();
+				int row = key.getRow();
+				
+				// note: this is for the active sheet!  If that has changed, it's the right coordinates
+				// for the UI, but not the cell specified by the key!
+				Cell cell = spreadsheet.getCell(row, col);
+				if (cell != null) {
+					spreadsheet.getCellValueManager().markCellForUpdate(cell);
+				}
+			}
+		}
+		
+		cellToCssIndex.clear();
 		
 		// build rules properly for all sheets, but don't evaluate cells yet
 		
@@ -236,13 +238,13 @@ public class ConditionalFormatter implements Serializable {
 	}
 
 	private Set<Integer> getCellFormattingIndexInternal(CellReference ref) {
-		Set<Integer> styles = cellToCssIndex.get(ref);
+		cellToCssIndex.get(ref);
 
-		if (styles == null) try {
-			// get the empty set in there now, so if there is an unimplemented function somewhere we don't have to hit it every time
-			styles = new TreeSet<>();
-			cellToCssIndex.put(ref, styles);
-			
+		Set<Integer> styles = new TreeSet<>();
+		// always recalculate, but track previous values to see if the cell style changed or not
+		Set<Integer> currentStyles = cellToCssIndex.put(ref, styles);
+		
+		try {
 			List<EvaluationConditionalFormatRule> rules = cfEvaluator.getConditionalFormattingForCell(ref);
 			if (rules == null) rules = Collections.emptyList();
 			for (EvaluationConditionalFormatRule rule : rules) {
@@ -268,6 +270,14 @@ public class ConditionalFormatter implements Serializable {
 			
 		}
 		
+		// if previously calculated (not null) and has changed, mark cell as having styles updated
+		if (currentStyles != null && ! currentStyles.equals(styles)) {
+			// style IDs changed for the cell, mark as updated
+			cellToCssIndex.put(ref, styles);
+			final Cell cell = spreadsheet.getCell(ref);
+			// don't need to update formula cache, just tell the framework to send the new styles
+			if (cell != null) spreadsheet.getCellValueManager().markCellForUpdate(cell);
+		}
 		return styles;
 	}
 

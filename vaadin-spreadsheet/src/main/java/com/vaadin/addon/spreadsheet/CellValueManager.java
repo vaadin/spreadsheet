@@ -326,7 +326,7 @@ public class CellValueManager implements Serializable {
             // value (such as borders for the cell to the right)
             Set<Integer> cellFormattingIndexes = spreadsheet
                     .getConditionalFormatter().getCellFormattingIndex(cell);
-            if (cellFormattingIndexes != null) {
+            if (cellFormattingIndexes != null && !cellFormattingIndexes.isEmpty()) {
 
                 for (Integer i : cellFormattingIndexes) {
                     cellData.cellStyle = cellData.cellStyle + " cf" + i;
