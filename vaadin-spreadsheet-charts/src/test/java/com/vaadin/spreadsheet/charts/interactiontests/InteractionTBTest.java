@@ -3,6 +3,7 @@ package com.vaadin.spreadsheet.charts.interactiontests;
 import java.util.Arrays;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -116,6 +117,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
+    @Ignore("A POI issue https://bz.apache.org/bugzilla/show_bug.cgi?id=61468. The fix will be available in the next POI release.")
     public void openFileWithNotSuportedForumla_noExceptionRaised_noChart() throws Exception {
         skipBrowser("Fails to select file in combobox", Browser.IE11);
         headerPage.loadFile("unparsed_formula.xlsx", this);
