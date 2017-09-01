@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -50,8 +52,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * each cell can then be fetched from this class.
  * <p>
  * For now, only XSSF formatting rules are supported because of bugs in POI.
- *
- * @author Thomas Mattsson / Vaadin Ltd.
  */
 @SuppressWarnings("serial")
 public class ConditionalFormatter implements Serializable {
@@ -60,6 +60,33 @@ public class ConditionalFormatter implements Serializable {
 	private static final Logger LOGGER = Logger
             .getLogger(ConditionalFormatter.class.getName());
 
+    /**
+     * Interface for a callback that evaluates the conditional format state of a collection of cells at once.
+     * Use this to avoid re-calculating format styles multiple times for the same cell when no values are changing
+     * in the mean time.
+     */
+    @FunctionalInterface
+    public static interface ConditionalFormattingBatchEvaluator {
+    	/**
+    	 * called by {@link ConditionalFormatter} to evaluate cells using cached results for efficiency
+    	 * @param formatter the conditional formatter to use - don't use another reference, it may have a different cache!
+    	 */
+    	public void evaluate(ConditionalFormatterEvaluator formatter);
+    }
+    
+    /**
+     * Interface for batch processing wrapping calls to {@link #getCellFormattingIndex(Cell)}.
+     */
+    @FunctionalInterface
+    public static interface ConditionalFormatterEvaluator {
+    	/**
+    	 * define the set of CSS rule indexes that apply to this cell.
+    	 * @param cell 
+    	 * @return set of CSS rule IDs for applicable conditional formatting
+    	 */
+    	public Set<Integer> getCellFormattingIndex(Cell cell);
+    }
+    
     /*
      * Slight hack. This style is used when a CF rule defines 'no border', in
      * which case the border should be empty. However, since we use cell DIV
@@ -84,13 +111,6 @@ public class ConditionalFormatter implements Serializable {
 	 */
 	private Map<CellReference, Set<Integer>> cellToCssIndex = new HashMap<CellReference, Set<Integer>>();
 	
-	/**
-	 * for performance, since we always check cells next to a given cell to manage borders, don't evaluate each one multiple times
-	 * per pass.  Passes calling {@link #getCellFormattingIndex(Cell)} inside loops should call
-	 *  {@link #startEvaluationRun()} first to reset and allow picking up changes to conditional formatting state based on formula value changes.
-	 */
-	private Set<CellReference> cellsEvaluatedInThisRun = new HashSet<>();
-
     /**
      * Excel colors to CSS color definitions
      */
@@ -221,11 +241,22 @@ public class ConditionalFormatter implements Serializable {
 	}
 	
 	/**
-	 * define the set of CSS rule indexes that apply to this cell
+	 * define the set of CSS rule indexes that apply to this cell.
+	 * NOTE: this does not use caching, use {@link #evaluateBatch(Supplier)} if possible
 	 * @param cell 
 	 * @return set of CSS rule IDs for applicable conditional formatting
 	 */
 	public Set<Integer> getCellFormattingIndex(Cell cell) {
+		return getCellFormattingIndex(cell, new HashSet<>());
+	}
+	
+	/**
+	 * define the set of CSS rule indexes that apply to this cell, with caching.
+	 * @param cell 
+	 * @param cellsEvaluatedInThisRun 
+	 * @return set of CSS rule IDs for applicable conditional formatting
+	 */
+	protected Set<Integer> getCellFormattingIndex(Cell cell, Set<CellReference> cellsEvaluatedInThisRun) {
 		/*
 		 * Why use Integer CSS IDs?  Looking at uses, there is no reason they can't be String instead.
 		 * Or even an array of ints, so we can use sheet/row/column/border index arrays and return Set<int[]>
@@ -234,16 +265,21 @@ public class ConditionalFormatter implements Serializable {
 		
 		// calculate for cells to the right and below first, so this can have the proper border IDs if needed
 		if (cell.getRowIndex() < cell.getSheet().getLastRowNum() && cell.getRowIndex() < SpreadsheetVersion.EXCEL2007.getLastRowIndex() -1) {
-			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex() + 1, cell.getColumnIndex(), false, false));
+			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex() + 1, cell.getColumnIndex(), false, false), cellsEvaluatedInThisRun);
 		}
 		if (cell.getColumnIndex() < SpreadsheetVersion.EXCEL2007.getLastColumnIndex() -1) {
-			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex() + 1, false, false));
+			getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex() + 1, false, false), cellsEvaluatedInThisRun);
 		}
 		
-		return getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex(), false, false));
+		return getCellFormattingIndexInternal(new CellReference(cell.getSheet().getSheetName(), cell.getRowIndex(), cell.getColumnIndex(), false, false), cellsEvaluatedInThisRun);
 	}
 
-	private Set<Integer> getCellFormattingIndexInternal(CellReference ref) {
+	/**
+	 * @param ref
+	 * @param cellsEvaluatedInThisRun
+	 * @return IDs of applied styles
+	 */
+	protected Set<Integer> getCellFormattingIndexInternal(CellReference ref, Set<CellReference> cellsEvaluatedInThisRun) {
 		// performance optimization - only evaluate a cell once per response loop
 		if (cellsEvaluatedInThisRun.contains(ref)) return cellToCssIndex.get(ref);
 		
@@ -263,19 +299,17 @@ public class ConditionalFormatter implements Serializable {
 				final BorderFormatting borderFormatting = rule.getRule().getBorderFormatting();
 				if (borderFormatting != null) {
 					if (borderFormatting.getBorderLeftEnum() != BorderStyle.NONE) {
-						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.LEFT), ref.getRow(), ref.getCol() - 1);
+						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.LEFT), ref.getRow(), ref.getCol() - 1, cellsEvaluatedInThisRun);
 					}
 					// TOP border CSS goes on the cell above!
 					if (borderFormatting.getBorderTopEnum() != BorderStyle.NONE) {
-						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.TOP), ref.getRow() - 1, ref.getCol());
+						addBorderStyleId(getCssIndex(rule, IncrementalStyleBuilder.StyleType.TOP), ref.getRow() - 1, ref.getCol(), cellsEvaluatedInThisRun);
 					}
 				}
 			}
 		} catch (NotImplementedException e) {
-			// treat formulas we can't evaluate as non-matches
-			// TODO: should probably log this
-			// turns out POI caches something somewhere the first time this is evaluated
-			//e.printStackTrace(); // TODO: temporary!
+			// treat formulas we can't evaluate as non-matches, log in case consumers want to see what happened
+            LOGGER.log(Level.FINEST, e.getMessage(), e);
 		}
 		
 		// if previously calculated (not null) and has changed, mark cell as having styles updated
@@ -295,10 +329,11 @@ public class ConditionalFormatter implements Serializable {
 	 * @param ruleCSSIndex
 	 * @param row
 	 * @param col
+	 * @param cellsEvaluatedInThisRun 
 	 */
-	protected void addBorderStyleId(int ruleCSSIndex, int row, int col) {
+	protected void addBorderStyleId(int ruleCSSIndex, int row, int col, Set<CellReference> cellsEvaluatedInThisRun) {
 		if (row < 0 || col < 0) return; // out of bounds
-		Set<Integer> styles = getCellFormattingIndexInternal(new CellReference(spreadsheet.getActiveSheet().getSheetName(), row, col, false, false));
+		Set<Integer> styles = getCellFormattingIndexInternal(new CellReference(spreadsheet.getActiveSheet().getSheetName(), row, col, false, false), cellsEvaluatedInThisRun);
 		styles.add(new Integer(ruleCSSIndex));
 	}
 	
@@ -327,20 +362,16 @@ public class ConditionalFormatter implements Serializable {
 	}
 
 	/**
-	 * Called before cell conditional formats are evaluated for a given response after changes are complete.
-	 * This initializes any state necessary to optimize performance and behavior. 
-	 * <p>
-	 * The default is to cache cells that have been previously evaluated, and not update their rule IDs.
-	 * Calling this clears that tracking so changes to conditional format rule evaluation results can be displayed. 
+	 * For performance, since we always check cells next to a given cell to manage borders, don't evaluate each one multiple times
+	 * per pass.  Passes calling this with a {@link ConditionalFormattingBatchEvaluator} allows caching of calculated style results
+	 * while the batch is processed.
+	 * @param evaluator
 	 */
-	public void startEvaluationRun() {
-		cellsEvaluatedInThisRun = new HashSet<>();
-	}
-	
-	/**
-	 * Allow resources to be garbage collected before the next run starts
-	 */
-	public void endEvaluationRun() {
-		cellsEvaluatedInThisRun = new HashSet<>();
+	public void evaluateBatch(ConditionalFormattingBatchEvaluator evaluator) {
+		/*
+		 *  {@link #startEvaluationRun()} first to reset and allow picking up changes to conditional formatting state based on formula value changes.
+		 */
+		Set<CellReference> cellsEvaluatedInThisRun = new HashSet<>();
+		evaluator.evaluate((cell) -> getCellFormattingIndex(cell, cellsEvaluatedInThisRun));
 	}
 }
