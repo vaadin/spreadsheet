@@ -330,6 +330,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     private String defaultPercentageFormat = "0.00%";
 
+    private String defaultDateFormat = "d/mm/yyyy";
+
+    private String defaultTimeFormat = "h:mm AM/PM";
+
     protected String initialSheetSelection = null;
 
     private Set<Component> customComponents = new HashSet<Component>();
@@ -4855,6 +4859,50 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void setDefaultPercentageFormat(String defaultPercentageFormat) {
         this.defaultPercentageFormat = defaultPercentageFormat;
+    }
+
+    /**
+     * Returns the formatting string that is used when a user enters dates
+     * into the spreadsheet.
+     * <p>
+     * Default is "d/mm/yyyy".
+     *
+     * @return The formatting applied to date values when entered by the user
+     */
+    public String getDefaultDateFormat() {
+        return defaultDateFormat;
+    }
+
+    /**
+     * Sets the formatting string that is used when a user enters dates into
+     * the spreadsheet.
+     *
+     * @param defaultDateFormat the new default format
+     */
+    public void setDefaultDateFormat(String defaultDateFormat) {
+        this.defaultDateFormat = defaultDateFormat;
+    }
+
+    /**
+     * Returns the formatting string that is used when a user enters times
+     * into the spreadsheet.
+     * <p>
+     * Default is "h:mm AM/PM".
+     *
+     * @return The formatting applied to time values when entered by the user
+     */
+    public String getDefaultTimeFormat() {
+        return defaultTimeFormat;
+    }
+
+    /**
+     * Sets the formatting string that is used when a user enters times into
+     * the spreadsheet.
+     *
+     * @param defaultTimeFormat the new default format
+     */
+    public void setDefaultTimeFormat(String defaultTimeFormat) {
+        this.defaultTimeFormat = defaultTimeFormat;
     }
 
     /**

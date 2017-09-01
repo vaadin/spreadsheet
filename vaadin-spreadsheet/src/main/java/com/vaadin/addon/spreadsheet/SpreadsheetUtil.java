@@ -23,7 +23,10 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.Format;
+import java.text.ParseException;
 import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +44,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 /**
  * Utility class for miscellaneous Spreadsheet operations.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -57,10 +60,31 @@ public class SpreadsheetUtil implements Serializable {
     private static final int[] UNIT_OFFSET_MAP = new int[] { 0, 36, 73, 109,
             146, 182, 219 };
 
+    private static final String[] DATE_PARSE_FORMATS = new String[] {
+            "d/M/y",
+            "d-M-y",
+            "d M y",
+            "d/MMM/y",
+            "d-MMM-y",
+            "d MMM y",
+            "M/y",
+            "M-y",
+            "M y",
+            "MMM/y",
+            "MMM-y",
+            "MMM y"
+    };
+
+    private static final String[] TIME_PARSE_FORMATS = new String[] {
+            "ha",
+            "h:mm a",
+            "H:mm"
+    };
+
     /**
      * Translates cell coordinates to a cell key used to identify cells in the
      * server-client communication.
-     * 
+     *
      * @param col
      *            Column index, 1-based
      * @param row
@@ -74,7 +98,7 @@ public class SpreadsheetUtil implements Serializable {
     /**
      * Translates cell coordinates from the given Cell object to a cell key used
      * to identify cells in the server-client communication.
-     * 
+     *
      * @param cell
      *            Cell to fetch the coordinates from
      * @return Cell key
@@ -85,7 +109,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Determines whether the given cell contains a date or not.
-     * 
+     *
      * @param cell
      *            Cell to examine
      * @return true if the cell contains a date
@@ -102,7 +126,7 @@ public class SpreadsheetUtil implements Serializable {
     }
     /**
      * Generates the column header for column with the given index
-     * 
+     *
      * @param columnIndex
      *            Index of column, 1-based
      * @return Generated column header
@@ -118,7 +142,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Returns the column index for the column with the given header.
-     * 
+     *
      * @param header
      *            Column header
      * @return Index of column, 1-based
@@ -135,7 +159,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Determines whether the given cell is within the given range.
-     * 
+     *
      * @param cellReference
      *            Target cell reference
      * @param cellRange
@@ -152,7 +176,7 @@ public class SpreadsheetUtil implements Serializable {
      * Returns the POI index of the first visible sheet (not hidden or very
      * hidden). If no sheets are visible, returns 0. This is not be possible at
      * least in Excel, but unfortunately POI allows it.
-     * 
+     *
      * @param workbook
      *            Workbook to get the sheets from
      * @return Index of the first visible sheet, 0-based
@@ -169,7 +193,7 @@ public class SpreadsheetUtil implements Serializable {
     /**
      * Returns the number of visible sheets (not hidden or very hidden) in the
      * given Workbook.
-     * 
+     *
      * @param workbook
      *            Workbook to get the sheets from
      * @return Number of visible sheets
@@ -186,7 +210,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Returns the column index for the given Cell key.
-     * 
+     *
      * @param key
      *            Cell key
      * @return Column index of cell, 1-based
@@ -199,7 +223,7 @@ public class SpreadsheetUtil implements Serializable {
 
     /**
      * Returns the row index for the given Cell key.
-     * 
+     *
      * @param key
      *            Cell key
      * @return Row index of cell, 1-based
@@ -214,7 +238,7 @@ public class SpreadsheetUtil implements Serializable {
     /**
      * Converts pixel units to Excel width units (one Excel width unit is
      * 1/256th of a character width)
-     * 
+     *
      * @param pxs
      *            Pixel value to convert
      * @return Value in Excel width units
@@ -230,7 +254,7 @@ public class SpreadsheetUtil implements Serializable {
     /**
      * Gets the default column width for new sheets in pixels. The calculation
      * is done using POI.
-     * 
+     *
      * @return Default column width in PX
      */
     static int getDefaultColumnWidthInPx() {
@@ -244,7 +268,7 @@ public class SpreadsheetUtil implements Serializable {
      * the String ends with the '%' character, and the rest can be parsed to a
      * number.
      * <p>
-     * 
+     *
      * @param cellContent
      *            The string to be parsed
      * @param locale
@@ -400,6 +424,51 @@ public class SpreadsheetUtil implements Serializable {
             // is OK
         }
         return null;
+    }
+
+    /**
+     * Attempts to parse a string as a date, using a number of defined
+     * formats. If the string can be parsed as a date, it is parsed then
+     * converted to the equivalent Excel double representation.
+     *
+     * @param cellContent the string to be parsed
+     * @param locale      the current locale, used for date parsing
+     * @return an Excel numeric representation of the date (if parsed
+     * successfully), otherwise {@code null}
+     */
+    public static Double parseDate(String cellContent, Locale locale) {
+        return parseDateTime(cellContent, DATE_PARSE_FORMATS, locale);
+    }
+
+    /**
+     * Attempts to parse a string as a time, using a number of defined
+     * formats. If the string can be parsed as a time, it is parsed then
+     * converted to the equivalent Excel double representation.
+     *
+     * @param cellContent the string to be parsed
+     * @param locale      the current locale, used for time parsing
+     * @return an Excel numeric representation of the time (if parsed
+     * successfully), otherwise {@code null}
+     */
+    public static Double parseTime(String cellContent, Locale locale) {
+        return parseDateTime(cellContent, TIME_PARSE_FORMATS, locale);
+    }
+
+    private static Double parseDateTime(String cellContent, String[] patterns,
+                                        Locale
+                                                locale) {
+        Double value = null;
+        for (String pattern : patterns) {
+            try {
+                Date dateValue = new SimpleDateFormat(pattern, locale).parse
+                        (cellContent);
+                value = DateUtil.getExcelDate(dateValue);
+                break;
+            } catch (ParseException pe) {
+                // string doesn't match that pattern, so continue
+            }
+        }
+        return value;
     }
 
     /**

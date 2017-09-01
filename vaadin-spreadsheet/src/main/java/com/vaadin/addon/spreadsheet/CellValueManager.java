@@ -661,6 +661,8 @@ public class CellValueManager implements Serializable {
                             spreadsheetLocale);
                     Double numVal = SpreadsheetUtil.parseNumber(cell, value,
                             spreadsheetLocale);
+                    Double dateVal;
+                    Double timeVal;
                     if (value.isEmpty()) {
                         cell.setCellType(CellType.BLANK);
                     } else if (percentage != null) {
@@ -686,6 +688,18 @@ public class CellValueManager implements Serializable {
                     } else if (numVal != null) {
                         cell.setCellType(CellType.NUMERIC);
                         cell.setCellValue(numVal);
+                    } else if ((dateVal = SpreadsheetUtil.parseDate(value,
+                            spreadsheetLocale)) != null) {
+                        cell.setCellType(CellType.NUMERIC);
+                        setCellDataFormat(cell, spreadsheet
+                                .getDefaultDateFormat());
+                        cell.setCellValue(dateVal);
+                    } else if ((timeVal = SpreadsheetUtil.parseTime(value,
+                            spreadsheetLocale)) != null) {
+                        cell.setCellType(CellType.NUMERIC);
+                        setCellDataFormat(cell, spreadsheet
+                                .getDefaultTimeFormat());
+                        cell.setCellValue(timeVal);
                     } else if (oldCellType == CellType.BOOLEAN) {
                         cell.setCellValue(Boolean.parseBoolean(value));
                     } else {
@@ -745,6 +759,26 @@ public class CellValueManager implements Serializable {
 
         if (updateHyperlinks) {
             spreadsheet.loadHyperLinks();
+        }
+    }
+
+    private void setCellDataFormat(Cell cell, String dataFormatString) {
+        Workbook workbook = cell.getSheet().getWorkbook();
+        SpreadsheetStyleFactory styler = spreadsheet
+                .getSpreadsheetStyleFactory();
+        CellStyle cs = cell.getCellStyle();
+        // Do not use default cell style (index == 0) as it will affect all
+        // cells
+        if (cs == null || cs.getIndex() == 0) {
+            cs = workbook.createCellStyle();
+            cell.setCellStyle(cs);
+        }
+        if (cs.getDataFormatString() != null
+                && !cs.getDataFormatString().equals(dataFormatString)) {
+            cs.setDataFormat(workbook
+                    .createDataFormat()
+                    .getFormat(dataFormatString));
+            styler.cellStyleUpdated(cell, true);
         }
     }
 
