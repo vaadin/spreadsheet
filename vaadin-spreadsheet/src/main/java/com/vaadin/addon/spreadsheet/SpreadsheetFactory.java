@@ -49,6 +49,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.PaneInformation;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -409,10 +410,30 @@ public class SpreadsheetFactory implements Serializable {
             loadFreezePane(spreadsheet);
             loadGrouping(spreadsheet);
             loadNamedRanges(spreadsheet);
+            loadActiveCell(spreadsheet, sheet);
         } catch (NullPointerException npe) {
             LOGGER.log(Level.WARNING, npe.getMessage(), npe);
         }
         logMemoryUsage();
+    }
+
+    /**
+     * Selects the active cell on the sheet
+     *
+     * @param spreadsheet
+     *            Target Spreadsheet
+     * @param sheet
+     *            Sheet
+     */
+    private static void loadActiveCell(Spreadsheet spreadsheet, Sheet sheet) {
+        CellAddress activeCell = sheet.getActiveCell();
+        if (activeCell != null) {
+            int row = activeCell.getRow();
+            int column = activeCell.getColumn();
+            if (row < spreadsheet.getRows() && column < spreadsheet.getColumns()) {
+                spreadsheet.setSelection(row, column);
+            }
+        }
     }
 
     static void loadNamedRanges(Spreadsheet spreadsheet) {
