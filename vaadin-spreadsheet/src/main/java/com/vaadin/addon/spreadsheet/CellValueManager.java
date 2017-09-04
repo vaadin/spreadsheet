@@ -693,6 +693,8 @@ public class CellValueManager implements Serializable {
                             value = value.substring(1, value.length());
                             setLeadingQuoteStyle(cell, true);
                         }
+
+                        cell.setCellType(CellType.STRING);
                         cell.setCellValue(value);
                     }
                 }
