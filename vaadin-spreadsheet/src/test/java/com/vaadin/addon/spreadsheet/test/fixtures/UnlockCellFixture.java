@@ -9,7 +9,7 @@ import org.apache.poi.ss.util.CellReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LockCellFixture implements SpreadsheetFixture {
+public class UnlockCellFixture implements SpreadsheetFixture {
 
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {
@@ -23,10 +23,10 @@ public class LockCellFixture implements SpreadsheetFixture {
             cell = spreadsheet.getCell(cellRef.getRow(), cellRef.getCol());
             if (cell == null) {
                 cell = spreadsheet.createCell(cellRef.getRow(),
-                        cellRef.getCol(), "locked");
+                        cellRef.getCol(), "unlocked");
             }
             CellStyle cellStyle = wb.createCellStyle();
-            cellStyle.setLocked(true);
+            cellStyle.setLocked(false);
             cell.setCellStyle(cellStyle);
             updatedCells.add(cell);
         }

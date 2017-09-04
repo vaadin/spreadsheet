@@ -1,29 +1,51 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-
+import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import org.junit.Test;
+import org.openqa.selenium.WebDriverException;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class LockTest extends AbstractSpreadsheetTestCase {
 
-    @Ignore("Fails with all browsers, user can still add content to B2 after lock fixture is run")
-    @Test
-    public void testLockedCells() {
+    private SpreadsheetElement spreadSheet;
+
+    @Override
+    public void setUp() throws Exception {
+        super.setUp();
         headerPage.createNewSpreadsheet();
-        SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
-        spreadsheet.getCellAt("B2").setValue("value");
-        sheetController.selectRegion("B3","D4");
+        spreadSheet = $(SpreadsheetElement.class).first();
+    }
+
+    @Test(expected = WebDriverException.class)
+    public void testLockedCells() {
+
+        SheetCellElement b2 = spreadSheet.getCellAt("B2");
+        b2.setValue("value");
+
+        sheetController.selectRegion("B2","D4");
         headerPage.loadTestFixture(TestFixtures.LockCell);
 
-        Assert.assertEquals("locked", spreadsheet.getCellAt("B2").getValue());
-        spreadsheet.getCellAt("B2").setValue("new value on locked cell");
-        Assert.assertEquals("value", spreadsheet.getCellAt("B2").getValue());
+        assertThat(b2.getValue(), equalTo("value"));
+        b2.setValue("new value on locked cell"); // expect exception
+    }
 
-        Assert.assertEquals("unlocked", spreadsheet.getCellAt("C3").getValue());
-        sheetController.putCellContent("C3", "value");
-        Assert.assertEquals("value", spreadsheet.getCellAt("C3").getValue());
+    @Test
+    public void testUnlockCell() {
+
+        SheetCellElement b2 = spreadSheet.getCellAt("B2");
+        b2.setValue("value");
+        sheetController.selectRegion("B2","D4");
+        headerPage.loadTestFixture(TestFixtures.LockCell);
+
+        assertThat(b2.getValue(), equalTo("value"));
+        sheetController.selectRegion("B2","D2");
+        headerPage.loadTestFixture(TestFixtures.UnlockCell); // unlock a region
+
+        b2.setValue("cell is now unlocked");
+        assertThat(b2.getValue(), equalTo("cell is now unlocked"));
     }
 }
