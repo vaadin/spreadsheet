@@ -2271,10 +2271,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * given range, an error is thrown. See
      * {@link CellRangeUtil#intersect(CellRangeAddress, CellRangeAddress)}.
      * <p>
-     * Note: POI doesn't seem to update the cells that are "removed" due to the
-     * merge - the values for those cells still exist and continue being used in
-     * possible formulas. If you need to make sure those values are removed,
-     * just delete the cells before creating the merged region.
+     * Note: The cells that are "removed" due to the merge - their values are set to null.
      * <p>
      * If the added region affects the currently selected cell, a new
      * {@link SelectionChangeEvent} is fired.
@@ -2324,10 +2321,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             getState().mergedRegions = new ArrayList<MergedRegion>();
         }
         getState().mergedRegions.add(addMergedRegionIndex - 1, mergedRegion);
+        List<Cell> cellsToRefresh = new ArrayList<Cell>();
         // update the style & data for the region cells, effects region + 1
-        // FIXME POI doesn't seem to care that the other cells inside the merged
-        // region should be removed; the values those cells have are still used
-        // in formulas..
         for (int r = mergedRegion.row1; r <= (mergedRegion.row2 + 1); r++) {
             Row row = sheet.getRow(r - 1);
             for (int c = mergedRegion.col1; c <= (mergedRegion.col2 + 1); c++) {
@@ -2338,14 +2333,17 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                         if ((c != mergedRegion.col1 || r != mergedRegion.row1)
                                 && c <= mergedRegion.col2
                                 && r <= mergedRegion.row2) {
-                            getCellValueManager().markCellForRemove(cell);
+
+                            cell.setCellValue((String) null);
+                            getFormulaEvaluator().notifyUpdateCell(cell);
+                            cellsToRefresh.add(cell);
                         }
                     }
                 }
             }
         }
         styler.loadCustomBorderStylesToState();
-        updateMarkedCells();
+        refreshCells(cellsToRefresh);
     }
 
     /**
