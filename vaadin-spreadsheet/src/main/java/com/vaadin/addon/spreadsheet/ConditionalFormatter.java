@@ -242,7 +242,7 @@ public class ConditionalFormatter implements Serializable {
 	
 	/**
 	 * define the set of CSS rule indexes that apply to this cell.
-	 * NOTE: this does not use caching, use {@link #evaluateBatch(Supplier)} if possible
+	 * NOTE: this does not use caching, use {@link #evaluateBatch(ConditionalFormattingBatchEvaluator)} if possible
 	 * @param cell 
 	 * @return set of CSS rule IDs for applicable conditional formatting
 	 */
