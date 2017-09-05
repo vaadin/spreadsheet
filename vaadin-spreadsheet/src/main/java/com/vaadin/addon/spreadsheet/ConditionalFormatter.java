@@ -66,7 +66,7 @@ public class ConditionalFormatter implements Serializable {
      * in the mean time.
      */
     @FunctionalInterface
-    public static interface ConditionalFormattingBatchEvaluator {
+    public static interface ConditionalFormattingBatchEvaluator extends Serializable {
     	/**
     	 * called by {@link ConditionalFormatter} to evaluate cells using cached results for efficiency
     	 * @param formatter the conditional formatter to use - don't use another reference, it may have a different cache!
@@ -78,7 +78,7 @@ public class ConditionalFormatter implements Serializable {
      * Interface for batch processing wrapping calls to {@link #getCellFormattingIndex(Cell)}.
      */
     @FunctionalInterface
-    public static interface ConditionalFormatterEvaluator {
+    public static interface ConditionalFormatterEvaluator extends Serializable {
     	/**
     	 * define the set of CSS rule indexes that apply to this cell.
     	 * @param cell 
