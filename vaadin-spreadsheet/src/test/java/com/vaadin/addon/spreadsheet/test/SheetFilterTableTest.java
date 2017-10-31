@@ -39,7 +39,7 @@ public class SheetFilterTableTest extends AbstractSpreadsheetTestCase {
     public void filter_removeTable_hideFilter() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         headerPage.loadTestFixture(TestFixtures.SpreadsheetTable);
-        SheetCellElement cell = spreadsheet.getCellAt("B2");
+        final SheetCellElement cell = spreadsheet.getCellAt("B2");
         cell.contextClick();
         spreadsheet.getContextMenu().getItem("Delete Table B2:F6").click();
         waitUntil(new ExpectedCondition<Boolean>() {
