@@ -440,6 +440,10 @@ public class SpreadsheetFactory implements Serializable {
     }
 
     private static boolean isNameSelectable(Name name) {
+        if (name.isFunctionName()) {
+            return false;
+        }
+
         if (!AreaReference.isContiguous(name.getRefersToFormula())) {
             return false;
         }
