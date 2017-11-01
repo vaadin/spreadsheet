@@ -28,6 +28,11 @@ class NamedRangeUtils implements Serializable {
         final String formula = cra.formatAsString(sheetName, true);
 
         for (Name name : spreadsheet.getWorkbook().getAllNames()) {
+            if (name.isFunctionName()) {
+                // function names by definition will not refer to a cell range address, so don't check
+                continue;
+            }
+
             final boolean globalName = name.getSheetIndex() == -1;
             final boolean nameRefersToThisSheet =
                 name.getSheetIndex() == spreadsheet.getActiveSheetIndex();
