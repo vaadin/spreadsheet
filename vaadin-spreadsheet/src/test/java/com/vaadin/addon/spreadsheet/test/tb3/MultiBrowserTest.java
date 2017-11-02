@@ -81,7 +81,7 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     }
 
     protected List<DesiredCapabilities> getBrowsersExcludingPhantomJS() {
-        return getBrowserCapabilities(Browser.IE9, Browser.IE10, Browser.IE11,
+        return getBrowserCapabilities(Browser.IE10, Browser.IE11,
                 Browser.CHROME, Browser.FIREFOX);
     }
 
