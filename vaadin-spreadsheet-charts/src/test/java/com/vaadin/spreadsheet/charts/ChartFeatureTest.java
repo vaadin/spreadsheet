@@ -273,4 +273,14 @@ public class ChartFeatureTest extends ChartTestBase {
             "MultilevelCategoriesWithNoCachedData.xlsm", "L2").getConfiguration();
         Assert.assertEquals(AxisType.CATEGORY, conf.getxAxis().getType());
     }
+
+    @Test
+    public void multiLevelCategoriesWithGroupedColumn_loadSample_chartRendered()
+        throws Exception {
+        Configuration conf = getChartFromSampleFile(
+            "MultilevelCategoriesWithGroupedColumn.xlsm", "N13")
+            .getConfiguration();
+        Assert.assertEquals(AxisType.CATEGORY,conf.getxAxis().getType());
+    }
+
 }
