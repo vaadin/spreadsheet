@@ -188,9 +188,8 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
         final int height = lastCell.getRow() - firstCell.getRow() - hiddenRows + 1;
 
 
-        final int numOfPointsInCache = (int) multiLvlStrRef
-            .getMultiLvlStrCache().getPtCount().getVal();
-        final int numOfLevels = allReferencedCells.size() / numOfPointsInCache;
+        final int numOfLevels = multiLvlStrRef.getMultiLvlStrCache().getLvlList().size();
+        final int numOfPointsInCache = (int)(allReferencedCells.size() / numOfLevels);
 
         if (numOfLevels == width) {
             return new AbstractList<CellReference>() {
