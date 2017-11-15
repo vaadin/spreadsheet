@@ -137,7 +137,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnFormulaChange");
     }
-    
+
     @Test
     public void sheetWithGroupingAndChart_groupIsCollapsed_chartPointsAreHidden()
             throws Exception {
@@ -209,6 +209,32 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
                 .get(0).click();
 
         assertSelection("G4", "H4", "I4", "J4", "K4", "L4", "M4", "N4", "O4");
+
+    }
+
+    @Test
+    public void sheetWithGroupingAndMultiLevelChart_groupIsExpanded_chartCategoriesUpdated()
+        throws Exception {
+
+        final String EXPANDED_CATEGORIS =
+            "Full Year\n" + "1st Quarter\n" + "2nd Quarter\n" + "3rd Quarter\n"
+                + "4th Quarter\n" + "1st\n" + "2nd";
+
+        final String COLLAPSED_CATEGORIS = "Full Year\n" + "1st\n" + "2nd";
+        headerPage.loadFile("MultilevelCategoriesWithGroupedColumn.xlsm", this);
+
+        String categoryCollapsed = overlayHelper.getOverlayElement("N13")
+            .findElement(By.cssSelector(".highcharts-xaxis-labels")).getText();
+        Assert.assertEquals(COLLAPSED_CATEGORIS, categoryCollapsed);
+
+        WebElement expandButton = driver
+            .findElement(By.cssSelector(".grouping"));
+        expandButton.click();
+        Thread.sleep(1000);
+
+        String categoryExpanded = overlayHelper.getOverlayElement("N13")
+            .findElement(By.cssSelector(".highcharts-xaxis-labels")).getText();
+        Assert.assertEquals(EXPANDED_CATEGORIS, categoryExpanded);
 
     }
 }
