@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.parallel.Browser;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -32,6 +33,7 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells() {
+        skipBrowser("Fails in the TB3 Hub's version of Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("1");
@@ -52,6 +54,7 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void spreadsheetHandlerOnPaste_PasteCells_SmallServerJsonResponse() {
+        skipBrowser("Fails in the TB3 Hub's version of Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("500x200test.xlsx", this);
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
