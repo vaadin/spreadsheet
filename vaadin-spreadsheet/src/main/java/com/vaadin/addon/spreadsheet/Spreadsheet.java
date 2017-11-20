@@ -55,6 +55,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -982,7 +983,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        workbook.setSheetHidden(sheetPOIIndex, hidden);
+        workbook.setSheetVisibility(sheetPOIIndex, hidden == 2 ? SheetVisibility.VERY_HIDDEN : (hidden == 1 ? SheetVisibility.HIDDEN : SheetVisibility.VISIBLE));
 
         // skip component reload if "nothing changed"
         if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0

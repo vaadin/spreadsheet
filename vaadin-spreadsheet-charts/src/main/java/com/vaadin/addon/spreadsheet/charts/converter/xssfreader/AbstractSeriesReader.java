@@ -243,7 +243,7 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
             @Override
             public void dataSelected() {
                 AreaReference[] areaReferences = Utils
-                        .getAreaReferences(formula);
+                        .getAreaReferences(spreadsheet.getWorkbook().getSpreadsheetVersion(), formula);
 
                 spreadsheet.setSelectionRange(
                         areaReferences[0].getFirstCell().getRow(),
