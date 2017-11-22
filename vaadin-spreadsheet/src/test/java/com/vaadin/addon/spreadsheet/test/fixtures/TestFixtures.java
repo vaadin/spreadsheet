@@ -20,7 +20,8 @@ public enum TestFixtures {
     LargeSpreadsheet(LargeSpreadsheetFixture.class),
     RowHeaderDoubleClick(RowHeaderDoubleClickFixture.class),
     SetClickMeButtonFactory(SetClickMeButtonFactoryFixture.class),
-    AddClickMeTextToCells(AddClickMeTextToCellsFixture.class);
+    AddClickMeTextToCells(AddClickMeTextToCellsFixture.class),
+    AddSimpleDataSeries(AddSimpleDataSeriesFixture.class);
 
     public final SpreadsheetFixtureFactory factory;
 

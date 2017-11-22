@@ -12,6 +12,7 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.OverlayHelper;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.parallel.Browser;
+import org.openqa.selenium.interactions.Actions;
 
 public class InteractionTBTest extends AbstractSpreadsheetTestCase {
 
@@ -29,6 +30,30 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage.getCellAt(1,14).setValue("10");
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnDataChange");
+    }
+
+    @Test
+    public void serverUpdatedData_chartsUpdated() throws Exception {
+        headerPage.loadFile("InteractionSample.xlsx", this);
+        headerPage.loadTestFixture(TestFixtures.AddSimpleDataSeries);
+        testBench(driver).waitForVaadin();
+
+        WebElement spreadsheetCorner = driver
+                .findElement(By.cssSelector(".v-spreadsheet > .corner"));
+
+        WebElement firstBar = overlayHelper.getOverlayElement("B1")
+                .findElements(By.cssSelector(".highcharts-series-0 > rect"))
+                .get(0);
+
+        new Actions(driver).moveToElement(spreadsheetCorner)
+                .moveToElement(firstBar).build().perform();
+        Thread.sleep(1000);
+
+        WebElement tooltip = overlayHelper.getOverlayElement("B1")
+                .findElements(By.cssSelector(".highcharts-tooltip > text"))
+                .get(0);
+
+        Assert.assertEquals("Series 1 Point 1 1", tooltip.getText());
     }
 
     @Test
