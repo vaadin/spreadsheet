@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.server.browserlaunchers.Sleeper;
 import org.openqa.selenium.support.ui.Select;
@@ -124,6 +125,19 @@ public class CustomComponentsTest extends Test1 {
         Assert.assertEquals("42", sheetController.getCellContent("B11"));
         Assert.assertEquals("b12", driver.findElement(By.id("b12-label"))
                 .getText());
+    }
+
+    @Ignore("Known issue: see https://github.com/vaadin/spreadsheet/issues/629")
+    @Test
+    public void customComponentFactory_cellUpdatedFromServer_componentRendered() {
+        loadServerFixture("SET_CLICK_ME_BUTTON_FACTORY");
+        testBench(driver).waitForVaadin();
+        loadServerFixture("ADD_CLICK_ME_TEXT_CELLS");
+        testBench(driver).waitForVaadin();
+
+        WebElement cell = sheetController.getCellElement("B2");
+        WebElement button = cell.findElement(By.cssSelector(".v-widget.v-button"));
+        Assert.assertEquals("Click Me", button.getText());
     }
 
 }

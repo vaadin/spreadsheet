@@ -19,6 +19,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeListener;
 import com.vaadin.addon.spreadsheet.test.fixtures.ActionFixture;
+import com.vaadin.addon.spreadsheet.test.fixtures.AddClickMeTextToCellsFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.CellMergeFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ClassFixtureFactory;
 import com.vaadin.addon.spreadsheet.test.fixtures.ColumnToggleFixture;
@@ -31,6 +32,7 @@ import com.vaadin.addon.spreadsheet.test.fixtures.HyperLinkFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.LockCellFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.PopupButtonFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.RowToggleFixture;
+import com.vaadin.addon.spreadsheet.test.fixtures.SetClickMeButtonFactoryFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SheetsFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.ShiftFixture;
 import com.vaadin.addon.spreadsheet.test.fixtures.SimpleCustomEditorFixture;
@@ -105,6 +107,10 @@ public class TestexcelsheetUI extends UI {
                     new EagerFixtureFactory(new PopupButtonFixture()));
             put("SIMPLE_CUSTOM_EDITOR", new ClassFixtureFactory(
                     SimpleCustomEditorFixture.class));
+            put("SET_CLICK_ME_BUTTON_FACTORY", new ClassFixtureFactory(
+                    SetClickMeButtonFactoryFixture.class));
+            put("ADD_CLICK_ME_TEXT_CELLS", new ClassFixtureFactory(
+                    AddClickMeTextToCellsFixture.class));
         }
     };
 
