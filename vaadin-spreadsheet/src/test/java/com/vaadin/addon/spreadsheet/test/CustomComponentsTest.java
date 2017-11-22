@@ -127,6 +127,20 @@ public class CustomComponentsTest extends Test1 {
                 .getText());
     }
 
+    @Ignore("Known issue: see https://github.com/vaadin/spreadsheet/issues/641")
+    @Test
+    public void customComponentFactory_cellUpdatedFromClient_componentRendered() {
+        loadServerFixture("SET_CLICK_ME_BUTTON_FACTORY");
+        testBench(driver).waitForVaadin();
+
+        sheetController.putCellContent("B2", "Click Me");
+        sheetController.putCellContent("C2", "Click Me");
+
+        WebElement cell = sheetController.getCellElement("C2");
+        WebElement button = cell.findElement(By.cssSelector(".v-widget.v-button"));
+        Assert.assertEquals("Click Me", button.getText());
+    }
+
     @Ignore("Known issue: see https://github.com/vaadin/spreadsheet/issues/629")
     @Test
     public void customComponentFactory_cellUpdatedFromServer_componentRendered() {
