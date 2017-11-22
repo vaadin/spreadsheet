@@ -2,21 +2,25 @@ package com.vaadin.addon.spreadsheet.test.fixtures;
 
 /**
  * Test fixtures for server-side Spreadsheet manipulation
- *
  */
 public enum TestFixtures {
-    FirstColumnWidth(FirstColumnWidthFixture.class), PopupButton(
-            PopupButtonFixture.class), TabsheetPopupButton(
-            TabsheetPopupButtonFixture.class), TablePopupButton(
-            TablePopupButtonFixture.class), SpreadsheetTable(
-            SpreadsheetTableFixture.class), Comments(CommentFixture.class), AddOrRemoveComment(
-            AddOrRemoveCommentFixture.class), Formats(FormatsFixture.class), DisableChartOverlays(
-            DisableChartsFixture.class), StyleMergeReigions(
-            StyleMergeReigions.class), RemoveFixture(RemoveFixture.class), DefaultStyleUnlocked(
-            DefaultStyleUnlockedFixture.class), HideSecondRow(
-            HideSecondRowFixture.class), LargeSpreadsheet(
-            LargeSpreadsheetFixture.class), RowHeaderDoubleClick(
-            RowHeaderDoubleClickFixture.class);
+    FirstColumnWidth(FirstColumnWidthFixture.class),
+    PopupButton(PopupButtonFixture.class),
+    TabsheetPopupButton(TabsheetPopupButtonFixture.class),
+    TablePopupButton(TablePopupButtonFixture.class),
+    SpreadsheetTable(SpreadsheetTableFixture.class),
+    Comments(CommentFixture.class),
+    AddOrRemoveComment(AddOrRemoveCommentFixture.class),
+    Formats(FormatsFixture.class),
+    DisableChartOverlays(DisableChartsFixture.class),
+    StyleMergeReigions(StyleMergeReigions.class),
+    RemoveFixture(RemoveFixture.class),
+    DefaultStyleUnlocked(DefaultStyleUnlockedFixture.class),
+    HideSecondRow(HideSecondRowFixture.class),
+    LargeSpreadsheet(LargeSpreadsheetFixture.class),
+    RowHeaderDoubleClick(RowHeaderDoubleClickFixture.class),
+    SetClickMeButtonFactory(SetClickMeButtonFactoryFixture.class),
+    AddClickMeTextToCells(AddClickMeTextToCellsFixture.class);
 
     public final SpreadsheetFixtureFactory factory;
 
