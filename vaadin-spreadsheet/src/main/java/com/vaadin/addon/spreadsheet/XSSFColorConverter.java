@@ -39,6 +39,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPatternFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
@@ -318,7 +319,13 @@ public class XSSFColorConverter implements ColorConverter {
         XSSFConditionalFormattingRule r = (XSSFConditionalFormattingRule) rule;
         CTDxf dxf = getXMLColorDataWithReflection(r);
 
-        CTColor bgColor = dxf.getFill().getPatternFill().getBgColor();
+        final CTPatternFill patternFill = dxf.getFill().getPatternFill();
+
+        if(!patternFill.isSetBgColor()){
+            return null;
+        }
+
+        CTColor bgColor = patternFill.getBgColor();
 
         if (bgColor.isSetTheme()) {
             XSSFColor themeColor = workbook.getTheme().getThemeColor(

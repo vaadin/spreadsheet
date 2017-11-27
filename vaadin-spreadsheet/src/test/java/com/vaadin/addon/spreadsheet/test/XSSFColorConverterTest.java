@@ -8,12 +8,14 @@ import java.io.InputStream;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.ColorConverterUtil;
+import com.vaadin.addon.spreadsheet.XSSFColorConverter;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
@@ -22,6 +24,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
     public static final String BORDER_RIGHT_COLOR = "border-right-color";
     private XSSFWorkbook workbook;
     private SpreadsheetPage spreadsheetPage;
+    private XSSFColorConverter converter;
 
     @Before
     public void setUp() throws Exception {
@@ -72,5 +75,19 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
         assertEquals(indexedARGB.substring(0,21), cssValue.substring(0,21));
     }
 
+    @Test
+     public void sheetWithConditionalFormatting_noBgColorDefined_noNPEthrown() throws IOException {
+
+                    InputStream is = getClass()
+                        .getResourceAsStream("/test_sheets/conditional_formatting_noBgColor.xlsm");
+
+                    workbook = new XSSFWorkbook(is);
+                XSSFConditionalFormattingRule rule = workbook.getSheet("C")
+                        .getSheetConditionalFormatting().getConditionalFormattingAt(0)
+                        .getRule(0);
+                converter = new XSSFColorConverter(workbook);
+                converter.getBackgroundColorCSS(rule);
+
+                }
 
 }
