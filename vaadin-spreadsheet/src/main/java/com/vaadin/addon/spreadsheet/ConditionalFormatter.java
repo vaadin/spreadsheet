@@ -105,9 +105,9 @@ public class ConditionalFormatter implements Serializable {
 	 * <p>
 	 * Eventually this needs to include table styles and change to:
 	 * <p>
-	 * <br>0-999999999 = table styles
-	 * <br>1000000000-1000000255 = cell styles
-	 * <br>2000000000-2999999999 = conditional formats
+	 * <br>0-99999999 = table styles
+	 * <br>100000000-100000255 = cell styles
+	 * <br>1000000000-1999999999 = conditional formats
 	 * <p>
 	 * This is the order Excel applies styles.
 	 */
