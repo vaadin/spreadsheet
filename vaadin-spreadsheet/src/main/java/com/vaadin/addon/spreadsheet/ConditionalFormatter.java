@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,7 +55,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 @SuppressWarnings("serial")
 public class ConditionalFormatter implements Serializable {
 
-    @SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger
             .getLogger(ConditionalFormatter.class.getName());
 
@@ -99,9 +97,21 @@ public class ConditionalFormatter implements Serializable {
 
 	/**
 	 * starting index for conditional formatting CSS styles.  
-	 * Should be high enough to avoid conflicts with other types. 
+	 * Should be high enough to avoid conflicts with other types.
+	 * <p>
+	 * Currently we have: 
+	 * <br>0-255 = cell styles by index
+	 * <br>1000000000-1999999999 = conditional formats
+	 * <p>
+	 * Eventually this needs to include table styles and change to:
+	 * <p>
+	 * <br>0-999999999 = table styles
+	 * <br>1000000000-1000000255 = cell styles
+	 * <br>2000000000-2999999999 = conditional formats
+	 * <p>
+	 * This is the order Excel applies styles.
 	 */
-	public static final int BASE_CONDITIONAL_FORMAT_CSS_INDEX = 9000000;
+	public static final int BASE_CONDITIONAL_FORMAT_CSS_INDEX = 1000000000;
 
 	private Spreadsheet spreadsheet;
 
@@ -355,10 +365,10 @@ public class ConditionalFormatter implements Serializable {
 	protected int getCssIndex(EvaluationConditionalFormatRule rule, IncrementalStyleBuilder.StyleType type) {
 		// each rule has 3 possible styles (StyleType).  Start at 9M just in case.
 		return BASE_CONDITIONAL_FORMAT_CSS_INDEX
-				+ spreadsheet.getWorkbook().getSheetIndex(rule.getSheet().getSheetName()) * 100000 // 899 sheets
+				+ spreadsheet.getWorkbook().getSheetIndex(rule.getSheet().getSheetName()) * 1000000 // 999 sheets
 				+ rule.getFormattingIndex() * 10000 // room for 99 formatting indexes per sheet (mostly 1:1 with regions)
 				+ rule.getRuleIndex() * 10 // room for 999 rules per formatting (HSSF max 3, XSSF unlimited)
-				+ type.ordinal(); // 0-2
+				+ type.ordinal(); // 0-7
 	}
 
 	/**
