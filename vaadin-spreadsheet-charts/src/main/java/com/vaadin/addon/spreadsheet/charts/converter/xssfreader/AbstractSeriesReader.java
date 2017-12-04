@@ -180,12 +180,15 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
                 .get(allReferencedCells
                 .size() - 1);
 
-        final int width = lastCell.getCol() - firstCell.getCol() + 1;
-        final int height = lastCell.getRow() - firstCell.getRow() + 1;
+        int hiddenCols = countHiddenColumns(allReferencedCells);
 
-        final int numOfPointsInCache = (int) multiLvlStrRef
-                .getMultiLvlStrCache().getPtCount().getVal();
-        final int numOfLevels = allReferencedCells.size() / numOfPointsInCache;
+        int hiddenRows = countHiddenRows(allReferencedCells);
+        final int width = lastCell.getCol() - firstCell.getCol() - hiddenCols + 1;
+        final int height = lastCell.getRow() - firstCell.getRow() - hiddenRows + 1;
+
+
+        final int numOfLevels = multiLvlStrRef.getMultiLvlStrCache().getLvlList().size();
+        final int numOfPointsInCache = allReferencedCells.size() / numOfLevels;
 
         if (numOfLevels == width) {
             return new AbstractList<CellReference>() {
@@ -217,6 +220,34 @@ public abstract class AbstractSeriesReader<CT_SER_TYPE extends XmlObject, SERIES
             System.err.println("Could not handle multilevel categories");
             return Collections.emptyList();
         }
+    }
+
+    private int countHiddenColumns(List<CellReference> referencedCells) {
+
+        int hiddenCols = 0;
+        int firstCol = referencedCells.get(0).getCol();
+        int lastCol = referencedCells.get(referencedCells.size() - 1)
+            .getCol();
+        for (int i = firstCol; i <= lastCol; i++) {
+            if (spreadsheet.isColumnHidden(i)) {
+                hiddenCols++;
+            }
+        }
+        return hiddenCols;
+    }
+
+    private int countHiddenRows(List<CellReference> referencedCells) {
+
+        int hiddenRows = 0;
+        int firstRow = referencedCells.get(0).getRow();
+        int lastRow = referencedCells.get(referencedCells.size() - 1)
+            .getRow();
+        for (int i = firstRow; i <= lastRow; i++) {
+            if (spreadsheet.isRowHidden(i)) {
+                hiddenRows++;
+            }
+        }
+        return hiddenRows;
     }
 
     protected void createSeriesDataPoints(CTNumDataSource val,
