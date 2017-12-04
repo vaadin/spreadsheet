@@ -3,6 +3,7 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -87,7 +88,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
             .getSheetConditionalFormatting().getConditionalFormattingAt(0)
             .getRule(0);
         converter = new XSSFColorConverter(workbook);
-        converter.getBackgroundColorCSS(rule);
+        assertNull(converter.getBackgroundColorCSS(rule));
 
     }
 
