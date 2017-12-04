@@ -218,16 +218,16 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     public void sheetWithGroupingAndMultiLevelChart_groupIsExpanded_chartCategoriesUpdated()
         throws Exception {
 
-        final String EXPANDED_CATEGORIS =
+        final String EXPANDED_CATEGORIES =
             "Full Year\n" + "1st Quarter\n" + "2nd Quarter\n" + "3rd Quarter\n"
                 + "4th Quarter\n" + "1st\n" + "2nd";
 
-        final String COLLAPSED_CATEGORIS = "Full Year\n" + "1st\n" + "2nd";
+        final String COLLAPSED_CATEGORIES = "Full Year\n" + "1st\n" + "2nd";
         headerPage.loadFile("MultilevelCategoriesWithGroupedColumn.xlsm", this);
 
         String categoryCollapsed = overlayHelper.getOverlayElement("N13")
             .findElement(By.cssSelector(".highcharts-xaxis-labels")).getText();
-        Assert.assertEquals(COLLAPSED_CATEGORIS, categoryCollapsed);
+        Assert.assertEquals(COLLAPSED_CATEGORIES, categoryCollapsed);
 
         WebElement expandButton = driver
             .findElement(By.cssSelector(".grouping"));
@@ -236,7 +236,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
 
         String categoryExpanded = overlayHelper.getOverlayElement("N13")
             .findElement(By.cssSelector(".highcharts-xaxis-labels")).getText();
-        Assert.assertEquals(EXPANDED_CATEGORIS, categoryExpanded);
+        Assert.assertEquals(EXPANDED_CATEGORIES, categoryExpanded);
 
     }
 }
