@@ -52,7 +52,7 @@ public class ResizeTest extends Test1 {
     @Test
     public void testColumnAutoResize() {
         sheetController.putCellContent("B2", "text");
-
+        sheetController.waitForVaadin();
         $(SpreadsheetElement.class).first().getColumnHeader(2)
                 .getResizeHandle().doubleClick();
         sheetController.waitForVaadin();
@@ -60,10 +60,10 @@ public class ResizeTest extends Test1 {
                 35);
 
         sheetController.putCellContent("D2", "very long text inserted in D2.");
-
+        sheetController.waitForVaadin();
         $(SpreadsheetElement.class).first().getColumnHeader(4)
                 .getResizeHandle().doubleClick();
-
+        sheetController.waitForVaadin();
         assertInRange(100,
                 getSize(sheetController.getCellStyle("D2", "width")), 200);
     }
