@@ -52,7 +52,7 @@ public class ResizeTest extends Test1 {
     @Test
     public void testColumnAutoResize() {
         sheetController.putCellContent("B2", "text");
-
+        sheetController.waitForVaadin();
         $(SpreadsheetElement.class).first().getColumnHeader(2)
                 .getResizeHandle().doubleClick();
         sheetController.waitForVaadin();
