@@ -28,7 +28,6 @@ import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
 import org.apache.poi.ss.usermodel.FontFormatting;
 import org.apache.poi.ss.usermodel.PatternFormatting;
-import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
 /**
@@ -156,14 +155,16 @@ public class HSSFColorConverter implements ColorConverter {
 
     @Override
     public String getBackgroundColorCSS(ConditionalFormattingRule rule) {
-    	return getBackgroundColorCSS((DifferentialStyleProvider) rule);
+        return getBackgroundColorCSS((DifferentialStyleProvider) rule);
     }
+
     @Override
     public String getBackgroundColorCSS(DifferentialStyleProvider styleProvider) {
-    	PatternFormatting fillFmt = styleProvider.getPatternFormatting();
-    	if (fillFmt == null) return null;
-    	HSSFColor color = (HSSFColor) fillFmt.getFillBackgroundColorColor();
-    	return styleColor(color.getIndex());
+        PatternFormatting fillFmt = styleProvider.getPatternFormatting();
+        if (fillFmt == null)
+            return null;
+        HSSFColor color = (HSSFColor) fillFmt.getFillBackgroundColorColor();
+        return styleColor(color.getIndex());
     }
 
     /**
@@ -172,17 +173,18 @@ public class HSSFColorConverter implements ColorConverter {
      */
     public String getFontColorCSS(DifferentialStyleProvider styleProvider) {
 
-    	FontFormatting font = styleProvider.getFontFormatting();
-    	
-    	if (font == null) return null;
+        FontFormatting font = styleProvider.getFontFormatting();
 
-    	HSSFColor color = (HSSFColor) font.getFontColor();
-    	return styleColor(color.getIndex());
+        if (font == null)
+            return null;
+
+        HSSFColor color = (HSSFColor) font.getFontColor();
+        return styleColor(color.getIndex());
     }
 
     @Override
     public String getFontColorCSS(ConditionalFormattingRule rule) {
-    	return getFontColorCSS((DifferentialStyleProvider) rule);
+        return getFontColorCSS((DifferentialStyleProvider) rule);
     }
 
     @Override
@@ -211,7 +213,7 @@ public class HSSFColorConverter implements ColorConverter {
         styleBorderColor(sb, attr, ((HSSFColor) colorInstance).getIndex());
         return sb.toString();
     }
-    
+
     private void styleBorderColor(final StringBuilder sb, String attr,
             short index) {
         HSSFColor color = colors.getColor(index);

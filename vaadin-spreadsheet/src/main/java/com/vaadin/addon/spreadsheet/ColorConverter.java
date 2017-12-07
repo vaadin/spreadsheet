@@ -84,7 +84,7 @@ public interface ColorConverter extends Serializable {
      * @return CSS color string
      */
     String getBorderColorCSS(String attr, Color colorInstance);
-    
+
     /**
      * Writes the default background and foreground colors as CSS styles from
      * the given cell style to the given string buffer.
@@ -113,7 +113,7 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    public String getBackgroundColorCSS(ConditionalFormattingRule rule);
+    String getBackgroundColorCSS(ConditionalFormattingRule rule);
 
     /**
      * Create a CSS color string for the background in the given style.
@@ -123,8 +123,8 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    public String getBackgroundColorCSS(DifferentialStyleProvider styleProvider);
-    
+    String getBackgroundColorCSS(DifferentialStyleProvider styleProvider);
+
     /**
      * Create a CSS color string for the font in the given rule.
      * 
@@ -133,7 +133,7 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    public String getFontColorCSS(ConditionalFormattingRule rule);
+    String getFontColorCSS(ConditionalFormattingRule rule);
 
     /**
      * Create a CSS color string for the font in the given style provider.
@@ -143,5 +143,5 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    public String getFontColorCSS(DifferentialStyleProvider styleProvider);
+    String getFontColorCSS(DifferentialStyleProvider styleProvider);
 }
