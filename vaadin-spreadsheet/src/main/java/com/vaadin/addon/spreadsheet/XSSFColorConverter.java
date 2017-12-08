@@ -239,8 +239,26 @@ public class XSSFColorConverter implements ColorConverter {
             default:
                 break;
             }
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-            LOGGER.log(Level.SEVERE, "Incompatible POI implementation; unable to parse border color", e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Incompatible POI implementation; unable to parse border color",
+                    e);
+        } catch (IllegalAccessException e) {
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Incompatible POI implementation; unable to parse border color",
+                    e);
+        } catch (NoSuchFieldException e) {
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Incompatible POI implementation; unable to parse border color",
+                    e);
+        } catch (SecurityException e) {
+            LOGGER.log(
+                    Level.SEVERE,
+                    "Incompatible POI implementation; unable to parse border color",
+                    e);
         } finally {
             if (declaredField != null) {
                 declaredField.setAccessible(false);

@@ -20,7 +20,6 @@ package com.vaadin.addon.spreadsheet;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -58,35 +57,6 @@ public class ConditionalFormatter implements Serializable {
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger
             .getLogger(ConditionalFormatter.class.getName());
-
-    /**
-     * Interface for a callback that evaluates the conditional format state of a collection of cells at once.
-     * Use this to avoid re-calculating format styles multiple times for the same cell when no values are changing
-     * in the mean time.
-     */
-    @FunctionalInterface
-    public static interface ConditionalFormattingBatchEvaluator extends Serializable {
-        /**
-         * called by {@link ConditionalFormatter} to evaluate cells using cached results for efficiency
-         *
-         * @param formatter the conditional formatter to use - don't use another reference, it may have a different cache!
-         */
-        public void evaluate(ConditionalFormatterEvaluator formatter);
-    }
-
-    /**
-     * Interface for batch processing wrapping calls to {@link #getCellFormattingIndex(Cell)}.
-     */
-    @FunctionalInterface
-    public static interface ConditionalFormatterEvaluator extends Serializable {
-        /**
-         * define the set of CSS rule indexes that apply to this cell.
-         *
-         * @param cell
-         * @return set of CSS rule IDs for applicable conditional formatting
-         */
-        public Set<Integer> getCellFormattingIndex(Cell cell);
-    }
 
     /*
      * Slight hack. This style is used when a CF rule defines 'no border', in
@@ -152,8 +122,13 @@ public class ConditionalFormatter implements Serializable {
 
         // need to re-evaluate all styles when any value changes
         // - no way to predict dependencies
-        spreadsheet.addCellValueChangeListener(e -> {
-            if (cfEvaluator != null) cfEvaluator.clearAllCachedValues();
+        spreadsheet.addCellValueChangeListener(new Spreadsheet.CellValueChangeListener() {
+            @Override
+            public void onCellValueChange(Spreadsheet.CellValueChangeEvent event) {
+                if (cfEvaluator != null) {
+                    cfEvaluator.clearAllCachedValues();
+                }
+            }
         });
 
     }
@@ -243,17 +218,6 @@ public class ConditionalFormatter implements Serializable {
     }
 
     /**
-     * define the set of CSS rule indexes that apply to this cell.
-     * NOTE: this does not use caching, use {@link #evaluateBatch(ConditionalFormattingBatchEvaluator)} if possible
-     *
-     * @param cell
-     * @return set of CSS rule IDs for applicable conditional formatting
-     */
-    public Set<Integer> getCellFormattingIndex(Cell cell) {
-        return getCellFormattingIndex(cell, new HashSet<>());
-    }
-
-    /**
      * define the set of CSS rule indexes that apply to this cell, with caching.
      *
      * @param cell
@@ -287,7 +251,7 @@ public class ConditionalFormatter implements Serializable {
         // performance optimization - only evaluate a cell once per response loop
         if (cellsEvaluatedInThisRun.contains(ref)) return cellToCssIndex.get(ref);
 
-        Set<Integer> styles = new TreeSet<>();
+        Set<Integer> styles = new TreeSet<Integer>();
         // always recalculate, but track previous values to see if the cell style changed or not
         Set<Integer> currentStyles = cellToCssIndex.put(ref, styles);
 
@@ -367,18 +331,4 @@ public class ConditionalFormatter implements Serializable {
                 + type.ordinal(); // 0-2
     }
 
-    /**
-     * For performance, since we always check cells next to a given cell to manage borders, don't evaluate each one multiple times
-     * per pass.  Passes calling this with a {@link ConditionalFormattingBatchEvaluator} allows caching of calculated style results
-     * while the batch is processed.
-     *
-     * @param evaluator
-     */
-    public void evaluateBatch(ConditionalFormattingBatchEvaluator evaluator) {
-		/*
-		 *  {@link #startEvaluationRun()} first to reset and allow picking up changes to conditional formatting state based on formula value changes.
-		 */
-        Set<CellReference> cellsEvaluatedInThisRun = new HashSet<>();
-        evaluator.evaluate((cell) -> getCellFormattingIndex(cell, cellsEvaluatedInThisRun));
-    }
 }
