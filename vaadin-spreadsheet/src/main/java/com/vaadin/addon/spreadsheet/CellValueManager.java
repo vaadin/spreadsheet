@@ -1078,7 +1078,7 @@ public class CellValueManager implements Serializable {
      * @return A list of CellData for the cells in the given area.
      */
     protected ArrayList<CellData> loadCellDataForRowAndColumnRange(
-            final int firstRow, final int firstColumn, final int lastRow, final int lastColumn) {
+            int firstRow, int firstColumn, int lastRow, int lastColumn) {
         final ArrayList<CellData> cellData = new ArrayList<CellData>();
         Workbook workbook = spreadsheet.getWorkbook();
         final Sheet activeSheet = workbook.getSheetAt(workbook
