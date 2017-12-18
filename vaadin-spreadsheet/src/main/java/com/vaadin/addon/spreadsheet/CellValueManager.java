@@ -1156,14 +1156,17 @@ public class CellValueManager implements Serializable {
 
         // update all cached formula cell values on client side, because they
         // might have changed. also make sure all marked cells are updated
-        Iterator<Row> rows = sheet.rowIterator();
+
+        // iterate from bottom to top, right to left, so that conditional
+        // formatting isn't evaluated before the cell value (due to border
+        // locations)
         spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
-            while (rows.hasNext()) {
-                final Row r = rows.next();
-                final Iterator<Cell> cells = r.cellIterator();
-                while (cells.hasNext()) {
-                    final Cell cell = cells.next();
-                    int rowIndex = cell.getRowIndex();
+            for (int rowIndex = sheet.getLastRowNum(); rowIndex >= 0; rowIndex--) {
+                final Row r = sheet.getRow(rowIndex);
+                if (r == null) continue; // skip null rows
+                for (int colIndex = r.getLastCellNum(); colIndex >= 0; colIndex--) {
+                    final Cell cell = r.getCell(colIndex);
+                    if (cell == null) continue; // skip null cells
                     int columnIndex = cell.getColumnIndex();
                     final String key = SpreadsheetUtil.toKey(columnIndex + 1,
                             rowIndex + 1);
