@@ -1099,12 +1099,14 @@ public class CellValueManager implements Serializable {
         final Collection<String> customComponentCells = (Collection<String>) (componentIDtoCellKeysMap == null ? Collections
                 .emptyList() : componentIDtoCellKeysMap.values());
         
-    	spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
-	        for (int r = firstRow - 1; r < lastRow; r++) {
+        // iterate in reverse row/column order (bottom right to top left) to match CSS order for border calculations,
+        // to avoid issues like #651 where cell values are not updated in the proper sequence.
+        spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
+	        for (int r = lastRow - 1; r >= lastRow -1; r--) {
 	            Row row = activeSheet.getRow(r);
 	            if (row != null && row.getLastCellNum() != -1
 	                    && row.getLastCellNum() >= firstColumn) {
-	                for (int c = firstColumn - 1; c < lastColumn; c++) {
+	                for (int c = lastColumn - 1; c >= firstColumn -1; c--) {
 	                    final String key = SpreadsheetUtil.toKey(c + 1, r + 1);
 	                    if (!customComponentCells.contains(key)
 	                            && !sentCells.contains(key)
@@ -1156,13 +1158,15 @@ public class CellValueManager implements Serializable {
 
         // update all cached formula cell values on client side, because they
         // might have changed. also make sure all marked cells are updated
-        Iterator<Row> rows = sheet.rowIterator();
+        // iterate in reverse row/column order (bottom right to top left) to match CSS order for border calculations,
+        // to avoid issues like #651 where cell values are not updated in the proper sequence.
     	spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
-	        while (rows.hasNext()) {
-	            final Row r = rows.next();
-	            final Iterator<Cell> cells = r.cellIterator();
-	            while (cells.hasNext()) {
-	                final Cell cell = cells.next();
+	        for (int ri = sheet.getLastRowNum(); ri >= 0; ri--) {
+	            final Row r = sheet.getRow(ri);
+	            if (r == null) continue;
+	            for (int ci = r.getLastCellNum() - 1; ci >= 0; ci--) {
+	                final Cell cell = r.getCell(ci);
+	                if (cell == null) continue;
 	                int rowIndex = cell.getRowIndex();
 	                int columnIndex = cell.getColumnIndex();
 	                final String key = SpreadsheetUtil.toKey(columnIndex + 1,
