@@ -23,7 +23,6 @@ import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
 /**
@@ -116,16 +115,6 @@ public interface ColorConverter extends Serializable {
     String getBackgroundColorCSS(ConditionalFormattingRule rule);
 
     /**
-     * Create a CSS color string for the background in the given style.
-     * 
-     * @param styleProvider
-     *            conditional format rule, table style, etc.
-     * @return valid color string with semicolon or <code>null</code> if no
-     *         color matches.
-     */
-    String getBackgroundColorCSS(DifferentialStyleProvider styleProvider);
-
-    /**
      * Create a CSS color string for the font in the given rule.
      * 
      * @param rule
@@ -133,15 +122,5 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    String getFontColorCSS(ConditionalFormattingRule rule);
-
-    /**
-     * Create a CSS color string for the font in the given style provider.
-     * 
-     * @param styleProvider
-     *            conditional format rule, table style, etc.
-     * @return valid color string with semicolon or <code>null</code> if no
-     *         color matches.
-     */
-    String getFontColorCSS(DifferentialStyleProvider styleProvider);
+    public String getFontColorCSS(ConditionalFormattingRule rule);
 }

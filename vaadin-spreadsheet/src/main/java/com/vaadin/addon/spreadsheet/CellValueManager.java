@@ -214,12 +214,7 @@ public class CellValueManager implements Serializable {
         return result;
     }
 
-    /**
-     * @param cell
-     * @param cellsEvaluatedInThisRun contains all the cell references evaluated in this iteration
-     * @return a new CellData instance
-     */
-    protected CellData createCellDataForCell(Cell cell, Set<CellReference> cellsEvaluatedInThisRun) {
+    protected CellData createCellDataForCell(Cell cell) {
         CellData cellData = new CellData();
         cellData.row = cell.getRowIndex() + 1;
         cellData.col = cell.getColumnIndex() + 1;
@@ -330,8 +325,9 @@ public class CellValueManager implements Serializable {
 
             // conditional formatting might be applied even if there isn't a
             // value (such as borders for the cell to the right)
-            Set<Integer> cellFormattingIndexes = spreadsheet.getConditionalFormatter().getCellFormattingIndex(cell, cellsEvaluatedInThisRun);
-            if (cellFormattingIndexes != null && !cellFormattingIndexes.isEmpty()) {
+            Set<Integer> cellFormattingIndexes = spreadsheet
+                    .getConditionalFormatter().getCellFormattingIndex(cell);
+            if (cellFormattingIndexes != null) {
 
                 for (Integer i : cellFormattingIndexes) {
                     cellData.cellStyle = cellData.cellStyle + " cf" + i;
@@ -1079,7 +1075,7 @@ public class CellValueManager implements Serializable {
      */
     protected ArrayList<CellData> loadCellDataForRowAndColumnRange(
             int firstRow, int firstColumn, int lastRow, int lastColumn) {
-        final ArrayList<CellData> cellData = new ArrayList<CellData>();
+        ArrayList<CellData> cellData = new ArrayList<CellData>();
         Workbook workbook = spreadsheet.getWorkbook();
         final Sheet activeSheet = workbook.getSheetAt(workbook
                 .getActiveSheetIndex());
@@ -1088,8 +1084,6 @@ public class CellValueManager implements Serializable {
         @SuppressWarnings("unchecked")
         final Collection<String> customComponentCells = (Collection<String>) (componentIDtoCellKeysMap == null ? Collections
                 .emptyList() : componentIDtoCellKeysMap.values());
-
-        Set<CellReference> cellsEvaluatedInThisRun = new HashSet<CellReference>();
         for (int r = firstRow - 1; r < lastRow; r++) {
             Row row = activeSheet.getRow(r);
             if (row != null && row.getLastCellNum() != -1
@@ -1101,7 +1095,7 @@ public class CellValueManager implements Serializable {
                             && !sentFormulaCells.contains(key)) {
                         Cell cell = row.getCell(c);
                         if (cell != null) {
-                            final CellData cd = createCellDataForCell(cell, cellsEvaluatedInThisRun);
+                            final CellData cd = createCellDataForCell(cell);
                             if (cd != null) {
                                 CellType cellType = cell.getCellTypeEnum();
                                 if (cellType == CellType.FORMULA) {
@@ -1116,7 +1110,6 @@ public class CellValueManager implements Serializable {
                 }
             }
         }
-
         return cellData;
     }
 
@@ -1147,7 +1140,6 @@ public class CellValueManager implements Serializable {
         // update all cached formula cell values on client side, because they
         // might have changed. also make sure all marked cells are updated
         Iterator<Row> rows = sheet.rowIterator();
-        Set<CellReference> cellsEvaluatedInThisRun = new HashSet<CellReference>();
         while (rows.hasNext()) {
             final Row r = rows.next();
             final Iterator<Cell> cells = r.cellIterator();
@@ -1157,7 +1149,7 @@ public class CellValueManager implements Serializable {
                 int columnIndex = cell.getColumnIndex();
                 final String key = SpreadsheetUtil.toKey(columnIndex + 1,
                         rowIndex + 1);
-                CellData cd = createCellDataForCell(cell, cellsEvaluatedInThisRun);
+                CellData cd = createCellDataForCell(cell);
                 // update formula cells
                 if (cell.getCellTypeEnum() == CellType.FORMULA) {
                     if (cd != null) {
@@ -1184,7 +1176,6 @@ public class CellValueManager implements Serializable {
                 }
             }
         }
-
         if (!changedFormulaCells.isEmpty()) {
             fireFormulaValueChangeEvent(changedFormulaCells);
             changedFormulaCells = new HashSet<CellReference>();

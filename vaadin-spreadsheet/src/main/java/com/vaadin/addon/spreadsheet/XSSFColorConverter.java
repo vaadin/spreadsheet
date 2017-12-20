@@ -18,6 +18,7 @@ package com.vaadin.addon.spreadsheet;
  */
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,19 +27,21 @@ import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
-import org.apache.poi.ss.usermodel.FontFormatting;
-import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.xssf.model.ThemesTable;
 import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBorder;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPatternFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
@@ -318,59 +321,58 @@ public class XSSFColorConverter implements ColorConverter {
         return false;
     }
 
-    /**
-     * @param styleProvider general interface to support conditional format rules and table styles
-     * @return CSS color string, or null if none found
-     */
-    public String getBackgroundColorCSS(DifferentialStyleProvider styleProvider) {
-        PatternFormatting fillFmt = styleProvider.getPatternFormatting();
-        if (fillFmt == null) return null;
-
-        XSSFColor color = (XSSFColor) fillFmt.getFillBackgroundColorColor();
-
-        return getColorCSS(color);
-    }
-
     @Override
     public String getBackgroundColorCSS(ConditionalFormattingRule rule) {
-        return getBackgroundColorCSS((DifferentialStyleProvider) rule);
-    }
 
-    /**
-     * @param styleProvider
-     * @return CSS or null
-     */
-    public String getFontColorCSS(DifferentialStyleProvider styleProvider) {
+        XSSFConditionalFormattingRule r = (XSSFConditionalFormattingRule) rule;
+        CTDxf dxf = getXMLColorDataWithReflection(r);
 
-        FontFormatting font = styleProvider.getFontFormatting();
+        CTPatternFill patternFill = dxf.getFill().getPatternFill();
 
-        if (font == null) return null;
+        if(!patternFill.isSetBgColor()){
+            return null;
+        }
 
-        XSSFColor color = (XSSFColor) font.getFontColor();
+        CTColor bgColor = patternFill.getBgColor();
 
-        return getColorCSS(color);
+        if (bgColor.isSetTheme()) {
+            XSSFColor themeColor = workbook.getTheme().getThemeColor(
+                    (int) bgColor.getTheme());
+
+            // CF rules have tint in bgColor but not the XSSFColor.
+            return styleColor(themeColor, bgColor.getTint());
+        } else {
+            byte[] rgb = bgColor.getRgb();
+            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
+        }
+
     }
 
     @Override
     public String getFontColorCSS(ConditionalFormattingRule rule) {
-        return getFontColorCSS((DifferentialStyleProvider) rule);
-    }
 
-    /**
-     * @param color
-     * @return CSS or null
-     */
-    public String getColorCSS(XSSFColor color) {
-        if (color == null || color.getCTColor() == null) return null;
+        XSSFConditionalFormattingRule r = (XSSFConditionalFormattingRule) rule;
 
-        if (color.isThemed()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(color.getTheme());
-            // apply tint from the style, it isn't in the theme.
-            return styleColor(themeColor, color.getTint());
+        CTDxf dxf = getXMLColorDataWithReflection(r);
+        CTFont font = dxf.getFont();
+
+        if (font.getColorList() == null || font.getColorList().isEmpty()) {
+            // default color
+            return null;
+        }
+
+        CTColor ctColor = font.getColorList().get(0);
+
+        if (ctColor.isSetTheme()) {
+            XSSFColor themeColor = workbook.getTheme().getThemeColor(
+                    (int) ctColor.getTheme());
+
+            return styleColor(themeColor, ctColor.getTint());
         } else {
-            byte[] rgb = color.getARGB();
+            byte[] rgb = ctColor.getRgb();
             return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
         }
+
     }
 
     private XSSFColor getFillColor(XSSFCellStyle cs) {
@@ -439,6 +441,36 @@ public class XSSFColorConverter implements ColorConverter {
         } else {
             return (byte) lum;
         }
+    }
+
+    /**
+     * XSSF doesn't have an API to get this value, so brute force it is..
+     * 
+     * @param rule
+     *            The rule that has color data defined
+     * @return OpenXML data format that contains the real defined styles
+     */
+    private CTDxf getXMLColorDataWithReflection(
+            XSSFConditionalFormattingRule rule) {
+        CTCfRule realRule = null;
+
+        Method declaredMethod = null;
+        try {
+            declaredMethod = rule.getClass().getDeclaredMethod("getCTCfRule");
+            declaredMethod.setAccessible(true);
+            realRule = (CTCfRule) declaredMethod.invoke(rule);
+        } catch (Exception e) {
+            LOGGER.fine(e.getMessage());
+        } finally {
+            if (declaredMethod != null) {
+                declaredMethod.setAccessible(false);
+            }
+        }
+
+        CTDxf dxf = workbook.getStylesSource().getCTStylesheet().getDxfs()
+                .getDxfArray((int) realRule.getDxfId());
+
+        return dxf;
     }
 
 }
