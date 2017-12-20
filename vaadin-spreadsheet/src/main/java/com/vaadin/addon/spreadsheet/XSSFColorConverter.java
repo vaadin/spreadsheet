@@ -22,8 +22,10 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.xssf.model.ThemesTable;
 import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
@@ -85,7 +87,7 @@ public class XSSFColorConverter implements ColorConverter {
                     backgroundColor = styleColor(themeColor);
                 }
             } catch (Exception e) {
-                LOGGER.log(Level.FINEST, e.getMessage(), e);
+                LOGGER.log(Level.FINE, e.getMessage(), e);
             }
         }
 
@@ -123,13 +125,15 @@ public class XSSFColorConverter implements ColorConverter {
 
         sb.append(attr);
         sb.append(":");
+
+        if (color == null || color.isAuto() || (color.isIndexed() && color.getIndex() == HSSFColorPredefined.AUTOMATIC.getIndex())) {
+            sb.append("#000;");
+            return sb.toString();
+        }
+
         if (color.isIndexed() && ColorConverterUtil
             .hasCustomIndexedColors(workbook)) {
             sb.append(ColorConverterUtil.getIndexedARGB(workbook,color));
-            return sb.toString();
-        }
-        if (color == null || color.isAuto()) {
-            sb.append("#000;");
             return sb.toString();
         }
 
@@ -158,33 +162,20 @@ public class XSSFColorConverter implements ColorConverter {
         return sb.toString();
     }
 
-    @Override
-    public String getBorderColorCSS(BorderSide borderSide, String attr,
-            BorderFormatting format) {
-
-        XSSFBorderFormatting casted = (XSSFBorderFormatting) format;
-
-        // getXBorderColor methods are useless with XSSF, so we need to dig
-        // deeper.
-        CTColor color = getBorderColor(casted, borderSide);
+    public String getBorderColorCSS(String attr, Color colorInstance) {
+        final XSSFColor color = (XSSFColor) colorInstance;
 
         StringBuilder sb = new StringBuilder();
 
         sb.append(attr);
         sb.append(":");
-        if (color == null || color.getAuto()) {
+
+        if (color == null || color.isAuto()) {
             sb.append("#000;");
             return sb.toString();
         }
 
-        byte[] argb;
-        if (color.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) color.getTheme());
-            argb = themeColor.getARGB();
-        } else {
-            argb = color.getRgb();
-        }
+        byte[] argb = color.getRGB();
 
         if (argb == null) {
             sb.append("#000;");
@@ -208,6 +199,23 @@ public class XSSFColorConverter implements ColorConverter {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public String getBorderColorCSS(BorderSide borderSide, String attr, BorderFormatting format) {
+
+        switch (borderSide) {
+            case BOTTOM:
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getBottomBorderColorColor()));
+            case LEFT:
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getLeftBorderColorColor()));
+            case RIGHT:
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getRightBorderColorColor()));
+            case TOP:
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getTopBorderColorColor()));
+            default:
+                return ""; // unused, but needed for compilation
+        }
     }
 
     private CTColor getBorderColor(XSSFBorderFormatting casted,
@@ -307,7 +315,7 @@ public class XSSFColorConverter implements ColorConverter {
                     return true;
                 }
             } catch (Exception e) {
-                LOGGER.log(Level.FINEST, e.getMessage(), e);
+                LOGGER.log(Level.FINE, e.getMessage(), e);
             }
         }
         return false;
@@ -395,21 +403,16 @@ public class XSSFColorConverter implements ColorConverter {
         return border.getBorderColor(borderSide);
     }
 
-    private String styleColor(XSSFColor color) {
+    protected String styleColor(XSSFColor color) {
         return styleColor(color, color == null ? 0.0 : color.getTint());
     }
 
-    private String styleColor(XSSFColor color, double tint) {
+    protected String styleColor(XSSFColor color, double tint) {
         if (color == null || color.isAuto()) {
             return null;
         }
-        //the XSSFColor#getARGB() method returns wrong colors for custom indexed colors
-        // to be removed when bug # 60898 is resolved (https://bz.apache.org/bugzilla/show_bug.cgi?id=60898)
-        if (color.isIndexed() && ColorConverterUtil
-            .hasCustomIndexedColors(workbook)) {
-            return ColorConverterUtil.getIndexedARGB(workbook, color);
-        }
 
+        // either an explicitly stored color, or a default or custom indexed color
         byte[] argb = color.getARGB();
         if (argb == null) {
             return null;
@@ -425,7 +428,7 @@ public class XSSFColorConverter implements ColorConverter {
             String temp = ColorConverterUtil.toRGBA(argb);
             return temp;
         } catch (NumberFormatException nfe) {
-            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
+            LOGGER.log(Level.FINEST, nfe.getMessage() + " " + nfe.getCause(), nfe);
             return String.format("#%02x%02x%02x;", argb[1], argb[2], argb[3]);
         }
     }

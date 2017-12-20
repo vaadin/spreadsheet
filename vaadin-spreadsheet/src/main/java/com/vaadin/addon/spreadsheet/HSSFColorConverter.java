@@ -21,8 +21,10 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
@@ -40,7 +42,7 @@ public class HSSFColorConverter implements ColorConverter {
     private String defaultBackgroundColor;
     private String defaultColor;
 
-    private static final HSSFColor HSSF_AUTO = new HSSFColor.AUTOMATIC();
+    private static final HSSFColorPredefined HSSF_AUTO = HSSFColorPredefined.AUTOMATIC;
 
     public HSSFColorConverter(HSSFWorkbook wb) {
         this.wb = wb;
@@ -86,14 +88,15 @@ public class HSSFColorConverter implements ColorConverter {
 
         String backgroundColor = null;
         HSSFColor fillForegroundColorColor = cs.getFillForegroundColorColor();
+        
         if (fillForegroundColorColor != null
-                && fillForegroundColor != HSSFColor.AUTOMATIC.index) {
+                && fillForegroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
             backgroundColor = styleColor(fillForegroundColor);
         } else {
             HSSFColor fillBackgroundColorColor = cs
                     .getFillBackgroundColorColor();
             if (fillBackgroundColorColor != null
-                    && fillBackgroundColor != HSSFColor.AUTOMATIC.index) {
+                    && fillBackgroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
                 backgroundColor = styleColor(fillBackgroundColor);
             }
         }
@@ -136,13 +139,13 @@ public class HSSFColorConverter implements ColorConverter {
 
         HSSFColor fillForegroundColorColor = cs.getFillForegroundColorColor();
         if (fillForegroundColorColor != null
-                && fillForegroundColor != HSSFColor.AUTOMATIC.index) {
+                && fillForegroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
             return true;
         } else {
             HSSFColor fillBackgroundColorColor = cs
                     .getFillBackgroundColorColor();
             if (fillBackgroundColorColor != null
-                    && fillBackgroundColor != HSSFColor.AUTOMATIC.index) {
+                    && fillBackgroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
                 return true;
             }
         }
@@ -177,6 +180,17 @@ public class HSSFColorConverter implements ColorConverter {
             return (String.format("#%02x%02x%02x;", rgb[0], rgb[1], rgb[2]));
         }
         return null;
+    }
+
+    /**
+     * @see com.vaadin.addon.spreadsheet.ColorConverter#getBorderColorCSS(java.lang.String, org.apache.poi.ss.usermodel.Color)
+     */
+    @Override
+    public String getBorderColorCSS(String attr, Color colorInstance) {
+        StringBuilder sb = new StringBuilder();
+
+        styleBorderColor(sb, attr, ((HSSFColor) colorInstance).getIndex());
+        return sb.toString();
     }
 
     private void styleBorderColor(final StringBuilder sb, String attr,

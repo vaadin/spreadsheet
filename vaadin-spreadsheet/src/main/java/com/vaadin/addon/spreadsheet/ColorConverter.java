@@ -21,6 +21,7 @@ import java.io.Serializable;
 
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
@@ -53,6 +54,7 @@ public interface ColorConverter extends Serializable {
      *            What type of border style we want (solid, dashed..)
      * @param cellStyle
      *            Style for the cell
+     * @return CSS color string
      */
     String getBorderColorCSS(BorderSide borderSide, String attribute,
             CellStyle cellStyle);
@@ -66,9 +68,21 @@ public interface ColorConverter extends Serializable {
      *            What type of border style we want (solid, dashed..)
      * @param format
      *            the active formatting
+     * @return CSS color string
      */
     String getBorderColorCSS(BorderSide borderSide, String attribute,
             BorderFormatting format);
+
+    /**
+     * Returns CSS border definitions for the given attribute and color
+     * 
+     * @param attr
+     *            border CSS attribute
+     * @param colorInstance
+     *            POI color
+     * @return CSS color string
+     */
+    String getBorderColorCSS(String attr, Color colorInstance);
 
     /**
      * Writes the default background and foreground colors as CSS styles from
@@ -98,7 +112,7 @@ public interface ColorConverter extends Serializable {
      * @return valid color string with semicolon or <code>null</code> if no
      *         color matches.
      */
-    public String getBackgroundColorCSS(ConditionalFormattingRule rule);
+    String getBackgroundColorCSS(ConditionalFormattingRule rule);
 
     /**
      * Create a CSS color string for the font in the given rule.
