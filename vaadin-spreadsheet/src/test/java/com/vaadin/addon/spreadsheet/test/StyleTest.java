@@ -70,13 +70,7 @@ public class StyleTest extends AbstractSpreadsheetTestCase {
         collector.checkThat(
                 (int) Math.ceil(getSize(c.getCellStyle("D5", "font-size"))),
                 equalTo(19));
-
-         if (getDesiredCapabilities().getBrowserName()
-         .equalsIgnoreCase("chrome")) {
-             collector.checkThat(c.getCellStyle("B4", "font-weight"), equalTo("bold"));
-         } else {
-            collector
-                    .checkThat(c.getCellStyle("B4", "font-weight"), equalTo("700"));
-         }
+        collector.checkThat(c.getCellStyle("B4", "font-weight"),
+                equalTo("700"));
     }
 }

@@ -8,6 +8,7 @@ import java.net.URISyntaxException;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.demoapps.FreezePaneLocaleUI;
 
 /**
  * Test for setting locale after loading a spreadsheet that has a frozen column.

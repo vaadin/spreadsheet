@@ -217,7 +217,11 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {
-        skipBrowser("setAddressFieldValue() does not work correctly with PhantomJS", Browser.PHANTOMJS);
+        skipBrowser(
+                "setAddressFieldValue() does not work correctly with PhantomJS",
+                Browser.PHANTOMJS);
+        skipBrowser("Doesn't scroll to right position in Chrome",
+                Browser.CHROME);
         spreadsheetPage.setAddressFieldValue("AT1:AV7");
         assertSelectionRange("AT1:AV7", true);
     }

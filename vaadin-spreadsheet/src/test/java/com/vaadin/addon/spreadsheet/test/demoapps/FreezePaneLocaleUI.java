@@ -1,4 +1,4 @@
-package com.vaadin.addon.spreadsheet.test;
+package com.vaadin.addon.spreadsheet.test.demoapps;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.net.URL;
 import java.util.Locale;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
+import com.vaadin.addon.spreadsheet.test.FreezePaneLocaleUITest;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 
@@ -15,6 +17,7 @@ import com.vaadin.ui.UI;
  * Test UI for {@link FreezePaneLocaleUITest}
  */
 @Theme("demo")
+@Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
 public class FreezePaneLocaleUI extends UI {
     @Override
     protected void init(VaadinRequest request) {

@@ -3,6 +3,7 @@ package com.vaadin.addon.spreadsheet.test.pageobjects;
 import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.TestBenchTestCase;
@@ -10,6 +11,7 @@ import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.NativeSelectElement;
 import com.vaadin.testbench.elements.TextFieldElement;
+import com.vaadin.testbench.elements.WindowElement;
 
 public class HeaderPage extends Page {
 
@@ -42,8 +44,22 @@ public class HeaderPage extends Page {
     }
 
     public void addFreezePane() {
-        $(ButtonElement.class).caption("Freeze Pane").first().click();
-        $(ButtonElement.class).caption("Submit values").first().click();
+        WindowElement addPaneWindow = waitUntil(
+                new ExpectedCondition<WindowElement>() {
+                    @Override
+                    public WindowElement apply(WebDriver webDriver) {
+                        $(ButtonElement.class).caption("Freeze Pane").first()
+                                .click();
+                        return $(WindowElement.class).first();
+                    }
+                });
+        waitUntil(new ExpectedCondition<ButtonElement>() {
+            @Override
+            public ButtonElement apply(WebDriver webDriver) {
+                return addPaneWindow.$(ButtonElement.class)
+                        .caption("Submit values").first();
+            }
+        }).click();
     }
 
     public void addFreezePane(int horizontalSplitPosition, int verticalSplitPosition) {
