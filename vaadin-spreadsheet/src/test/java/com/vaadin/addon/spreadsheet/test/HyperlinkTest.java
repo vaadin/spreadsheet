@@ -16,6 +16,7 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.PopupHelper;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.parallel.Browser;
 
 /**
  * Tests for hyperlinks.
@@ -140,6 +141,7 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
     @Test
     public void hyperlinkState_hyperlinkModified_hyperlinkUpdated()
             throws IOException {
+        skipBrowser("Firefox fails to send keys to navigatoe", Browser.FIREFOX);
         SpreadsheetElement sheet = $(SpreadsheetElement.class).first();
         SheetCellElement cell = sheet.getCellAt("A9");
 

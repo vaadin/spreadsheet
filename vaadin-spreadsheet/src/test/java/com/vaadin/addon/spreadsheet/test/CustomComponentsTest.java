@@ -15,12 +15,14 @@ import org.openqa.selenium.support.ui.Sleeper;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import com.vaadin.testbench.elements.CheckBoxElement;
 
 public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
 
     final static String TEXT_PROXY = "text";
     final static Integer NUM_PROXY = 42;
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -76,10 +78,7 @@ public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
         SheetCellElement c2 = $(SpreadsheetElement.class).first().getCellAt(
                 "C2");
         c2.click();
-        new Actions(getDriver())
-                .moveToElement(c2.findElement(By.xpath(".//input"))).click()
-                .build().perform();
-
+        $(CheckBoxElement.class).id("c2checkbox").click();
         sheetController.selectCell("A1");
 
         Assert.assertEquals("2", sheetController.getCellContent("C3"));

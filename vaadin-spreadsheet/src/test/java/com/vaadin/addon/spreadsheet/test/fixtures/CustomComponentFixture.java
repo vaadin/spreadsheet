@@ -96,6 +96,7 @@ class ComponentEditorFactory extends AbstractComponentFactory {
             }
             case "checkbox": {
                 comp = new CheckBox();
+            comp.setId("c2checkbox");
                 break;
             }
             case "datefield": {

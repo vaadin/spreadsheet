@@ -220,15 +220,16 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         skipBrowser(
                 "setAddressFieldValue() does not work correctly with PhantomJS",
                 Browser.PHANTOMJS);
-        skipBrowser("Doesn't scroll to right position in Chrome",
-                Browser.CHROME);
+        skipBrowser("Doesn't scroll to right position in Chrome and Firefox",
+                Browser.CHROME, Browser.FIREFOX);
         spreadsheetPage.setAddressFieldValue("AT1:AV7");
         assertSelectionRange("AT1:AV7", true);
     }
 
     @Test
     public void testKeyboardNavigation() throws Exception {
-        skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
+        skipBrowser("Sending multiple keys fails in IE and Firefox",
+                Browser.IE9, Browser.IE10, Browser.IE11);
         skipBrowser("Fails randomly with PhantomJS", Browser.PHANTOMJS);
 
         spreadsheetPage.clickOnCell("J10");
@@ -238,7 +239,9 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         new Actions(getDriver()).sendKeys(Keys.DOWN).build().perform();
         assertSelectedCell("K11", spreadsheetPage.isCellSelected("K11"));
 
-        new Actions(getDriver()).sendKeys(Keys.ENTER, Keys.ENTER).build()
+        new Actions(getDriver()).sendKeys(Keys.ENTER).build()
+                .perform();
+        new Actions(getDriver()).sendKeys(Keys.ENTER).build()
                 .perform();
         assertSelectedCell("K12", spreadsheetPage.isCellSelected("K12"));
 
@@ -248,8 +251,9 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         new Actions(getDriver()).sendKeys(Keys.UP).build().perform();
         assertSelectedCell("J11", spreadsheetPage.isCellSelected("J11"));
 
+        new Actions(getDriver()).sendKeys(Keys.ENTER).build().perform();
         new Actions(getDriver()).keyDown(Keys.SHIFT)
-                .sendKeys(Keys.ENTER, Keys.ENTER).keyUp(Keys.SHIFT).build()
+                .sendKeys(Keys.ENTER).keyUp(Keys.SHIFT).build()
                 .perform();
         assertSelectedCell("J10", spreadsheetPage.isCellSelected("J10"));
 

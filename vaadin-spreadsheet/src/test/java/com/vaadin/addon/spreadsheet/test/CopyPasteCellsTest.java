@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.parallel.Browser;
 
 public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
@@ -32,6 +33,7 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells() {
+        skipBrowser("Shift/Ctrl fails in Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("1");
@@ -52,6 +54,7 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void spreadsheetHandlerOnPaste_PasteCells_SmallServerJsonResponse() {
+        skipBrowser("Shift/Ctrl fails in Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("500x200test.xlsx", this);
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

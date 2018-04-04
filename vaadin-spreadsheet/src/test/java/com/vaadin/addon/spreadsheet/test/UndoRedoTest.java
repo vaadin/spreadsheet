@@ -70,6 +70,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_cellValuesHasDeletedAndUndoneAndRedone_cellsHasNoValue() {
+        skipBrowser("Shift/Ctrl fails in Firefox", Browser.FIREFOX);
+
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("a");
@@ -296,6 +298,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_pasteRegionThenUndo_cellsHaveInitialValues() {
+        skipBrowser("Shift/Ctrl fails in Firefox", Browser.FIREFOX);
+
         final SpreadsheetElement spreadsheet = setupSpreadSheetForRegionCopyPasteTest();
         copy();
         sheetController.clickCell("D1");
@@ -322,6 +326,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_pasteRegionThenUndoAndRedo_cellsHavePastedValues() {
+        skipBrowser("Shift/Ctrl fails in Firefox", Browser.FIREFOX);
+
         final SpreadsheetElement spreadsheet = setupSpreadSheetForRegionCopyPasteTest();
         copy();
         sheetController.clickCell("D1");
