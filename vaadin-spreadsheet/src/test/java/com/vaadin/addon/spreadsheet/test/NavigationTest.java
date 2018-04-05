@@ -214,6 +214,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("A1:C7", true);
     }
 
+    @Ignore("Reported in #664")
     @Test
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {

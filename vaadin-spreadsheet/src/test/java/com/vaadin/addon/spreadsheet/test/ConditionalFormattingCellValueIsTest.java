@@ -3,6 +3,7 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTestCase {
@@ -19,9 +20,8 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-        spreadsheetPage = headerPage
-            .loadFile("conditional_formatting_cell_is.xlsx", this);
+        loadPage("conditional_formatting_cell_is.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
         spreadsheetPage.selectSheetAt(1);
     }
 

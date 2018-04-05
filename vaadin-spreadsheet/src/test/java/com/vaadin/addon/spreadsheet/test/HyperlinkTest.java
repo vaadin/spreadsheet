@@ -29,8 +29,7 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-        headerPage.loadFile("spreadsheet_hyperlinks.xlsx", this);
+        loadPage("spreadsheet_hyperlinks.xlsx");
         popup = new PopupHelper(driver);
         sheetController = new SheetController(driver, testBench(driver),
                 getDesiredCapabilities());
@@ -97,9 +96,10 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void hyperlink_sheetWithHyperLinks_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "hyper_links.xlsx", this);
+    public void hyperlink_sheetWithHyperLinks_internalFromFileNameFormulaMovesToCorrectSheetAndCell()
+            throws Exception {
+        loadPage("hyper_links.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
         testBench(driver).waitForVaadin();
         // ensure hyperlink switches to correct cell
         testInternal("B30", "B10");
@@ -110,9 +110,10 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void hyperlink_sheetWithNumericSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "hyper_links.xlsx", this);
+    public void hyperlink_sheetWithNumericSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell()
+            throws Exception {
+        loadPage("hyper_links.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
         testBench(driver).waitForVaadin();
         // ensure hyperlink switches to correct cell
         testInternal("B9", "B3");
@@ -123,9 +124,10 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void hyperlink_sheetWithSpacesInSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "hyper_links.xlsx", this);
+    public void hyperlink_sheetWithSpacesInSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell()
+            throws Exception {
+        loadPage("hyper_links.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
         testBench(driver).waitForVaadin();
         // ensure hyperlink switches to correct cell
         testInternal("C9", "C3");

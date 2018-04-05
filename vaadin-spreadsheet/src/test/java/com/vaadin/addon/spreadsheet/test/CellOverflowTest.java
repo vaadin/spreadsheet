@@ -62,14 +62,14 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void frozenRows_LongValueInCell_CellOverflows() throws IOException {
+    public void frozenRows_LongValueInCell_CellOverflows() throws Exception {
         skipBrowser("IE fails to select correct file", Browser.IE11);
-        headerPage.loadFile("frozen-rows-overflow.xlsx", this);
+        loadPage("frozen-rows-overflow.xlsx");
         compareScreen("overflow");
     }
 
     @Test
-    public void verticalOverflowCells_noOverflow() {
+    public void verticalOverflowCells_noOverflow() throws Exception {
         loadWrapTextTest();
 
         assertNoOverflowForCell("C4");
@@ -77,13 +77,14 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void longWordInCellWithWrapText_noOverflow() {
+    public void longWordInCellWithWrapText_noOverflow() throws Exception {
         loadWrapTextTest();
         assertNoOverflowForCell("E8");
     }
 
     @Test
-    public void sameContentInTwoCellsWithDifferentWidths_noOverflow() {
+    public void sameContentInTwoCellsWithDifferentWidths_noOverflow()
+            throws Exception {
         loadWrapTextTest();
 
         assertNoOverflowForCell("E4");
@@ -98,7 +99,7 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("hidden", cellElement.getCssValue("overflow"));
     }
 
-    private void loadWrapTextTest() {
-        headerPage.loadFile("wrap_text_test.xlsx", this);
+    private void loadWrapTextTest() throws Exception {
+        loadPage("wrap_text_test.xlsx");
     }
 }

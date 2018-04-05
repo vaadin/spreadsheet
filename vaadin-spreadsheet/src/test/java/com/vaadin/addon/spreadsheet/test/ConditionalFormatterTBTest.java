@@ -2,8 +2,6 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -15,10 +13,7 @@ public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-
-        headerPage.loadFile("conditional_formatting.xlsx", this);
-
+        loadPage("conditional_formatting.xlsx");
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
@@ -62,8 +57,8 @@ public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
      */
     @Test
     public void conditionalFormatting_formulaWithRelativeRowCol_formattingApplied()
-            throws IOException {
-        headerPage.loadFile("test_conditional_formatting.xlsx", this);
+            throws Exception {
+        loadPage("test_conditional_formatting.xlsx");
         compareScreen("relative_formula");
     }
 }

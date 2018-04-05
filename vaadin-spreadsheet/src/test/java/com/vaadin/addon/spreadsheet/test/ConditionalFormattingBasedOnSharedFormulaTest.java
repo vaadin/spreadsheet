@@ -1,6 +1,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +23,8 @@ public class ConditionalFormattingBasedOnSharedFormulaTest
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-        spreadsheetPage = headerPage
-            .loadFile("conditional_formatting_shared_formula.xlsx", this);
+        loadPage("conditional_formatting_shared_formula.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
     }
 
     @Test

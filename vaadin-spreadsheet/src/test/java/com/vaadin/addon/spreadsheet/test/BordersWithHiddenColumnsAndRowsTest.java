@@ -13,10 +13,14 @@ public class BordersWithHiddenColumnsAndRowsTest
 
     private SpreadsheetPage spreadsheetPage;
 
+    @Override
+    public void setUp() throws Exception {
+        loadPage("borders_with_hidden_rows_and_columns.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
+    }
+
     @Test
     public void test() throws Exception {
-        spreadsheetPage = headerPage
-            .loadFile("borders_with_hidden_rows_and_columns.xlsx", this);
 
         spreadsheetPage.selectSheetAt(0);
         compareScreen("sheet1_row_3_hidden");

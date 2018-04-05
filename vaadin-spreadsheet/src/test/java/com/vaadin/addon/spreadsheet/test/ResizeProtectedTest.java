@@ -9,7 +9,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.vaadin.addon.spreadsheet.elements.SheetHeaderElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.Browser;
 
@@ -19,14 +18,11 @@ import com.vaadin.testbench.parallel.Browser;
  */
 public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
 
-    private SpreadsheetPage spreadsheetPage;
-
     @Test
-    public void resizing_protectedSheet_columnResizeFails() {
-        spreadsheetPage = headerPage.loadFile("multiple_sheets_protected.xlsx",
-                this);
-
-        double originalWidth = spreadsheetPage.getCellAt(2, 2).getSize()
+    public void resizing_protectedSheet_columnResizeFails() throws Exception {
+        loadPage("multiple_sheets_protected.xlsx");
+        SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        double originalWidth = spreadsheet.getCellAt(2, 2).getSize()
                 .getWidth();
 
         TestBenchElement resizeHandle = $(SpreadsheetElement.class).first()
@@ -36,7 +32,7 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
 
         new Actions(driver).dragAndDrop(resizeHandle, target).perform();
 
-        double newWidth = spreadsheetPage.getCellAt(2, 2).getSize().getWidth();
+        double newWidth = spreadsheet.getCellAt(2, 2).getSize().getWidth();
 
         Assert.assertTrue(String.format(
                 "Width changed when it shouldn't have. Was: %s, now: %s.",
@@ -44,25 +40,26 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void resizing_protectedSheetWithFormatColumnsEnabled_columnResizeSuccessful() {
-        spreadsheetPage = headerPage.loadFile("protected_format_columns.xlsx",
-                this);
+    public void resizing_protectedSheetWithFormatColumnsEnabled_columnResizeSuccessful()
+            throws Exception {
+        loadPage("protected_format_columns.xlsx");
 
-        final double originalWidth = spreadsheetPage.getCellAt(2, 2).getSize()
+        SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final double originalWidth = spreadsheet.getCellAt(2, 2).getSize()
                 .getWidth();
 
-        TestBenchElement resizeHandle = $(SpreadsheetElement.class).first()
-                .getColumnHeader(2).getResizeHandle();
-        SheetHeaderElement target = $(SpreadsheetElement.class).first()
-                .getColumnHeader(4);
+        TestBenchElement resizeHandle = spreadsheet.getColumnHeader(2)
+                .getResizeHandle();
+        SheetHeaderElement target = spreadsheet.getColumnHeader(4);
 
         new Actions(driver).dragAndDrop(resizeHandle, target).perform();
 
-        double newWidth = spreadsheetPage.getCellAt(2, 2).getSize().getWidth();
+        double newWidth = spreadsheet.getCellAt(2, 2).getSize().getWidth();
 
         assertInRange(2.5 * originalWidth, newWidth, 3.5 * originalWidth);
     }
 
+    @Override
     protected void assertInRange(double from, double value, double to) {
         Assert.assertTrue("Value [" + value + "] is not in range: [" + from
                 + " - " + to + "]", value >= from && value <= to);

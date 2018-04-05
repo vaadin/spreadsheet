@@ -13,12 +13,14 @@ public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheet
 
     private SpreadsheetPage spreadsheetPage;
 
+    @Override
+    public void setUp() throws Exception {
+        loadPage("conditional_formatting_with_formula_on_second_sheet.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
+    }
+
     @Test
     public void conditionalFormatting_deleteCellUsedInFormula_formattingAppliedWithoutException() {
-        spreadsheetPage = headerPage.loadFile(
-                "conditional_formatting_with_formula_on_second_sheet.xlsx",
-                this);
-
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
 
         spreadsheetPage.deleteCellValue("A2");

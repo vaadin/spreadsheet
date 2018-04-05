@@ -93,6 +93,7 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
      */
     protected void loadPage(String spreadsheetFile) throws Exception {
         driver.get(getTestUrl() + "#file/" + spreadsheetFile);
+        driver.navigate().refresh();
         testBench(driver).waitForVaadin();
     }
 

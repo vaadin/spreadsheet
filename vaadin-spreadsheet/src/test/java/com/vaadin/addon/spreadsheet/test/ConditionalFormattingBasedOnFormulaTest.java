@@ -3,6 +3,7 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 public class ConditionalFormattingBasedOnFormulaTest
@@ -17,9 +18,8 @@ public class ConditionalFormattingBasedOnFormulaTest
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-        spreadsheetPage = headerPage.loadFile(
-            "conditional_formatting_with_formula_on_second_sheet.xlsx", this);
+        loadPage("conditional_formatting_with_formula_on_second_sheet.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
         spreadsheetPage.selectSheetAt(1);
     }
 
