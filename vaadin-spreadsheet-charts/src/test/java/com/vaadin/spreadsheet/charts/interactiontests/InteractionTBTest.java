@@ -97,7 +97,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void pieChart_labelDataInSeparateSheet_labelIsShown()
             throws Exception {
-        headerPage.loadFile("pie_labels.xlsx", this);
+        loadPage("pie_labels.xlsx");
         WebElement dataLabel = overlayHelper.getOverlayElement("A4")
                 .findElements(By.tagName("tspan")).get(0);
 
@@ -152,7 +152,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnFormulaChange");
     }
-    
+
     @Test
     public void sheetWithGroupingAndChart_groupIsCollapsed_chartPointsAreHidden()
             throws Exception {
@@ -180,7 +180,9 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userClicksColumn_spreadsheetSelectionUpdated()
             throws Exception {
-        headerPage.loadFile("chart_with_filtered_out_column.xlsx", this);
+        skipBrowser("Fails to load file", Browser.IE11, Browser.FIREFOX);
+
+        loadPage("chart_with_filtered_out_column.xlsx");
 
         overlayHelper.getOverlayElement("G11")
                 .findElements(By.cssSelector(".highcharts-series-0 > rect"))
