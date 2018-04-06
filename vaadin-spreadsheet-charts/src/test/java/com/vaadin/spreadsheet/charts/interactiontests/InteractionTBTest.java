@@ -26,7 +26,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void userChangesInSpreadsheet_chartsUpdated() throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("InteractionSample.xlsx", this);
+        loadPage("InteractionSample.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
         spreadsheetPage.getCellAt(1,14).setValue("10");
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnDataChange");
@@ -35,8 +36,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userChangesCategoryInSpreadsheet_chartsUpdated()
             throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "ChartsWithCategories.xlsx", this);
+        loadPage("ChartsWithCategories.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
 
         // need to move selection so that fill indicator is not clicked while
         // selecting A3
@@ -49,8 +50,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userChangesSizeValueInSpreadsheetForBubbleChart_chartsUpdated()
             throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("Bubble.xlsx",
-                this);
+        loadPage("Bubble.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
 
         // need to move selection so that fill indicator is not clicked while
         // selecting A2
@@ -63,8 +64,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userChangesXValuesInSpreadsheetForScatterPlot_chartsUpdated()
             throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("Scatter.xlsx",
-                this);
+        loadPage("Scatter.xlsx");
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
 
         // need to move selection so that fill indicator is not clicked while
         // selecting A2
@@ -77,14 +78,14 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void displayingEmbeddedScatterPlotWithoutDashsWorks()
             throws Exception {
-        headerPage.loadFile("scatter_lines.xlsx", this);
+        loadPage("scatter_lines.xlsx");
 
         compareScreen("scatter_with_and_without_lines");
     }
 
     @Test
     public void userSelectsPoint_spreadsheetSelectionUpdated() throws Exception {
-        headerPage.loadFile("InteractionSample.xlsx", this);
+        loadPage("InteractionSample.xlsx");
         overlayHelper.getOverlayElement("B1")
                 .findElements(By.cssSelector(".highcharts-series-0 > rect"))
                 .get(0).click();
@@ -118,21 +119,21 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void openFileWithNotSuportedForumla_noExceptionRaised_noChart() throws Exception {
         skipBrowser("Fails to select file in combobox", Browser.IE11);
-        headerPage.loadFile("unparsed_formula.xlsx", this);
+        loadPage("unparsed_formula.xlsx");
         compareScreen("unparsedFormula");
     }
 
     @Test
     public void openFileWithNullCell_noExceptionRaised_ChartIsShown()
             throws Exception {
-        headerPage.loadFile("ChartWithNullCell.xlsx", this);
+        loadPage("ChartWithNullCell.xlsx");
         compareScreen("nullCellsInChart");
     }
 
     @Test
     public void chartWithShowDataInHiddenCells_rowIsHidden_chartsAreDifferent()
             throws Exception {
-        headerPage.loadFile("Data_On_Hidden_Rows.xlsx", this);
+        loadPage("Data_On_Hidden_Rows.xlsx");
 
         headerPage.loadTestFixture(TestFixtures.HideSecondRow);
 
@@ -142,8 +143,9 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userChangesCellAffactingAFormulaInSpreadsheet_chartsUpdated()
             throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage
-                .loadFile("FormulaValues.xlsx", this);
+        loadPage("FormulaValues.xlsx");
+
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
 
         // need to move selection so that fill indicator is not clicked while
         // selecting A2
@@ -156,8 +158,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void sheetWithGroupingAndChart_groupIsCollapsed_chartPointsAreHidden()
             throws Exception {
-        headerPage
-                .loadFile("chart and grouping.xlsx", this);
+        loadPage("chart%20and%20grouping.xlsx");
         WebElement marker =  driver.findElement(By
                 .cssSelector(".grouping"));
         marker.click();
@@ -166,14 +167,15 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void openFile_fileHas3dChart_noExceptionsRaised() {
-        headerPage.loadFile("3DChart.xlsx", this);
+    public void openFile_fileHas3dChart_noExceptionsRaised() throws Exception {
+        loadPage("3DChart.xlsx");
         assertNoErrorIndicatorDetected();
     }
 
     @Test
-    public void openNumbersCreatedExcelFile_noExceptionsRaised_withCharts() {
-        headerPage.loadFile("NumbersCreatedExcelFile.xlsx", this);
+    public void openNumbersCreatedExcelFile_noExceptionsRaised_withCharts()
+            throws Exception {
+        loadPage("NumbersCreatedExcelFile.xlsx");
         assertNoErrorIndicatorDetected();
     }
 

@@ -1,6 +1,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.Locale;
 
 import org.junit.Test;
@@ -14,9 +15,7 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-
-        headerPage.loadFile("custom_format.xlsx", this);
+        loadPage("custom_format.xlsx");
 
         spreadSheet = $(SpreadsheetElement.class).first();
 

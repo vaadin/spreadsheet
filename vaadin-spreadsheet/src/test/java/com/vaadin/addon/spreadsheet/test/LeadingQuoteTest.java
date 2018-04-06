@@ -16,10 +16,10 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
+        loadPage("leading_quotes.xlsx");
         sheetController = new SheetController(driver, testBench(driver),
-            getDesiredCapabilities());
-        spreadsheetPage = headerPage.loadFile("leading_quotes.xlsx", this);
+                getDesiredCapabilities());
+        spreadsheetPage = new SpreadsheetPage(driver);
         waitForElementPresent(By.className("v-spreadsheet"));
     }
 
