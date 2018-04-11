@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import com.vaadin.testbench.parallel.Browser;
 
 public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
 
@@ -208,6 +209,7 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
     @Test
     public void formulaFormatting_addFreezePaneWhileACellHasAnInvalidFormula_cellStillHasInvalidFormulaIndicator()
             throws InterruptedException {
+        skipBrowser("IE fails to add freeze pane", Browser.IE11);
         headerPage.createNewSpreadsheet();
         reduceFontSizeAtCellA1(); // Otherwise, #VALUE! would overflow in PhantomJS
         SheetCellElement a1 = $(SpreadsheetElement.class).first()

@@ -23,7 +23,8 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        spreadsheetPage = headerPage.loadFile("number_format.xlsx", this);
+        loadPage("number_format.xlsx");
+        spreadsheetPage = new SpreadsheetPage(driver);
         setDefaultLocale();
     }
 

@@ -12,9 +12,7 @@ public class ConditionalFormattingTest extends AbstractSpreadsheetTestCase {
 
     @Override
     public void setUp() throws Exception {
-        super.setUp();
-
-        headerPage.loadFile("conditional_formatting_with_Invalid_formula.xlsx", this);
+        loadPage("conditional_formatting_with_Invalid_formula.xlsx");
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 

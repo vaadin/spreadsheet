@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
+import com.vaadin.testbench.parallel.Browser;
 
 public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheetTestCase {
 
@@ -21,6 +22,7 @@ public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheet
 
     @Test
     public void conditionalFormatting_deleteCellUsedInFormula_formattingAppliedWithoutException() {
+        skipBrowser("Firefox fails to delete cell value", Browser.FIREFOX);
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
 
         spreadsheetPage.deleteCellValue("A2");

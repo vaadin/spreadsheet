@@ -26,14 +26,14 @@ public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
     @Override
     public void setUp() throws Exception {
         setDebug(true);
-        super.setUp();
+        loadPage("cell_styles_performance.xlsx");
         sheetController = new SheetController(driver, testBench(driver),
                 getDesiredCapabilities());
     }
 
     @Test
     public void spreadsheetWithManyStyles_setValueInCell_styleUpdateTimeLessThanASecond() {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("cell_styles_performance.xlsx", this);
+        SpreadsheetPage spreadsheetPage = new SpreadsheetPage(driver);
         clearLog();
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 1);
         cell.setValue("foo");
