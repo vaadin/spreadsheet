@@ -9,8 +9,7 @@ public class GroupingRenderTest extends AbstractSpreadsheetTestCase {
      */
     @Test
     public void testRenderingLargeGrouping() throws Exception {
-
-        headerPage.loadFile("large-grouped.xlsx", this);
+        loadPage("large-grouped.xlsx");
         compareScreen("grouping_render_large");
     }
 }

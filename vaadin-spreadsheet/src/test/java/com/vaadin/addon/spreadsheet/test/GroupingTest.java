@@ -5,7 +5,6 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.junit.Assert;
@@ -52,7 +51,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void grouping_collapseColumnGroup_imageInsideGroupShrink() throws IOException, InterruptedException {
+    public void grouping_collapseColumnGroup_imageInsideGroupShrink()
+            throws Exception {
         SpreadsheetElement spreadsheetElement =loadImageFile();
         collapseColumn(spreadsheetElement);
         Thread.sleep(2000);
@@ -65,7 +65,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
 
 
     @Test
-    public void grouping_expandColumnGroup_imageInsideGroupExpand() throws IOException, InterruptedException {
+    public void grouping_expandColumnGroup_imageInsideGroupExpand()
+            throws Exception {
         SpreadsheetElement spreadsheetElement =loadImageFile();
         collapseColumn(spreadsheetElement);
         Thread.sleep(1000);
@@ -79,7 +80,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void grouping_collapseRowGroup_imageInsideGroupShrink() throws IOException, InterruptedException {
+    public void grouping_collapseRowGroup_imageInsideGroupShrink()
+            throws Exception {
         SpreadsheetElement spreadsheetElement =loadImageFile();
         collapseRow(spreadsheetElement);
         Thread.sleep(2000);
@@ -91,7 +93,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void grouping_expandRowGroup_imageInsideRowExpand() throws IOException, InterruptedException {
+    public void grouping_expandRowGroup_imageInsideRowExpand()
+            throws Exception {
         SpreadsheetElement spreadsheetElement =loadImageFile();
         collapseRow(spreadsheetElement);
         expandRow(spreadsheetElement);
@@ -104,8 +107,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     }
 
     //HELPERS
-    private SpreadsheetElement loadImageFile(){
-        headerPage.loadFile("group_image.xlsx",this);
+    private SpreadsheetElement loadImageFile() throws Exception {
+        loadPage("group_image.xlsx");
         return  $(SpreadsheetElement.class).first();
     }
     private void collapseColumn(SpreadsheetElement spreadsheetElement) {

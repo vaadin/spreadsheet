@@ -6,8 +6,8 @@ import org.openqa.selenium.By;
 public class ImageTests extends AbstractSpreadsheetTestCase {
 
     @Test
-    public void testFromUpload() {
-        headerPage.loadFile("picture_sheet.xlsx", this);
+    public void testFromUpload() throws Exception {
+        loadPage("picture_sheet.xlsx");
 
         assertInRange(200, imageWidth("C2"), 260);
 
