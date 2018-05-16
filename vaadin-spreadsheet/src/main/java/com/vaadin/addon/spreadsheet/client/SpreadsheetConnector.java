@@ -184,7 +184,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
 
     private Set<String> currentOverlays = new HashSet<String>();
 
-	private HandlerRegistration contextMenuHandler;
+    private HandlerRegistration contextMenuHandler;
     
 
     @Override
@@ -237,7 +237,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
             }
         });
         // Prevent context menu on context menu
-       contextMenuHandler = getConnection().getContextMenu().addDomHandler(
+        contextMenuHandler = getConnection().getContextMenu().addDomHandler(
                 new ContextMenuHandler() {
 
                     @Override
@@ -261,10 +261,9 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
             currentOverlays.clear();
         }
         visibleCellCommentKeys.clear();
-        
-        if (contextMenuHandler != null)
-        {
-          contextMenuHandler.removeHandler();
+
+        if (contextMenuHandler != null) {
+            contextMenuHandler.removeHandler();
         }
     }
 
