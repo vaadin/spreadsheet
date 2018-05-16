@@ -185,7 +185,6 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     private Set<String> currentOverlays = new HashSet<String>();
 
     private HandlerRegistration contextMenuHandler;
-    
 
     @Override
     protected void init() {
