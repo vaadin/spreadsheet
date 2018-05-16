@@ -32,6 +32,7 @@ public class MergeTests extends AbstractSpreadsheetTestCase {
     @Test
     public void testBasic() {
         skipBrowser("insertAndRet() does not work correctly in IE", Browser.IE9, Browser.IE10, Browser.IE11);
+        skipBrowser("clickAndHold() does not work correctly in PhantomJS", Browser.PHANTOMJS);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class).first();
         spreadsheetElement.getCellAt("A1").setValue("1");
@@ -45,13 +46,13 @@ public class MergeTests extends AbstractSpreadsheetTestCase {
         sheetController.selectRegion("A1", "A2");
         headerPage.loadTestFixture(TestFixtures.MergeCells);
         assertEquals("2",spreadsheetElement.getCellAt("B1").getValue());
-        assertEquals("3",spreadsheetElement.getCellAt("B2").getValue());
+        assertEquals("1",spreadsheetElement.getCellAt("B2").getValue());
 
         final SheetCellElement a1 = spreadsheetElement.getCellAt("A1");
         a1.setValue("10");
 
         assertEquals("11",spreadsheetElement.getCellAt("B1").getValue());
-        assertEquals("3",spreadsheetElement.getCellAt("B2").getValue());
+        assertEquals("1",spreadsheetElement.getCellAt("B2").getValue());
     }
 
     @Test
