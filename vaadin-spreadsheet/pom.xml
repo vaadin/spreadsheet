@@ -13,9 +13,6 @@
         <name>Vaadin Ltd</name>
         <url>https://vaadin.com</url>
     </organization>
-    <!-- <scm> <url>git://github.com/vaadin/spreadsheet.git</url> <connection>scm:git:git://github.com/mygithubaccount/Spreadsheet.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:/mygithubaccount/${ComponentClassName}.git</developerConnection>
-        <tag>Spreadsheet add-on for Vaadin</tag> </scm> -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
