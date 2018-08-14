@@ -215,6 +215,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
+    @Ignore("Reported in #664")
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {
         spreadsheetPage.setAddressFieldValue("AT1:AV7");

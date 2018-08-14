@@ -18,12 +18,14 @@ package com.vaadin.addon.spreadsheet.test.tb3;
 
 import java.util.logging.Logger;
 
+import org.junit.Rule;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.vaadin.server.LegacyApplication;
 import com.vaadin.server.UIProvider;
+import com.vaadin.testbench.RetryRule;
 import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.testbench.parallel.ParallelTest;
 import com.vaadin.testbench.parallel.setup.SetupDriver;
@@ -46,6 +48,10 @@ import com.vaadin.ui.UI;
  * @author Vaadin Ltd
  */
 public abstract class AbstractTB3Test extends ParallelTest {
+
+    @Rule
+    public RetryRule maxAttempts = new RetryRule(2);
+
     /**
      * Height of the screenshots we want to capture
      */

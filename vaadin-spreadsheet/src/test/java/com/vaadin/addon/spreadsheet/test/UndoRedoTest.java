@@ -443,13 +443,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
                 (int) Math.ceil(parseSize(c.getCellAt("D5").getCssValue("font-size"))),
                 equalTo(19));
 
-        if (getDesiredCapabilities().getBrowserName()
-                .equalsIgnoreCase("chrome")) {
-            collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("bold"));
-        } else {
-            collector
-                    .checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("700"));
-        }
+        collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("700"));
     }
 
     private double parseSize(String size) {
