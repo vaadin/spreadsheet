@@ -57,7 +57,6 @@ public class RowShiftTests extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testDeleteFormulaReference() {
-        skipBrowser("sheetController.putCellContent() fails with PhantomJS", Browser.PHANTOMJS);
         spreadsheet.getCellAt("A3").setValue("42");
         spreadsheet.getCellAt("C1").setValue("=A3");
         spreadsheet.getCellAt("A4").click();

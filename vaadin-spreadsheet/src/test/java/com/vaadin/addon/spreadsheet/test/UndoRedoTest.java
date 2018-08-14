@@ -103,7 +103,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_addRowAndUndone_addedRowIsRemoved() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("a");
@@ -117,7 +117,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void redo_addRowAndUndoneAndRedo_rowIsAdded() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("a");
@@ -133,7 +133,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_removeRowAndUndone_removedRowIsAdded() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("a");
@@ -147,7 +147,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void redo_removeRowAndUndoneAndRedo_rowIsRemoved() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").setValue("a");
@@ -163,7 +163,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_removeRowWithCommentAndUndo_cellStillHasComment() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("cell_comments.xlsx", this); // A1 has a comment
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -182,7 +182,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_userAddsCommentAndRemovesTheRowAndUndo_cellStillHasComment() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A1").contextClick();
@@ -203,7 +203,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_removeRowsWithStyledCellsAndUndo_cellsHaveStyles() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("spreadsheet_styles.xlsx", this); // differently styled cells on rows 2-5
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -222,7 +222,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_addRowWithDateAndUndone_dateIsVisible() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
 
         String expectedDate = "11/11/11";
         headerPage.createNewSpreadsheet();
@@ -237,7 +237,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_theSecondRowWithMergedCellIsRemovedAndUndo_cellIsMerged() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         new Actions(driver).clickAndHold(spreadsheet.getCellAt("A2"))
@@ -259,7 +259,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_theSecondRowWithInvalidFormulaIsRemovedAndUndo_formulaIndicatorIsPresent() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("A2").setValue("=a");
@@ -278,7 +278,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_conditionalFormattedCellsRemovedAndUndo_cellsAreStillConditionallyFormatted() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with Firefox", Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("conditional_formatting.xlsx", this);
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -368,7 +368,7 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
      * Deletes the row from spreadsheet using 'Delete row' action in context
      * menu
      * <p>
-     * Does not work with PhantomJS or Firefox
+     * Does not work with Firefox
      *
      * @param spreadsheet
      * @param row

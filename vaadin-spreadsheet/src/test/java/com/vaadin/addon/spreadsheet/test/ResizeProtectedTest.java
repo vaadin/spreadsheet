@@ -68,11 +68,4 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
                 + " - " + to + "]", value >= from && value <= to);
     }
 
-    @Override
-    public List<DesiredCapabilities> getBrowsersToTest() {
-        // ResizeHandle double click and dragging not working in phantomJS
-        List<DesiredCapabilities> result = super.getBrowsersToTest();
-        result.remove(Browser.PHANTOMJS.getDesiredCapabilities());
-        return result;
-    }
 }

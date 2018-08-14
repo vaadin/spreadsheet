@@ -10,8 +10,6 @@ import com.vaadin.testbench.parallel.DefaultBrowserFactory;
 
 public class VaadinBrowserFactory extends DefaultBrowserFactory {
     private static final String FIREFOX_VERSION = "45";
-    private static final String CHROME_VERSION = "40";
-    private static final String PHANTOM_VERSION = "2";
 
     @Override
     public DesiredCapabilities create(Browser browser) {
@@ -24,15 +22,8 @@ public class VaadinBrowserFactory extends DefaultBrowserFactory {
             return createIE(browser, "10");
         case IE11:
             return createIE(browser, "11");
-        case PHANTOMJS:
-            DesiredCapabilities phantom2 = create(browser, PHANTOM_VERSION,
-                    Platform.LINUX);
-            // Hack for the test cluster
-            phantom2.setCapability("phantomjs.binary.path",
-                    "/usr/bin/phantomjs2");
-            return phantom2;
         case CHROME:
-            return create(browser, CHROME_VERSION, Platform.VISTA);
+            return create(browser, "", Platform.ANY);
         case FIREFOX:
         default:
             return createFirefox();

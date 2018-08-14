@@ -200,11 +200,4 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    @Override
-    public List<DesiredCapabilities> getBrowsersToTest() {
-        // Fails in phantomJS, probably because of being considered a touch
-        // device. Enable PhantomJS after (SHEET-54)
-        return getBrowsersExcludingPhantomJS();
-    }
-
 }

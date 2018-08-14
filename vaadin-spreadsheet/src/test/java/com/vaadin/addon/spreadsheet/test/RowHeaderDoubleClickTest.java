@@ -33,8 +33,6 @@ public class RowHeaderDoubleClickTest extends AbstractSpreadsheetTestCase {
     @Override
     public List<DesiredCapabilities> getBrowsersToTest() {
         List<DesiredCapabilities> result = super.getBrowsersToTest();
-        // Double click is not supported by PhantomJS.
-        result.remove(Browser.PHANTOMJS.getDesiredCapabilities());
         // In manual testing Chrome works fine
         result.remove(Browser.CHROME.getDesiredCapabilities());
         return result;

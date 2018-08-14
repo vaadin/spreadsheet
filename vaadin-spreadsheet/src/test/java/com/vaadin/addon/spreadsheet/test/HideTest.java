@@ -30,7 +30,6 @@ public class HideTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testHideRow() {
         headerPage.createNewSpreadsheet();
-        skipBrowser("Fails on phantom JS, B3 is visible after hiding region", Browser.PHANTOMJS);
 
         sheetController.selectCell("B3");
         headerPage.loadTestFixture(TestFixtures.RowToggle);

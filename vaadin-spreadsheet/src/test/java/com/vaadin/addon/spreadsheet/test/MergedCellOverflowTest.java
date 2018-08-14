@@ -45,9 +45,8 @@ public class MergedCellOverflowTest extends AbstractSpreadsheetTestCase {
         }
         SheetCellElement cellElement = underlyingCell
                 .wrap(SheetCellElement.class);
-        if (!BrowserUtil.isPhantomJS(getDesiredCapabilities())
-                && !BrowserUtil.isIE(getDesiredCapabilities(), 10)) {
-            // for some reason PhantomJS and IE10 lose the underlying content
+        if (!BrowserUtil.isIE(getDesiredCapabilities(), 10)) {
+            // for some reason IE10 lose the underlying content
             // doesn't affect the end result negatively so can be ignored
             assertThat(cellElement.getValue(), equalTo(cellText));
         }

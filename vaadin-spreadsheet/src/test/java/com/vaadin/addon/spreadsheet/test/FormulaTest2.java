@@ -21,7 +21,6 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
 
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
-        // PhantomJS doesn't support right-click
         return getBrowserCapabilities(Browser.FIREFOX, Browser.CHROME);
     }
 

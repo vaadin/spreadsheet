@@ -8,7 +8,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
@@ -16,18 +15,12 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.testutil.ContextMenuHelper;
 import com.vaadin.addon.spreadsheet.test.testutil.ModifierController;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.annotations.BrowserConfiguration;
 
 public class ContextMenuTest extends AbstractSpreadsheetTestCase {
 
     private ContextMenuHelper contextMenu;
     private SheetController ctrl;
     private ModifierController shift;
-    @BrowserConfiguration
-    public List<DesiredCapabilities> getBrowsersToTest() {
-        // PhantomJS doesn't support right-click
-        return getBrowsersExcludingPhantomJS();
-    }
 
     @Before
     public void setUp() throws Exception {

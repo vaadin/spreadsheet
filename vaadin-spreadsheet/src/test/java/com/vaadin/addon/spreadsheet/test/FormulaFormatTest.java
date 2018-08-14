@@ -143,7 +143,7 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
     public void formulaFormatting_invalidFormula_cellHasInvalidFormulaIndicator()
             throws InterruptedException {
         headerPage.createNewSpreadsheet();
-        reduceFontSizeAtCellA1(); // Otherwise, #VALUE! would overflow in PhantomJS
+        reduceFontSizeAtCellA1();
         final SheetCellElement a1 = $(SpreadsheetElement.class).first()
                 .getCellAt("A1");
 
@@ -209,7 +209,7 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
     public void formulaFormatting_addFreezePaneWhileACellHasAnInvalidFormula_cellStillHasInvalidFormulaIndicator()
             throws InterruptedException {
         headerPage.createNewSpreadsheet();
-        reduceFontSizeAtCellA1(); // Otherwise, #VALUE! would overflow in PhantomJS
+        reduceFontSizeAtCellA1();
         SheetCellElement a1 = $(SpreadsheetElement.class).first()
                 .getCellAt("A1");
         a1.setValue("=a");

@@ -60,19 +60,6 @@ public abstract class AbstractTB3Test extends ParallelTest {
 
     private boolean push = false;
 
-    @Override
-    public void setup() throws Exception {
-        // override local driver behaviour, so we can easily specify local
-        // PhantomJS
-        // with a system property
-        if (getBooleanProperty("localPhantom")) {
-            WebDriver driver = new SetupDriver()
-                    .setupLocalDriver(Browser.PHANTOMJS);
-            setDriver(driver);
-        } else {
-            super.setup();
-        }
-    }
 
     protected boolean getBooleanProperty(String key) {
         return Boolean.parseBoolean(System.getProperty(key));

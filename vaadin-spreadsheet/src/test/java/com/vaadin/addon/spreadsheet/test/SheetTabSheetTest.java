@@ -59,7 +59,7 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains() throws InterruptedException {
-        skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Shift/Ctrl select fails with Firefox", Browser.FIREFOX);
 
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         SheetCellElement cell = spreadsheet.getCellAt("C8");

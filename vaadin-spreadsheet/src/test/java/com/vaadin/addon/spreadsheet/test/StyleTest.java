@@ -28,7 +28,6 @@ public class StyleTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testCssFromUpload() {
-        skipBrowser("Fails in Phantom", Browser.PHANTOMJS);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("spreadsheet_styles.xlsx",this);
         assertCorrectCss(sheetController); // TODO - Fails with rev 18

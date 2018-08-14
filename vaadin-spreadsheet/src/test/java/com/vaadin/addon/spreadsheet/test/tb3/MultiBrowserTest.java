@@ -74,12 +74,7 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
         return getBrowserCapabilities( Browser.IE11,
-                Browser.FIREFOX, Browser.CHROME, Browser.PHANTOMJS);
-    }
-
-    protected List<DesiredCapabilities> getBrowsersExcludingPhantomJS() {
-        return getBrowserCapabilities(Browser.IE11,
-                Browser.CHROME, Browser.FIREFOX);
+                Browser.FIREFOX, Browser.CHROME);
     }
 
     protected List<DesiredCapabilities> getBrowserCapabilities(
@@ -104,7 +99,7 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
 
     /**
      * Call this method if you want to skip the test on some specific browser.
-     * For example, some versions of PhantomJS does not fire onContextMenu event on right click so
+     * For example, some versions of Browser does not fire onContextMenu event on right click so
      * that browser could be skipped for a test which relays on it.
      *
      *
@@ -133,8 +128,6 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
             case IE10: if(BrowserUtil.isIE(capabilities, 10)) { throw new BrowserSkipped(reason); }
                 break;
             case IE11: if(BrowserUtil.isIE(capabilities, 11)) { throw new BrowserSkipped(reason); }
-                break;
-            case PHANTOMJS: if(BrowserUtil.isPhantomJS(capabilities)) { throw new BrowserSkipped(reason); }
                 break;
             default: throw new RuntimeException("Unknown browser: "+browser);
         }

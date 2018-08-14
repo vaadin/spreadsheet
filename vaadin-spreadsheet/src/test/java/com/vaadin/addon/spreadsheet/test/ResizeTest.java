@@ -74,11 +74,4 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
                 getSize(sheetController.getCellStyle("D2", "width")), 200);
     }
 
-    @Override
-    public List<DesiredCapabilities> getBrowsersToTest() {
-        // ResizeHandle double click and dragging not working in phantomJS
-        List<DesiredCapabilities> result = super.getBrowsersToTest();
-        result.remove(Browser.PHANTOMJS.getDesiredCapabilities());
-        return result;
-    }
 }

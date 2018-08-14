@@ -217,7 +217,6 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {
-        skipBrowser("setAddressFieldValue() does not work correctly with PhantomJS", Browser.PHANTOMJS);
         spreadsheetPage.setAddressFieldValue("AT1:AV7");
         assertSelectionRange("AT1:AV7", true);
     }
@@ -225,7 +224,6 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testKeyboardNavigation() throws Exception {
         skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
-        skipBrowser("Fails randomly with PhantomJS", Browser.PHANTOMJS);
 
         spreadsheetPage.clickOnCell("J10");
         new Actions(getDriver()).sendKeys(Keys.RIGHT).build().perform();
@@ -260,8 +258,6 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     @Ignore("Keys.RETURN loses active position indication")
     public void testNavigationInSelectionWithEnterAndTab() throws Exception {
-        skipBrowser("setAddressFieldValue() does not work correctly with PhantomJS", Browser.PHANTOMJS);
-
         spreadsheetPage.setAddressFieldValue("A1:C2");
         // Assert that everything is selected
         assertSelectionRange("A1:C2", true);
@@ -426,7 +422,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickShouldSelect() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox", Browser.FIREFOX);
         spreadsheetPage.clickOnCell("B2");
         assertSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
         // new Actions(getDriver()).keyDown(Keys.SHIFT).build().perform();
@@ -439,7 +435,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickOnColumnHeader() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox", Browser.FIREFOX);
         spreadsheetPage.clickOnCell("B2");
         assertSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
         // new Actions(getDriver()).keyDown(Keys.SHIFT).build().perform();
@@ -453,7 +449,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickOnRowHeader() throws Exception {
-        skipBrowser("Range selection assertion fails", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Range selection assertion fails", Browser.FIREFOX);
 
         spreadsheetPage.clickOnCell("B10");
         assertSelectedCell("B10", spreadsheetPage.isCellSelected("B10"));
@@ -468,7 +464,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testSelectCellsByCtrlClick() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox", Browser.FIREFOX);
 
         // ("only works on windows due to https://code.google.com/p/selenium/issues/detail?id=4843 (patch pending)")
         spreadsheetPage.clickOnCell("A2");
