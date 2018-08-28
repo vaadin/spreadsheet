@@ -22,7 +22,7 @@
         <vaadin.version>7.7.4</vaadin.version>
         <testbench.api.version>7.7.4</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <poi.version>3.15</poi.version>
+        <poi.version>3.17</poi.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
     </properties>
 

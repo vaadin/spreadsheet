@@ -1,45 +1,23 @@
 package com.vaadin.addon.spreadsheet;
 
-/*
- * #%L
- * Vaadin Spreadsheet
- * %%
- * Copyright (C) 2013 - 2015 Vaadin Ltd
- * %%
- * This program is available under Commercial Vaadin Add-On License 3.0
- * (CVALv3).
- * 
- * See the file license.html distributed with this software for more
- * information about licensing.
- * 
- * You should have received a copy of the CVALv3 along with this program.
- * If not, see <http://vaadin.com/license/cval-3>.
- * #L%
- */
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
+import org.apache.poi.ss.usermodel.FontFormatting;
+import org.apache.poi.ss.usermodel.PatternFormatting;
 import org.apache.poi.xssf.model.ThemesTable;
-import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBorder;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTPatternFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
@@ -123,13 +101,14 @@ public class XSSFColorConverter implements ColorConverter {
 
         sb.append(attr);
         sb.append(":");
+
+        if (color == null || color.isAuto() || (color.isIndexed() && color.getIndex() == HSSFColorPredefined.AUTOMATIC.getIndex())) {
+            sb.append("#000;");
+            return sb.toString();
+        }
         if (color.isIndexed() && ColorConverterUtil
             .hasCustomIndexedColors(workbook)) {
             sb.append(ColorConverterUtil.getIndexedARGB(workbook,color));
-            return sb.toString();
-        }
-        if (color == null || color.isAuto()) {
-            sb.append("#000;");
             return sb.toString();
         }
 
@@ -158,33 +137,20 @@ public class XSSFColorConverter implements ColorConverter {
         return sb.toString();
     }
 
-    @Override
-    public String getBorderColorCSS(BorderSide borderSide, String attr,
-            BorderFormatting format) {
-
-        XSSFBorderFormatting casted = (XSSFBorderFormatting) format;
-
-        // getXBorderColor methods are useless with XSSF, so we need to dig
-        // deeper.
-        CTColor color = getBorderColor(casted, borderSide);
+    public String getBorderColorCSS(String attr, Color colorInstance) {
+        final XSSFColor color = (XSSFColor) colorInstance;
 
         StringBuilder sb = new StringBuilder();
 
         sb.append(attr);
         sb.append(":");
-        if (color == null || color.getAuto()) {
+
+        if (color == null || color.isAuto()) {
             sb.append("#000;");
             return sb.toString();
         }
 
-        byte[] argb;
-        if (color.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) color.getTheme());
-            argb = themeColor.getARGB();
-        } else {
-            argb = color.getRgb();
-        }
+        byte[] argb = color.getRGB();
 
         if (argb == null) {
             sb.append("#000;");
@@ -210,56 +176,21 @@ public class XSSFColorConverter implements ColorConverter {
         return sb.toString();
     }
 
-    private CTColor getBorderColor(XSSFBorderFormatting casted,
-            BorderSide borderSide) {
+    @Override
+    public String getBorderColorCSS(BorderSide borderSide, String attr, BorderFormatting format) {
 
-        // No POI API exists for this, but the data exists in the underlying
-        // implementation.
-
-        Field declaredField = null;
-        try {
-            declaredField = casted.getClass().getDeclaredField("_border");
-            declaredField.setAccessible(true);
-            CTBorder object = (CTBorder) declaredField.get(casted);
-            switch (borderSide) {
+        switch (borderSide) {
             case BOTTOM:
-                return object.getBottom().getColor();
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getBottomBorderColorColor()));
             case LEFT:
-                return object.getLeft().getColor();
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getLeftBorderColorColor()));
             case RIGHT:
-                return object.getRight().getColor();
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getRightBorderColorColor()));
             case TOP:
-                return object.getTop().getColor();
-
+                return getBorderColorCSS(attr, XSSFColor.toXSSFColor(format.getTopBorderColorColor()));
             default:
-                break;
-            }
-        } catch (IllegalArgumentException e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Incompatible POI implementation; unable to parse border color",
-                    e);
-        } catch (IllegalAccessException e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Incompatible POI implementation; unable to parse border color",
-                    e);
-        } catch (NoSuchFieldException e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Incompatible POI implementation; unable to parse border color",
-                    e);
-        } catch (SecurityException e) {
-            LOGGER.log(
-                    Level.SEVERE,
-                    "Incompatible POI implementation; unable to parse border color",
-                    e);
-        } finally {
-            if (declaredField != null) {
-                declaredField.setAccessible(false);
-            }
+                return ""; // unused, but needed for compilation
         }
-        return null;
     }
 
     @Override
@@ -313,55 +244,57 @@ public class XSSFColorConverter implements ColorConverter {
         return false;
     }
 
+    /**
+     * @param styleProvider general interface to support conditional format rules and table styles
+     * @return CSS color string, or null if none found
+     */
+    public String getBackgroundColorCSS(DifferentialStyleProvider styleProvider) {
+        PatternFormatting fillFmt = styleProvider.getPatternFormatting();
+        if (fillFmt == null) return null;
+
+        XSSFColor color = (XSSFColor) fillFmt.getFillBackgroundColorColor();
+
+        return getColorCSS(color);
+    }
+
     @Override
     public String getBackgroundColorCSS(ConditionalFormattingRule rule) {
+        return getBackgroundColorCSS((DifferentialStyleProvider) rule);
+    }
 
-        XSSFConditionalFormattingRule r = (XSSFConditionalFormattingRule) rule;
-        CTDxf dxf = getXMLColorDataWithReflection(r);
+    /**
+     * @param styleProvider
+     * @return CSS or null
+     */
+    public String getFontColorCSS(DifferentialStyleProvider styleProvider) {
 
-        CTPatternFill patternFill = dxf.getFill().getPatternFill();
+        FontFormatting font = styleProvider.getFontFormatting();
 
-        if(!patternFill.isSetBgColor()){
-            return null;
-        }
+        if (font == null) return null;
 
-        CTColor bgColor = patternFill.getBgColor();
+        XSSFColor color = (XSSFColor) font.getFontColor();
 
-        if (bgColor.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) bgColor.getTheme());
-
-            // CF rules have tint in bgColor but not the XSSFColor.
-            return styleColor(themeColor, bgColor.getTint());
-        } else {
-            byte[] rgb = bgColor.getRgb();
-            return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
-        }
-
+        return getColorCSS(color);
     }
 
     @Override
     public String getFontColorCSS(ConditionalFormattingRule rule) {
+        return getFontColorCSS((DifferentialStyleProvider) rule);
+    }
 
-        XSSFConditionalFormattingRule r = (XSSFConditionalFormattingRule) rule;
+    /**
+     * @param color
+     * @return CSS or null
+     */
+    public String getColorCSS(XSSFColor color) {
+        if (color == null || color.getCTColor() == null) return null;
 
-        CTDxf dxf = getXMLColorDataWithReflection(r);
-        CTFont font = dxf.getFont();
-
-        if (font.getColorList() == null || font.getColorList().isEmpty()) {
-            // default color
-            return null;
-        }
-
-        CTColor ctColor = font.getColorList().get(0);
-
-        if (ctColor.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) ctColor.getTheme());
-
-            return styleColor(themeColor, ctColor.getTint());
+        if (color.isThemed()) {
+            XSSFColor themeColor = workbook.getTheme().getThemeColor(color.getTheme());
+            // apply tint from the style, it isn't in the theme.
+            return styleColor(themeColor, color.getTint());
         } else {
-            byte[] rgb = ctColor.getRgb();
+            byte[] rgb = color.getARGB();
             return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
         }
 
@@ -395,21 +328,16 @@ public class XSSFColorConverter implements ColorConverter {
         return border.getBorderColor(borderSide);
     }
 
-    private String styleColor(XSSFColor color) {
+    protected String styleColor(XSSFColor color) {
         return styleColor(color, color == null ? 0.0 : color.getTint());
     }
 
-    private String styleColor(XSSFColor color, double tint) {
+    protected String styleColor(XSSFColor color, double tint) {
         if (color == null || color.isAuto()) {
             return null;
         }
-        //the XSSFColor#getARGB() method returns wrong colors for custom indexed colors
-        // to be removed when bug # 60898 is resolved (https://bz.apache.org/bugzilla/show_bug.cgi?id=60898)
-        if (color.isIndexed() && ColorConverterUtil
-            .hasCustomIndexedColors(workbook)) {
-            return ColorConverterUtil.getIndexedARGB(workbook, color);
-        }
 
+        // either an explicitly stored color, or a default or custom indexed color
         byte[] argb = color.getARGB();
         if (argb == null) {
             return null;
@@ -438,36 +366,6 @@ public class XSSFColorConverter implements ColorConverter {
         } else {
             return (byte) lum;
         }
-    }
-
-    /**
-     * XSSF doesn't have an API to get this value, so brute force it is..
-     * 
-     * @param rule
-     *            The rule that has color data defined
-     * @return OpenXML data format that contains the real defined styles
-     */
-    private CTDxf getXMLColorDataWithReflection(
-            XSSFConditionalFormattingRule rule) {
-        CTCfRule realRule = null;
-
-        Method declaredMethod = null;
-        try {
-            declaredMethod = rule.getClass().getDeclaredMethod("getCTCfRule");
-            declaredMethod.setAccessible(true);
-            realRule = (CTCfRule) declaredMethod.invoke(rule);
-        } catch (Exception e) {
-            LOGGER.fine(e.getMessage());
-        } finally {
-            if (declaredMethod != null) {
-                declaredMethod.setAccessible(false);
-            }
-        }
-
-        CTDxf dxf = workbook.getStylesSource().getCTStylesheet().getDxfs()
-                .getDxfArray((int) realRule.getDxfId());
-
-        return dxf;
     }
 
 }
