@@ -66,7 +66,6 @@ public class ConditionalFormatter implements Serializable {
      * Use this to avoid re-calculating format styles multiple times for the same cell when no values are changing
      * in the mean time.
      */
-    @FunctionalInterface
     public static interface ConditionalFormattingBatchEvaluator extends Serializable {
         /**
          * called by {@link ConditionalFormatter} to evaluate cells using cached results for efficiency
@@ -79,7 +78,6 @@ public class ConditionalFormatter implements Serializable {
     /**
      * Interface for batch processing wrapping calls to {@link #getCellFormattingIndex(Cell)}.
      */
-    @FunctionalInterface
     public static interface ConditionalFormatterEvaluator extends Serializable {
         /**
          * define the set of CSS rule indexes that apply to this cell.
