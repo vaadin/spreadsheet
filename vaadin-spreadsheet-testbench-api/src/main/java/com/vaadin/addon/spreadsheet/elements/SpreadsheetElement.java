@@ -231,11 +231,8 @@ public class SpreadsheetElement extends AbstractElement {
     /**
      * Adds a new sheet with the given name. Sheet names should be unique within
      * a spreadsheet.
-     * 
-     * @param sheetName
-     *            Name of the new sheet.
      */
-    public void addSheet(String sheetName) {
+    public void addSheet() {
         findElement(By.className("add-new-tab")).click();
     }
 
