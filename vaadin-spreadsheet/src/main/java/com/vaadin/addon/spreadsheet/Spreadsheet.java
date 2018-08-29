@@ -1873,7 +1873,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void autofitColumn(int columnIndex) {
         final Sheet activeSheet = getActiveSheet();
-        activeSheet.autoSizeColumn(columnIndex);
+        try {
+            activeSheet.autoSizeColumn(columnIndex);
+        }catch(NullPointerException e) {
+            // NullPointerException is being thrown in POI. Catch to prevent breaking the UI.
+            LOGGER.log(Level.FINEST, "Poi threw NullPointerException when trying to autofit column", e);
+            return;
+        }
         int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex, AbstractExcelUtils
             .getColumnWidthInPx(activeSheet.getColumnWidth(columnIndex)));
 
