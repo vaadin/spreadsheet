@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>vaadin-spreadsheet</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <groupId>com.vaadin.addon</groupId>
     <packaging>jar</packaging>
     <name>Vaadin Spreadsheet</name>
@@ -22,7 +22,7 @@
         <vaadin.version>7.7.4</vaadin.version>
         <testbench.api.version>7.7.4</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <poi.version>3.15</poi.version>
+        <poi.version>3.17</poi.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
     </properties>
 
@@ -374,6 +374,25 @@
                                     <action>
                                         <ignore></ignore>
                                     </action>
+                                </pluginExecution>
+                                <pluginExecution>
+                                	<pluginExecutionFilter>
+                                		<groupId>
+                                			org.apache.felix
+                                		</groupId>
+                                		<artifactId>
+                                			maven-bundle-plugin
+                                		</artifactId>
+                                		<versionRange>
+                                			[2.5.4,)
+                                		</versionRange>
+                                		<goals>
+                                			<goal>manifest</goal>
+                                		</goals>
+                                	</pluginExecutionFilter>
+                                	<action>
+                                		<ignore></ignore>
+                                	</action>
                                 </pluginExecution>
                             </pluginExecutions>
                         </lifecycleMappingMetadata>
