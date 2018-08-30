@@ -316,23 +316,6 @@ public class SpreadsheetElement extends AbstractElement {
                 + bottomH - sLocation.getY());
     }
 
-    private boolean intersectsSelection(Point location, Dimension size) {
-        // Test top left corner
-        if (location.getX() < sLocation.getX()
-                || location.getY() < sLocation.getY()) {
-            return false;
-        }
-        // Test lower right corner
-        if (location.getX() + size.getWidth() > sLocation.getX()
-                + sSize.getWidth()
-                || location.getY() + size.getHeight() > sLocation.getY()
-                        + sSize.getHeight()) {
-            return false;
-        }
-        // Everything is inside the selection
-        return true;
-    }
-
     private boolean isInSelection(Point location) {
         // Test top left corner
         if (location.getX() < sLocation.getX()
