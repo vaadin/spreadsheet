@@ -16,7 +16,7 @@ class SheetState implements Serializable {
     private static WeakHashMap<Sheet, String> selectedCells = new WeakHashMap<Sheet, String>();
 
     SheetState(final Spreadsheet spreadSheet) {
-        this.spreadSheet = spreadSheet;
+        SheetState.spreadSheet = spreadSheet;
 
         spreadSheet.addSelectionChangeListener(new Spreadsheet.SelectionChangeListener() {
             @Override

@@ -3,9 +3,9 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-import com.vaadin.testbench.parallel.Browser;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import com.vaadin.testbench.parallel.Browser;
 
 public class HideTest extends Test1 {
 

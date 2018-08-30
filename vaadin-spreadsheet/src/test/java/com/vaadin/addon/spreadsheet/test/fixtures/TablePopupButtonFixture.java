@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.vaadin.addon.spreadsheet.PopupButton;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")

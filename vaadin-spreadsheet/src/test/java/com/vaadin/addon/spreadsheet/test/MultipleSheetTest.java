@@ -2,15 +2,14 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.fail;
 
-import com.vaadin.testbench.parallel.Browser;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.interactions.Actions;
 
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.parallel.Browser;
 
 public class MultipleSheetTest extends Test1 {
 

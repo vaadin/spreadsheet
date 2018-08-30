@@ -11,9 +11,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
 
     @Test
