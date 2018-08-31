@@ -1,12 +1,13 @@
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 
-import com.vaadin.testbench.parallel.Browser;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.parallel.Browser;
 
 public class StyleTest extends Test1 {
 
@@ -66,12 +67,7 @@ public class StyleTest extends Test1 {
                 (int) Math.ceil(getSize(c.getCellStyle("D5", "font-size"))),
                 equalTo(19));
 
-         if (getDesiredCapabilities().getBrowserName()
-         .equalsIgnoreCase("chrome")) {
-             collector.checkThat(c.getCellStyle("B4", "font-weight"), equalTo("bold"));
-         } else {
-            collector
-                    .checkThat(c.getCellStyle("B4", "font-weight"), equalTo("700"));
-         }
+        collector.checkThat(c.getCellStyle("B4", "font-weight"),
+                anyOf(equalTo("bold"), equalTo("700")));
     }
 }
