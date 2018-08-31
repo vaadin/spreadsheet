@@ -19,6 +19,8 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.PopupPanel;
@@ -63,7 +65,8 @@ public class PopupButtonHeader extends Widget {
 
     @Override
     public void onBrowserEvent(Event event) {
-        if (event.getEventTarget().equals(close)) {
+        final EventTarget target = event.getEventTarget();
+        if (Element.is(target) && Element.as(target).equals(close)) {
             popup.hide();
             sheetWidget.focusSheet();
         } else {

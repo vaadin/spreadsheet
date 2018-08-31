@@ -313,7 +313,7 @@ public class CellComment extends VOverlay {
 
     private void showOrHideSeparator() {
         if(invalidFormula.isVisible() && (author.isVisible() || label.isVisible()
-                        || Display.BLOCK.equals(input.getStyle().getDisplay()) )) {
+                        || Display.BLOCK.getCssName().equals(input.getStyle().getDisplay()) )) {
             if(!invalidFormula.getStyleName().contains(COMMENT_OVERLAY_SEPARATOR_CLASSNAME)) {
                 invalidFormula.addStyleName(COMMENT_OVERLAY_SEPARATOR_CLASSNAME);
             }
