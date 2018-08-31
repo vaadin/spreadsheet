@@ -10,6 +10,7 @@ import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
 import com.vaadin.testbench.elements.NativeSelectElement;
 import com.vaadin.testbench.elements.TextFieldElement;
+import com.vaadin.testbench.elements.WindowElement;
 
 public class HeaderPage extends Page {
 
@@ -43,7 +44,9 @@ public class HeaderPage extends Page {
 
     public void addFreezePane() {
         $(ButtonElement.class).caption("Freeze Pane").first().click();
-        $(ButtonElement.class).caption("Submit values").first().click();
+        WindowElement windowElement = $(WindowElement.class).first();
+        windowElement.waitForVaadin();
+        windowElement.$(ButtonElement.class).caption("Submit values").first().click();
     }
 
     public void addFreezePane(int horizontalSplitPosition, int verticalSplitPosition) {
