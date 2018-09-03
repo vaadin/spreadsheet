@@ -108,11 +108,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         Action.Container, Focusable {
 
     /**
-     * Minimum row height for rows containing components (in points).
-     */
-    private static final int MINIMUM_ROW_HEIGHT_FOR_COMPONENTS = 30;
-
-    /**
      * This is a style which hides the top (address and formula) bar.
      */
     public static final String HIDE_FUNCTION_BAR_STYLE = "hidefunctionbar";
