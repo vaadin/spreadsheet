@@ -1,10 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import com.google.common.base.Predicate;
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.By;
-import com.vaadin.testbench.parallel.Browser;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -14,8 +12,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
+import com.google.common.base.Predicate;
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
+import com.vaadin.testbench.By;
+import com.vaadin.testbench.parallel.Browser;
 
 public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
@@ -413,11 +414,14 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         collector.checkThat(c.getCellAt("B2").getCssValue("text-align"),
                 equalTo("right"));
 
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-color"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-color"),
                 equalTo("rgba(0, 0, 255, 1)"));
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-style"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-style"),
                 equalTo("solid"));
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-width"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-width"),
                 equalTo("4px"));
 
         collector.checkThat(c.getCellAt("B3").getCssValue("background-color"),
@@ -430,25 +434,23 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
                 equalTo("italic"));
 
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("A5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("A5").getCssValue("font-size"))),
                 equalTo(11));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("B5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("B5").getCssValue("font-size"))),
                 equalTo(14));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("C5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("C5").getCssValue("font-size"))),
                 equalTo(16));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("D5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("D5").getCssValue("font-size"))),
                 equalTo(19));
-
-        if (getDesiredCapabilities().getBrowserName()
-                .equalsIgnoreCase("chrome")) {
-            collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("bold"));
-        } else {
-            collector
-                    .checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("700"));
-        }
+        collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"),
+                equalTo("700"));
     }
 
     private double parseSize(String size) {
