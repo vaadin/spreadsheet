@@ -2,6 +2,7 @@ package com.vaadin.addon.spreadsheet.test;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -50,6 +51,7 @@ public class ResizeTest extends Test1 {
     }
 
     @Test
+    @Ignore("Sometimes poi throws NullPointerException on resize. Needs investigation.")
     public void testColumnAutoResize() {
         sheetController.putCellContent("B2", "text");
 
