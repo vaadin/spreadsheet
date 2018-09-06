@@ -55,7 +55,6 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -950,7 +949,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * See {@link #setSheetVisibility(int, SheetVisibility)}.
+     * See {@link Workbook#setSheetHidden(int, int)}.
      * <p>
      * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
      * status on currently visible/hidden/very hidden sheets.
@@ -968,36 +967,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void setSheetHidden(int sheetPOIIndex, int hidden)
             throws IllegalArgumentException {
-        setSheetVisibility(sheetPOIIndex, SheetVisibility.values()[hidden]);
-    }
-
-    /**
-     * See {@link Workbook#setSheetVisibility(int, SheetVisibility)}.
-     * <p>
-     * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
-     * status on currently visible/hidden/very hidden sheets.
-     * 
-     * If the currently active sheet is set hidden, another sheet is set as
-     * active sheet automatically. At least one sheet should be always visible.
-     * 
-     * @param sheetPOIIndex
-     *            Index of the target sheet within the POI model, 0-based.
-     * @param sheetVisibility 
-     *            Visibility state to set. Should not be null. See {@link SheetVisibility}
-     * @throws IllegalArgumentException
-     *             If the index or state is invalid, or if trying to hide the
-     *             only visible sheet.
-     */
-    public void setSheetVisibility(int sheetPOIIndex, SheetVisibility sheetVisibility)
-            throws IllegalArgumentException {
-        if (sheetVisibility == null) {
-            throw new NullPointerException(
-                    "Sheet visibility was not specified");
-        }
-
-        final boolean sheetIsNowVisible = sheetVisibility == SheetVisibility.VISIBLE;
         // POI allows user to hide all sheets ...
-        if (!sheetIsNowVisible
+        if (hidden != 0
                 && SpreadsheetUtil.getNumberOfVisibleSheets(workbook) == 1
                 && !workbook.isSheetHidden(sheetPOIIndex)) {
             throw new IllegalArgumentException(
@@ -1005,19 +976,18 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
-        final boolean sheetWasPreviouslyHidden = isHidden || isVeryHidden;
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        workbook.setSheetVisibility(sheetPOIIndex, sheetVisibility);
+        workbook.setSheetHidden(sheetPOIIndex, hidden);
 
-        final boolean visibilityHasChanged = sheetIsNowVisible == sheetWasPreviouslyHidden;
         // skip component reload if "nothing changed"
-        if (visibilityHasChanged) {
+        if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0
+                && !(isHidden && isVeryHidden)) {
             if (sheetPOIIndex != activeSheetIndex) {
                 reloadSheetNames();
                 getState().sheetIndex = getSpreadsheetSheetIndex(activeSheetIndex) + 1;
             } else { // the active sheet can be only set as hidden
                 int oldVisibleSheetIndex = getState().sheetIndex - 1;
-                if (!sheetIsNowVisible
+                if (hidden != 0
                         && activeSheetIndex == (workbook.getNumberOfSheets() - 1)) {
                     // hiding the active sheet, and it was the last sheet
                     oldVisibleSheetIndex--;
