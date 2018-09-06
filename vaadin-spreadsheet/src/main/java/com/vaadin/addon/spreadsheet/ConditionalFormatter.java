@@ -57,7 +57,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueChangeEvent;
 @SuppressWarnings("serial")
 public class ConditionalFormatter implements Serializable {
 
-    @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger
             .getLogger(ConditionalFormatter.class.getName());
 

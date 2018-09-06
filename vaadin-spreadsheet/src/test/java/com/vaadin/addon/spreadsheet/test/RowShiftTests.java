@@ -1,8 +1,8 @@
 package com.vaadin.addon.spreadsheet.test;
 
-import com.vaadin.testbench.parallel.Browser;
-import org.junit.Ignore;
 import org.junit.Test;
+
+import com.vaadin.testbench.parallel.Browser;
 
 public class RowShiftTests extends Test1 {
 
