@@ -5440,8 +5440,6 @@ public class SheetWidget extends Panel {
             for (int i = topRowIndex - 1; i >= row - 1 && i > 0; i--) {
                 scroll += getRowHeight(i);
             }
-            // with horizontal need to add 1 pixel per cell because borders
-            scroll += (topRowIndex - row);
             final int result = sheet.getScrollTop() - scroll;
             sheet.setScrollTop(result > 0 ? result : 0);
             if (row <= firstRowIndex
@@ -5458,8 +5456,6 @@ public class SheetWidget extends Panel {
                         && i <= maximumRows; i++) {
                     scroll += getRowHeight(i);
                 }
-                // with horizontal need to add 1 pixel per cell because borders
-                scroll += (row - bottomRowIndex);
                 sheet.setScrollTop(sheet.getScrollTop() + scroll);
                 if (row >= lastRowIndex
                         || scroll > (actionHandler.getRowBufferSize() / 2)) {
@@ -5561,8 +5557,6 @@ public class SheetWidget extends Panel {
                 for (int i = topRowIndex - 1; i >= row1 - 1 && i > 0; i--) {
                     scroll += getRowHeight(i);
                 }
-                // with horizontal need to add 1 pixel per cell because borders
-                scroll += (topRowIndex - row1);
                 final int result = sheet.getScrollTop() - scroll;
                 sheet.setScrollTop(result > 0 ? result : 0);
                 if (row1 <= firstRowIndex
@@ -5577,8 +5571,6 @@ public class SheetWidget extends Panel {
                         && i <= maximumRows; i++) {
                     scroll += getRowHeight(i);
                 }
-                // with horizontal need to add 1 pixel per cell because borders
-                scroll += (row1 - bottomRowIndex);
                 sheet.setScrollTop(sheet.getScrollTop() + scroll);
                 if (row1 >= lastRowIndex
                         || scroll > (actionHandler.getRowBufferSize() / 2)) {
