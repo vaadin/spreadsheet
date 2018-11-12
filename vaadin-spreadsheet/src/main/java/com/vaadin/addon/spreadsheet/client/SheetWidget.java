@@ -4880,7 +4880,7 @@ public class SheetWidget extends Panel {
         final List<Cell> cells = rows.get(0);
         int size = cells.size();
         for (int i = size - 1; i > 0; i--) {
-            if (isVisible(cells.get(i).getElement())) {
+            if (cells.get(i).getElement().getAbsoluteRight() < sheet.getAbsoluteRight()) {
                 return index;
             } else {
                 index--;
