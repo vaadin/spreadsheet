@@ -1,3 +1,7 @@
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/vaadin-spreadsheet)
+[![Stars on Vaadin Directory](https://img.shields.io/vaadin-directory/star/vaadin-spreadsheet.svg)](https://vaadin.com/directory/component/vaadin-spreadsheet)
+
+
 # Vaadin Spreadsheet
 
 Vaadin Spreadsheet is a UI component add-on for Vaadin 7 which provides means to view and edit Excel spreadsheets in Vaadin applications.
