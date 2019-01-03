@@ -50,7 +50,7 @@ public abstract class AbstractSeriesDataWriter {
                 series.name, new SelectListener() {
                     @Override
                     public void selected() {
-                        series.dataSelectListener.dataSelected();
+                    	getSeriesData().dataSelectListener.dataSelected();
                     }
                 });
 

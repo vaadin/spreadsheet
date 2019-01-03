@@ -61,8 +61,14 @@ public class MergedRegionUtil {
      * @return
      */
     public static MergedRegion findIncreasingSelection(
-            MergedRegionContainer container, int topRow, int bottomRow,
-            int leftColumn, int rightColumn) {
+            MergedRegionContainer container, int tr, int br,
+            int lc, int rc) {
+    	
+    	int bottomRow = br;
+    	int topRow = tr;
+    	int leftColumn = lc;
+    	int rightColumn = rc;
+    	
         if (topRow == bottomRow && leftColumn == rightColumn) {
             MergedRegion mergedRegion = container.getMergedRegion(leftColumn,
                     topRow);

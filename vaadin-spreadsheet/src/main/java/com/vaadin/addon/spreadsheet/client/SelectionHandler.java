@@ -497,14 +497,19 @@ public class SelectionHandler {
      * 
      * Parameters 1-based.
      * 
-     * @param topRow
-     * @param bottomRow
-     * @param leftColumn
-     * @param rightColumn
-     * @return
+     * @param tr
+     * @param br
+     * @param lc
+     * @param rc
+     * @return merged region
      */
-    protected MergedRegion findDecreasingSelection(int topRow, int bottomRow,
-            int leftColumn, int rightColumn) {
+    protected MergedRegion findDecreasingSelection(int tr, int br,
+            int lc, int rc) {
+    	int bottomRow = br;
+    	int topRow = tr;
+    	int leftColumn = lc;
+    	int rightColumn = rc;
+
         if (topRow == bottomRow && leftColumn == rightColumn) {
             MergedRegion mergedRegion = spreadsheet.getMergedRegion(leftColumn,
                     topRow);
@@ -1027,7 +1032,9 @@ public class SelectionHandler {
      * Same as {@link #checkSelectionInMergedRegion(int, int)}, but discards old
      * selection in favor of the given cell.
      */
-    protected void checkNewSelectionInMergedRegion(int col, int row) {
+    protected void checkNewSelectionInMergedRegion(int c, int r) {
+    	int col = c;
+    	int row = r;
         MergedRegion region = spreadsheet.getMergedRegion(col, row);
         if (region != null) {
             colBeforeMergedCell = col;
