@@ -7,8 +7,15 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetDemoUI;
 
+/**
+ * ScrollTBTest
+ */
 public class ScrollTBTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * testHiddenColumnHeaderScrollingFix
+     * @throws IOException
+     */
     @Test
     public void testHiddenColumnHeaderScrollingFix() throws IOException {
         headerPage.loadFile("hidden.xlsx",this);

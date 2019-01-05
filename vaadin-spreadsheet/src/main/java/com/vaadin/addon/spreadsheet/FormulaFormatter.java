@@ -33,10 +33,14 @@ import java.util.Locale;
  */
 public class FormulaFormatter implements Serializable {
 
-    /*
+	private static final long serialVersionUID = 1L;
+
+	/*
      * Classes for the intermediary token format
      */
     private class FormulaToken implements Serializable {
+    	private static final long serialVersionUID = 1L;
+    	
         private final String content;
 
         public FormulaToken(char charContent) {
@@ -56,13 +60,29 @@ public class FormulaFormatter implements Serializable {
         }
     }
 
+    /**
+     * NumberToken
+     */
     protected class NumberToken extends FormulaToken {
+		private static final long serialVersionUID = 1L;
+
+		/**
+         * @param content
+         */
         public NumberToken(String content) {
             super(content);
         }
     }
 
+    /**
+     * SeparatorToken
+     */
     protected class SeparatorToken extends FormulaToken {
+		private static final long serialVersionUID = 1L;
+
+		/**
+         * @param content
+         */
         public SeparatorToken(char content) {
             super(content);
         }
@@ -107,6 +127,11 @@ public class FormulaFormatter implements Serializable {
         return formulaValue;
     }
 
+    /**
+     * isFormulaFormat
+     * @param value
+     * @return boolean
+     */
     public boolean isFormulaFormat(String value) {
         return value.startsWith("=") || value.startsWith("+");
     }
@@ -179,6 +204,11 @@ public class FormulaFormatter implements Serializable {
         return localizedTokens;
     }
 
+    /**
+     * tokensToString
+     * @param tokens
+     * @return String
+     */
     protected String tokensToString(List<FormulaToken> tokens) {
         StringBuilder tokenString = new StringBuilder();
         for (FormulaToken token : tokens) {
@@ -188,8 +218,11 @@ public class FormulaFormatter implements Serializable {
         return tokenString.toString();
     }
 
-    /*
+    /**
      * Loop through tokens and un-localize them as needed.
+     * @param tokens 
+     * @param locale 
+     * @return un-localized tokens
      */
     protected List<FormulaToken> unLocalizeTokens(List<FormulaToken> tokens,
             Locale locale) {
@@ -217,10 +250,13 @@ public class FormulaFormatter implements Serializable {
         return unlocalizedTokens;
     }
 
-    /*
+    /**
      * Go through the formula String and transform it to a list of tokens of the
      * correct type. Main goal is to figure out what are numbers and what are
      * argument separators.
+     * @param formulaValue 
+     * @param from 
+     * @return tokens
      */
     protected List<FormulaToken> tokenizeFormula(String formulaValue,
             Locale from) {
@@ -269,15 +305,23 @@ public class FormulaFormatter implements Serializable {
         }
     }
 
-    /*
+    /**
      * Check if the character is a number character in the given locale. Note
      * that grouping separators (e.g. for thousands) are not considered.
+     * @param current 
+     * @param locale 
+     * @return true if character is number
      */
     protected boolean isNumberChar(Character current, Locale locale) {
         return current != null
                 && (Character.isDigit(current) || getCurrentDecimalSeparator(locale) == current);
     }
 
+    /**
+     * getDecimalFormat
+     * @param locale
+     * @return DecimalFormat
+     */
     protected DecimalFormat getDecimalFormat(Locale locale) {
         DecimalFormat instance = (DecimalFormat) DecimalFormat
                 .getInstance(locale);
@@ -285,6 +329,11 @@ public class FormulaFormatter implements Serializable {
         return instance;
     }
 
+    /**
+     * getCurrentDecimalSeparator
+     * @param locale
+     * @return char
+     */
     protected char getCurrentDecimalSeparator(Locale locale) {
         if (locale == null) {
             return '.';

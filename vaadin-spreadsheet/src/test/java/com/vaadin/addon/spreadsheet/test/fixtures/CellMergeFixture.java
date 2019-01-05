@@ -7,6 +7,9 @@ import org.apache.poi.ss.util.CellReference;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * CellMergeFixture
+ */
 public class CellMergeFixture implements SpreadsheetFixture {
 
     @Override

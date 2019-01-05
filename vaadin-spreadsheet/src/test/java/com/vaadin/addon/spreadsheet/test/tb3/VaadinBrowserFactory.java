@@ -8,6 +8,9 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.testbench.parallel.DefaultBrowserFactory;
 
+/**
+ * VaadinBrowserFactory
+ */
 public class VaadinBrowserFactory extends DefaultBrowserFactory {
     private static final String FIREFOX_VERSION = "45";
     private static final String CHROME_VERSION = "40";

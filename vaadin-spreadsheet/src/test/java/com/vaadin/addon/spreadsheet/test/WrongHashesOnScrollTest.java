@@ -22,6 +22,10 @@ import com.vaadin.testbench.By;
  */
 public class WrongHashesOnScrollTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * openSpreadsheet_scrollLeftAndRight_thereAreNoHashes
+     * @throws Exception
+     */
     @Test
     public void openSpreadsheet_scrollLeftAndRight_thereAreNoHashes()
             throws Exception {

@@ -509,6 +509,9 @@ class GroupingUtil implements Serializable{
     }
 
     /**
+     * @param colsArray 
+     * @param col 
+     * @param lastlevel 
      * @return A column index, which can uniquely identify the group that exists
      *         at the given col, and has the given level. (<code>col</code>
      *         might have a level that is higher than we want). 1-based.
@@ -527,6 +530,10 @@ class GroupingUtil implements Serializable{
     }
 
     /**
+     * @param sheet 
+     * @param start 
+     * @param end 
+     * @param lastlevel 
      * @return A row index, which can uniquely identify the group that exists
      *         between the given indexes, and has the given level. (the row at
      *         <code>start</code> might have a level that is higher than we
@@ -545,6 +552,9 @@ class GroupingUtil implements Serializable{
     }
 
     /**
+     * @param colsArray 
+     * @param col 
+     * @param lastlevel 
      * @return If the group that spans the given col and has the given level is
      *         hidden or not. (col might have a higher level than the one we
      *         want to check).
@@ -562,6 +572,10 @@ class GroupingUtil implements Serializable{
     }
 
     /**
+     * @param sheet 
+     * @param rowindex 
+     * @param row 
+     * @param level 
      * @return The end index of the row group that spans the given row, with the
      *         given level. 0-based.
      */
@@ -581,6 +595,9 @@ class GroupingUtil implements Serializable{
     }
 
     /**
+     * @param colsArray 
+     * @param col 
+     * @param level 
      * @return The end index of the col group that spans the given col, with the
      *         given level. 1-based.
      */

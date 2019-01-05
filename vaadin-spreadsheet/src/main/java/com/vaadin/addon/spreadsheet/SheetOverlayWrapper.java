@@ -13,10 +13,19 @@ import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.Component;
 
+/**
+ * SheetOverlayWrapper
+ */
 @SuppressWarnings("serial")
 public abstract class SheetOverlayWrapper implements Serializable {
 
+    /**
+     * OverlayChangeListener
+     */
     public interface OverlayChangeListener extends Serializable {
+        /**
+         * overlayChanged
+         */
         void overlayChanged();
     }
 
@@ -27,6 +36,9 @@ public abstract class SheetOverlayWrapper implements Serializable {
 
     private boolean visible;
 
+    /**
+     * @param anchor
+     */
     public SheetOverlayWrapper(ClientAnchor anchor) {
         this.anchor = anchor;
         id = "sheet-overlay-" + counter;
@@ -234,6 +246,7 @@ public abstract class SheetOverlayWrapper implements Serializable {
     /**
      * Returns a unique ID of this overlay, used also as a resource key for
      * images.
+     * @return id
      */
     public String getId() {
         return id;
@@ -270,6 +283,10 @@ public abstract class SheetOverlayWrapper implements Serializable {
         return anchor;
     }
 
+    /**
+     * getResource
+     * @return Resource
+     */
     public Resource getResource() {
         return null;
     }
@@ -281,10 +298,19 @@ public abstract class SheetOverlayWrapper implements Serializable {
      *            false if you don't want to initialize the component, calling
      *            with true after the first time has no effect.
      */
+    /**
+     * getComponent
+     * @param init
+     * @return Component
+     */
     public Component getComponent(final boolean init) {
         return null;
     }
 
+    /**
+     * getType
+     * @return OverlayInfo.Type
+     */
     public abstract OverlayInfo.Type getType();
 
     @Override

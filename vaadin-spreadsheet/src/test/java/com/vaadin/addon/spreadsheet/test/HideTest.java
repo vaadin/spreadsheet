@@ -8,8 +8,14 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * HideTest
+ */
 public class HideTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * testHideColumn
+     */
     @Test
     public void testHideColumn() {
         headerPage.createNewSpreadsheet();
@@ -27,6 +33,9 @@ public class HideTest extends AbstractSpreadsheetTestCase {
         assertCellIsHidden("D2");
     }
 
+    /**
+     * testHideRow
+     */
     @Test
     public void testHideRow() {
         headerPage.createNewSpreadsheet();

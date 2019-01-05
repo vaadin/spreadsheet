@@ -36,6 +36,9 @@ import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 @SuppressWarnings("serial")
 public class InsertTableAction extends SpreadsheetAction {
 
+    /**
+     * constructor
+     */
     public InsertTableAction() {
         super("");
     }

@@ -21,6 +21,9 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
 
+    /**
+     * resizing_protectedSheet_columnResizeFails
+     */
     @Test
     public void resizing_protectedSheet_columnResizeFails() {
         spreadsheetPage = headerPage.loadFile("multiple_sheets_protected.xlsx",
@@ -43,6 +46,9 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
                 originalWidth, newWidth), originalWidth == newWidth);
     }
 
+    /**
+     * resizing_protectedSheetWithFormatColumnsEnabled_columnResizeSuccessful
+     */
     @Test
     public void resizing_protectedSheetWithFormatColumnsEnabled_columnResizeSuccessful() {
         spreadsheetPage = headerPage.loadFile("protected_format_columns.xlsx",

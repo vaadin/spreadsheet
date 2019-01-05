@@ -5,9 +5,15 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+/**
+ * LoadFileWithFrozenPaneScrolled
+ */
 public class LoadFileWithFrozenPaneScrolled
     extends AbstractSpreadsheetTestCase {
 
+    /**
+     * loadFileWithFrozenPaneScrolled_firstColumnIsA
+     */
     @Test
     public void loadFileWithFrozenPaneScrolled_firstColumnIsA() {
         headerPage.loadFile("frozen_pane_scrolled.xlsx", this);

@@ -13,6 +13,9 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * CellDeletionTest
+ */
 public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
 
@@ -23,6 +26,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         headerPage.loadTestFixture(TestFixtures.DeletionHandler);
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellSucceedsWhenHandlerReturnsTrue void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellSucceedsWhenHandlerReturnsTrue() {
         sheetController.clickCell("B2");
@@ -36,6 +42,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(notification.getText(), is("Deleting: 1:1"));
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellFailsWhenHandlerReturnsFalse void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellFailsWhenHandlerReturnsFalse() {
         sheetController.clickCell("C2");
@@ -50,6 +59,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(notification.getText(), is("Attempting to delete: 1:2"));
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellSucceedsWhenHandlerReturnsTrue void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellSucceedsWhenHandlerReturnsTrue() {
         skipBrowser("PhantomJS ignores the CTRL", Browser.PHANTOMJS);
@@ -69,6 +81,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(notification.getText(), is("Deleting: 2:1;4:1"));
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellFailsWhenHandlerReturnsFalse void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellFailsWhenHandlerReturnsFalse() {
         skipBrowser("PhantomJS ignores the CTRL", Browser.PHANTOMJS);
@@ -90,6 +105,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(notification.getText(), is("Attempting to delete: 2:2;4:2"));
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeSucceedsWhenHandlerReturnsTrue void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeSucceedsWhenHandlerReturnsTrue() {
         skipBrowser("PhantomJS ignores the SHIFT", Browser.PHANTOMJS);
@@ -110,6 +128,9 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(notification.getText(), is("Deleting: 5:1-7:1"));
     }
 
+    /**
+     * deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeFailsWhenHandlerReturnsFalse void
+     */
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeFailsWhenHandlerReturnsFalse() {
         skipBrowser("PhantomJS ignores the SHIFT", Browser.PHANTOMJS);

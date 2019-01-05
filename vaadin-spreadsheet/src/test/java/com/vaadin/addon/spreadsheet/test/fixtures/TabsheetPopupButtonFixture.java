@@ -5,6 +5,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 
+/**
+ * TabsheetPopupButtonFixture
+ */
 @SuppressWarnings("serial")
 public class TabsheetPopupButtonFixture implements SpreadsheetFixture {
 

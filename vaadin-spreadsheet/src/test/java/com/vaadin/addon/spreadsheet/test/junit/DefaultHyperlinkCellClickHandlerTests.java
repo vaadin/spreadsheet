@@ -25,6 +25,12 @@ public class DefaultHyperlinkCellClickHandlerTests {
         }
     };
 
+    /**
+     * hyperlinkParser_validStrings_correctParsed
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     @Test
     public void hyperlinkParser_validStrings_correctParsed()
         throws NoSuchMethodException, InvocationTargetException,

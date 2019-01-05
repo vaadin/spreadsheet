@@ -77,6 +77,9 @@ import com.vaadin.ui.Upload.SucceededListener;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+/**
+ * SpreadsheetDemoUI
+ */
 @SuppressWarnings("serial")
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
@@ -94,7 +97,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
     private Button download;
 
     private ComboBox<File> openTestSheetSelect;
-    private SpreadsheetComponentFactory spreadsheetFieldFactory;
+    SpreadsheetComponentFactory spreadsheetFieldFactory;
 
     private SheetChangeListener selectedSheetChangeListener;
 
@@ -114,11 +117,18 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
     private Button loadFixtureBtn;
     private NativeSelect<TestFixtures> fixtureSelect;
 
+    /**
+     * 
+     */
     public SpreadsheetDemoUI() {
         super();
         SpreadsheetFactory.logMemoryUsage();
     }
 
+    /**
+     * getOptionsLayout
+     * @return HorizontalLayout
+     */
     protected HorizontalLayout getOptionsLayout() {
         return options;
     }
@@ -535,7 +545,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         }
     }
 
-    private void updateLocale() {
+    void updateLocale() {
         if (spreadsheet != null && localeSelect.getValue() instanceof Locale) {
             spreadsheet.setLocale(localeSelect.getValue());
         }

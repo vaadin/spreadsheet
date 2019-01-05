@@ -19,11 +19,23 @@ import com.vaadin.addon.spreadsheet.test.tb3.MultiBrowserTest;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.elements.NativeSelectElement;
 
+/**
+ * AbstractSpreadsheetTestCase
+ */
 public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
 
+    /**
+     * headerPage
+     */
     protected HeaderPage headerPage;
+    /**
+     * sheetController
+     */
     protected SheetController sheetController;
 
+    /**
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         openTestURL();
@@ -37,34 +49,60 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
         return SpreadsheetDemoUI.class;
     }
 
+    /**
+     * @param from
+     * @param value
+     * @param to
+     */
     protected void assertInRange(double from, double value, double to) {
         Assert.assertTrue("Value [" + value + "] is not in range: [" + from
                 + " - " + to + "]", value >= from && value <= to);
     }
 
+    /**
+     * 
+     */
     protected void assertNoErrorIndicatorDetected() {
         Assert.assertTrue("Error indicator detected when there should be none.",
                 findElements(By.className("v-errorindicator")).isEmpty());
     }
 
+    /**
+     * @param expected
+     * @param actual
+     */
     protected void assertAddressFieldValue(String expected, String actual) {
         assertEquals(
                 "Expected " + expected + " on addressField, actual:" + actual,
                 expected, actual);
     }
 
+    /**
+     * @param cell
+     * @param selected
+     */
     protected void assertNotSelectedCell(String cell, boolean selected) {
         assertFalse("Cell " + cell + " should not be selected cell", selected);
     }
 
+    /**
+     * @param cell
+     * @param selected
+     */
     protected void assertSelectedCell(String cell, boolean selected) {
         assertTrue("Cell " + cell + " should be the selected cell", selected);
     }
 
+    /**
+     * @param locator
+     */
     protected void waitForElementPresent(By locator) {
         waitUntil(ExpectedConditions.presenceOfElementLocated(locator));
     }
 
+    /**
+     * @param locale
+     */
     protected void setLocale(Locale locale) {
         $(NativeSelectElement.class).id("localeSelect")
                 .selectByText(locale.getDisplayName());
@@ -78,6 +116,8 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
      *
      * @param theme
      *            theme to load
+     * @param spreadsheetFile 
+     * @throws Exception 
      */
     protected void loadPage(String theme, String spreadsheetFile) throws Exception {
         driver.get(getTestUrl() + "?theme=" + theme);
@@ -90,12 +130,16 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
      *
      * @param spreadsheetFile
      *            file to load
+     * @throws Exception 
      */
     protected void loadPage(String spreadsheetFile) throws Exception {
         driver.get(getTestUrl() + "#file/" + spreadsheetFile);
         testBench(driver).waitForVaadin();
     }
 
+    /**
+     * clear log
+     */
     protected void clearLog() {
         List<WebElement> buttons = findElements(By.className("v-debugwindow-button"));
         for (int i = 0; i < buttons.size(); i++) {
@@ -109,6 +153,10 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
         }
     }
 
+    /**
+     * @param size
+     * @return size
+     */
     protected double getSize(String size) {
         return Double.parseDouble(size.replaceAll("[^.0-9]", ""));
     }

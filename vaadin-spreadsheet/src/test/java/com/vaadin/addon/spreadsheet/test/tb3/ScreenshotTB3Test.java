@@ -55,6 +55,9 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
     
     private String screenshotBaseName;
 
+    /**
+     * watcher
+     */
     @Rule
     public TestRule watcher = new TestWatcher() {
 

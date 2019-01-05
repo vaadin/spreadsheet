@@ -19,17 +19,47 @@ package com.vaadin.addon.spreadsheet.client;
 
 import java.io.Serializable;
 
+/**
+ * CellData
+ */
 @SuppressWarnings("serial")
 public class CellData implements Serializable {
 
+    /**
+     * row
+     */
     public int row;
+    /**
+     * col
+     */
     public int col;
+    /**
+     * value
+     */
     public String value;
+    /**
+     * formulaValue
+     */
     public String formulaValue;
+    /**
+     * originalValue
+     */
     public String originalValue;
+    /**
+     * cellStyle
+     */
     public String cellStyle = "cs0";
+    /**
+     * locked
+     */
     public boolean locked = false;
+    /**
+     * needsMeasure
+     */
     public boolean needsMeasure;
+    /**
+     * isPercentage
+     */
     public boolean isPercentage;
 
     @Override

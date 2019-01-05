@@ -32,6 +32,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class HideHeaderAction extends SpreadsheetAction {
 
+    /**
+     * constructor
+     */
     public HideHeaderAction() {
         super("");
     }

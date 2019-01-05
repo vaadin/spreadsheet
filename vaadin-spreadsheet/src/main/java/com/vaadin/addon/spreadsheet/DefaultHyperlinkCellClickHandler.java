@@ -41,6 +41,9 @@ public class DefaultHyperlinkCellClickHandler implements
 
     private static final DefaultHyperlinkCellClickHandler instance = new DefaultHyperlinkCellClickHandler();
 
+    /**
+     * constructor
+     */
     protected DefaultHyperlinkCellClickHandler() {
     }
 
@@ -99,7 +102,8 @@ public class DefaultHyperlinkCellClickHandler implements
         }
     }
 
-    private int getSheetIndex(Cell cell, String sheetName) {
+    private int getSheetIndex(Cell cell, String sheet) {
+    	String sheetName = sheet;
         // if name contains only numbers or contains spaces it's enclosed in
         // single quotes
         if (sheetName.charAt(0) == '\''

@@ -28,10 +28,19 @@ import java.util.Arrays;
  * Utility class for formatting cell values
  */
 public class CellValueFormatter implements Serializable {
+	private static final long serialVersionUID = 1L;
 
-    private DecimalFormatSymbols localeDecimalSymbols = DecimalFormatSymbols
+	private DecimalFormatSymbols localeDecimalSymbols = DecimalFormatSymbols
             .getInstance();
 
+    /**
+     * getScientificNotationStringForNumericCell
+     * @param numericValue
+     * @param formattedValue
+     * @param cellWidthRatio
+     * @param width
+     * @return String
+     */
     public String getScientificNotationStringForNumericCell(
             double numericValue, String formattedValue, float cellWidthRatio,
             int width) {
@@ -93,6 +102,10 @@ public class CellValueFormatter implements Serializable {
         return new String(filling);
     }
 
+    /**
+     * setLocaleDecimalSymbols
+     * @param localeDecimalSymbols void
+     */
     public void setLocaleDecimalSymbols(
             DecimalFormatSymbols localeDecimalSymbols) {
         this.localeDecimalSymbols = localeDecimalSymbols;

@@ -36,6 +36,9 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.TextBox;
 
 //TODO merge with FormulaBarWidget? or parts of it?
+/**
+ * SheetInputEventListener
+ */
 public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
         KeyDownHandler, ClickHandler, MouseDownHandler, BlurHandler,
         MouseUpHandler {
@@ -44,9 +47,17 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
 
     private FormulaBarWidget formulaBarWidget;
 
+    /**
+     * default constructor
+     */
     public SheetInputEventListener() {
     }
 
+    /**
+     * setSheetWidget
+     * @param sheetWidget
+     * @param formulaBarWidget
+     */
     public void setSheetWidget(SheetWidget sheetWidget,
             FormulaBarWidget formulaBarWidget) {
         widget = sheetWidget;

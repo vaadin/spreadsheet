@@ -95,6 +95,12 @@ public class SpreadsheetUtil implements Serializable {
                 && DateUtil.isCellDateFormatted(cell);
     }
 
+    /**
+     * relativeToAbsolute
+     * @param sheet
+     * @param cell
+     * @return CellReference
+     */
     public static CellReference relativeToAbsolute(Spreadsheet sheet,CellReference cell) {
         String sheetName = sheet.getActiveSheet().getSheetName();
         return new CellReference(sheetName, cell.getRow(), cell
@@ -273,6 +279,13 @@ public class SpreadsheetUtil implements Serializable {
         return null;
     }
 
+    /**
+     * parseNumber
+     * @param cell
+     * @param value
+     * @param locale
+     * @return Double
+     */
     public static Double parseNumber(Cell cell, String value, Locale locale) {
         if (value == null || value.trim().isEmpty()) {
             return null;
@@ -305,6 +318,12 @@ public class SpreadsheetUtil implements Serializable {
         return parseNumber(value, locale);
     }
 
+    /**
+     * parseNumber
+     * @param cellContent
+     * @param locale
+     * @return Double
+     */
     public static Double parseNumber(String cellContent, Locale locale) {
 
         if (cellContent == null) {

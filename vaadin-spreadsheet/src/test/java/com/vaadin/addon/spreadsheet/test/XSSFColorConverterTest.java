@@ -19,13 +19,23 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
 import com.vaadin.addon.spreadsheet.ColorConverterUtil;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * XSSFColorConverterTest
+ */
 public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
 
     private static final String BACKGROUND_COLOR = "background-color";
+    /**
+     * BORDER_RIGHT_COLOR
+     */
     public static final String BORDER_RIGHT_COLOR = "border-right-color";
     private XSSFWorkbook workbook;
     private SpreadsheetPage spreadsheetPage;
 
+    /**
+     * loadWorkbook
+     * @throws IOException void
+     */
     public void loadWorkbook() throws IOException {
         InputStream is = getClass()
             .getResourceAsStream("/test_sheets/wrong_color.xlsx");
@@ -34,12 +44,20 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.loadFile("wrong_color.xlsx", this);
     }
 
+    /**
+     * nullColor_openFile_noException
+     * @throws IOException void
+     */
     @Test
     public void nullColor_openFile_noException() throws IOException {
         spreadsheetPage = headerPage.loadFile("null_color.xlsx", this);
         assertNoErrorIndicatorDetected();
     }
 
+    /**
+     * customIndexedColor_compareForegroundColor_consistentColors
+     * @throws IOException void
+     */
     @Test
     public void customIndexedColor_compareForegroundColor_consistentColors() throws IOException {
         loadWorkbook();
@@ -60,6 +78,10 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
 
     }
 
+    /**
+     * customIndexedColor_compareBorderColor_consistentColors
+     * @throws IOException void
+     */
     @Test
     public void customIndexedColor_compareBorderColor_consistentColors() throws IOException {
         loadWorkbook();

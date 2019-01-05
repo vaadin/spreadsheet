@@ -12,6 +12,9 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.testutil.OverlayHelper;
 
+/**
+ * ChartTests
+ */
 public class ChartTests extends AbstractSpreadsheetTestCase {
 
     private static final String CHART1_CELL = "C2";
@@ -29,6 +32,10 @@ public class ChartTests extends AbstractSpreadsheetTestCase {
         overlayHelper = new OverlayHelper(driver);
     }
 
+    /**
+     * sampleWith3overlays_loadFile_overlaysPresentAndHaveCorrectSize
+     * @throws IOException
+     */
     @Test
     public void sampleWith3overlays_loadFile_overlaysPresentAndHaveCorrectSize()
             throws IOException {
@@ -41,6 +48,10 @@ public class ChartTests extends AbstractSpreadsheetTestCase {
         assertOverlayProperties("C10", 352, 307, "69px");
     }
 
+    /**
+     * sampleWith1overlay_disableOverlay_overlayIsNotPresent
+     * @throws IOException
+     */
     @Test
     public void sampleWith1overlay_disableOverlay_overlayIsNotPresent()
             throws IOException {
@@ -57,6 +68,10 @@ public class ChartTests extends AbstractSpreadsheetTestCase {
                 overlayHelper.isOverlayPresent(cell));
     }
 
+    /**
+     * sampleWith3overlays_minimizeAndRestore_success
+     * @throws IOException
+     */
     @Test
     public void sampleWith3overlays_minimizeAndRestore_success()
             throws IOException {

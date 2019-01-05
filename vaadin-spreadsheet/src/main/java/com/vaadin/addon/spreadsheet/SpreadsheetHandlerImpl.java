@@ -50,6 +50,9 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
 
     private Spreadsheet spreadsheet;
 
+    /**
+     * @param spreadsheet
+     */
     public SpreadsheetHandlerImpl(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
     }

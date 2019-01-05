@@ -10,8 +10,15 @@ import com.vaadin.addon.spreadsheet.test.demoapps.LayoutSpreadsheetUI;
 import com.vaadin.addon.spreadsheet.test.tb3.MultiBrowserTest;
 import com.vaadin.testbench.elements.ButtonElement;
 
+/**
+ * LayoutResizeTBTest
+ */
 public class LayoutResizeTBTest extends MultiBrowserTest {
 
+    /**
+     * setUp
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         openTestURL();
@@ -22,6 +29,10 @@ public class LayoutResizeTBTest extends MultiBrowserTest {
         return LayoutSpreadsheetUI.class;
     }
 
+    /**
+     * parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize
+     * @throws IOException
+     */
     @Test
     public void parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize() throws IOException {
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

@@ -48,6 +48,9 @@ import com.vaadin.testbench.parallel.BrowserUtil;
  */
 public abstract class MultiBrowserTest extends PrivateTB3Configuration {
 
+    /**
+     * testName
+     */
     @Rule
     public TestName testName = new TestName();
 
@@ -71,17 +74,30 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
         super.setDesiredCapabilities(desiredCapabilities);
     }
 
+    /**
+     * getBrowsersToTest
+     * @return List<DesiredCapabilities>
+     */
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
         return getBrowserCapabilities( Browser.IE11,
                 Browser.FIREFOX, Browser.CHROME, Browser.PHANTOMJS);
     }
 
+    /**
+     * getBrowsersExcludingPhantomJS
+     * @return List<DesiredCapabilities>
+     */
     protected List<DesiredCapabilities> getBrowsersExcludingPhantomJS() {
         return getBrowserCapabilities(Browser.IE11,
                 Browser.CHROME, Browser.FIREFOX);
     }
 
+    /**
+     * getBrowserCapabilities
+     * @param browsers
+     * @return List<DesiredCapabilities>
+     */
     protected List<DesiredCapabilities> getBrowserCapabilities(
             Browser... browsers) {
         List<DesiredCapabilities> capabilities = new ArrayList<DesiredCapabilities>();
@@ -97,7 +113,9 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
      * test.
      */
     private class BrowserSkipped extends AssumptionViolatedException {
-        public BrowserSkipped(String message) {
+		private static final long serialVersionUID = 1L;
+
+		public BrowserSkipped(String message) {
             super("Skipped <"+message+">");
         }
     }

@@ -34,6 +34,9 @@ import com.vaadin.event.Action;
 @SuppressWarnings("serial")
 public abstract class SpreadsheetAction extends Action {
 
+    /**
+     * @param caption
+     */
     public SpreadsheetAction(String caption) {
         super(caption);
     }

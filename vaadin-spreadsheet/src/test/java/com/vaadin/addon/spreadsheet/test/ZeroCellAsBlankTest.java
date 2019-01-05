@@ -6,8 +6,15 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * ZeroCellAsBlankTest
+ */
 public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * zeroCellAsBlank_loadSheetWithSettingOn_zeroExpected
+     * @throws Exception void
+     */
     @Test
     public void zeroCellAsBlank_loadSheetWithSettingOn_zeroExpected() throws Exception {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
@@ -21,6 +28,10 @@ public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
         assertEquals("0", spreadsheetPage.getCellValue("B5"));
     }
 
+    /**
+     * zeroCellAsBlank_loadSheetWithSettingOn_emptyExpected
+     * @throws Exception void
+     */
     @Test
     public void zeroCellAsBlank_loadSheetWithSettingOn_emptyExpected() throws Exception {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(

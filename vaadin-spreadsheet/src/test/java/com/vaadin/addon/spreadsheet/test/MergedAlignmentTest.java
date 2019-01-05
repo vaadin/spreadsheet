@@ -4,8 +4,16 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+/**
+ * MergedAlignmentTest
+ */
 public class MergedAlignmentTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * alignment_spreadsheetWithMergedCellsWithAlignedContents_correctAlignments
+     * @throws InterruptedException
+     * @throws IOException
+     */
     @Test
     public void alignment_spreadsheetWithMergedCellsWithAlignedContents_correctAlignments()
             throws InterruptedException, IOException {

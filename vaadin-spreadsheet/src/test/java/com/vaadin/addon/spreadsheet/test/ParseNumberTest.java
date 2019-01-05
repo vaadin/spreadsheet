@@ -8,8 +8,14 @@ import java.util.Locale;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+/**
+ * ParseNumberTest
+ */
 public class ParseNumberTest {
 
+    /**
+     * testNumberParsingWithEnLocale void
+     */
     @Test
     public void testNumberParsingWithEnLocale() {
         Locale locale = new Locale("en");
@@ -66,6 +72,9 @@ public class ParseNumberTest {
         assertNull(result);
     }
 
+    /**
+     * testNumberParsingWithFiLocale void
+     */
     @Test
     public void testNumberParsingWithFiLocale() {
         Locale locale = new Locale("fi");
@@ -122,6 +131,9 @@ public class ParseNumberTest {
         assertNull(result);
     }
 
+    /**
+     * testNumberParsingWithItLocale void
+     */
     @Test
     public void testNumberParsingWithItLocale() {
         Locale locale = new Locale("it");

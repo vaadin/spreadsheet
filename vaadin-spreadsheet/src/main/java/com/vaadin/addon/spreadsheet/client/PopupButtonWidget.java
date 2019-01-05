@@ -36,16 +36,31 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ui.VOverlay;
 
+/**
+ * PopupButtonWidget overlay
+ */
 public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         HasCloseHandlers<PopupPanel> {
 
+    /**
+     * popup style class
+     */
     protected static final String BUTTON_CLASSNAME = "popupbutton";
+    /**
+     * overlay style class
+     */
     protected static final String POPUP_OVERLAY_CLASSNAME = "v-spreadsheet-"
             + BUTTON_CLASSNAME + "-overlay";
+    /**
+     * layout style class
+     */
     protected static final String POPUP_OVERLAY_LAYOUT_CLASSNAME = "overlay-layout";
+    /**
+     * active style class
+     */
     protected static final String BUTTON_ACTIVE_CLASSNAME = "active";
 
-    private final DivElement root = Document.get().createDivElement();
+    final DivElement root = Document.get().createDivElement();
 
     private PositionCallback callback = new PositionCallback() {
 
@@ -69,16 +84,19 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         }
     };
 
-    private final VOverlay popup;
+    final VOverlay popup;
     private final PopupButtonHeader popupHeader;
     private final VerticalPanel popupLayout;
 
     private final List<Widget> popupChildrenWidgets = new ArrayList<Widget>();
-    private DivElement sheet;
+    DivElement sheet;
     private int col;
     private int row;
     private SheetWidget owner;
 
+    /**
+     * default constructor
+     */
     public PopupButtonWidget() {
         root.setClassName(BUTTON_CLASSNAME);
         root.setAttribute("role", "button");
@@ -97,6 +115,10 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         addClickHandler(this);
     }
 
+    /**
+     * @param owner
+     * @param sheet
+     */
     public void setSheetWidget(SheetWidget owner, DivElement sheet) {
         this.sheet = sheet;
         this.owner = owner;
@@ -166,6 +188,9 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         event.stopPropagation();
     }
 
+    /**
+     * open popup
+     */
     protected void openPopupOverlay() {
         Element parentElement = root.getParentElement();
         if (parentElement != null) {
@@ -183,6 +208,9 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         }
     }
 
+    /**
+     * @param active
+     */
     public void markActive(boolean active) {
         if (active) {
             root.addClassName(BUTTON_ACTIVE_CLASSNAME);
@@ -191,16 +219,25 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         }
     }
 
+    /**
+     * @param widget
+     */
     public void addPopupComponent(Widget widget) {
         popupChildrenWidgets.add(widget);
         popupLayout.add(widget);
     }
 
+    /**
+     * @param widget
+     */
     public void removePopupComponent(Widget widget) {
         popupChildrenWidgets.remove(widget);
         popupLayout.remove(widget);
     }
 
+    /**
+     * @param popupHeight
+     */
     public void setPopupHeight(String popupHeight) {
         if (popupHeight != null) {
             ((PopupPanel) popup).setHeight(popupHeight);
@@ -209,6 +246,9 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         }
     }
 
+    /**
+     * @param popupWidth
+     */
     public void setPopupWidth(String popupWidth) {
         if (popupWidth != null) {
             ((PopupPanel) popup).setWidth(popupWidth);
@@ -232,16 +272,22 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
     /**
      * Returns the position callback method used for the button's popup.
      * 
-     * @return
+     * @return callback
      */
     public PositionCallback getPositionCallback() {
         return callback;
     }
 
+    /**
+     * @param headerHidden
+     */
     public void setPopupHeaderHidden(boolean headerHidden) {
         popupHeader.setHidden(headerHidden);
     }
 
+    /**
+     * @return true if popup header is hidden
+     */
     public boolean isPopupHeaderHidden() {
         return popupHeader.isHidden();
     }
@@ -257,14 +303,23 @@ public class PopupButtonWidget extends FocusWidget implements ClickHandler,
         return popup.addCloseHandler(handler);
     }
 
+    /**
+     * @return true if popup is open
+     */
     public boolean isPopupOpen() {
         return popup.isShowing();
     }
 
+    /**
+     * close the popup
+     */
     public void closePopup() {
         popup.hide();
     }
 
+    /**
+     * open the popup
+     */
     public void openPopup() {
         if (owner != null && owner.isCellRendered(col, row)) {
             openPopupOverlay();

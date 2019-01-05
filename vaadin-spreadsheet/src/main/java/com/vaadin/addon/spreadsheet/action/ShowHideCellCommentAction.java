@@ -37,6 +37,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class ShowHideCellCommentAction extends SpreadsheetAction {
 
+    /**
+     * default constructor
+     */
     public ShowHideCellCommentAction() {
         super("");
     }

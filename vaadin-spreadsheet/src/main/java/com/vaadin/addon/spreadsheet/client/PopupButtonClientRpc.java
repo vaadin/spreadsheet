@@ -19,6 +19,9 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.vaadin.shared.communication.ClientRpc;
 
+/**
+ * PopupButtonClientRpc
+ */
 public interface PopupButtonClientRpc extends ClientRpc {
 
     /**

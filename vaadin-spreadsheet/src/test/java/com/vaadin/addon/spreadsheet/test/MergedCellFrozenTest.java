@@ -8,8 +8,15 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+/**
+ * MergedCellFrozenTest
+ */
 public class MergedCellFrozenTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * positioning_spreadsheetWithMergedCellsNextToFrozenArea_correctPositionAfterResize
+     * @throws InterruptedException
+     */
     @Test
     public void positioning_spreadsheetWithMergedCellsNextToFrozenArea_correctPositionAfterResize()
             throws InterruptedException {
@@ -42,6 +49,10 @@ public class MergedCellFrozenTest extends AbstractSpreadsheetTestCase {
         assertThat(left, equalTo("0px"));
     }
 
+    /**
+     * positioning_spreadsheetWithMergedCellsFurtherOutsideFrozenArea_correctPositionAfterResize
+     * @throws InterruptedException
+     */
     @Test
     public void positioning_spreadsheetWithMergedCellsFurtherOutsideFrozenArea_correctPositionAfterResize()
             throws InterruptedException {

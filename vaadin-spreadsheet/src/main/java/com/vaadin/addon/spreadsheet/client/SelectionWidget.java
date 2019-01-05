@@ -39,6 +39,9 @@ import com.vaadin.client.MeasuredSize;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.ui.VOverlay;
 
+/**
+ * SelectionWidget
+ */
 public class SelectionWidget extends Composite {
 
     private class SelectionOutlineWidget extends Widget {
@@ -610,6 +613,10 @@ public class SelectionWidget extends Composite {
     private boolean crossedLeft;
     private boolean crossedDown;
 
+    /**
+     * @param actionHandler
+     * @param sheetWidget
+     */
     public SelectionWidget(SheetHandler actionHandler, SheetWidget sheetWidget) {
         handler = actionHandler;
         this.sheetWidget = sheetWidget;
@@ -630,6 +637,10 @@ public class SelectionWidget extends Composite {
         paintBottomRight.setSheetElement(bottomRightPane);
     }
 
+    /**
+     * setHorizontalSplitPosition
+     * @param horizontalSplitPosition
+     */
     public void setHorizontalSplitPosition(int horizontalSplitPosition) {
         this.horizontalSplitPosition = horizontalSplitPosition;
         if (horizontalSplitPosition > 0 && bottomLeft == null) {
@@ -653,6 +664,10 @@ public class SelectionWidget extends Composite {
         updateLimits();
     }
 
+    /**
+     * setVerticalSplitPosition
+     * @param verticalSplitPosition
+     */
     public void setVerticalSplitPosition(int verticalSplitPosition) {
         this.verticalSplitPosition = verticalSplitPosition;
         if (verticalSplitPosition > 0 && topRight == null) {
@@ -770,22 +785,45 @@ public class SelectionWidget extends Composite {
         }
     }
 
+    /**
+     * getRow1
+     * @return int
+     */
     public int getRow1() {
         return row1;
     }
 
+    /**
+     * getRow2
+     * @return int
+     */
     public int getRow2() {
         return row2;
     }
 
+    /**
+     * getCol1
+     * @return int
+     */
     public int getCol1() {
         return col1;
     }
 
+    /**
+     * getCol2
+     * @return int
+     */
     public int getCol2() {
         return col2;
     }
 
+    /**
+     * setPosition
+     * @param col1
+     * @param col2
+     * @param row1
+     * @param row2
+     */
     public void setPosition(int col1, int col2, int row1, int row2) {
         this.col1 = col1;
         this.row1 = row1;
@@ -829,6 +867,13 @@ public class SelectionWidget extends Composite {
         }
     }
 
+    /**
+     * setPaintPosition
+     * @param col1
+     * @param col2
+     * @param row1
+     * @param row2
+     */
     public void setPaintPosition(int col1, int col2, int row1, int row2) {
         paintcol1 = col1;
         paintrow1 = row1;

@@ -10,6 +10,9 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * AddOrRemoveCommentFixture
+ */
 public class AddOrRemoveCommentFixture implements SpreadsheetFixture {
 
     private Spreadsheet spreadsheet;
@@ -18,7 +21,9 @@ public class AddOrRemoveCommentFixture implements SpreadsheetFixture {
     public void loadFixture(Spreadsheet spreadsheet) {
         this.spreadsheet = spreadsheet;
         spreadsheet.addSelectionChangeListener(new Spreadsheet.SelectionChangeListener() {
-            @Override
+			private static final long serialVersionUID = 1L;
+
+			@Override
             public void onSelectionChange(Spreadsheet.SelectionChangeEvent event) {
                 CellReference ref = event.getSelectedCellReference();
                 createCommentToCell(ref.getRow(), ref.getCol());

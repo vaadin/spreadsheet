@@ -27,17 +27,26 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
         setDefaultLocale();
     }
 
+    /**
+     * numberFormat_sheetWithNumberFormatRuleForNumericCells_contentsFormattedAccordingToLocale
+     */
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_contentsFormattedAccordingToLocale() {
         assertTest(Type.CHECK_DEFAULTS, Expected.values());
     }
 
+    /**
+     * onCellValueChange_sheetWithNumberFormatRuleForNumericCells_noNumberFormatWhenNumberReplacedWithStringThatStartsWithNumber
+     */
     @Test
     public void onCellValueChange_sheetWithNumberFormatRuleForNumericCells_noNumberFormatWhenNumberReplacedWithStringThatStartsWithNumber() {
         assertTest(Type.REPLACE_NUMBER_WITH_STRING, Expected.STRING_3RD,
                 Expected.STRING_3TH_PLACE, Expected.STRING_3_DL);
     }
 
+    /**
+     * numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasNoDecimalsForIntegers
+     */
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasNoDecimalsForIntegers() {
         spreadsheetPage.clickOnCell(Expected.INTEGER_INTEGER.getCell());
@@ -46,6 +55,9 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
                 spreadsheetPage.getFormulaFieldValue());
     }
 
+    /**
+     * numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasDecimalsForRoundedDoubles
+     */
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasDecimalsForRoundedDoubles() {
         spreadsheetPage.clickOnCell(Expected.INTEGER_DECIMAL_FORMAT1.getCell());
@@ -54,6 +66,9 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
                 spreadsheetPage.getFormulaFieldValue());
     }
 
+    /**
+     * numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasLocalizedDecimalSeparatorForDoubles
+     */
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasLocalizedDecimalSeparatorForDoubles() {
         Locale locale = new Locale("fi", "FI");
@@ -122,29 +137,99 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
         setLocale(Locale.US);
     }
 
+    /**
+     * Type
+     */
     public enum Type {
-        CHECK_DEFAULTS, REPLACE_NUMBER_WITH_STRING;
+        /**
+         * CHECK_DEFAULTS
+         */
+        CHECK_DEFAULTS, 
+        /**
+         * REPLACE_NUMBER_WITH_STRING
+         */
+        REPLACE_NUMBER_WITH_STRING;
     }
 
+    /**
+     * Expected
+     */
     public enum Expected {
+        /**
+         * INTEGER_INTEGER
+         */
         INTEGER_INTEGER("A3", "3333"), //
+        /**
+         * INTEGER_DECIMAL
+         */
         INTEGER_DECIMAL("A4", "3333.333"), //
+        /**
+         * INTEGER_INTEGER_FORMAT1
+         */
         INTEGER_INTEGER_FORMAT1("B3", "3333"), //
+        /**
+         * INTEGER_DECIMAL_FORMAT1
+         */
         INTEGER_DECIMAL_FORMAT1("B4", "3333"), //
+        /**
+         * INTEGER_INTEGER_FORMAT2
+         */
         INTEGER_INTEGER_FORMAT2("C3", "3,333"), //
+        /**
+         * INTEGER_DECIMAL_FORMAT2
+         */
         INTEGER_DECIMAL_FORMAT2("C4", "3,333"), //
+        /**
+         * DECIMAL_FORMAT1_3DIGIT
+         */
         DECIMAL_FORMAT1_3DIGIT("E3", "3333.333"), //
+        /**
+         * DECIMAL_FORMAT1_2DIGIT
+         */
         DECIMAL_FORMAT1_2DIGIT("E4", "3333.33"), //
+        /**
+         * DECIMAL_FORMAT1_1DIGIT
+         */
         DECIMAL_FORMAT1_1DIGIT("E5", "3333.3"), //
+        /**
+         * DECIMAL_FORMAT2_3DIGIT
+         */
         DECIMAL_FORMAT2_3DIGIT("F3", "3,333.333"), //
+        /**
+         * DECIMAL_FORMAT2_2DIGIT
+         */
         DECIMAL_FORMAT2_2DIGIT("F4", "3,333.33"), //
+        /**
+         * DECIMAL_FORMAT2_1DIGIT
+         */
         DECIMAL_FORMAT2_1DIGIT("F5", "3,333.3"), //
+        /**
+         * CURRENCY_EUR_FI
+         */
         CURRENCY_EUR_FI("H3", "3,333.33 €"), //
+        /**
+         * CURRENCY_GPD
+         */
         CURRENCY_GPD("I3", "£3,333.33"), //
+        /**
+         * CURRENCY_USD
+         */
         CURRENCY_USD("J3", "$3,333.33"), //
+        /**
+         * CURRENCY_JPY
+         */
         CURRENCY_JPY("K3", "\u00A53,333.33"), //
+        /**
+         * STRING_3RD
+         */
         STRING_3RD("M3", "3rd"), //
+        /**
+         * STRING_3TH_PLACE
+         */
         STRING_3TH_PLACE("M4", "3th place"), //
+        /**
+         * STRING_3_DL
+         */
         STRING_3_DL("M5", "3 dl"); //
 
         private String cell;
@@ -155,10 +240,18 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
             this.value = value;
         }
 
+        /**
+         * getCell
+         * @return String
+         */
         public String getCell() {
             return cell;
         }
 
+        /**
+         * getValue
+         * @return String
+         */
         public String getValue() {
             return value;
         }

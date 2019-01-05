@@ -34,6 +34,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class EditCellCommentAction extends SpreadsheetAction {
 
+    /**
+     * constructor
+     */
     public EditCellCommentAction() {
         super("Edit comment");
     }

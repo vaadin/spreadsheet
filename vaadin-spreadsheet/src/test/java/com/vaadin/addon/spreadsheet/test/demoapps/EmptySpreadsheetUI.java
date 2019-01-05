@@ -7,6 +7,9 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+/**
+ * EmptySpreadsheetUI
+ */
 @SuppressWarnings("serial")
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")

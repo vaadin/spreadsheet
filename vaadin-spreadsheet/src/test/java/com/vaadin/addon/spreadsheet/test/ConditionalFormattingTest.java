@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+/**
+ * ConditionalFormattingTest
+ */
 public class ConditionalFormattingTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
@@ -18,12 +21,18 @@ public class ConditionalFormattingTest extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
+    /**
+     * unsupportedFormula_parse_noAffectCondtionalFormat
+     */
     @Test
     public void unsupportedFormula_parse_noAffectCondtionalFormat() {
         String value = "rgba(255, 235, 156, 1)";
         assertEquals(value, spreadSheet.getCellAt("B1").getCssValue("background-color"));
     }
 
+    /**
+     * unsupportedFormula_parse_noErrorIndicator
+     */
     @Test
     public void unsupportedFormula_parse_noErrorIndicator() {
         assertNoErrorIndicatorDetected();

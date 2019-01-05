@@ -19,6 +19,9 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.vaadin.shared.communication.ServerRpc;
 
+/**
+ * SpreadsheetServerRpc
+ */
 public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
 
     /**

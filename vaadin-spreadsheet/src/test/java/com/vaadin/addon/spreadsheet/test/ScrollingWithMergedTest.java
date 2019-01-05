@@ -8,8 +8,15 @@ import org.openqa.selenium.NoSuchElementException;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+/**
+ * ScrollingWithMergedTest
+ */
 public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * scrolling_mergedCellsAtTop_notMovedToTheBottom
+     * @throws Exception
+     */
     @Test
     public void scrolling_mergedCellsAtTop_notMovedToTheBottom()
             throws Exception {
@@ -40,6 +47,10 @@ public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
         }
     }
 
+    /**
+     * scrolling_mergedCellsAtRight_notMovedToTheLeft
+     * @throws Exception
+     */
     @Test
     public void scrolling_mergedCellsAtRight_notMovedToTheLeft()
             throws Exception {

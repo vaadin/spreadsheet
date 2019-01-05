@@ -20,12 +20,18 @@ import com.vaadin.ui.UI;
  * the whole chain with connector ids, etc to work.
  */
 
+/**
+ * TestableUI
+ */
 public class TestableUI extends UI {
 
     private DeploymentConfiguration deploymentConfiguration;
     private VaadinServlet servlet;
     private VaadinService service;
 
+    /**
+     * @param content
+     */
     public TestableUI(Component content) {
         servlet = new VaadinServlet();
         deploymentConfiguration = new DefaultDeploymentConfiguration(

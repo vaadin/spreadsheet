@@ -106,6 +106,9 @@ public class ConditionalFormatter implements Serializable {
     private Map<ConditionalFormatting, Integer> topBorders = new HashMap<ConditionalFormatting, Integer>();
     private Map<ConditionalFormatting, Integer> leftBorders = new HashMap<ConditionalFormatting, Integer>();
 
+    /**
+     * colorConverter
+     */
     protected ColorConverter colorConverter;
 
     /**
@@ -266,6 +269,7 @@ public class ConditionalFormatter implements Serializable {
 
     /**
      * Get the common {@link FormulaEvaluator} instance from {@link Spreadsheet}
+     * @return FormulaEvaluator
      */
     protected FormulaEvaluator getFormulaEvaluator() {
         return spreadsheet.getFormulaEvaluator();
@@ -621,6 +625,8 @@ public class ConditionalFormatter implements Serializable {
      *            Target cell
      * @param rule
      *            Conditional formatting rule to check against
+     * @param deltaColumn 
+     * @param deltaRow 
      * @return Whether the given rule evaluates to <code>true</code> for the
      *         given cell.
      */
@@ -665,6 +671,8 @@ public class ConditionalFormatter implements Serializable {
      *            Cell with conditional formatting
      * @param rule
      *            Conditional formatting rule based on formula
+     * @param deltaColumn 
+     * @param deltaRow 
      * @return Formula value, if the formula is of boolean formula type
      *         Formula value != 0, if the formula is of numeric formula type
      *         and false otherwise

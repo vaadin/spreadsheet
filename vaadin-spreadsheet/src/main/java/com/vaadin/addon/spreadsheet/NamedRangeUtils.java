@@ -47,6 +47,7 @@ class NamedRangeUtils implements Serializable {
      *
      * @param value
      *     New value of the address field
+     * @return true if value is a cell reference
      */
     public boolean isCellReference(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);
@@ -81,6 +82,7 @@ class NamedRangeUtils implements Serializable {
      *
      * @param value
      *     New value of the address field
+     * @return true if value is a named range
      */
     public boolean isNamedRange(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);

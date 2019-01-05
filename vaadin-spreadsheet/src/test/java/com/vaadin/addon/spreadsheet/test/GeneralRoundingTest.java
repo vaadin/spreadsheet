@@ -11,8 +11,14 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
+/**
+ * GeneralRoundingTest
+ */
 public class GeneralRoundingTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * generalFormat_spreadsheetWithGeneralFormatAndLocaleUS_numbersRoundedCorrectly
+     */
     @Test
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleUS_numbersRoundedCorrectly() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
@@ -38,6 +44,9 @@ public class GeneralRoundingTest extends AbstractSpreadsheetTestCase {
         assertThat(cellAfterResize, not(containsString("#")));
     }
 
+    /**
+     * generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_numbersRoundedCorrectly
+     */
     @Test
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_numbersRoundedCorrectly() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
@@ -62,6 +71,9 @@ public class GeneralRoundingTest extends AbstractSpreadsheetTestCase {
         assertThat(cellAfterResize, not(containsString("#")));
     }
 
+    /**
+     * generalFormat_spreadsheetWithGeneralFormatAndLocaleUS_negativeNumbersRoundedCorrectly
+     */
     @Test
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleUS_negativeNumbersRoundedCorrectly() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
@@ -89,6 +101,9 @@ public class GeneralRoundingTest extends AbstractSpreadsheetTestCase {
         assertThat(cellAfterResize, not(containsString("#")));
     }
 
+    /**
+     * generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_negativeNumbersRoundedCorrectly
+     */
     @Test
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_negativeNumbersRoundedCorrectly() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect

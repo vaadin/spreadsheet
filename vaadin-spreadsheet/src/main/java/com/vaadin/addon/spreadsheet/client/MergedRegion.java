@@ -19,17 +19,44 @@ package com.vaadin.addon.spreadsheet.client;
 
 import java.io.Serializable;
 
+/**
+ * MergedRegion
+ */
 @SuppressWarnings("serial")
 public class MergedRegion implements Serializable {
+    /**
+     * id
+     */
     public int id;
+    /**
+     * col1
+     */
     public int col1;
+    /**
+     * col2
+     */
     public int col2;
+    /**
+     * row1
+     */
     public int row1;
+    /**
+     * row2
+     */
     public int row2;
 
+    /**
+     * constructor
+     */
     public MergedRegion() {
     }
 
+    /**
+     * @param c1
+     * @param r1
+     * @param c2
+     * @param r2
+     */
     public MergedRegion(int c1, int r1, int c2, int r2) {
         col1 = c1;
         row1 = r1;

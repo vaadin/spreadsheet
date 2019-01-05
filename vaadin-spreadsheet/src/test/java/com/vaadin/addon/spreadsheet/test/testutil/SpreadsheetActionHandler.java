@@ -11,6 +11,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 import com.vaadin.event.Action;
 
+/**
+ * SpreadsheetActionHandler
+ */
 public class SpreadsheetActionHandler implements Action.Handler {
 
     private static final long serialVersionUID = 2L;
@@ -23,14 +26,26 @@ public class SpreadsheetActionHandler implements Action.Handler {
     private Map<Integer, Column> columnActionOwnership;
     private Map<Integer, Row> rowActionOwnership;
 
+    /**
+     * addCellHandler
+     * @param cellHandler
+     */
     public void addCellHandler(Cell cellHandler) {
         cellHandlers.add(cellHandler);
     }
 
+    /**
+     * addColumnHandler
+     * @param columnHandler
+     */
     public void addColumnHandler(Column columnHandler) {
         columnHandlers.add(columnHandler);
     }
 
+    /**
+     * addRowHandler
+     * @param rowHandler
+     */
     public void addRowHandler(Row rowHandler) {
         rowHandlers.add(rowHandler);
     }
@@ -133,27 +148,72 @@ public class SpreadsheetActionHandler implements Action.Handler {
         throw new RuntimeException("Action not handled");
     }
 
+    /**
+     * Cell
+     */
     public interface Cell {
 
+        /**
+         * getActions
+         * @param target
+         * @param sender
+         * @return Action[]
+         */
         public Action[] getActions(SelectionChangeEvent target,
                 Spreadsheet sender);
 
+        /**
+         * handleAction
+         * @param action
+         * @param sender
+         * @param target
+         */
         public void handleAction(Action action, SelectionChangeEvent sender,
                 Spreadsheet target);
     }
 
+    /**
+     * Column
+     */
     public interface Column {
 
+        /**
+         * getActions
+         * @param target
+         * @param sender
+         * @return Action[]
+         */
         public Action[] getActions(CellRangeAddress target, Spreadsheet sender);
 
+        /**
+         * handleAction
+         * @param action
+         * @param sender
+         * @param target
+         */
         public void handleAction(Action action, CellRangeAddress sender,
                 Spreadsheet target);
     }
 
+    /**
+     * Row
+     */
     public interface Row {
 
+        /**
+         * getActions
+         * @param target
+         * @param sender
+         * @return Action[]
+         */
         public Action[] getActions(CellRangeAddress target, Spreadsheet sender);
 
+        /**
+         * handleAction
+         * @param action
+         * @param sender
+         * @param target
+         */
         public void handleAction(Action action, CellRangeAddress sender,
                 Spreadsheet target);
     }

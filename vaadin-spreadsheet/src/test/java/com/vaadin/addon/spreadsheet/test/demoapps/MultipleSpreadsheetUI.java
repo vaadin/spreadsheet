@@ -23,6 +23,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 
+/**
+ * MultipleSpreadsheetUI
+ */
 @SuppressWarnings("serial")
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
@@ -87,6 +90,10 @@ public class MultipleSpreadsheetUI extends UI {
 
     }
 
+    /**
+     * createWorkbook
+     * @return Workbook
+     */
     protected Workbook createWorkbook() {
 
         XSSFWorkbook xssfWorkbook = new XSSFWorkbook();
@@ -118,6 +125,10 @@ public class MultipleSpreadsheetUI extends UI {
 
     }
 
+    /**
+     * setupDemoSpreadsheet
+     * @param spreadsheet
+     */
     protected void setupDemoSpreadsheet(Spreadsheet spreadsheet) {
 
         spreadsheet.setSizeFull();

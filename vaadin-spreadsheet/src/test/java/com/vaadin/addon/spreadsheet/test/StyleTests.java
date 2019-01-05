@@ -7,8 +7,14 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 
+/**
+ * StyleTests
+ */
 public class StyleTests extends AbstractSpreadsheetTestCase {
 
+    /**
+     * sheetController
+     */
     private SheetController sheetController;
 
     @Override
@@ -18,6 +24,10 @@ public class StyleTests extends AbstractSpreadsheetTestCase {
                 getDesiredCapabilities());
     }
 
+    /**
+     * cellBorders_mergeCells_NeighborCellsKeepBorderStyles
+     * @throws IOException
+     */
     @Test
     public void cellBorders_mergeCells_NeighborCellsKeepBorderStyles() throws IOException {
         headerPage.loadFile("merged_borders.xlsx", this);

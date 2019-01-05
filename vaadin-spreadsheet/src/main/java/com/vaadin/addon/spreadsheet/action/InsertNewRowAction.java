@@ -32,6 +32,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class InsertNewRowAction extends SpreadsheetAction {
 
+    /**
+     * constructor
+     */
     public InsertNewRowAction() {
         super("");
     }

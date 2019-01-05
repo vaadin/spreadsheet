@@ -27,9 +27,18 @@ import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Overflow;
 
+/**
+ * Cell for use by widgets
+ */
 public class Cell {
 
+    /**
+     * CELL_COMMENT_TRIANGLE_CLASSNAME
+     */
     public static final String CELL_COMMENT_TRIANGLE_CLASSNAME = "cell-comment-triangle";
+    /**
+     * CELL_INVALID_FORMULA_CLASSNAME
+     */
     public static final String CELL_INVALID_FORMULA_CLASSNAME = "cell-invalidformula-triangle";
     private static final int ZINDEXVALUE = 2;
     private final DivElement element;
@@ -52,6 +61,11 @@ public class Cell {
     private boolean overflowDirty = true;
     private boolean overflowing;
 
+    /**
+     * @param sheetWidget
+     * @param col
+     * @param row
+     */
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
         this.col = col;
@@ -61,6 +75,12 @@ public class Cell {
         updateCellValues();
     }
 
+    /**
+     * @param sheetWidget
+     * @param col
+     * @param row
+     * @param cellData
+     */
     public Cell(SheetWidget sheetWidget, int col, int row, CellData cellData) {
         this.sheetWidget = sheetWidget;
         this.col = col;
@@ -77,10 +97,20 @@ public class Cell {
         updateInnerText();
     }
 
+    /**
+     * getElement
+     * @return DivElement
+     */
     public DivElement getElement() {
         return element;
     }
 
+    /**
+     * update
+     * @param col
+     * @param row
+     * @param cellData
+     */
     public void update(int col, int row, CellData cellData) {
         this.col = col;
         this.row = row;
@@ -113,6 +143,9 @@ public class Cell {
         appendOverlayElements();
     }
 
+    /**
+     * @return cell width
+     */
     protected int getCellWidth() {
         return sheetWidget.actionHandler.getColWidth(col);
     }
@@ -206,6 +239,9 @@ public class Cell {
         return scrollW;
     }
 
+    /**
+     * updateCellValues
+     */
     protected void updateCellValues() {
         removeCellCommentMark();
         removePopupButton();
@@ -213,26 +249,46 @@ public class Cell {
         updateClassName();
     }
 
+    /**
+     * updateClassName
+     */
     protected void updateClassName() {
         element.setClassName(SheetWidget.toKey(col, row) + " cell " + cellStyle);
     }
 
+    /**
+     * @return getCellStyle
+     */
     public String getCellStyle() {
         return cellStyle;
     }
 
+    /**
+     * @return getCol
+     */
     public int getCol() {
         return col;
     }
 
+    /**
+     * @return getRow
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * @return getValue
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * @param value
+     * @param cellStyle
+     * @param needsMeasure
+     */
     public void setValue(String value, String cellStyle, boolean needsMeasure) {
         if (!this.cellStyle.equals(cellStyle)) {
             this.cellStyle = cellStyle;
@@ -242,6 +298,10 @@ public class Cell {
         setValue(value);
     }
 
+    /**
+     * setValue
+     * @param value
+     */
     public void setValue(String value) {
         this.value = value;
         updateInnerText();
@@ -261,11 +321,18 @@ public class Cell {
         }
     }
 
+    /**
+     * showPopupButton
+     * @param popupButtonElement 
+     */
     public void showPopupButton(Element popupButtonElement) {
         this.popupButtonElement = popupButtonElement;
         element.appendChild(popupButtonElement);
     }
 
+    /**
+     * removePopupButton 
+     */
     public void removePopupButton() {
         if (popupButtonElement != null) {
             popupButtonElement.removeFromParent();
@@ -273,6 +340,9 @@ public class Cell {
         }
     }
 
+    /**
+     * showCellCommentMark 
+     */
     public void showCellCommentMark() {
         if (cellCommentTriangle == null) {
             cellCommentTriangle = Document.get().createDivElement();
@@ -281,6 +351,9 @@ public class Cell {
         }
     }
 
+    /**
+     * removeCellCommentMark
+     */
     public void removeCellCommentMark() {
         if (cellCommentTriangle != null) {
             cellCommentTriangle.removeFromParent();
@@ -288,6 +361,9 @@ public class Cell {
         }
     }
 
+    /**
+     * showInvalidFormulaIndicator
+     */
     public void showInvalidFormulaIndicator() {
         if (invalidFormulaTriangle == null) {
             invalidFormulaTriangle = Document.get().createDivElement();
@@ -296,6 +372,9 @@ public class Cell {
         }
     }
 
+    /**
+     * removeInvalidFormulaIndicator
+     */
     public void removeInvalidFormulaIndicator() {
         if (invalidFormulaTriangle != null) {
             invalidFormulaTriangle.removeFromParent();
@@ -303,14 +382,25 @@ public class Cell {
         }
     }
 
+    /**
+     * isOverflowDirty
+     * @return boolean
+     */
     public boolean isOverflowDirty() {
         return value != null && !value.isEmpty() && overflowDirty;
     }
 
+    /**
+     * markAsOverflowDirty 
+     */
     public void markAsOverflowDirty() {
         overflowDirty = true;
     }
 
+    /**
+     * hasValue
+     * @return boolean
+     */
     public boolean hasValue() {
         return value != null && !value.isEmpty();
     }

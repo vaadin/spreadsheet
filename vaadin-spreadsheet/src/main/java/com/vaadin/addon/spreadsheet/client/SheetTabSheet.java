@@ -34,21 +34,49 @@ import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ComputedStyle;
 import com.vaadin.client.WidgetUtil;
 
+/**
+ * SheetTabSheet
+ */
 public class SheetTabSheet extends Widget {
 
     private static final String HIDDEN = "hidden";
 
+    /**
+     * SheetTabSheetHandler
+     */
     public interface SheetTabSheetHandler {
+        /**
+         * onSheetTabSelected
+         * @param tabIndex
+         */
         public void onSheetTabSelected(int tabIndex);
 
+        /**
+         * onSheetRename
+         * @param selectedTabIndex
+         * @param value
+         */
         public void onSheetRename(int selectedTabIndex, String value);
 
+        /**
+         * onNewSheetCreated
+         */
         public void onNewSheetCreated();
 
+        /**
+         * onSheetRenameCancel
+         */
         public void onSheetRenameCancel();
 
+        /**
+         * onFirstTabIndexChange
+         * @param tabScrollIndex
+         */
         public void onFirstTabIndexChange(int tabScrollIndex);
 
+        /**
+         * onSheetTabSheetFocus
+         */
         public void onSheetTabSheetFocus();
     }
 
@@ -92,6 +120,9 @@ public class SheetTabSheet extends Widget {
 
     private DivElement infoLabel = Document.get().createDivElement();
 
+    /**
+     * @param handler
+     */
     public SheetTabSheet(SheetTabSheetHandler handler) {
         this.handler = handler;
 
@@ -405,6 +436,10 @@ public class SheetTabSheet extends Widget {
         return e;
     }
 
+    /**
+     * addTabs
+     * @param tabNames
+     */
     public void addTabs(String[] tabNames) {
         for (String tabName : tabNames) {
             Element e = createTabElement(tabName);
@@ -414,6 +449,11 @@ public class SheetTabSheet extends Widget {
         showHideScrollIcons();
     }
 
+    /**
+     * setTabs
+     * @param tabNames
+     * @param clearScrollPosition
+     */
     public void setTabs(String[] tabNames, boolean clearScrollPosition) {
         // remove unnecessary tabs
         if (clearScrollPosition) {
@@ -442,6 +482,9 @@ public class SheetTabSheet extends Widget {
         showHideScrollIcons();
     }
 
+    /**
+     * removeAllTabs
+     */
     public void removeAllTabs() {
         for (int i = 0; i < tabs.length(); i++) {
             Element e = tabs.get(i).cast();
@@ -475,12 +518,20 @@ public class SheetTabSheet extends Widget {
         }
     }
 
+    /**
+     * setReadOnly
+     * @param readOnly
+     */
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         addNewSheet.getStyle().setDisplay(
                 readOnly ? Display.NONE : Display.INLINE_BLOCK);
     }
 
+    /**
+     * setFirstVisibleTab
+     * @param firstVisibleTab
+     */
     public void setFirstVisibleTab(int firstVisibleTab) {
         if (tabScrollIndex < firstVisibleTab) {
             do {
@@ -516,6 +567,9 @@ public class SheetTabSheet extends Widget {
         }
     }
 
+    /**
+     * onWidgetResize
+     */
     public void onWidgetResize() {
         // check if we need to display scroll buttons
         showHideScrollIcons();

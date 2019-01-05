@@ -19,11 +19,18 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.google.gwt.dom.client.StyleElement;
 
+/**
+ * SheetJsniUtil
+ */
 public class SheetJsniUtil {
 
     private int parsedCol;
     private int parsedRow;
 
+    /**
+     * parseColRow
+     * @param str
+     */
     public final native void parseColRow(String str)
     /*-{
         var strlen = str.length;
@@ -53,15 +60,28 @@ public class SheetJsniUtil {
 
     }-*/;
 
+    /**
+     * getParsedCol
+     * @return int
+     */
     public int getParsedCol() {
         return parsedCol;
     }
 
+    /**
+     * getParsedRow
+     * @return int
+     */
     public int getParsedRow() {
         return parsedRow;
     }
 
     /** returns 1 for row 2 for column 0 for not header */
+    /**
+     * isHeader
+     * @param str
+     * @return int
+     */
     public final native int isHeader(String str)
     /*-{
         try {
@@ -82,7 +102,10 @@ public class SheetJsniUtil {
         return 0;
      }-*/;
 
-    /** returns the header index */
+    /** returns the header index 
+     * @param str 
+     * @return index
+     */
     public final native int parseHeaderIndex(String str)
     /*-{
         var strlen = str.length;
@@ -99,22 +122,43 @@ public class SheetJsniUtil {
         return index;
      }-*/;
 
+    /**
+     * convertUnicodeIntoCharacter
+     * @param charCode
+     * @return String
+     */
     public final native String convertUnicodeIntoCharacter(int charCode)
     /*-{
         return String.fromCharCode(charCode);
      }-*/;
 
-    /** Insert one CSS rule to the end of given stylesheet */
+    /** Insert one CSS rule to the end of given stylesheet 
+     * @param stylesheet 
+     * @param css 
+     * @return rule index
+     */
     public native int insertRule(StyleElement stylesheet, String css)
     /*-{
         return stylesheet.sheet.insertRule(css, stylesheet.sheet.cssRules.length);
     }-*/;
 
+    /**
+     * deleteRule
+     * @param stylesheet
+     * @param ruleindex
+     */
     public native void deleteRule(StyleElement stylesheet, int ruleindex)
     /*-{
         stylesheet.sheet.deleteRule(ruleindex);
      }-*/;
 
+    /**
+     * replaceSelector
+     * @param stylesheet
+     * @param selector
+     * @param ruleindex
+     * @return int
+     */
     public native int replaceSelector(StyleElement stylesheet, String selector,
             int ruleindex)
     /*-{
@@ -124,7 +168,9 @@ public class SheetJsniUtil {
         return stylesheet.sheet.insertRule(cssText, ruleindex);
     }-*/;
 
-    /** Clears the rules starting from the given index */
+    /** Clears the rules starting from the given index 
+     * @param stylesheet 
+     */
     public native void clearCSSRules(StyleElement stylesheet)
     /*-{
         var rules = stylesheet.sheet.cssRules? stylesheet.sheet.cssRules : stylesheet.sheet.rules;        
@@ -137,7 +183,11 @@ public class SheetJsniUtil {
         }
     }-*/;
 
-    /** Gets all Overlay rules */
+    /** Gets all Overlay rules 
+     * @param stylesheet 
+     * @param overlaySelectors 
+     * @return rules 
+     */
     public native String[] getOverlayRules(StyleElement stylesheet, String[] overlaySelectors)
     /*-{
         var overlayRules = [];
