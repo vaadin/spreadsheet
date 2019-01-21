@@ -950,7 +950,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * See {@link Workbook#setSheetHidden(int, int)}.
+     * See {@link Workbook#setSheetHidden(int, boolean)}.
      * <p>
      * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
      * status on currently visible/hidden/very hidden sheets.
