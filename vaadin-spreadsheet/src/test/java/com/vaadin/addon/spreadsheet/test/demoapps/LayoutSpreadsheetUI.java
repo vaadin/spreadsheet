@@ -13,9 +13,6 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-/**
- * LayoutSpreadsheetUI
- */
 @SuppressWarnings("serial")
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")

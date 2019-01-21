@@ -8,16 +8,12 @@ import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 
-/**
- * UngroupingTest
- */
 public class UngroupingTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
 
     /**
      * Ticket 599#
-     * @throws Exception 
      */
     @Test
     public void grouping_expandColumnGroup_groupingElementsHaveCorrectValues() throws Exception {

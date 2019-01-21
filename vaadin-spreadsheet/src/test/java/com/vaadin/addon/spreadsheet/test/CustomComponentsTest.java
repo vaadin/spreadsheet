@@ -16,9 +16,6 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-/**
- * CustomComponentsTest
- */
 public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
 
     final static String TEXT_PROXY = "text";
@@ -29,9 +26,6 @@ public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
         super.setUp();
         headerPage.createNewSpreadsheet();
     }
-    /**
-     * testTextField
-     */
     @Test
     public void testTextField() {
         headerPage.loadTestFixture(TestFixtures.CustomComponent);
@@ -67,10 +61,6 @@ public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
                 .click().build().perform();
     }
 
-    /**
-     * testCheckBox
-     * @throws InterruptedException
-     */
     @Test
     public void testCheckBox() throws InterruptedException {
         headerPage.loadTestFixture(TestFixtures.CustomComponent);
@@ -96,9 +86,6 @@ public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("1", sheetController.getCellContent("C4"));
     }
 
-    /**
-     * testNativeSelect
-     */
     @Test
     public void testNativeSelect() {
         headerPage.loadTestFixture(TestFixtures.CustomComponent);
@@ -116,10 +103,6 @@ public class CustomComponentsTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("120", sheetController.getCellContent("I3"));
     }
 
-    /**
-     * testScrollingBug
-     * @throws InterruptedException
-     */
     @Test
     public void testScrollingBug() throws InterruptedException {
         headerPage.loadTestFixture(TestFixtures.CustomComponent);

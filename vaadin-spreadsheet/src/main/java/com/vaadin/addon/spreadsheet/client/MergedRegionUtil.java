@@ -19,14 +19,8 @@ import java.io.Serializable;
  * #L%
  */
 
-/**
- * Utilities for working with merged regions in spreadsheets
- */
 public class MergedRegionUtil {
 
-    /**
-     * Container for multiple merged regions
-     */
     public interface MergedRegionContainer extends Serializable {
         /**
          * Gets the merged region starting at the given coordinates.
@@ -60,12 +54,11 @@ public class MergedRegionUtil {
      * 
      * Parameters 1-based.
      * 
-     * @param container 
-     * @param tr
-     * @param br
-     * @param lc
-     * @param rc
-     * @return MergedRegion updated to include full merged cells
+     * @param topRow
+     * @param bottomRow
+     * @param leftColumn
+     * @param rightColumn
+     * @return
      */
     public static MergedRegion findIncreasingSelection(
             MergedRegionContainer container, int tr, int br,

@@ -10,9 +10,6 @@ import org.apache.poi.ss.util.CellReference;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * LockCellFixture
- */
 public class LockCellFixture implements SpreadsheetFixture {
 
     @Override

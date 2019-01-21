@@ -208,7 +208,6 @@ public class CellSelectionManager implements Serializable {
      * 
      * @param value
      *            New value of the address field
-     * @param initialSelection 
      */
     protected void onSheetAddressChanged(String value, boolean initialSelection) {
         try {
@@ -282,15 +281,13 @@ public class CellSelectionManager implements Serializable {
      * This method is called when the cell selection has changed via the address
      * field.
      * 
-     * @param r
+     * @param rowIndex
      *            Index of row, 1-based
-     * @param c
+     * @param columnIndex
      *            Index of column, 1-based
      */
-    void handleCellAddressChange(int r, int c,
+    void handleCellAddressChange(int rowIndex, int colIndex,
             boolean initialSelection, String name) {
-    	int rowIndex = r;
-    	int colIndex = c;
         if (rowIndex >= spreadsheet.getState().rows) {
             rowIndex = spreadsheet.getState().rows;
         }
@@ -387,10 +384,6 @@ public class CellSelectionManager implements Serializable {
             .updateFormulaBar(possibleName, columnIndex, rowIndex);
     }
     
-    /**
-     * handleCellRangeSelection
-     * @param cra
-     */
     protected void handleCellRangeSelection(CellRangeAddress cra) {
         final String possibleName = namedRangeUtils
             .getNameForFormulaIfExists(cra);
@@ -398,11 +391,6 @@ public class CellSelectionManager implements Serializable {
         handleCellRangeSelection(possibleName, cra);
     }
     
-    /**
-     * handleCellRangeSelection
-     * @param name
-     * @param cra
-     */
     protected void handleCellRangeSelection(String name, CellRangeAddress cra) {
 
         final CellReference firstCell = new CellReference(cra.getFirstRow(),
@@ -411,12 +399,6 @@ public class CellSelectionManager implements Serializable {
         handleCellRangeSelection(name, firstCell, cra, true);
     }
 
-    /**
-     * handleCellRangeSelection
-     * @param startingPoint
-     * @param cellsToSelect
-     * @param scroll
-     */
     protected void handleCellRangeSelection(CellReference startingPoint,
         CellRangeAddress cellsToSelect, boolean scroll) {
 

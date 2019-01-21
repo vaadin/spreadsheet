@@ -32,9 +32,6 @@ public class CopyPasteHandlerImpl implements CopyPasteHandler {
 
     private SheetWidget sheetWidget;
 
-    /**
-     * @param sheetWidget
-     */
     public CopyPasteHandlerImpl(SheetWidget sheetWidget) {
         this.sheetWidget = sheetWidget;
     }

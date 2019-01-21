@@ -7,15 +7,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * DefaultSizeTBTest
- */
 public class DefaultSizeTBTest extends MultiBrowserTest {
 
-    /**
-     * setUp
-     * @throws Exception
-     */
     @Before
     public void setUp() throws Exception {
         openTestURL();
@@ -26,9 +19,6 @@ public class DefaultSizeTBTest extends MultiBrowserTest {
         return EmptySpreadsheetUI.class;
     }
 
-    /**
-     * parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize
-     */
     @Test
     public void parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize() {
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

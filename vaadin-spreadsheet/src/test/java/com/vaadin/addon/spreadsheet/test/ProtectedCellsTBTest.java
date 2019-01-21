@@ -11,9 +11,6 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.pageobjects.HeaderPage;
 
-/**
- * ProtectedCellsTBTest
- */
 public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
@@ -26,9 +23,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
-    /**
-     * sheetHasUnprotectedRowsAndColumns_trySetCellValue_onlyUnlockedCellsUpdated
-     */
     @Test
     public void sheetHasUnprotectedRowsAndColumns_trySetCellValue_onlyUnlockedCellsUpdated() {
         checkProtectionInCell("B2", true);
@@ -42,9 +36,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D4", true);
     }
 
-    /**
-     * sheetHasUnprotectedColumns_trySetCellValue_onlyUnlockedCellsUpdated
-     */
     @Test
     public void sheetHasUnprotectedColumns_trySetCellValue_onlyUnlockedCellsUpdated() {
         spreadSheet.selectSheetAt(1);
@@ -67,9 +58,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D2", true);
     }
 
-    /**
-     * sheetHasUnprotectedRows_trySetCellValue_onlyUnlockedCellsUpdated
-     */
     @Test
     public void sheetHasUnprotectedRows_trySetCellValue_onlyUnlockedCellsUpdated() {
         spreadSheet.selectSheetAt(2);
@@ -88,9 +76,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D4", true);
     }
 
-    /**
-     * sheetHasUnprotectedRanges_trySetCellValue_onlyUnlockedCellsUpdated
-     */
     @Test
     public void sheetHasUnprotectedRanges_trySetCellValue_onlyUnlockedCellsUpdated() {
         spreadSheet.selectSheetAt(3);
@@ -115,9 +100,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("F6", true);
     }
 
-    /**
-     * sheetIsAllLocked_trySetCellValue_noCellUpdated
-     */
     @Test
     public void sheetIsAllLocked_trySetCellValue_noCellUpdated() {
         spreadSheet.selectSheetAt(4);
@@ -135,9 +117,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
 
 
 
-    /**
-     * sheetIsAllLocked_changeDefaultStyleAndTrySetCellValue_allCellUpdated
-     */
     @Test
     public void sheetIsAllLocked_changeDefaultStyleAndTrySetCellValue_allCellUpdated() {
         spreadSheet.selectSheetAt(4);
@@ -154,9 +133,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D4", false);
     }
 
-    /**
-     * sheetIsAllUnlocked_trySetCellValue_allCellUpdated
-     */
     @Test
     public void sheetIsAllUnlocked_trySetCellValue_allCellUpdated() {
         spreadSheet.selectSheetAt(5);

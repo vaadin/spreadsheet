@@ -16,20 +16,12 @@ import com.vaadin.testbench.commands.TestBenchCommandExecutor;
 import com.vaadin.testbench.elementsbase.AbstractElement;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
-/**
- * SheetController
- */
 public class SheetController implements SheetClicker {
 
     private final WebDriver driver;
     private final CanWaitForVaadin sleeper;
     private DesiredCapabilities desiredCapabilities;
 
-    /**
-     * @param driver
-     * @param sleeper
-     * @param desiredCapabilities
-     */
     public SheetController(WebDriver driver, CanWaitForVaadin sleeper,
             DesiredCapabilities desiredCapabilities) {
         this.driver = driver;
@@ -43,31 +35,17 @@ public class SheetController implements SheetClicker {
         return this;
     }
 
-    /**
-     * insertAndRet
-     * @param k
-     * @return SheetController
-     */
     public SheetController insertAndRet(CharSequence k) {
         action(k).action(Keys.RETURN).action(Keys.ENTER);
         ((TestBenchCommandExecutor) driver).waitForVaadin();
         return this;
     }
 
-    /**
-     * needsFixLeftParenthesis
-     * @return boolean
-     */
     protected boolean needsFixLeftParenthesis() {
         // TODO: where is this really needed?
         return BrowserUtil.isIE(desiredCapabilities, 9);
     }
 
-    /**
-     * action
-     * @param k
-     * @return SheetController
-     */
     public SheetController action(CharSequence k) {
         waitForVaadin();
         new Actions(driver).sendKeys(k).build().perform();
@@ -76,11 +54,6 @@ public class SheetController implements SheetClicker {
         return this;
     }
 
-    /**
-     * cellToXPath
-     * @param cell
-     * @return String
-     */
     public String cellToXPath(String cell) {
         int[] coordinates = numericCoordinates(cell);
 
@@ -116,79 +89,37 @@ public class SheetController implements SheetClicker {
         return coordinates;
     }
 
-    /**
-     * mergedCell
-     * @param topLeftCell
-     * @return By
-     */
     public By mergedCell(String topLeftCell) {
         int[] coordinates = numericCoordinates(topLeftCell);
         return By.xpath("//div[contains(@class,'col" + coordinates[0] + " row"
                 + coordinates[1] + "') and contains(@class, 'merged-cell')]");
     }
 
-    /**
-     * columnToXPath
-     * @param column
-     * @return By
-     */
     public By columnToXPath(String column) {
         return By.xpath("//*[@class='ch col" + (column.charAt(0) - 'A' + 1)
                 + "']");
     }
 
-    /**
-     * rowToXPath
-     * @param row
-     * @return By
-     */
     public By rowToXPath(String row) {
         return By.xpath("//*[@class='rh row" + row + "']");
     }
 
-    /**
-     * getCellContent
-     * @param cell
-     * @return String
-     */
     public String getCellContent(String cell) {
         return $(SpreadsheetElement.class).first().getCellAt(cell).getValue();
     }
 
-    /**
-     * getMergedCellContent
-     * @param topLeftCell
-     * @return String
-     */
     public String getMergedCellContent(String topLeftCell) {
         return driver.findElement(mergedCell(topLeftCell)).getText();
     }
 
-    /**
-     * getCellStyle
-     * @param cell
-     * @param propertyName
-     * @return String
-     */
     public String getCellStyle(String cell, String propertyName) {
         return getCellElement(cell).getCssValue(propertyName);
     }
 
-    /**
-     * getCellElement
-     * @param cell
-     * @return WebElement
-     */
     public WebElement getCellElement(String cell) {
         return driver.findElement(By.xpath(cellToXPath(cell)));
     }
 
-    /**
-     * putCellContent
-     * @param cell
-     * @param value
-     * @return SheetController
-     */
     public SheetController putCellContent(String cell, CharSequence value) {
         openInlineEditor(cell);
         waitForVaadin();
@@ -204,11 +135,6 @@ public class SheetController implements SheetClicker {
         new Actions(getDriver()).doubleClick(cellElement).build().perform();
     }
     
-    /**
-     * getInlineEditor
-     * @param cell
-     * @return WebElement
-     */
     public WebElement getInlineEditor(String cell) {
         openInlineEditor(cell);
         waitForVaadin();
@@ -220,11 +146,6 @@ public class SheetController implements SheetClicker {
         inlineInput.clear();
     }
 
-    /**
-     * insertColumn
-     * @param values
-     * @return SheetController
-     */
     public SheetController insertColumn(String[] values) {
         for (String value : values) {
             insertAndRet(value);
@@ -232,34 +153,18 @@ public class SheetController implements SheetClicker {
         return this;
     }
 
-    /**
-     * waitForVaadin
-     */
     public final void waitForVaadin() {
         sleeper.waitForVaadin();
     }
 
-    /**
-     * getDriver
-     * @return WebDriver
-     */
     protected WebDriver getDriver() {
         return driver;
     }
 
-    /**
-     * $
-     * @param clazz
-     * @return ElementQuery<T>
-     */
     public <T extends AbstractElement> ElementQuery<T> $(Class<T> clazz) {
         return new ElementQuery<T>(clazz).context(getDriver());
     }
 
-    /**
-     * selectCell
-     * @param cell
-     */
     public void selectCell(String cell) {
         clickCell(cell);
     }
@@ -272,10 +177,6 @@ public class SheetController implements SheetClicker {
                 .perform();
     }
 
-    /**
-     * doubleClickCell
-     * @param cell
-     */
     public void doubleClickCell(String cell) {
         SheetCellElement cellElement = $(SpreadsheetElement.class).first()
                 .getCellAt(cell);
@@ -294,31 +195,17 @@ public class SheetController implements SheetClicker {
         $(SpreadsheetElement.class).first().getRowHeader(row).click();
     }
 
-    /**
-     * setCellVallue
-     * @param cell
-     * @param value
-     */
     public void setCellVallue(String cell, String value) {
         SheetCellElement cellElement = $(SpreadsheetElement.class).first()
                 .getCellAt(cell);
         cellElement.setValue(value);
     }
 
-    /**
-     * clickElement
-     * @param by
-     * @return SheetController
-     */
     public SheetController clickElement(org.openqa.selenium.By by) {
         driver.findElement(by).click();
         return this;
     }
 
-    /**
-     * navigateToCell
-     * @param cell
-     */
     public void navigateToCell(String cell) {
         driver.findElement(By.xpath("//*[@class='addressfield']")).clear();
         driver.findElement(By.xpath("//*[@class='addressfield']")).sendKeys(
@@ -328,10 +215,6 @@ public class SheetController implements SheetClicker {
         sleeper.waitForVaadin();
     }
 
-    /**
-     * getSelectedCell
-     * @return String
-     */
     public String getSelectedCell() {
         String elemClass = driver.findElement(
                 By.cssSelector(".sheet-selection")).getAttribute("class");
@@ -377,11 +260,6 @@ public class SheetController implements SheetClicker {
         return columnName + rowNumber;
     }
 
-    /**
-     * selectRegion
-     * @param from
-     * @param to
-     */
     public void selectRegion(String from, String to) {
         new Actions(driver).clickAndHold(getCellElement(from))
                 .release(getCellElement(to)).perform();

@@ -7,9 +7,6 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
 
-/**
- * TouchUI
- */
 @Viewport("width=device-width, initial-scale=1")
 @Theme("demo")
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")

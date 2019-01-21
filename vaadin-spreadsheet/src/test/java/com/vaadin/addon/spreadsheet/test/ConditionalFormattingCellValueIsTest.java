@@ -5,9 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-/**
- * ConditionalFormattingCellValueIsTest
- */
 public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTestCase {
 
     private static final String STRING_VALUE = "'Foo";
@@ -28,9 +25,6 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
         spreadsheetPage.selectSheetAt(1);
     }
 
-    /**
-     * loadSpreadsheetWithEqualConditionFormattingInB3_MakeConditionFalse_CellB3FilledWhite
-     */
     @Test
     public void loadSpreadsheetWithEqualConditionFormattingInB3_MakeConditionFalse_CellB3FilledWhite() {
         spreadsheetPage.setCellValue("B2", STRING_VALUE);
@@ -51,9 +45,6 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
         assertEquals(FALSE_CONDITION_COLOR, cellColorBooleanCase);
     }
 
-    /**
-     * loadSpreadsheetWithEqualConditionFormattingInB3_MakeConditionTrue_CellB3FilledRed
-     */
     @Test
     public void loadSpreadsheetWithEqualConditionFormattingInB3_MakeConditionTrue_CellB3FilledRed() {
         spreadsheetPage.setCellValue("B2", STRING_VALUE);
@@ -75,9 +66,6 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
         assertEquals(TRUE_CONDITION_COLOR, cellColorBooleanCase);
     }
 
-    /**
-     * loadSpreadsheetWithNotEqualConditionFormattingInB4_insertIncoherentValue_CellB4FilledRed
-     */
     @Test
     public void loadSpreadsheetWithNotEqualConditionFormattingInB4_insertIncoherentValue_CellB4FilledRed() {
         spreadsheetPage.setCellValue("B2", STRING_VALUE);

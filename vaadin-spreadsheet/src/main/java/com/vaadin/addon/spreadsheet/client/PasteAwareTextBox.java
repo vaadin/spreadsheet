@@ -29,9 +29,6 @@ public class PasteAwareTextBox extends TextBox {
 
     private SheetWidget widget;
 
-    /**
-     * @param widget
-     */
     public PasteAwareTextBox(SheetWidget widget) {
         super();
         this.widget = widget;

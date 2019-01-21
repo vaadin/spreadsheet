@@ -21,17 +21,8 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 /*
  * Tests are performed with pure POI and Spreadsheet to find differences and bugs
  */
-/**
- * SpreadsheetReadWriteTest
- */
 public class SpreadsheetReadWriteTest {
 
-    /**
-     * openAndSaveFileWithPOI_emptyXLSXFile_openAndSaveWorks
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws InvalidFormatException
-     */
     @Test
     public void openAndSaveFileWithPOI_emptyXLSXFile_openAndSaveWorks()
             throws URISyntaxException, IOException, InvalidFormatException {
@@ -51,11 +42,6 @@ public class SpreadsheetReadWriteTest {
         // no exceptions, everything ok
     }
 
-    /**
-     * openAndSaveFile_emptyXLSXFile_openAndSaveWorks
-     * @throws URISyntaxException
-     * @throws IOException
-     */
     @Test
     public void openAndSaveFile_emptyXLSXFile_openAndSaveWorks()
             throws URISyntaxException, IOException {
@@ -73,11 +59,6 @@ public class SpreadsheetReadWriteTest {
         // no exceptions, everything ok
     }
 
-    /**
-     * openAndSaveFile_emptyXLSXFile_FileDoesNotContainAdditionalDrawing
-     * @throws URISyntaxException
-     * @throws IOException
-     */
     @Test
     public void openAndSaveFile_emptyXLSXFile_FileDoesNotContainAdditionalDrawing()
             throws URISyntaxException, IOException {
@@ -106,12 +87,6 @@ public class SpreadsheetReadWriteTest {
         tempFile.delete();
     }
 
-    /**
-     * openAndSaveFileWithPOI_emptyXLSXFile_FileDoesNotContainAdditionalDrawing
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws InvalidFormatException
-     */
     @Test
     public void openAndSaveFileWithPOI_emptyXLSXFile_FileDoesNotContainAdditionalDrawing()
             throws URISyntaxException, IOException, InvalidFormatException {

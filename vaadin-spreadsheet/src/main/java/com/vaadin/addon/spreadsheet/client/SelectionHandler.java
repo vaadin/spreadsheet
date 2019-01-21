@@ -32,19 +32,11 @@ public class SelectionHandler {
     private int colBeforeMergedCell;
     private int rowBeforeMergedCell;
 
-    /**
-     * @param spreadsheet
-     * @param widget
-     */
     public SelectionHandler(SpreadsheetWidget spreadsheet, SheetWidget widget) {
         sheetWidget = widget;
         this.spreadsheet = spreadsheet;
     }
 
-    /**
-     * moveSelectionDown
-     * @param discardSelection
-     */
     public void moveSelectionDown(boolean discardSelection) {
         final int leftCol = sheetWidget.getSelectionLeftCol();
         final int rightCol = sheetWidget.getSelectionRightCol();
@@ -108,17 +100,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * selectCellRange
-     * @param name
-     * @param selectedCellColumn
-     * @param selectedCellRow
-     * @param firstColumn
-     * @param lastColumn
-     * @param firstRow
-     * @param lastRow
-     * @param scroll
-     */
     public void selectCellRange(String name, int selectedCellColumn, int selectedCellRow,
             int firstColumn, int lastColumn, int firstRow, int lastRow, boolean scroll) {
         spreadsheet.updateSelectedCellValues(selectedCellColumn,
@@ -151,16 +132,6 @@ public class SelectionHandler {
         sheetWidget.focusSheet();
     }
 
-    /**
-     * selectCell
-     * @param name
-     * @param col
-     * @param row
-     * @param value
-     * @param formula
-     * @param locked
-     * @param initialSelection
-     */
     public void selectCell(String name, int col, int row, String value, boolean formula,
             boolean locked, boolean initialSelection) {
         if (spreadsheet.customCellEditorDisplayed) {
@@ -202,9 +173,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * newSelectedCellSet
-     */
     public void newSelectedCellSet() {
         if (spreadsheet.customCellEditorDisplayed) {
             spreadsheet.customCellEditorDisplayed = false;
@@ -226,10 +194,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * moveSelectionUp
-     * @param discardSelection
-     */
     public void moveSelectionUp(boolean discardSelection) {
         final int leftCol = sheetWidget.getSelectionLeftCol();
         final int rightCol = sheetWidget.getSelectionRightCol();
@@ -289,13 +253,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * onCellSelectedWithKeyboard
-     * @param column
-     * @param row
-     * @param value
-     * @param region
-     */
     protected void onCellSelectedWithKeyboard(int column, int row,
             String value, MergedRegion region) {
         spreadsheet.doCommitIfEditing();
@@ -321,10 +278,6 @@ public class SelectionHandler {
         spreadsheet.startDelayedSendingTimer();
     }
 
-    /**
-     * increaseHorizontalSelection
-     * @param right
-     */
     public void increaseHorizontalSelection(boolean right) {
 
         // TODO refactor to smaller pieces
@@ -754,10 +707,6 @@ public class SelectionHandler {
         return result;
     }
 
-    /**
-     * increaseVerticalSelection
-     * @param down
-     */
     public void increaseVerticalSelection(boolean down) {
 
         // TODO refactor to smaller pieces
@@ -961,10 +910,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * moveSelectionRight
-     * @param discardSelection
-     */
     public void moveSelectionRight(boolean discardSelection) {
         final int leftCol = sheetWidget.getSelectionLeftCol();
         final int rightCol = sheetWidget.getSelectionRightCol();
@@ -1024,10 +969,6 @@ public class SelectionHandler {
         }
     }
 
-    /**
-     * moveSelectionLeft
-     * @param discardSelection
-     */
     public void moveSelectionLeft(boolean discardSelection) {
         final int leftCol = sheetWidget.getSelectionLeftCol();
         final int rightCol = sheetWidget.getSelectionRightCol();
@@ -1090,8 +1031,6 @@ public class SelectionHandler {
     /**
      * Same as {@link #checkSelectionInMergedRegion(int, int)}, but discards old
      * selection in favor of the given cell.
-     * @param c 
-     * @param r 
      */
     protected void checkNewSelectionInMergedRegion(int c, int r) {
     	int col = c;
@@ -1120,8 +1059,6 @@ public class SelectionHandler {
     /**
      * Same as {@link #checkNewSelectionInMergedRegion(int, int)}, but retains
      * old selection in addition to the new cell.
-     * @param col 
-     * @param row 
      */
     protected void checkSelectionInMergedRegion(int col, int row) {
         MergedRegion region = spreadsheet.getMergedRegion(col, row);
@@ -1139,26 +1076,15 @@ public class SelectionHandler {
                 sheetWidget.getCellValue(col, row), region);
     }
 
-    /**
-     * clearBeforeMergeCells
-     */
     public void clearBeforeMergeCells() {
         colBeforeMergedCell = 0;
         rowBeforeMergedCell = 0;
     }
 
-    /**
-     * setColBeforeMergedCell
-     * @param c
-     */
     public void setColBeforeMergedCell(int c) {
         colBeforeMergedCell = c;
     }
 
-    /**
-     * setRowBeforeMergedCell
-     * @param r
-     */
     public void setRowBeforeMergedCell(int r) {
         rowBeforeMergedCell = r;
     }

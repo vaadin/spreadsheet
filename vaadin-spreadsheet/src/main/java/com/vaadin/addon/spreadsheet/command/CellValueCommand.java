@@ -76,21 +76,9 @@ public class CellValueCommand extends SpreadsheetCommand implements
         }
     }
 
-    /**
-     * values
-     */
     protected final List<Object> values = new ArrayList<Object>();
-    /**
-     * selectedCellRow
-     */
     protected final int selectedCellRow;
-    /**
-     * selectedcellCol
-     */
     protected final int selectedcellCol;
-    /**
-     * selectedCellRange
-     */
     protected final int[] selectedCellRange;
 
     /**

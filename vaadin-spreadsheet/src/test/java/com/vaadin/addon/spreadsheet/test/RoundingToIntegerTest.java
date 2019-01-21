@@ -20,27 +20,18 @@ public class RoundingToIntegerTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.loadFile("rounding.xlsx", this);
     }
 
-    /**
-     * rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_numbersRoundedUpCorrectly
-     */
     @Test
     public void rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_numbersRoundedUpCorrectly() {
         assertCellContents("5", "B2");
         assertCellContents("0", "C2");
     }
 
-    /**
-     * rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_numbersRoundedDownCorrectly
-     */
     @Test
     public void rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_numbersRoundedDownCorrectly() {
         assertCellContents("5", "B3");
         assertCellContents("0", "C3");
     }
 
-    /**
-     * rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_formulaResultsRoundedDownCorrectly
-     */
     @Test
     public void rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_formulaResultsRoundedDownCorrectly() {
         assertCellContents("0", "B4");
@@ -50,9 +41,6 @@ public class RoundingToIntegerTest extends AbstractSpreadsheetTestCase {
         assertFormulaFieldContents("=C1-C2", "C4");
     }
 
-    /**
-     * rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_formulaResultsRoundedUpCorrectly
-     */
     @Test
     public void rounding_sheetWithZeroDecimalNumberFormatRuleForNumericCells_formulaResultsRoundedUpCorrectly() {
         assertCellContents("0", "B5");

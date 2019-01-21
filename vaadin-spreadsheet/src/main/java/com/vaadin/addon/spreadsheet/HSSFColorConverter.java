@@ -43,9 +43,6 @@ public class HSSFColorConverter implements ColorConverter {
 
     private static final HSSFColorPredefined HSSF_AUTO = HSSFColorPredefined.AUTOMATIC;
 
-    /**
-     * @param wb
-     */
     public HSSFColorConverter(HSSFWorkbook wb) {
         this.wb = wb;
         // If there is no custom palette, then this creates a new one that is

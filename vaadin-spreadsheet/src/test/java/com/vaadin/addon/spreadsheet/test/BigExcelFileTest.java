@@ -6,15 +6,8 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-/**
- * BigExcelFileTest
- */
 public class BigExcelFileTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * openSpreadsheet_fromExcelFileWith_100_000_Rows_theContentIsRendered
-     * @throws Exception void
-     */
     @Test
     public void openSpreadsheet_fromExcelFileWith_100_000_Rows_theContentIsRendered() throws Exception {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(

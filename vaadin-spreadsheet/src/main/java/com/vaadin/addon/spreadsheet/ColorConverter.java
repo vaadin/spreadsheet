@@ -53,7 +53,6 @@ public interface ColorConverter extends Serializable {
      *            What type of border style we want (solid, dashed..)
      * @param cellStyle
      *            Style for the cell
-     * @return CSS
      */
     String getBorderColorCSS(BorderSide borderSide, String attribute,
             CellStyle cellStyle);
@@ -67,7 +66,6 @@ public interface ColorConverter extends Serializable {
      *            What type of border style we want (solid, dashed..)
      * @param format
      *            the active formatting
-     * @return CSS
      */
     String getBorderColorCSS(BorderSide borderSide, String attribute,
             BorderFormatting format);

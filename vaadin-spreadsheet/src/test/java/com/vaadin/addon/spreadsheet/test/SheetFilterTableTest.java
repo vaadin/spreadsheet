@@ -25,9 +25,6 @@ public class SheetFilterTableTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.createNewSpreadsheet();
     }
 
-    /**
-     * filter_changeSheet_hideFilter
-     */
     @Test
     public void filter_changeSheet_hideFilter() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -38,9 +35,6 @@ public class SheetFilterTableTest extends AbstractSpreadsheetTestCase {
                 spreadsheet.getCellAt(2, 2).hasPopupButton());
     }
 
-    /**
-     * filter_removeTable_hideFilter
-     */
     @Test
     public void filter_removeTable_hideFilter() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

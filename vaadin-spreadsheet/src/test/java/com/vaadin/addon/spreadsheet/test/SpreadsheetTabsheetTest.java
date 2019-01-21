@@ -8,9 +8,6 @@ import org.openqa.selenium.By;
 import com.vaadin.addon.spreadsheet.test.demoapps.TabsheetTestUI;
 import com.vaadin.testbench.elements.TabSheetElement;
 
-/**
- * SpreadsheetTabsheetTest
- */
 public class SpreadsheetTabsheetTest extends AbstractSpreadsheetTestCase {
 
     @Override
@@ -18,10 +15,6 @@ public class SpreadsheetTabsheetTest extends AbstractSpreadsheetTestCase {
         return TabsheetTestUI.class;
     }
 
-    /**
-     * spreadsheetWithTableInTabsheet_changeTabs_tableVisible
-     * @throws Exception
-     */
     @Test
     public void spreadsheetWithTableInTabsheet_changeTabs_tableVisible()
             throws Exception {
@@ -42,10 +35,6 @@ public class SpreadsheetTabsheetTest extends AbstractSpreadsheetTestCase {
         checkPopupButtons(4);
     }
 
-    /**
-     * checkPopupButtons
-     * @param expected
-     */
     public void checkPopupButtons(int expected) {
         int actual = getDriver().findElements(By.className("popupbutton"))
                 .size();

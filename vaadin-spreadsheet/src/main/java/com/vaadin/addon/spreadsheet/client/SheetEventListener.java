@@ -24,9 +24,6 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
 import com.vaadin.client.BrowserInfo;
 
-/**
- * SheetEventListener
- */
 public class SheetEventListener implements EventListener {
 
     private SheetWidget widget;
@@ -35,22 +32,11 @@ public class SheetEventListener implements EventListener {
 
     private boolean isMac;
 
-    /**
-     * setSheetWidget
-     * @param sheetWidget
-     */
     public void setSheetWidget(SheetWidget sheetWidget) {
         widget = sheetWidget;
         isMac = sheetWidget.isMac();
     }
 
-    /**
-     * setSheetPaneElement
-     * @param topLeftPane
-     * @param topRightPane
-     * @param bottomLeftPane
-     * @param bottomRightPane void
-     */
     public void setSheetPaneElement(Element topLeftPane, Element topRightPane,
             Element bottomLeftPane, Element bottomRightPane) {
         listenToEventsOnPane(topLeftPane);
@@ -59,10 +45,6 @@ public class SheetEventListener implements EventListener {
         listenToEventsOnPane(bottomRightPane);
     }
 
-    /**
-     * listenToEventsOnPane
-     * @param sheetElement void
-     */
     protected void listenToEventsOnPane(Element sheetElement) {
         Event.sinkEvents(sheetElement, Event.ONSCROLL | Event.ONMOUSEDOWN
                 | Event.ONMOUSEMOVE | Event.ONMOUSEOVER | Event.ONMOUSEOUT

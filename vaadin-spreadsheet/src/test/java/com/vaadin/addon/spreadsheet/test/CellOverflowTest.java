@@ -11,15 +11,8 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * CellOverflowTest
- */
 public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * cellTextInput_longHtmlText_inputWrappedAndShownAsText
-     * @throws IOException void
-     */
     @Test
     public void cellTextInput_longHtmlText_inputWrappedAndShownAsText()
             throws IOException {
@@ -37,10 +30,6 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         compareScreen("longHtmlTextWrapped");
     }
 
-    /**
-     * cellTextInput_htmlText_renderedAsText
-     * @throws IOException void
-     */
     @Test
     public void cellTextInput_htmlText_renderedAsText() throws IOException {
         headerPage.createNewSpreadsheet();
@@ -55,10 +44,6 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         compareScreen("htmlText");
     }
 
-    /**
-     * cellOverflow_stringFormula_overflowsAsText
-     * @throws IOException void
-     */
     @Test
     public void cellOverflow_stringFormula_overflowsAsText()
             throws IOException {
@@ -76,10 +61,6 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         assertEquals(valueToTest, a1.getValue());
     }
 
-    /**
-     * frozenRows_LongValueInCell_CellOverflows
-     * @throws IOException void
-     */
     @Test
     public void frozenRows_LongValueInCell_CellOverflows() throws IOException {
         skipBrowser("IE fails to select correct file", Browser.IE11);
@@ -87,9 +68,6 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         compareScreen("overflow");
     }
 
-    /**
-     * verticalOverflowCells_noOverflow void
-     */
     @Test
     public void verticalOverflowCells_noOverflow() {
         loadWrapTextTest();
@@ -98,18 +76,12 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
         assertNoOverflowForCell("C13");
     }
 
-    /**
-     * longWordInCellWithWrapText_noOverflow void
-     */
     @Test
     public void longWordInCellWithWrapText_noOverflow() {
         loadWrapTextTest();
         assertNoOverflowForCell("E8");
     }
 
-    /**
-     * sameContentInTwoCellsWithDifferentWidths_noOverflow void
-     */
     @Test
     public void sameContentInTwoCellsWithDifferentWidths_noOverflow() {
         loadWrapTextTest();

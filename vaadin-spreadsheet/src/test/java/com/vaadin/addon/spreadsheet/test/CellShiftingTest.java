@@ -13,9 +13,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
-/**
- * CellShiftingTest
- */
 public class CellShiftingTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
@@ -27,9 +24,6 @@ public class CellShiftingTest extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
-    /**
-     * cellValueShifting_verticalShifting_valuesUpdated void
-     */
     @Test
     public void cellValueShifting_verticalShifting_valuesUpdated() {
         String value = "value";
@@ -38,9 +32,6 @@ public class CellShiftingTest extends AbstractSpreadsheetTestCase {
         assertEquals(value, spreadSheet.getCellAt("A2").getValue());
     }
 
-    /**
-     * cellValueShifting_horizontalShifting_valuesUpdated void
-     */
     @Test
     public void cellValueShifting_horizontalShifting_valuesUpdated() {
         String value = "value";
@@ -49,9 +40,6 @@ public class CellShiftingTest extends AbstractSpreadsheetTestCase {
         assertEquals(value, spreadSheet.getCellAt("B1").getValue());
     }
 
-    /**
-     * cellValueShifting_horizontalShifting_shiftingIndicatorNotVisible void
-     */
     @Test
     public void cellValueShifting_horizontalShifting_shiftingIndicatorNotVisible() {
         String value = "value";

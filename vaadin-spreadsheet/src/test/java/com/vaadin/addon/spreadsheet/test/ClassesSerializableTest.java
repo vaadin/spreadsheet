@@ -18,9 +18,6 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-/**
- * ClassesSerializableTest
- */
 public class ClassesSerializableTest extends TestCase {
 
     /**

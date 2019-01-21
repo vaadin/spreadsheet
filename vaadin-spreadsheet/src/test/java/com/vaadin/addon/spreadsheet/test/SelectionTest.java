@@ -12,18 +12,9 @@ import com.vaadin.addon.spreadsheet.test.testutil.ModifierController;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * SelectionTest
- */
 public class SelectionTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * ctrl
-     */
     protected SheetController ctrl;
-    /**
-     * shift
-     */
     protected ModifierController shift;
 
     @Before
@@ -35,9 +26,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         shift = new ModifierController(driver, Keys.SHIFT,
                 testBench(getDriver()), getDesiredCapabilities());
     }
-    /**
-     * testSelectionSingleCell
-     */
     @Test
     public void testSelectionSingleCell() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -50,9 +38,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("D4");
     }
 
-    /**
-     * testMultipleRectSelection
-     */
     @Test
     public void testMultipleRectSelection() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -68,9 +53,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("E3");
     }
 
-    /**
-     * testComplicatedCellSelection
-     */
     @Test
     public void testComplicatedCellSelection() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -91,9 +73,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("E5");
     }
 
-    /**
-     * testRowSelection
-     */
     @Test
     public void testRowSelection() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -107,9 +86,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertRowSelected("7");
     }
 
-    /**
-     * testColumnSelection
-     */
     @Test
     public void testColumnSelection() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -123,9 +99,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertColumnSelected("F");
     }
 
-    /**
-     * testRowColumnMixed
-     */
     @Test
     public void testRowColumnMixed() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -143,9 +116,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertRowSelected("5");
     }
 
-    /**
-     * testColumnRowWithPagination
-     */
     @Test
     @Ignore("Navigating to cell clears the selection, so this can't work -> Figure out another way to scroll")
     public void testColumnRowWithPagination() {
@@ -165,9 +135,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("AZ3");
     }
 
-    /**
-     * testShiftClick
-     */
     @Test
     public void testShiftClick() {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -191,9 +158,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("G2");
     }
 
-    /**
-     * testWithMouse
-     */
     @Test
     public void testWithMouse() {
         sheetController.selectRegion("B2", "C3");
@@ -214,9 +178,6 @@ public class SelectionTest extends AbstractSpreadsheetTestCase {
         assertCellSelected("F2");
     }
 
-    /**
-     * mouseSelection_cellWithStringValue_cellIsSelected
-     */
     @Test
     public void mouseSelection_cellWithStringValue_cellIsSelected() {
         sheetController.clickCell("B2");

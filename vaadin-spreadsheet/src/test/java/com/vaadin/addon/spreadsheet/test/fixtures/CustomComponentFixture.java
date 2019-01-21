@@ -21,17 +21,8 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 
-/**
- * CustomComponentFixture
- */
 public class CustomComponentFixture implements SpreadsheetFixture {
 
-    /**
-     * getCompByCell
-     * @param row
-     * @param col
-     * @return String
-     */
     static public String getCompByCell(int row, int col) {
         if (row == 1 && col == 1) {
             return "textfield";
@@ -77,26 +68,18 @@ public class CustomComponentFixture implements SpreadsheetFixture {
 
 }
 
-/**
- * AbstractComponentFactory
- */
 abstract class AbstractComponentFactory implements SpreadsheetComponentFactory {
-	private static final long serialVersionUID = 1L;
 
-	@Override
+    @Override
     public Component getCustomComponentForCell(Cell cell, int rowIndex, int columnIndex, Spreadsheet spreadsheet, Sheet sheet) {
           return null;
     }
 
 }
 
-/**
- * ComponentEditorFactory
- */
 class ComponentEditorFactory extends AbstractComponentFactory {
-	private static final long serialVersionUID = 1L;
 
-	@Override
+    @Override
     public Component getCustomEditorForCell(Cell cell, final int rowIndex,
                                                final int columnIndex, final Spreadsheet spreadsheet, Sheet sheet) {
 

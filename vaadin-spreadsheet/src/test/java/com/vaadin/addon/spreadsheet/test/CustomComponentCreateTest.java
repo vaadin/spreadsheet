@@ -4,9 +4,6 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-/**
- * CustomComponentCreateTest
- */
 public class CustomComponentCreateTest extends AbstractSpreadsheetTestCase {
 
     /**
@@ -14,7 +11,6 @@ public class CustomComponentCreateTest extends AbstractSpreadsheetTestCase {
      *
      * Note that this screenshot tests different themes so hence page must be
      * loaded between screenshot comparisons.
-     * @throws Exception 
      */
     @Test
     public void CustomEditor_AddEditor_DisplayEditorImmediately()

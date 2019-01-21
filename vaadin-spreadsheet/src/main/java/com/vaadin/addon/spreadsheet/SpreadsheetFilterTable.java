@@ -49,22 +49,10 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class SpreadsheetFilterTable extends SpreadsheetTable implements
         Button.ClickListener {
-    /**
-     * CLEAR_FILTERS_BUTTON_CLASSNAME
-     */
     public static final String CLEAR_FILTERS_BUTTON_CLASSNAME = "clear-filters-button";
 
-    /**
-     * popupButtonToFiltersMap
-     */
     protected final Map<PopupButton, HashSet<SpreadsheetFilter>> popupButtonToFiltersMap;
-    /**
-     * popupButtonToClearButtonMap
-     */
     protected final Map<PopupButton, Button> popupButtonToClearButtonMap;
-    /**
-     * filteringRegion
-     */
     protected CellRangeAddress filteringRegion;
 
     /**

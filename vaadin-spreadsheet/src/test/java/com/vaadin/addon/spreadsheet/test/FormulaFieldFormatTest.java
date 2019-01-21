@@ -22,9 +22,6 @@ public class FormulaFieldFormatTest extends AbstractSpreadsheetTestCase {
         setDefaultLocale();
     }
 
-    /**
-     * numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldContentsUnformattedExceptForLocale
-     */
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldContentsUnformattedExceptForLocale() {
         spreadsheetPage = headerPage.loadFile("number_format.xlsx", this);
@@ -32,9 +29,6 @@ public class FormulaFieldFormatTest extends AbstractSpreadsheetTestCase {
         assertFormat("H3", "3,333.33 €", "3333.333");
     }
 
-    /**
-     * rounding_sheetWithNumberFormatRuleForNumericCells_formulaFieldContentsUnformatted
-     */
     @Test
     public void rounding_sheetWithNumberFormatRuleForNumericCells_formulaFieldContentsUnformatted() {
         spreadsheetPage = headerPage.loadFile("rounding.xlsx", this);
@@ -42,9 +36,6 @@ public class FormulaFieldFormatTest extends AbstractSpreadsheetTestCase {
         assertFormat("B3", "5", "5.00005");
     }
 
-    /**
-     * rounding_sheetWithGeneralFormatRuleForNumericCells_formulaFieldContentsUnformattedExceptForLocale
-     */
     @Test
     public void rounding_sheetWithGeneralFormatRuleForNumericCells_formulaFieldContentsUnformattedExceptForLocale() {
         spreadsheetPage = headerPage.loadFile("general_round.xlsx", this);
@@ -52,9 +43,6 @@ public class FormulaFieldFormatTest extends AbstractSpreadsheetTestCase {
         assertFormat("E14", "10", "9.99999999999");
     }
 
-    /**
-     * dateFormat_sheetWithDateFormatRuleForDateCells_formulaFieldContentsSimpleDateFormat
-     */
     @Test
     public void dateFormat_sheetWithDateFormatRuleForDateCells_formulaFieldContentsSimpleDateFormat() {
         spreadsheetPage = headerPage.loadFile("date_format.xlsx", this);
@@ -68,12 +56,6 @@ public class FormulaFieldFormatTest extends AbstractSpreadsheetTestCase {
         assertFormat("A1", "3/14", "3/14");
     }
 
-    /**
-     * formulaTrimming_invalidPOIFormula_formulaIsNotTrimmed
-     */
-    /**
-     * formulaTrimming_invalidPOIFormula_formulaIsNotTrimmed
-     */
     @Test
     public void formulaTrimming_invalidPOIFormula_formulaIsNotTrimmed() {
         spreadsheetPage = headerPage.loadFile("table-subtotals-ranges.xlsx",

@@ -34,9 +34,6 @@ public class UnHideHeadersAction extends SpreadsheetAction {
 
     private int unhideHeaderIndex = 0;
 
-    /**
-     * 
-     */
     public UnHideHeadersAction() {
         super("");
     }

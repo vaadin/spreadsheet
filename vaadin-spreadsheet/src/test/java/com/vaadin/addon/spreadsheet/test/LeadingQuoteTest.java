@@ -9,9 +9,6 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 
-/**
- * LeadingQuoteTest
- */
 public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     private SheetController sheetController;
@@ -26,10 +23,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         waitForElementPresent(By.className("v-spreadsheet"));
     }
 
-    /**
-     * existingCell_numberStringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote
-     * @throws Exception
-     */
     @Test
     public void existingCell_numberStringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
@@ -37,10 +30,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues("B3", "01", "'01", "'01");
     }
 
-    /**
-     * existingCell_stringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote
-     * @throws Exception
-     */
     @Test
     public void existingCell_stringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
         throws Exception {
@@ -48,10 +37,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues("B4", "abc", "'abc", "'abc");
     }
 
-    /**
-     * existingCell_stringWithoutQuotePrefixStyle_noLeadingQuote
-     * @throws Exception
-     */
     @Test
     public void existingCell_stringWithoutQuotePrefixStyle_noLeadingQuote()
         throws Exception {
@@ -59,10 +44,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues("B5", "def", "def", "def");
     }
 
-    /**
-     * typingOnCell_withLeadingQuote_noQuoteShownInCellAndInPOIModel
-     * @throws Exception
-     */
     @Test
     public void typingOnCell_withLeadingQuote_noQuoteShownInCellAndInPOIModel()
         throws Exception {
@@ -74,10 +55,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues(cell, "567", "'567", "'567");
     }
 
-    /**
-     * typingOnCell_withTwoLeadingQuotes_justOneQuoteShownInCellAndInPOIModel
-     * @throws Exception
-     */
     @Test
     public void typingOnCell_withTwoLeadingQuotes_justOneQuoteShownInCellAndInPOIModel()
         throws Exception {
@@ -89,10 +66,6 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
         assertCellValues(cell, "'567", "''567", "''567");
     }
 
-    /**
-     * existingCell_selectedCellWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuoteAfterSheetSelection
-     * @throws Exception
-     */
     @Test
     public void existingCell_selectedCellWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuoteAfterSheetSelection()
         throws Exception {

@@ -8,9 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * CommentFixture
- */
 public class CommentFixture implements SpreadsheetFixture {
 
     @Override

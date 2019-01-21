@@ -34,9 +34,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class UnMergeCellsAction extends SpreadsheetAction {
 
-    /**
-     * default constructor
-     */
     public UnMergeCellsAction() {
         super("Unmerge cells");
     }

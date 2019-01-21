@@ -15,14 +15,8 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.By;
 
-/**
- * CopyPasteCellsTest
- */
 public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * collector
-     */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private SheetController sheetController;
@@ -36,9 +30,6 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
                 getDesiredCapabilities());
     }
 
-    /**
-     * spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells void
-     */
     @Test
     public void spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells() {
         headerPage.createNewSpreadsheet();
@@ -59,9 +50,6 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * spreadsheetHandlerOnPaste_PasteCells_SmallServerJsonResponse void
-     */
     @Test
     public void spreadsheetHandlerOnPaste_PasteCells_SmallServerJsonResponse() {
         headerPage.createNewSpreadsheet();

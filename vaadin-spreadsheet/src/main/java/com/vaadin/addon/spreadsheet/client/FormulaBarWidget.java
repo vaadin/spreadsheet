@@ -44,9 +44,6 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.vaadin.addon.spreadsheet.client.SheetWidget.CellCoord;
 
-/**
- * FormulaBarWidget
- */
 public class FormulaBarWidget extends Composite {
 
     private static final List<String> formulaColors;
@@ -147,10 +144,6 @@ public class FormulaBarWidget extends Composite {
     private SheetWidget widget;
     private RegExp cachedRegex;
 
-    /**
-     * @param selectionManager
-     * @param widget
-     */
     public FormulaBarWidget(FormulaBarHandler selectionManager,
             SheetWidget widget) {
         handler = selectionManager;
@@ -224,13 +217,6 @@ public class FormulaBarWidget extends Composite {
         clearFormulaSelectedCells();
     }
 
-    /**
-     * moveFormulaCellSelection
-     * @param shiftPressed
-     * @param up
-     * @param right
-     * @param down
-     */
     public void moveFormulaCellSelection(boolean shiftPressed, boolean up,
             boolean right, boolean down) {
 
@@ -418,10 +404,6 @@ public class FormulaBarWidget extends Composite {
 
     /**
      * Adds a selection range to the current formula
-     * @param col1 
-     * @param row1 
-     * @param col2 
-     * @param row2 
      */
     public void addFormulaCellRange(int col1, int row1, int col2, int row2) {
         setFormulaCellRange(col1, row1, col2, row2, true);
@@ -430,10 +412,6 @@ public class FormulaBarWidget extends Composite {
     /**
      * Set a cell range in the formula. If the user hasn't moved the caret after
      * last call, replace the value instead.
-     * @param col1 
-     * @param row1 
-     * @param col2 
-     * @param row2 
      */
     public void setFormulaCellRange(int col1, int row1, int col2, int row2) {
         setFormulaCellRange(col1, row1, col2, row2, false);
@@ -569,9 +547,6 @@ public class FormulaBarWidget extends Composite {
         }
     }
 
-    /**
-     * checkEmptyValue
-     */
     public void checkEmptyValue() {
 
         // if value is empty, stop editing formula
@@ -995,43 +970,25 @@ public class FormulaBarWidget extends Composite {
         formulaCellReferences.add(region);
     }
 
-    /**
-     * revertCellAddressValue
-     */
     public void revertCellAddressValue() {
         addressField.setValue(cachedAddressFieldValue);
         addressField.setFocus(false);
     }
 
-    /**
-     * revertCellValue
-     */
     public void revertCellValue() {
         formulaField.setValue(cachedFunctionFieldValue);
     }
 
-    /**
-     * setSelectedCellAddress
-     * @param selection
-     */
     public void setSelectedCellAddress(String selection) {
         cachedAddressFieldValue = selection;
         addressField.setValue(selection);
         trySelectNamedRangeBoxValue(selection);
     }
 
-    /**
-     * setCellPlainValue
-     * @param plainValue
-     */
     public void setCellPlainValue(String plainValue) {
         formulaField.setValue(plainValue);
     }
 
-    /**
-     * setCellFormulaValue
-     * @param formula
-     */
     public void setCellFormulaValue(String formula) {
         if (!formula.isEmpty()) {
             formulaField.setValue("=" + formula);
@@ -1040,9 +997,6 @@ public class FormulaBarWidget extends Composite {
         }
     }
 
-    /**
-     * clear
-     */
     public void clear() {
         setCellPlainValue("");
         setSelectedCellAddress("");
@@ -1050,25 +1004,14 @@ public class FormulaBarWidget extends Composite {
         clearFormulaSelection();
     }
 
-    /**
-     * getFormulaFieldValue
-     * @return String
-     */
     public String getFormulaFieldValue() {
         return formulaField.getValue();
     }
 
-    /**
-     * setFormulaFieldEnabled
-     * @param enabled
-     */
     public void setFormulaFieldEnabled(boolean enabled) {
         formulaField.setEnabled(enabled);
     }
 
-    /**
-     * cacheFormulaFieldValue
-     */
     public void cacheFormulaFieldValue() {
         cachedFunctionFieldValue = formulaField.getValue();
     }
@@ -1076,10 +1019,6 @@ public class FormulaBarWidget extends Composite {
     /**
      * If the user has focused an editor field, and the editor field contains a
      * formula.
-     */
-    /**
-     * isEditingFormula
-     * @return boolean
      */
     public boolean isEditingFormula() {
         return editingFormula;
@@ -1089,18 +1028,10 @@ public class FormulaBarWidget extends Composite {
      * If arrow key events should be processed normally, or as cell selection
      * for the formula.
      */
-    /**
-     * isKeyboardNavigationEnabled
-     * @return boolean
-     */
     public boolean isKeyboardNavigationEnabled() {
         return enableKeyboardNavigation && editingFormula;
     }
 
-    /**
-     * startInlineEdit
-     * @param inputFullFocus
-     */
     public void startInlineEdit(boolean inputFullFocus) {
 
         setInlineEdit(inputFullFocus);
@@ -1109,9 +1040,6 @@ public class FormulaBarWidget extends Composite {
         checkKeyboardNavigation();
     }
 
-    /**
-     * stopInlineEdit
-     */
     public void stopInlineEdit() {
         setInlineEdit(false);
         setInFullFocus(false);
@@ -1121,7 +1049,6 @@ public class FormulaBarWidget extends Composite {
     /**
      * Stores the current position if the editor caret (e.g. when focus is
      * temporarily moved somewhere else)
-     * @param doAsDeferred 
      */
     public void updateEditorCaretPos(boolean doAsDeferred) {
 
@@ -1249,10 +1176,6 @@ public class FormulaBarWidget extends Composite {
         });
     }
 
-    /**
-     * setNamedRanges
-     * @param namedRanges
-     */
     public void setNamedRanges(List<String> namedRanges) {
         namedRangeBox.clear();
         namedRangeBox.addItem("");
@@ -1275,42 +1198,22 @@ public class FormulaBarWidget extends Composite {
         namedRangeBoxArrow.setVisible(visible);
     }
 
-    /**
-     * isInFullFocus
-     * @return boolean
-     */
     public boolean isInFullFocus() {
         return inFullFocus;
     }
 
-    /**
-     * setInFullFocus
-     * @param inFullFocus
-     */
     public void setInFullFocus(boolean inFullFocus) {
         this.inFullFocus = inFullFocus;
     }
 
-    /**
-     * isInlineEdit
-     * @return boolean
-     */
     public boolean isInlineEdit() {
         return inlineEdit;
     }
 
-    /**
-     * setInlineEdit
-     * @param inlineEdit
-     */
     public void setInlineEdit(boolean inlineEdit) {
         this.inlineEdit = inlineEdit;
     }
 
-    /**
-     * hasLightFocus
-     * @return boolean
-     */
     public boolean hasLightFocus() {
         return !inlineEdit
                 || (inlineEdit

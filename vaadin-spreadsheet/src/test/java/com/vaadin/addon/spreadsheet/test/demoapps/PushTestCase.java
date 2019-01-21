@@ -5,9 +5,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 
-/**
- * PushTestCase
- */
 @SuppressWarnings("serial")
 @Push
 public class PushTestCase extends SpreadsheetDemoUI {

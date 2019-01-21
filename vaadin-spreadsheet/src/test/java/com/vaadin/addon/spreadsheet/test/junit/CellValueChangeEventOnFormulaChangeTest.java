@@ -22,9 +22,6 @@ public class CellValueChangeEventOnFormulaChangeTest {
 
     private Spreadsheet spreadsheet;
 
-    /**
-     * setup
-     */
     @Before
     public void setup() {
         Workbook workbook = new XSSFWorkbook();

@@ -7,15 +7,8 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-/**
- * FormulaTest
- */
 public class FormulaTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * testSimpleFormulaSheet
-     * @throws Exception
-     */
     @Test
     public void testSimpleFormulaSheet() throws Exception {
         SpreadsheetPage spreadsheetPage = headerPage
@@ -34,10 +27,6 @@ public class FormulaTest extends AbstractSpreadsheetTestCase {
         assertEquals("=C7+1", spreadsheetPage.getFormulaFieldValue());
     }
 
-    /**
-     * validValueReference_invalidIsSet_formulaIsUpdated
-     * @throws Exception
-     */
     @Test
     public void validValueReference_invalidIsSet_formulaIsUpdated()
             throws Exception {

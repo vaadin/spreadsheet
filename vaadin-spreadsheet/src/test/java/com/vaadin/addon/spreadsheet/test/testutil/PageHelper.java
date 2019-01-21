@@ -9,32 +9,18 @@ import org.openqa.selenium.WebElement;
 
 import com.vaadin.testbench.By;
 
-/**
- * PageHelper
- */
 public class PageHelper extends SeleniumHelper {
 
-    /**
-     * @param driver
-     */
     public PageHelper(WebDriver driver) {
         super(driver);
     }
 
-    /**
-     * assertTextPresent
-     * @param text
-     */
     public void assertTextPresent(String text) {
         List<WebElement> list = driver.findElements(By
                 .xpath("//*[contains(text(),'" + text + "')]"));
         Assert.assertTrue("'" + text + "' not found in page!", list.size() > 0);
     }
 
-    /**
-     * assertTextPresent
-     * @param textOptions
-     */
     public void assertTextPresent(String[] textOptions) {
         boolean found = false;
         for (String text : textOptions) {
@@ -49,10 +35,6 @@ public class PageHelper extends SeleniumHelper {
                 + "' found in page!", found);
     }
 
-    /**
-     * assertUrlContains
-     * @param expectedUrl
-     */
     public void assertUrlContains(String expectedUrl) {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertTrue("Current URL expectation failed: expected '"

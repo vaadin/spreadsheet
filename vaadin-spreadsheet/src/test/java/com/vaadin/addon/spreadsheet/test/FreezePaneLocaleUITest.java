@@ -15,11 +15,6 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
  */
 public class FreezePaneLocaleUITest extends NoScreenshotTBTest {
 
-    /**
-     * loadSpreadsheetWithFrozenColumns_setLocaleAfterLoad_SpreadsheetLoadedCorrectly
-     * @throws URISyntaxException
-     * @throws IOException
-     */
     @Test
     public void loadSpreadsheetWithFrozenColumns_setLocaleAfterLoad_SpreadsheetLoadedCorrectly()
             throws URISyntaxException, IOException {

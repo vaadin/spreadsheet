@@ -25,14 +25,8 @@ import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.client.ui.VWindow;
 
-/**
- * PopupButtonHeader
- */
 public class PopupButtonHeader extends Widget {
 
-    /**
-     * CLASSNAME
-     */
     protected final static String CLASSNAME = PopupButtonWidget.POPUP_OVERLAY_CLASSNAME
             + "-header";
 
@@ -42,9 +36,6 @@ public class PopupButtonHeader extends Widget {
     private PopupPanel popup;
     private SheetWidget sheetWidget;
 
-    /**
-     * constructor
-     */
     public PopupButtonHeader() {
         root.setClassName(CLASSNAME);
         close.setClassName(VWindow.CLASSNAME + "-closebox");
@@ -58,26 +49,14 @@ public class PopupButtonHeader extends Widget {
         setElement(root);
     }
 
-    /**
-     * setCaption
-     * @param caption
-     */
     public void setCaption(String caption) {
         this.caption.setInnerText(caption);
     }
 
-    /**
-     * setPopup
-     * @param popup
-     */
     public void setPopup(PopupPanel popup) {
         this.popup = popup;
     }
 
-    /**
-     * setSheet
-     * @param sheetWidget
-     */
     public void setSheet(SheetWidget sheetWidget) {
         this.sheetWidget = sheetWidget;
     }
@@ -92,19 +71,11 @@ public class PopupButtonHeader extends Widget {
         }
     }
 
-    /**
-     * setHidden
-     * @param headerHidden
-     */
     public void setHidden(boolean headerHidden) {
         getElement().getStyle().setDisplay(
                 headerHidden ? Display.NONE : Display.BLOCK);
     }
 
-    /**
-     * isHidden
-     * @return boolean
-     */
     public boolean isHidden() {
         return Display.NONE.getCssName().equals(
                 getElement().getStyle().getDisplay());

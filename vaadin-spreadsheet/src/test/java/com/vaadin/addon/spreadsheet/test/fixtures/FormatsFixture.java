@@ -9,9 +9,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * FormatsFixture
- */
 public class FormatsFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {

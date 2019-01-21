@@ -2,14 +2,10 @@ package com.vaadin.addon.spreadsheet.test;
 
 import org.junit.Test;
 
-/**
- * GroupingRenderTest
- */
 public class GroupingRenderTest extends AbstractSpreadsheetTestCase {
 
     /**
      * SHEET-77
-     * @throws Exception 
      */
     @Test
     public void testRenderingLargeGrouping() throws Exception {

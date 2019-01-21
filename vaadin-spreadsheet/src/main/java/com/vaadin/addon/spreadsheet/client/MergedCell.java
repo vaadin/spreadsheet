@@ -17,16 +17,8 @@ package com.vaadin.addon.spreadsheet.client;
  * #L%
  */
 
-/**
- * MergedCell
- */
 public class MergedCell extends Cell {
 
-    /**
-     * @param sheetWidget
-     * @param col
-     * @param row
-     */
     public MergedCell(SheetWidget sheetWidget, int col, int row) {
         super(sheetWidget, col, row);
     }

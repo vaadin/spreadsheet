@@ -10,9 +10,6 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-/**
- * ValueHandlerTest
- */
 public class ValueHandlerTest extends AbstractSpreadsheetTestCase {
 
     @Before
@@ -22,9 +19,6 @@ public class ValueHandlerTest extends AbstractSpreadsheetTestCase {
         headerPage.loadTestFixture(TestFixtures.ValueChangeHandler);
     }
 
-    /**
-     * testDoubleHandler
-     */
     @Test
     public void testDoubleHandler() {
         sheetController.putCellContent("B3", "=B2+1");
@@ -44,9 +38,6 @@ public class ValueHandlerTest extends AbstractSpreadsheetTestCase {
 
     }
 
-    /**
-     * testDateFormat
-     */
     @Test
     @Ignore("Fails in all the browsers")
     public void testDateFormat() {

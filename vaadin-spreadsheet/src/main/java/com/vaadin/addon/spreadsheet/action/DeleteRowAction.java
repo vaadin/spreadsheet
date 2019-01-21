@@ -32,9 +32,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class DeleteRowAction extends SpreadsheetAction {
 
-    /**
-     * constructor
-     */
     public DeleteRowAction() {
         super("");
     }

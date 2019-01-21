@@ -19,18 +19,9 @@ package com.vaadin.addon.spreadsheet.client;
 
 import java.io.Serializable;
 
-/**
- * SpreadsheetActionDetails
- */
 @SuppressWarnings("serial")
 public class SpreadsheetActionDetails implements Serializable {
-    /**
-     * caption
-     */
     public String caption;
-    /**
-     * key
-     */
     public String key;
     /** 0 = cell, 1 = row, 2 = column TODO replace with enum type */
     public int type;

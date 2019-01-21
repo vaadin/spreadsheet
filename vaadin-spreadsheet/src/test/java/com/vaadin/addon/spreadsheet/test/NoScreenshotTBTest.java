@@ -27,14 +27,8 @@ import com.vaadin.testbench.annotations.RunOnHub;
 @BrowserFactory(VaadinBrowserFactory.class)
 public abstract class NoScreenshotTBTest extends AbstractTB3Test {
 
-    /**
-     * PORT_PROPERTY
-     */
     public static final String PORT_PROPERTY = "com.vaadin.testbench.deployment.port";
     private static final String HOSTNAME_PROPERTY = "com.vaadin.testbench.deployment.hostname";
-    /**
-     * DEFAULT_PORT
-     */
     public static String DEFAULT_PORT = "9998";
 
     private static final Properties properties = new Properties();
@@ -75,11 +69,6 @@ public abstract class NoScreenshotTBTest extends AbstractTB3Test {
         return "" + getConfiguredDeploymentPort();
     }
 
-    /**
-     * getProperty
-     * @param name
-     * @return String
-     */
     protected static String getProperty(String name) {
         String property = properties.getProperty(name);
         if (property == null) {

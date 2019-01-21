@@ -2,17 +2,14 @@ package com.vaadin.addon.spreadsheet;
 
 import java.io.Serializable;
 
-/**
- * ColorConverterUtil
- */
-public class ColorConverterUtil implements Serializable {
-	private static final long serialVersionUID = 1L;
+import org.apache.poi.xssf.model.StylesTable;
+import org.apache.poi.xssf.usermodel.XSSFColor;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
 
-	/**
-     * toRGBA
-     * @param argb
-     * @return String
-     */
+public class ColorConverterUtil implements Serializable {
+
     public static String toRGBA(byte[] argb) {
         int rgba[] = new int[3];
         for (int i = 1; i < argb.length; i++) {
@@ -27,11 +24,6 @@ public class ColorConverterUtil implements Serializable {
         return buildRgba(rgba, x);
     }
 
-    /**
-     * toRGBA
-     * @param hexARGB
-     * @return String
-     */
     public static String toRGBA(String hexARGB) {
         int rgba[] = new int[3];
 
@@ -42,12 +34,6 @@ public class ColorConverterUtil implements Serializable {
         return buildRgba(rgba, alpha);
     }
 
-    /**
-     * buildRgba
-     * @param rgb
-     * @param alpha
-     * @return String
-     */
     public static String buildRgba(int[] rgb, float alpha) {
         StringBuilder sb = new StringBuilder();
         sb.append("rgba(");

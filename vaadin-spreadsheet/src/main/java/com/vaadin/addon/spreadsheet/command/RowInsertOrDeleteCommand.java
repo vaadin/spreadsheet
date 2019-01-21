@@ -28,16 +28,11 @@ import java.util.*;
  * Command to insert or delete a row
  */
 public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
-	private static final long serialVersionUID = 1L;
 
-	private final int row;
+    private final int row;
     private boolean wasDeleted = false;
     private RowData rowData;
 
-    /**
-     * @param spreadsheet
-     * @param headerRange
-     */
     public RowInsertOrDeleteCommand(Spreadsheet spreadsheet, CellRangeAddress headerRange) {
         super(spreadsheet);
         row = headerRange.getFirstRow();
@@ -63,9 +58,6 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
         return new CellRangeAddress(row, row, 0, spreadsheet.getLastColumn());
     }
 
-    /**
-     * insertNewRow void
-     */
     public void insertNewRow() {
         wasDeleted = false;
         int rows = spreadsheet.getRows();
@@ -76,9 +68,6 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
         spreadsheet.refreshAllCellValues();
     }
 
-    /**
-     * deleteRow void
-     */
     public void deleteRow() {
         wasDeleted = true;
         int rows = spreadsheet.getRows();

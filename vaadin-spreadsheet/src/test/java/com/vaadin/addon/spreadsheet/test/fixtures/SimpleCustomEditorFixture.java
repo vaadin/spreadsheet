@@ -11,9 +11,6 @@ import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
-/**
- * SimpleCustomEditorFixture
- */
 public class SimpleCustomEditorFixture implements SpreadsheetFixture {
 
     @Override
@@ -28,9 +25,6 @@ public class SimpleCustomEditorFixture implements SpreadsheetFixture {
         spreadsheet.refreshCells(cellsToRefresh);
     }
 
-    /**
-     * ComponentFactory
-     */
     @SuppressWarnings("serial")
     public static class ComponentFactory implements SpreadsheetComponentFactory {
 

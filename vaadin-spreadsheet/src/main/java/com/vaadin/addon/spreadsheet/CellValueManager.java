@@ -159,34 +159,18 @@ public class CellValueManager implements Serializable {
         topLeftCellsLoaded = false;
     }
 
-    /**
-     * getDataFormatter
-     * @return DataFormatter
-     */
     public DataFormatter getDataFormatter() {
         return formatter;
     }
 
-    /**
-     * setDataFormatter
-     * @param dataFormatter
-     */
     public void setDataFormatter(DataFormatter dataFormatter) {
         formatter = dataFormatter;
     }
 
-    /**
-     * getOriginalValueDecimalFormat
-     * @return DecimalFormat
-     */
     public DecimalFormat getOriginalValueDecimalFormat() {
         return originalValueDecimalFormat;
     }
 
-    /**
-     * updateLocale
-     * @param locale
-     */
     protected void updateLocale(Locale locale) {
         formatter = new CustomDataFormatter(locale);
         localeDecimalSymbols = DecimalFormatSymbols.getInstance(locale);
@@ -197,7 +181,6 @@ public class CellValueManager implements Serializable {
 
     /**
      * Get the common {@link FormulaEvaluator} instance from {@link Spreadsheet}
-     * @return FormulaEvaluator
      */
     protected FormulaEvaluator getFormulaEvaluator() {
         return spreadsheet.getFormulaEvaluator();
@@ -231,11 +214,6 @@ public class CellValueManager implements Serializable {
         return result;
     }
 
-    /**
-     * createCellDataForCell
-     * @param cell
-     * @return CellData
-     */
     protected CellData createCellDataForCell(Cell cell) {
         CellData cellData = new CellData();
         cellData.row = cell.getRowIndex() + 1;
@@ -404,11 +382,6 @@ public class CellValueManager implements Serializable {
                         .contains("General");
     }
 
-    /**
-     * getOriginalCellValue
-     * @param cell
-     * @return String
-     */
     public String getOriginalCellValue(Cell cell) {
         if (cell == null) {
             return "";

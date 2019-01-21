@@ -10,17 +10,10 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.CellValueFormatter;
 
-/**
- * CellValueShorteningTest
- */
 public class CellValueShorteningTest {
 
     private CellValueFormatter cellValueFormatter;
 
-    /**
-     * setUp
-     * @throws Exception void
-     */
     @Before
     public void setUp() throws Exception {
         cellValueFormatter = new CellValueFormatter();
@@ -28,9 +21,6 @@ public class CellValueShorteningTest {
                 .getInstance(Locale.US));
     }
 
-    /**
-     * cellValueShortening_differentInputValues_InputRoundedAccordingToColumnWidth void
-     */
     @Test
     public void cellValueShortening_differentInputValues_InputRoundedAccordingToColumnWidth() {
         assertCorrectRounding("10", "10", 2);

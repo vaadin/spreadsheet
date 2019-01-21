@@ -6,9 +6,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.SpreadsheetFilterTable;
 import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 
-/**
- * SpreadsheetTableFixture
- */
 public class SpreadsheetTableFixture implements SpreadsheetFixture {
 
     @Override

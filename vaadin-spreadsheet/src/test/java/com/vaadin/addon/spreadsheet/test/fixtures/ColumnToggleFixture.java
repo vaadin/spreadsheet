@@ -7,9 +7,6 @@ import org.apache.poi.ss.util.CellReference;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * ColumnToggleFixture
- */
 public class ColumnToggleFixture implements SpreadsheetFixture {
 
     @Override

@@ -21,23 +21,13 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * SheetOverlay
- */
 public class SheetOverlay extends SimplePanel {
 
-    /**
-     * SHEET_IMAGE_CLASSNAME
-     */
     public static final String SHEET_IMAGE_CLASSNAME = "sheet-image";
 
     private int col;
     private int row;
 
-    /**
-     * @param widget
-     * @param overlayInfo
-     */
     public SheetOverlay(Widget widget, OverlayInfo overlayInfo) {
         widget.setSize("100%", "100%");
 
@@ -49,10 +39,6 @@ public class SheetOverlay extends SimplePanel {
         this.updateSizeLocationPadding(overlayInfo);
     }
 
-    /**
-     * updateSizeLocationPadding
-     * @param imageInfo
-     */
     public void updateSizeLocationPadding(OverlayInfo imageInfo) {
         setLocation(imageInfo.col, imageInfo.row);
         setHeight(imageInfo.height);
@@ -60,11 +46,6 @@ public class SheetOverlay extends SimplePanel {
         setPadding(imageInfo.dx, imageInfo.dy);
     }
 
-    /**
-     * setLocation
-     * @param col
-     * @param row
-     */
     public void setLocation(int col, int row) {
         this.col = col;
         this.row = row;
@@ -74,44 +55,23 @@ public class SheetOverlay extends SimplePanel {
         addStyleName(location);
     }
 
-    /**
-     * setWidth
-     * @param px
-     */
     public void setWidth(float px) {
         getElement().getStyle().setWidth(px, Unit.PX);
     }
 
-    /**
-     * setHeight
-     * @param pt
-     */
     public void setHeight(float pt) {
         getElement().getStyle().setHeight(pt, Unit.PT);
     }
 
-    /**
-     * setPadding
-     * @param x
-     * @param y
-     */
     public void setPadding(float x, float y) {
         getElement().getStyle().setPaddingLeft(x, Unit.PX);
         getElement().getStyle().setPaddingTop(y, Unit.PT);
     }
 
-    /**
-     * getRow
-     * @return int
-     */
     public int getRow() {
         return row;
     }
 
-    /**
-     * getCol
-     * @return int
-     */
     public int getCol() {
         return col;
     }

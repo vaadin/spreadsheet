@@ -19,23 +19,10 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.google.gwt.user.client.ui.Widget;
 
-/**
- * SpreadsheetCustomEditorFactory
- */
 public interface SpreadsheetCustomEditorFactory {
 
-    /**
-     * hasCustomEditor
-     * @param selectedCellKey
-     * @return boolean
-     */
     boolean hasCustomEditor(String selectedCellKey);
 
-    /**
-     * getCustomEditor
-     * @param selectedCellKey
-     * @return Widget
-     */
     Widget getCustomEditor(String selectedCellKey);
 
 }

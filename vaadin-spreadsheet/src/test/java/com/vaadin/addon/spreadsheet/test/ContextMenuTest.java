@@ -18,9 +18,6 @@ import com.vaadin.addon.spreadsheet.test.testutil.ModifierController;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.annotations.BrowserConfiguration;
 
-/**
- * ContextMenuTest
- */
 public class ContextMenuTest extends AbstractSpreadsheetTestCase {
 
     private ContextMenuHelper contextMenu;
@@ -42,9 +39,6 @@ public class ContextMenuTest extends AbstractSpreadsheetTestCase {
         shift = new ModifierController(driver, Keys.SHIFT,
                 testBench(getDriver()), getDesiredCapabilities());
     }
-    /**
-     * testSingleCell void
-     */
     @Test
     public void testSingleCell() {
         headerPage.loadTestFixture(TestFixtures.Action);
@@ -57,9 +51,6 @@ public class ContextMenuTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("42", b2.getValue());
     }
 
-    /**
-     * testMultipleCells void
-     */
     @Test
     @Ignore("Fails with Firefox")
     public void testMultipleCells() {
@@ -90,10 +81,6 @@ public class ContextMenuTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("42", sheetController.getCellContent("D4"));
     }
 
-    /**
-     * testHeaders
-     * @throws InterruptedException void
-     */
     @Test
     @Ignore("Fails with Firefox")
     public void testHeaders() throws InterruptedException {

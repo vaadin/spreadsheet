@@ -11,14 +11,8 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * MergeTests
- */
 public class MergeTests extends AbstractSpreadsheetTestCase {
 
-    /**
-     * testSelectionBug void
-     */
     @Test
     public void testSelectionBug() {
         headerPage.createNewSpreadsheet();
@@ -35,9 +29,6 @@ public class MergeTests extends AbstractSpreadsheetTestCase {
         assertEquals("SELECTED",spreadsheetElement.getCellAt("D2").getValue());
     }
 
-    /**
-     * testBasic void
-     */
     @Test
     public void testBasic() {
         skipBrowser("insertAndRet() does not work correctly in IE", Browser.IE9, Browser.IE10, Browser.IE11);
@@ -63,9 +54,6 @@ public class MergeTests extends AbstractSpreadsheetTestCase {
         assertEquals("3",spreadsheetElement.getCellAt("B2").getValue());
     }
 
-    /**
-     * testContents void
-     */
     @Test
     public void testContents() {
         headerPage.createNewSpreadsheet();
@@ -82,7 +70,6 @@ public class MergeTests extends AbstractSpreadsheetTestCase {
 
     /**
      * Ticket #17601
-     * @throws IOException 
      */
     @Test
     public void testColumnAlignments() throws IOException {

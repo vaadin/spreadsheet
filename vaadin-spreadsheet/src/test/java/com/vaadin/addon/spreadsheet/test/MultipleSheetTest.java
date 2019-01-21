@@ -11,9 +11,6 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * MultipleSheetTest
- */
 public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
 
     public void setUp() throws Exception {
@@ -21,9 +18,6 @@ public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
         headerPage.createNewSpreadsheet();
     }
 
-    /**
-     * testMultipleSheet
-     */
     @Test
     public void testMultipleSheet() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -52,9 +46,6 @@ public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
                 .getValue());
     }
 
-    /**
-     * testRenameSheet
-     */
     @Test
     public void testRenameSheet() {
         skipBrowser("Cannot find the 'new sheet name' element on PhantomJS", Browser.PHANTOMJS);
@@ -86,9 +77,6 @@ public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
                 .xpath("//*[@class='sheet-tabsheet-container']//*[text()='new_sheet_REnamed']")));
     }
 
-    /**
-     * testMultipleSheetByAPI
-     */
     @Test
     public void testMultipleSheetByAPI() {
         headerPage.loadTestFixture(TestFixtures.CreateSheet);
@@ -97,18 +85,12 @@ public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
         spreadsheet.findElement(By.xpath("//*[text()='newSheet2']"));
     }
 
-    /**
-     * multiplySheets_removeSheetBySpreadsheetAPI_sheetIsRemoved
-     */
     @Test(expected=NoSuchElementException.class)
     public void multiplySheets_removeSheetBySpreadsheetAPI_sheetIsRemoved() {
         headerPage.loadTestFixture(TestFixtures.CreateSheet);
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.findElement(By.xpath("//*[text()='dontSee']"));
     }
-    /**
-     * multiplySheets_removeSheetByPOI_sheetIsRemoved
-     */
     @Test(expected=NoSuchElementException.class)
     public void multiplySheets_removeSheetByPOI_sheetIsRemoved() {
         headerPage.loadTestFixture(TestFixtures.CreateSheet);

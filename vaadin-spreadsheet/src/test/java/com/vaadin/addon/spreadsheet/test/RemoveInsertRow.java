@@ -11,15 +11,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-/**
- * RemoveInsertRow
- */
 public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
 
-    /**
-     * removeRow_theFirstCellHasInvalidFormula_formulaIndicatorIsRemoved
-     */
     @Test
     public void removeRow_theFirstCellHasInvalidFormula_formulaIndicatorIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -37,9 +31,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theSecondRowCellHasInvalidFormula_formulaIndicatorIsRemoved
-     */
     @Test
     public void removeRow_theSecondRowCellHasInvalidFormula_formulaIndicatorIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -57,9 +48,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * insertRow_theFirstCellHasInvalidFormula_theInvalidFormulaIsMovedToNextRow
-     */
     @Test
     public void insertRow_theFirstCellHasInvalidFormula_theInvalidFormulaIsMovedToNextRow() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -77,9 +65,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theSecondRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp
-     */
     @Test
     public void removeRow_theSecondRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -97,9 +82,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theSecondAndThirdRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp
-     */
     @Test
     public void removeRow_theSecondAndThirdRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -119,9 +101,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * insertRow_theFirstAndSecondRowHasInvalidFormulaCellAndTheRowIsAddedBetween_theFirstAndThirdRowHasErrorIndicator
-     */
     @Test
     public void insertRow_theFirstAndSecondRowHasInvalidFormulaCellAndTheRowIsAddedBetween_theFirstAndThirdRowHasErrorIndicator() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -142,9 +121,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theFirstRowHasInvalidFormulaCellAndTheSecondRowIsRemoved_theFirstRowHasErrorIndicator
-     */
     @Test
     public void removeRow_theFirstRowHasInvalidFormulaCellAndTheSecondRowIsRemoved_theFirstRowHasErrorIndicator() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -162,9 +138,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theFirstCellHasMergedCell_thereIsNoMergedCells
-     */
     @Test
     public void removeRow_theFirstCellHasMergedCell_thereIsNoMergedCells() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -185,9 +158,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * insertRow_theFirstCellHasMergedCell_theMergedCellIsMovedToNextRow
-     */
     @Test
     public void insertRow_theFirstCellHasMergedCell_theMergedCellIsMovedToNextRow() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -208,9 +178,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theFirstCellHasPopupButton_thereIsNoPopupButtons
-     */
     @Test
     public void removeRow_theFirstCellHasPopupButton_thereIsNoPopupButtons() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -230,9 +197,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theSecondRowCellHasPopupButton_thereIsNoPopupButtons
-     */
     @Test
     public void removeRow_theSecondRowCellHasPopupButton_thereIsNoPopupButtons() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -252,9 +216,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * removeRow_theSecondRowCellHasPopupButton_popupButtonIsMovedUp
-     */
     @Test
     public void removeRow_theSecondRowCellHasPopupButton_popupButtonIsMovedUp() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -274,9 +235,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * insertRow_theFirstCellHasPopupButton_thePopupButtonIsMovedToNextRow
-     */
     @Test
     public void insertRow_theFirstCellHasPopupButton_thePopupButtonIsMovedToNextRow() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -297,9 +255,6 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * insertRow_theFirstAndSecondRowHasPopupbuttonsNewRowIsAddedToFirstRow_theSecondAndThirdRowHasPopupButton
-     */
     @Ignore("This is a known issue which should be fixed. The problem is most likely on client side.")
     @Test
     public void insertRow_theFirstAndSecondRowHasPopupbuttonsNewRowIsAddedToFirstRow_theSecondAndThirdRowHasPopupButton() {

@@ -12,9 +12,6 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * ResizeTest
- */
 public class ResizeTest extends AbstractSpreadsheetTestCase {
 
     @Before
@@ -22,9 +19,6 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
         super.setUp();
         headerPage.createNewSpreadsheet();
     }
-    /**
-     * testColumnResize
-     */
     @Test
     public void testColumnResize() {
 
@@ -43,9 +37,6 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
         assertInRange(2.5 * originalWidth, newWidth, 3.5 * originalWidth);
     }
 
-    /**
-     * testRowResize
-     */
     @Test
     public void testRowResize() {
         sheetController.selectCell("A2");
@@ -64,9 +55,6 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
         assertInRange(2.3 * originalHeight, newHeight, 3.5 * originalHeight);
     }
 
-    /**
-     * testColumnAutoResize
-     */
     @Test
     public void testColumnAutoResize() {
         sheetController.putCellContent("B2", "text");

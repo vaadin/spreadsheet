@@ -34,9 +34,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class MergeCellsAction extends SpreadsheetAction {
 
-    /**
-     * constructor
-     */
     public MergeCellsAction() {
         super("Merge cells");
     }

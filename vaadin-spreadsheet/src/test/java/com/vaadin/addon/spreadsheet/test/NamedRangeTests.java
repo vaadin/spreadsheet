@@ -13,9 +13,6 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-/**
- * NamedRangeTests
- */
 public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
@@ -45,7 +42,6 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
      * I put all testing in one method because it runs much faster instead 
      * of running a new browser windows for each minor test.
      * --Michael
-     * @throws Exception 
      */
     @Test
     public void testNamedRanges() throws Exception {

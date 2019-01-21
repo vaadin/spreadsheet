@@ -66,39 +66,10 @@ public class SpreadsheetStyleFactory implements Serializable {
      * @author Vaadin Ltd.
      */
     public enum BorderStyle {
-        /**
-         * SOLID_THIN
-         */
-        SOLID_THIN("solid", 1, 1), 
-        /**
-         * DOTTED_THIN
-         */
-        DOTTED_THIN("dotted", 1, 1), 
-        /**
-         * DASHED_THIN
-         */
-        DASHED_THIN("dashed", 1, 1), 
-        /**
-         * SOLID_MEDIUM
-         */
-        SOLID_MEDIUM("solid", 2, 2), 
-        /**
-         * DASHED_MEDIUM
-         */
-        DASHED_MEDIUM("dashed", 2, 2), 
-        /**
-         * SOLID_THICK
-         */
-        SOLID_THICK("solid", 3, 4), 
-        /**
-         * DOUBLE
-         */
-        DOUBLE("double", 3, 4), 
-        /**
-         * NONE
-         */
-        NONE("none", 0, 0)
-        ;
+        SOLID_THIN("solid", 1, 1), DOTTED_THIN("dotted", 1, 1), DASHED_THIN(
+                "dashed", 1, 1), SOLID_MEDIUM("solid", 2, 2), DASHED_MEDIUM(
+                "dashed", 2, 2), SOLID_THICK("solid", 3, 4), DOUBLE("double",
+                3, 4), NONE("none", 0, 0);
 
         private final int size;
         private final String borderStyle;
@@ -240,9 +211,6 @@ public class SpreadsheetStyleFactory implements Serializable {
         reloadActiveSheetColumnRowStyles();
     }
 
-    /**
-     * reloadActiveSheetColumnRowStyles
-     */
     public void reloadActiveSheetColumnRowStyles() {
         final Workbook workbook = spreadsheet.getWorkbook();
 

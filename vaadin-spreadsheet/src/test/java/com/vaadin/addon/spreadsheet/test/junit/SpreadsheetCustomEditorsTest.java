@@ -15,14 +15,8 @@ import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 
-/**
- * SpreadsheetCustomEditorsTest
- */
 public class SpreadsheetCustomEditorsTest {
 
-    /**
-     * PublicSpreadsheet
-     */
     private static class PublicSpreadsheet extends Spreadsheet {
         public PublicSpreadsheet(int i, int j) {
             super(i, j);
@@ -35,10 +29,6 @@ public class SpreadsheetCustomEditorsTest {
         }
     }
 
-    /**
-     * cellAfterMergedRegion
-     * @throws Exception
-     */
     @Test
     public void cellAfterMergedRegion() throws Exception {
         // Test sheet setup:

@@ -11,9 +11,6 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-/**
- * PopupButtonTest
- */
 public class PopupButtonTest extends AbstractSpreadsheetTestCase {
 
     @Override
@@ -22,9 +19,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         headerPage.createNewSpreadsheet();
     }
 
-    /**
-     * popupButton_addAndShowListSelectPopup_PopupShownCorrectly
-     */
     @Test
     public void popupButton_addAndShowListSelectPopup_PopupShownCorrectly() {
         headerPage.loadTestFixture(TestFixtures.PopupButton);
@@ -43,10 +37,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         assertTrue(spreadsheetElement.isPopupButtonPopupVisible());
     }
 
-    /**
-     * popupButton_addAndShowTabsheetPopup_PopupShownCorrectly
-     * @throws IOException
-     */
     @Test
     public void popupButton_addAndShowTabsheetPopup_PopupShownCorrectly()
             throws IOException {
@@ -71,10 +61,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         compareScreen("popupbutton_tabsheet");
     }
 
-    /**
-     * popupButton_addAndShowTablePopup_PopupShownCorrectly
-     * @throws IOException
-     */
     @Test
     public void popupButton_addAndShowTablePopup_PopupShownCorrectly()
             throws IOException {
@@ -99,9 +85,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         compareScreen("popupbutton_table");
     }
 
-    /**
-     * popupButton_showPopupAndScroll_popupRemoved
-     */
     @Test
     public void popupButton_showPopupAndScroll_popupRemoved() {
         headerPage.loadTestFixture(TestFixtures.PopupButton);
@@ -127,9 +110,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * popupButton_cellHasAPopupButtonAndFreezePaneIsAdded_theCellStillHasAPopupButton
-     */
     @Test
     public void popupButton_cellHasAPopupButtonAndFreezePaneIsAdded_theCellStillHasAPopupButton() {
         headerPage.loadTestFixture(TestFixtures.PopupButton);
@@ -149,9 +129,6 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         assertTrue(spreadsheetElement.getCellAt("D1").hasPopupButton());
     }
 
-    /**
-     * popupButtonCellWidthWideText_changeValues_cellContainsPopupButton
-     */
     @Test
     public void popupButtonCellWidthWideText_changeValues_cellContainsPopupButton() {
         headerPage.loadTestFixture(TestFixtures.PopupButton);

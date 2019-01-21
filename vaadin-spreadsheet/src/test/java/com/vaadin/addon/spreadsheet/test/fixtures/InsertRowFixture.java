@@ -2,9 +2,6 @@ package com.vaadin.addon.spreadsheet.test.fixtures;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * InsertRowFixture
- */
 public class InsertRowFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {

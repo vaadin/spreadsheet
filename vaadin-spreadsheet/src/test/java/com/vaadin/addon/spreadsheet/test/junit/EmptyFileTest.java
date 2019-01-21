@@ -11,15 +11,8 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 
-/**
- * EmptyFileTest
- */
 public class EmptyFileTest {
 
-    /**
-     * loadFile_emptySheet_firstRowRendered
-     * @throws Exception
-     */
     @Test
     public void loadFile_emptySheet_firstRowRendered() throws Exception {
         File f = getTestSheetFile("empty.xlsx");

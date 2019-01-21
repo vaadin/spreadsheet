@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.xssf.model.ThemesTable;
 import org.apache.poi.xssf.usermodel.XSSFBorderFormatting;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -32,11 +33,13 @@ import org.apache.poi.xssf.usermodel.XSSFConditionalFormattingRule;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTBorder;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTCfRule;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColor;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDxf;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTFont;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 
 /**
  * Color converter implementation for the current Excel file type (.xlsx or XSSF
@@ -55,9 +58,6 @@ public class XSSFColorConverter implements ColorConverter {
     private String defaultColor;
     private XSSFWorkbook workbook;
 
-    /**
-     * @param workbook
-     */
     public XSSFColorConverter(XSSFWorkbook workbook) {
         this.workbook = workbook;
         workbook.getTheme();
@@ -334,6 +334,27 @@ public class XSSFColorConverter implements ColorConverter {
             return rgb == null ? null : ColorConverterUtil.toRGBA(rgb);
         }
 
+    }
+
+    private XSSFColor getFillColor(XSSFCellStyle cs) {
+        final CTXf _cellXf = cs.getCoreXf();
+        int fillIndex = (int) _cellXf.getFillId();
+        XSSFCellFill fg = workbook.getStylesSource().getFillAt(fillIndex);
+
+        ThemesTable _theme = workbook.getTheme();
+        XSSFColor fillForegroundColor = fg.getFillForegroundColor();
+        if (fillForegroundColor != null && _theme != null) {
+            _theme.inheritFromThemeAsRequired(fillForegroundColor);
+        }
+        XSSFColor fillBackgroundColor = fg.getFillBackgroundColor();
+        if (fillForegroundColor == null) {
+            if (fillBackgroundColor != null && _theme != null) {
+                _theme.inheritFromThemeAsRequired(fillBackgroundColor);
+            }
+            return fillBackgroundColor;
+        } else {
+            return fillForegroundColor;
+        }
     }
 
     private XSSFColor getBorderColor(XSSFCellStyle cs, BorderSide borderSide) {

@@ -23,54 +23,23 @@ import java.io.Serializable;
  * Shared state for the grouping feature
  */
 public class GroupingData implements Serializable {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-     * startIndex
-     */
     public int startIndex;
-    /**
-     * endIndex
-     */
     public int endIndex;
-    /**
-     * level
-     */
     public int level;
     /**
      * index unique for this group, for collapse/expand
      */
     public int uniqueIndex;
-    /**
-     * collapsed
-     */
     public boolean collapsed;
 
-    /**
-     * constructor
-     */
     public GroupingData() {
     }
 
-    /**
-     * @param start
-     * @param end
-     * @param level
-     * @param unique
-     * @param coll
-     */
     public GroupingData(long start, long end, short level, long unique,
             boolean coll) {
         this((int) start, (int) end, (int) level, (int) unique, coll);
     }
 
-    /**
-     * @param start
-     * @param end
-     * @param level
-     * @param unique
-     * @param coll
-     */
     public GroupingData(int start, int end, int level, int unique, boolean coll) {
         startIndex = start;
         endIndex = end;

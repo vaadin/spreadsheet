@@ -7,24 +7,15 @@ import org.openqa.selenium.WebDriver;
 
 import com.vaadin.testbench.TestBenchTestCase;
 
-/**
- * PopupHelper
- */
 public class PopupHelper extends SeleniumHelper {
 
 	private String mainWindowHandle;
 	
-	/**
-	 * @param driver
-	 */
 	public PopupHelper(WebDriver driver) {
 		super(driver);
 		mainWindowHandle = driver.getWindowHandle();
 	}
 
-	/**
-	 * switchToPopup
-	 */
 	public void switchToPopup () {
 		Set<String> handleSet = driver.getWindowHandles();
 		
@@ -39,9 +30,6 @@ public class PopupHelper extends SeleniumHelper {
 		}
 	}
 	
-	/**
-	 * backToMainWindow
-	 */
 	public void backToMainWindow () {
 		driver.switchTo().window(mainWindowHandle);
 		TestBenchTestCase.testBench(driver).waitForVaadin();

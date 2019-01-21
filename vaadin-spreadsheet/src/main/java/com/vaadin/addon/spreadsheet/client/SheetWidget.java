@@ -77,9 +77,6 @@ import com.vaadin.client.ui.VLabel;
 import com.vaadin.client.ui.VLazyExecutor;
 import com.vaadin.client.ui.VOverlay;
 
-/**
- * SheetWidget
- */
 public class SheetWidget extends Panel {
 
     private static final String SELECTED_COLUMN_HEADER_CLASSNAME = "selected-column-header";
@@ -540,10 +537,6 @@ public class SheetWidget extends Panel {
 
     private boolean isMac;
 
-    /**
-     * @param view
-     * @param touchMode
-     */
     public SheetWidget(SheetHandler view, boolean touchMode) {
         String ua = BrowserInfo.getBrowserString().toLowerCase();
         isMac = ua.contains("macintosh") || ua.contains("mac osx")
@@ -599,10 +592,6 @@ public class SheetWidget extends Panel {
                 });
     }
 
-    /**
-     * getCopyPasteHandler
-     * @return CopyPasteHandler
-     */
     protected CopyPasteHandler getCopyPasteHandler() {
         return new CopyPasteHandlerImpl(this);
     }
@@ -617,18 +606,10 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * getSheetHandler
-     * @return SheetHandler
-     */
     public SheetHandler getSheetHandler() {
         return actionHandler;
     }
 
-    /**
-     * getSheetJsniUtil
-     * @return SheetJsniUtil
-     */
     protected SheetJsniUtil getSheetJsniUtil() {
         return jsniUtil;
     }
@@ -641,9 +622,6 @@ public class SheetWidget extends Panel {
         copyPasteBox.onDestroy();
     }
 
-    /**
-     * requestCells
-     */
     protected void requestCells() {
         actionHandler.onScrollViewChanged(firstRowIndex, lastRowIndex,
                 firstColumnIndex, lastColumnIndex);
@@ -652,8 +630,6 @@ public class SheetWidget extends Panel {
     /**
      * Set the model that stores the contents of the spreadsheet. Setting model
      * redraws the sheet.
-     * @param scrollLeft 
-     * @param scrollTop 
      */
     public void resetFromModel(final int scrollLeft, final int scrollTop) {
         loaded = false;
@@ -692,10 +668,6 @@ public class SheetWidget extends Panel {
         });
     }
 
-    /**
-     * relayoutSheet
-     * @param triggerRequest
-     */
     public void relayoutSheet(boolean triggerRequest) {
         updateSheetStyles();
         int scrollTop = sheet.getScrollTop();
@@ -841,9 +813,6 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * onWidgetResize
-     */
     public void onWidgetResize() {
         if (loaded) {
             int newScrollViewHeight = sheet.getOffsetHeight();
@@ -1038,10 +1007,6 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * onSheetScroll
-     * @param event
-     */
     protected void onSheetScroll(Event event) {
         scrollHandler.trigger();
         moveHeadersToMatchScroll();
@@ -1061,10 +1026,6 @@ public class SheetWidget extends Panel {
         onMouseOverOrOutHandler.trigger();
     }
 
-    /**
-     * onSheetMouseMove
-     * @param event
-     */
     protected void onSheetMouseMove(Event event) {
         if (!cellCommentEditMode && cellCommentCellColumn != -1
                 && cellCommentCellRow != -1) {
@@ -1074,11 +1035,6 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * isEventInCustomEditorCell
-     * @param event
-     * @return boolean
-     */
     protected boolean isEventInCustomEditorCell(Event event) {
         if (customEditorWidget != null) {
             final Element target = event.getEventTarget().cast();
@@ -1091,13 +1047,6 @@ public class SheetWidget extends Panel {
         return false;
     }
 
-    /**
-     * getRealEventTargetCell
-     * @param clientX
-     * @param clientY
-     * @param cell
-     * @return Cell
-     */
     protected Cell getRealEventTargetCell(final int clientX, final int clientY,
             final Cell cell) {
         Cell mergedCell = getMergedCell(toKey(cell.getCol(), cell.getRow()));
@@ -1288,10 +1237,6 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * onMouseMoveWhenSelectingCells
-     * @param event
-     */
     protected void onMouseMoveWhenSelectingCells(Event event) {
         final Element target;
 
@@ -1447,10 +1392,6 @@ public class SheetWidget extends Panel {
         }
     }
 
-    /**
-     * stoppedSelectingCellsWithDrag
-     * @param event
-     */
     protected void stoppedSelectingCellsWithDrag(Event event) {
         stopScrollTimer();
         Event.releaseCapture(sheet);

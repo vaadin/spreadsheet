@@ -11,20 +11,11 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * StyleTest
- */
 public class StyleTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * collector
-     */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
 
-    /**
-     * testCssStyleFromFixture
-     */
     @Test
     @Ignore("Fails in all browsers, Are POI CellStyles even supported?")
     public void testCssStyleFromFixture() {
@@ -35,9 +26,6 @@ public class StyleTest extends AbstractSpreadsheetTestCase {
         testBench(driver).waitForVaadin();
     }
 
-    /**
-     * testCssFromUpload
-     */
     @Test
     public void testCssFromUpload() {
         skipBrowser("Fails in Phantom", Browser.PHANTOMJS);
@@ -47,10 +35,6 @@ public class StyleTest extends AbstractSpreadsheetTestCase {
         testBench(driver).waitForVaadin();
     }
 
-    /**
-     * assertCorrectCss
-     * @param c
-     */
     private void assertCorrectCss(SheetController c) {
         collector.checkThat(c.getCellStyle("A2", "text-align"),
                 equalTo("center"));

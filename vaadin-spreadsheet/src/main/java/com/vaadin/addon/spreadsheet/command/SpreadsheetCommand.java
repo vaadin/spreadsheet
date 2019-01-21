@@ -28,15 +28,8 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
  * @since 1.0
  */
 public abstract class SpreadsheetCommand implements Command {
-	private static final long serialVersionUID = 1L;
-	
-	/**
-     * activeSheetIndex
-     */
+
     protected int activeSheetIndex;
-    /**
-     * spreadsheet
-     */
     protected final Spreadsheet spreadsheet;
 
     /**

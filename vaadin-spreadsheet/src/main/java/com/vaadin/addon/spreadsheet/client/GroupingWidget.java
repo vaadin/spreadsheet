@@ -32,40 +32,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
  */
 public abstract class GroupingWidget extends FlowPanel {
 
-    /**
-     * SINGLE_ITEM_SIZE_HEIGHT
-     */
     protected static final int SINGLE_ITEM_SIZE_HEIGHT = 18;
-    /**
-     * SINGLE_ITEM_SIZE_WIDTH
-     */
     protected static final int SINGLE_ITEM_SIZE_WIDTH = 15;
-    /**
-     * EXPAND_CHAR
-     */
     public static final String EXPAND_CHAR = "+";
-    /**
-     * CONTRACT_SIGN
-     */
     public static final String CONTRACT_SIGN = "&#x2212;";
 
-    /**
-     * GroupingHandler
-     */
     public interface GroupingHandler {
-        /**
-         * setGroupingCollapsed
-         * @param cols
-         * @param colIndex
-         * @param collapsed
-         */
         void setGroupingCollapsed(boolean cols, int colIndex, boolean collapsed);
 
-        /**
-         * levelHeaderClicked
-         * @param cols
-         * @param level
-         */
         void levelHeaderClicked(boolean cols, int level);
     }
 
@@ -76,34 +50,13 @@ public abstract class GroupingWidget extends FlowPanel {
 
     private int index;
 
-    /**
-     * handler
-     */
     protected GroupingHandler handler;
 
-    /**
-     * top
-     */
     protected int top = -1;
-    /**
-     * left
-     */
     protected int left = -1;
-    /**
-     * marginLeft
-     */
     protected double marginLeft = -1;
-    /**
-     * marginTop
-     */
     protected double marginTop = -1;
-    /**
-     * width
-     */
     protected double width = -1;
-    /**
-     * height
-     */
     protected double height = -1;
 
     /**
@@ -128,10 +81,6 @@ public abstract class GroupingWidget extends FlowPanel {
         Event.sinkEvents(getElement(), Event.ONCLICK | Event.ONCONTEXTMENU);
     }
 
-    /**
-     * setWidthPX
-     * @param w
-     */
     public void setWidthPX(double w) {
         if (isCollapsed()) {
             setSize(0);
@@ -143,22 +92,10 @@ public abstract class GroupingWidget extends FlowPanel {
         }
     }
 
-    /**
-     * setSize
-     * @param size
-     */
     protected abstract void setSize(double size);
 
-    /**
-     * setMargin
-     * @param size
-     */
     protected abstract void setMargin(double size);
 
-    /**
-     * setCollapsed
-     * @param collapsed
-     */
     public void setCollapsed(boolean collapsed) {
 
         if (this.collapsed == collapsed) {
@@ -177,10 +114,6 @@ public abstract class GroupingWidget extends FlowPanel {
         this.collapsed = collapsed;
     }
 
-    /**
-     * isCollapsed
-     * @return boolean
-     */
     public boolean isCollapsed() {
         return collapsed;
     }
@@ -197,10 +130,6 @@ public abstract class GroupingWidget extends FlowPanel {
         }
     }
 
-    /**
-     * isCols
-     * @return boolean
-     */
     protected abstract boolean isCols();
 
     /**
@@ -217,11 +146,6 @@ public abstract class GroupingWidget extends FlowPanel {
     /**
      * @return The total height of a panel with the given amount of groups
      */
-    /**
-     * getTotalHeight
-     * @param maxGrouping
-     * @return int
-     */
     public static int getTotalHeight(int maxGrouping) {
         return 3 + maxGrouping * SINGLE_ITEM_SIZE_HEIGHT;
     }
@@ -229,43 +153,22 @@ public abstract class GroupingWidget extends FlowPanel {
     /**
      * @return The total width of a panel with the given amount of groups
      */
-    /**
-     * getTotalWidth
-     * @param maxGrouping
-     * @return int
-     */
     public static int getTotalWidth(int maxGrouping) {
         return 1 + maxGrouping * SINGLE_ITEM_SIZE_WIDTH;
     }
 
-    /**
-     * setIndex
-     * @param i
-     */
     public void setIndex(int i) {
         index = i;
     }
 
-    /**
-     * getIndex
-     * @return int
-     */
     public int getIndex() {
         return index;
     }
 
-    /**
-     * isInversed
-     * @return boolean
-     */
     public boolean isInversed() {
         return inversed;
     }
 
-    /**
-     * setInversed
-     * @param inversed
-     */
     public void setInversed(boolean inversed) {
         this.inversed = inversed;
         if (inversed) {
@@ -275,16 +178,8 @@ public abstract class GroupingWidget extends FlowPanel {
         }
     }
 
-    /**
-     * cloneWidget
-     * @return GroupingWidget
-     */
     protected abstract GroupingWidget cloneWidget();
 
-    /**
-     * copy fields
-     * @param newWidget
-     */
     protected void copyfields(GroupingWidget newWidget) {
         newWidget.collapsed = collapsed;
         newWidget.index = index;

@@ -6,9 +6,6 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-/**
- * ConditionalFormattingOnCellDeletionTest
- */
 public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheetTestCase {
 
     private static final String FALSE_CONDITION_COLOR = "rgba(255, 255, 255, 1)";
@@ -16,9 +13,6 @@ public class ConditionalFormattingOnCellDeletionTest extends AbstractSpreadsheet
 
     private SpreadsheetPage spreadsheetPage;
 
-    /**
-     * conditionalFormatting_deleteCellUsedInFormula_formattingAppliedWithoutException
-     */
     @Test
     public void conditionalFormatting_deleteCellUsedInFormula_formattingAppliedWithoutException() {
         spreadsheetPage = headerPage.loadFile(

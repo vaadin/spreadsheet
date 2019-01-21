@@ -16,9 +16,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 
-/**
- * DeletionHandlerFixture
- */
 public class DeletionHandlerFixture implements SpreadsheetFixture {
 
     @Override
@@ -121,9 +118,6 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
     }
 }
 
-/**
- * MultiplexerCellDeletionHandler
- */
 class MultiplexerCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
 
     private Map<String, Spreadsheet.CellDeletionHandler> handlerFactories = new HashMap<String, Spreadsheet.CellDeletionHandler>();

@@ -47,15 +47,9 @@ import com.vaadin.client.Util;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.communication.RpcProxy;
 
-/**
- * SpreadsheetWidget
- */
 public class SpreadsheetWidget extends Composite implements SheetHandler,
         FormulaBarHandler, SheetTabSheetHandler, Focusable {
 
-    /**
-     * SheetContextMenuHandler
-     */
     public interface SheetContextMenuHandler {
         /**
          * Right click (event) on top of the cell at the indexes.
@@ -123,13 +117,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     private int activeSheetIndex;
 
     private Map<Integer, String> cellStyleToCSSStyle;
-    /**
-     * rowIndexToStyleIndex
-     */
     public Map<Integer, Integer> rowIndexToStyleIndex;
-    /**
-     * columnIndexToStyleIndex
-     */
     public Map<Integer, Integer> columnIndexToStyleIndex;
     private Set<Integer> lockedColumnIndexes;
     private Set<Integer> lockedRowIndexes;
@@ -203,9 +191,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
      */
     private int tempSelectionStartRow;
 
-    /**
-     * constructor
-     */
     public SpreadsheetWidget() {
 
         setTouchMode(TouchEvent.isSupported());
@@ -309,17 +294,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return sheetTabSheet.getInfoLabelValue();
     }
 
-    /**
-     * getSheetWidget
-     * @return SheetWidget
-     */
     public SheetWidget getSheetWidget() {
         return sheetWidget;
     }
 
-    /**
-     * load 
-     */
     public void load() {
         if (loaded) {
             clearSpreadsheet(false);
@@ -329,12 +307,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         loadSheet(activeSheetIndex - 1);
     }
 
-    /**
-     * sheetUpdated
-     * @param sheetNames
-     * @param sheetIndex
-     * @param clearScrollPosition
-     */
     public void sheetUpdated(String[] sheetNames, int sheetIndex,
             boolean clearScrollPosition) {
         if (!loaded) { // component first load
@@ -355,19 +327,12 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         activeSheetIndex = sheetIndex;
     }
 
-    /**
-     * widgetSizeChanged
-     */
     public void widgetSizeChanged() {
         sheetWidget.onWidgetResize();
         sheetTabSheet.onWidgetResize();
     }
 
     /** Clear all current sheet related data */
-    /**
-     * clearSpreadsheet
-     * @param removed
-     */
     public void clearSpreadsheet(boolean removed) {
         selectionHandler.clearBeforeMergeCells();
 
@@ -410,9 +375,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * relayoutSheet
-     */
     public void relayoutSheet() {
         if (cancelNextSheetRelayout) {
             cancelNextSheetRelayout = false;
@@ -421,18 +383,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setSpreadsheetHandler
-     * @param spreadsheetHandler
-     */
     public void setSpreadsheetHandler(SpreadsheetHandler spreadsheetHandler) {
         this.spreadsheetHandler = spreadsheetHandler;
     }
 
-    /**
-     * setSheetContextMenuHandler
-     * @param sheetContextMenuHandler
-     */
     public void setSheetContextMenuHandler(
             SheetContextMenuHandler sheetContextMenuHandler) {
         this.sheetContextMenuHandler = sheetContextMenuHandler;
@@ -443,36 +397,18 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return sheetContextMenuHandler != null;
     }
 
-    /**
-     * showCellCustomComponents
-     * @param customWidgetMap
-     */
     public void showCellCustomComponents(HashMap<String, Widget> customWidgetMap) {
         sheetWidget.showCustomWidgets(customWidgetMap);
     }
 
-    /**
-     * addPopupButton
-     * @param widget
-     */
     public void addPopupButton(PopupButtonWidget widget) {
         sheetWidget.addPopupButton(widget);
     }
 
-    /**
-     * removePopupButton
-     * @param popupButton
-     */
     public void removePopupButton(PopupButtonWidget popupButton) {
         sheetWidget.removePopupButton(popupButton);
     }
 
-    /**
-     * updateFormulaBar
-     * @param possibleName
-     * @param col
-     * @param row
-     */
     public void updateFormulaBar(String possibleName, int col, int row) {
         // do check in case the user has changed the selected cell before the
         // formula was sent
@@ -485,16 +421,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * invalidCellAddress
-     */
     public void invalidCellAddress() {
         formulaBarWidget.revertCellAddressValue();
     }
 
-    /**
-     * focusSheet
-     */
     public void focusSheet() {
         sheetWidget.focusSheet();
     }
@@ -537,18 +467,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * addVisibleCellComment
-     * @param key
-     */
     public void addVisibleCellComment(String key) {
         sheetWidget.setCellCommentVisible(true, key);
     }
 
-    /**
-     * removeVisibleCellComment
-     * @param key
-     */
     public void removeVisibleCellComment(String key) {
         sheetWidget.setCellCommentVisible(false, key);
     }
@@ -569,10 +491,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         sheetWidget.removeSheetOverlay(key);
     }
 
-    /**
-     * updateMergedRegions
-     * @param mergedRegions
-     */
     public void updateMergedRegions(final ArrayList<MergedRegion> mergedRegions) {
         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
@@ -790,21 +708,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * updateSelectedCellValues
-     * @param column
-     * @param row
-     */
     public void updateSelectedCellValues(int column, int row) {
         updateSelectedCellValues(column, row, null);
     }
 
-    /**
-     * updateSelectedCellValues
-     * @param column
-     * @param row
-     * @param name
-     */
     public void updateSelectedCellValues(int column, int row, String name) {
         if (!sheetWidget.isEditingCell()) {
             String formulaValue = sheetWidget.getCellFormulaValue(column, row);
@@ -1613,14 +1520,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         });
     }
 
-    /**
-     * createRangeSelectionString
-     * @param col1
-     * @param col2
-     * @param row1
-     * @param row2
-     * @return String
-     */
     protected String createRangeSelectionString(int col1, int col2, int row1,
             int row2) {
         final StringBuffer sb = new StringBuffer();
@@ -1639,122 +1538,62 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return c + r;
     }
 
-    /**
-     * setRowBufferSize
-     * @param rowBufferSize
-     */
     public void setRowBufferSize(int rowBufferSize) {
         this.rowBufferSize = rowBufferSize;
     }
 
-    /**
-     * setColumnBufferSize
-     * @param columnBufferSize
-     */
     public void setColumnBufferSize(int columnBufferSize) {
         this.columnBufferSize = columnBufferSize;
     }
 
-    /**
-     * setRows
-     * @param rows
-     */
     public void setRows(int rows) {
         this.rows = rows;
     }
 
-    /**
-     * setCols
-     * @param cols
-     */
     public void setCols(int cols) {
         this.cols = cols;
     }
 
-    /**
-     * setColGroupingData
-     * @param data
-     */
     public void setColGroupingData(List<GroupingData> data) {
         sheetWidget.setColGroupingData(data);
     }
 
-    /**
-     * setRowGroupingData
-     * @param data
-     */
     public void setRowGroupingData(List<GroupingData> data) {
         sheetWidget.setRowGroupingData(data);
     }
 
-    /**
-     * setRowH
-     * @param rowH
-     */
     public void setRowH(float[] rowH) {
         this.rowH = rowH;
     }
 
-    /**
-     * setColW
-     * @param colW
-     */
     public void setColW(int[] colW) {
         this.colW = colW;
     }
 
-    /**
-     * setDefRowH
-     * @param defRowH
-     */
     public void setDefRowH(float defRowH) {
         this.defRowH = defRowH;
     }
 
-    /**
-     * setDefColW
-     * @param defColW
-     */
     public void setDefColW(int defColW) {
         this.defColW = defColW;
     }
 
-    /**
-     * setVerticalScrollPositions
-     * @param verticalScrollPositions
-     */
     public void setVerticalScrollPositions(int[] verticalScrollPositions) {
         this.verticalScrollPositions = verticalScrollPositions;
     }
 
-    /**
-     * setHorizontalScrollPositions
-     * @param horizontalScrollPositions
-     */
     public void setHorizontalScrollPositions(int[] horizontalScrollPositions) {
         this.horizontalScrollPositions = horizontalScrollPositions;
     }
 
-    /**
-     * setVerticalSplitPosition
-     * @param verticalSplitPosition
-     */
     public void setVerticalSplitPosition(int verticalSplitPosition) {
         sheetWidget.setVerticalSplitPosition(verticalSplitPosition);
     }
 
-    /**
-     * setHorizontalSplitPosition
-     * @param horizontalSplitPosition
-     */
     public void setHorizontalSplitPosition(int horizontalSplitPosition) {
         sheetWidget.setHorizontalSplitPosition(horizontalSplitPosition);
     }
 
-    /**
-     * setCellStyleToCSSStyle
-     * @param cellStyleToCSSStyle
-     */
     public void setCellStyleToCSSStyle(
             HashMap<Integer, String> cellStyleToCSSStyle) {
         if (this.cellStyleToCSSStyle == null) {
@@ -1767,10 +1606,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setRowIndexToStyleIndex
-     * @param rowIndexToStyleIndex
-     */
     public void setRowIndexToStyleIndex(
             HashMap<Integer, Integer> rowIndexToStyleIndex) {
         if (this.rowIndexToStyleIndex == null) {
@@ -1783,10 +1618,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setColumnIndexToStyleIndex
-     * @param columnIndexToStyleIndex
-     */
     public void setColumnIndexToStyleIndex(
             HashMap<Integer, Integer> columnIndexToStyleIndex) {
         if (this.columnIndexToStyleIndex == null) {
@@ -1799,10 +1630,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setLockedColumnIndexes
-     * @param lockedColumnIndexes
-     */
     public void setLockedColumnIndexes(Set<Integer> lockedColumnIndexes) {
         if (this.lockedColumnIndexes == null) {
             this.lockedColumnIndexes = lockedColumnIndexes;
@@ -1814,10 +1641,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setLockedRowIndexes
-     * @param lockedRowIndexes
-     */
     public void setLockedRowIndexes(Set<Integer> lockedRowIndexes) {
         if (this.lockedRowIndexes == null) {
             this.lockedRowIndexes = lockedRowIndexes;
@@ -1829,10 +1652,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setShiftedCellBorderStyles
-     * @param shiftedCellBorderStyles
-     */
     public void setShiftedCellBorderStyles(
             ArrayList<String> shiftedCellBorderStyles) {
         sheetWidget.removeShiftedCellBorderStyles();
@@ -1841,18 +1660,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * setHyperlinksTooltips
-     * @param cellLinksMap
-     */
     public void setHyperlinksTooltips(HashMap<String, String> cellLinksMap) {
         sheetWidget.setCellLinks(cellLinksMap);
     }
 
-    /**
-     * setSheetProtected
-     * @param sheetProtected
-     */
     public void setSheetProtected(boolean sheetProtected) {
         if (this.sheetProtected != sheetProtected) {
             this.sheetProtected = sheetProtected;
@@ -1897,52 +1708,27 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return lockedRowIndexes.contains(row);
     }
 
-    /**
-     * setWorkbookProtected
-     * @param workbookProtected
-     */
     public void setWorkbookProtected(boolean workbookProtected) {
         sheetTabSheet.setReadOnly(workbookProtected);
     }
 
-    /**
-     * setHiddenColumnIndexes
-     * @param hiddenColumnIndexes
-     */
     public void setHiddenColumnIndexes(ArrayList<Integer> hiddenColumnIndexes) {
         this.hiddenColumnIndexes = new ArrayList<Integer>(hiddenColumnIndexes);
     }
 
-    /**
-     * setHiddenRowIndexes
-     * @param hiddenRowIndexes
-     */
     public void setHiddenRowIndexes(ArrayList<Integer> hiddenRowIndexes) {
         this.hiddenRowIndexes = new ArrayList<Integer>(hiddenRowIndexes);
     }
 
-    /**
-     * setCellComments
-     * @param cellComments
-     * @param cellCommentAuthors
-     */
     public void setCellComments(HashMap<String, String> cellComments,
             HashMap<String, String> cellCommentAuthors) {
         sheetWidget.setCellComments(cellComments, cellCommentAuthors);
     }
 
-    /**
-     * setInvalidFormulaCells
-     * @param invalidFormulaCells
-     */
     public void setInvalidFormulaCells(Set<String> invalidFormulaCells) {
         sheetWidget.setInvalidFormulaCells(invalidFormulaCells);
     }
 
-    /**
-     * setInvalidFormulaErrorMessage
-     * @param invalidFormulaMessage
-     */
     public void setInvalidFormulaErrorMessage(String invalidFormulaMessage) {
         sheetWidget.setInvalidFormulaMessage(invalidFormulaMessage);
     }
@@ -2065,59 +1851,32 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return (!sheetProtected || !lockFormatRows) && !touchMode;
     }
 
-    /**
-     * setDisplayGridlines
-     * @param displayGridlines
-     */
     public void setDisplayGridlines(boolean displayGridlines) {
         sheetWidget.setDisplayGridlines(displayGridlines);
     }
 
-    /**
-     * setDisplayRowColHeadings
-     * @param displayRowColHeadings
-     */
     public void setDisplayRowColHeadings(boolean displayRowColHeadings) {
         sheetWidget.setDisplayRowColHeadings(displayRowColHeadings);
     }
 
-    /**
-     * refreshOverlayPositions
-     */
     public void refreshOverlayPositions() {
         sheetWidget.refreshAlwaysVisibleCellCommentOverlays();
         sheetWidget.refreshCurrentCellCommentOverlay();
         sheetWidget.refreshPopupButtonOverlays();
     }
 
-    /**
-     * updateBottomRightCellValues
-     * @param cellData
-     */
     public void updateBottomRightCellValues(ArrayList<CellData> cellData) {
         sheetWidget.updateBottomRightCellValues(cellData);
     }
 
-    /**
-     * updateTopLeftCellValues
-     * @param cellData
-     */
     public void updateTopLeftCellValues(ArrayList<CellData> cellData) {
         sheetWidget.updateTopLeftCellValues(cellData);
     }
 
-    /**
-     * updateTopRightCellValues
-     * @param cellData
-     */
     public void updateTopRightCellValues(ArrayList<CellData> cellData) {
         sheetWidget.updateTopRightCellValues(cellData);
     }
 
-    /**
-     * updateBottomLeftCellValues
-     * @param cellData
-     */
     public void updateBottomLeftCellValues(ArrayList<CellData> cellData) {
         sheetWidget.updateBottomLeftCellValues(cellData);
     }
@@ -2153,10 +1912,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return conditionalFormattingStyles;
     }
 
-    /**
-     * setConditionalFormattingStyles
-     * @param map
-     */
     public void setConditionalFormattingStyles(HashMap<Integer, String> map) {
         conditionalFormattingStyles.clear();
         if (map != null) {
@@ -2164,33 +1919,12 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
-    /**
-     * selectCell
-     * @param name
-     * @param col
-     * @param row
-     * @param value
-     * @param formula
-     * @param locked
-     * @param initialSelection
-     */
     public void selectCell(String name, int col, int row, String value, boolean formula,
             boolean locked, boolean initialSelection) {
         selectionHandler.selectCell(name, col, row, value, formula, locked,
                 initialSelection);
     }
 
-    /**
-     * selectCellRange
-     * @param name
-     * @param selectedCellColumn
-     * @param selectedCellRow
-     * @param firstColumn
-     * @param lastColumn
-     * @param firstRow
-     * @param lastRow
-     * @param scroll
-     */
     public void selectCellRange(String name, int selectedCellColumn, int selectedCellRow,
             int firstColumn, int lastColumn, int firstRow, int lastRow, boolean scroll) {
         
@@ -2198,9 +1932,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
                 firstColumn, lastColumn, firstRow, lastRow, scroll);
     }
 
-    /**
-     * refreshCellStyles
-     */
     public void refreshCellStyles() {
         getSheetWidget().refreshCellStyles();
     }
@@ -2210,10 +1941,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return touchMode;
     }
 
-    /**
-     * setTouchMode
-     * @param touchMode
-     */
     public void setTouchMode(boolean touchMode) {
         this.touchMode = touchMode;
     }
@@ -2223,11 +1950,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return formulaBarWidget;
     }
 
-    /**
-     * editCellComment
-     * @param col
-     * @param row
-     */
     public void editCellComment(int col, int row) {
         sheetWidget.editCellComment(col, row);
     }
@@ -2250,10 +1972,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         focusSheet();
     }
 
-    /**
-     * setCommsTrigger
-     * @param commsTrigger
-     */
     public void setCommsTrigger(CommsTrigger commsTrigger) {
         this.commsTrigger = commsTrigger;
     }
@@ -2301,10 +2019,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         sheetWidget.setFocused(focused);
     }
 
-    /**
-     * setId
-     * @param connectorId
-     */
     public void setId(String connectorId) {
         sheetWidget.postInit(connectorId);
     }
@@ -2330,42 +2044,22 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         spreadsheetHandler.levelHeaderClicked(cols, level);
     }
 
-    /**
-     * setColGroupingMax
-     * @param max
-     */
     public void setColGroupingMax(int max) {
         sheetWidget.setColGroupingMax(max);
     }
 
-    /**
-     * setRowGroupingMax
-     * @param max
-     */
     public void setRowGroupingMax(int max) {
         sheetWidget.setRowGroupingMax(max);
     }
 
-    /**
-     * setColGroupingInversed
-     * @param inversed
-     */
     public void setColGroupingInversed(boolean inversed) {
         sheetWidget.setColGroupingInversed(inversed);
     }
 
-    /**
-     * setRowGroupingInversed
-     * @param inversed
-     */
     public void setRowGroupingInversed(boolean inversed) {
         sheetWidget.setRowGroupingInversed(inversed);
     }
     
-    /**
-     * setNamedRanges
-     * @param namedRanges
-     */
     public void setNamedRanges(List<String> namedRanges) {
         formulaBarWidget.setNamedRanges(namedRanges);
     }

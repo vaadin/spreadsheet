@@ -4,9 +4,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
-/**
- * RowHeaderDoubleClickFixture
- */
 public class RowHeaderDoubleClickFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(final Spreadsheet spreadsheet) {

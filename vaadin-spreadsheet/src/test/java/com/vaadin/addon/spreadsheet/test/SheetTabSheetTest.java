@@ -30,9 +30,6 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
                 getDesiredCapabilities());
     }
 
-    /**
-     * focus_createTab_sheetIsFocused
-     */
     @Test
     public void focus_createTab_sheetIsFocused() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -44,9 +41,6 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
         verifySheetFocused();
     }
 
-    /**
-     * focus_changeTab_sheetIsFocused
-     */
     @Test
     public void focus_changeTab_sheetIsFocused() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
@@ -63,14 +57,6 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
         verifySheetFocused();
     }
 
-    /**
-     * cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains
-     * @throws InterruptedException
-     */
-    /**
-     * cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains
-     * @throws InterruptedException
-     */
     @Test
     public void cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains() throws InterruptedException {
         skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -98,9 +84,6 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
         }
     }
 
-    /**
-     * cellFocus_selectCellThenDeleteSheetAndMoveToNextSheet_cellSelectionIsDefault
-     */
     @Test
     public void cellFocus_selectCellThenDeleteSheetAndMoveToNextSheet_cellSelectionIsDefault() {
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

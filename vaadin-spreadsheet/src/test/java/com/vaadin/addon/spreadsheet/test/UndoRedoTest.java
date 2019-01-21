@@ -17,14 +17,8 @@ import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * UndoRedoTest
- */
 public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * collector
-     */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private SheetController sheetController;
@@ -36,9 +30,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
                 getDesiredCapabilities());
     }
 
-    /**
-     * undo_cellValueIsSetAndUndone_cellHasNoValue
-     */
     @Test
     public void undo_cellValueIsSetAndUndone_cellHasNoValue() {
         headerPage.createNewSpreadsheet();
@@ -50,9 +41,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("", spreadsheet.getCellAt("A1").getValue());
     }
 
-    /**
-     * redo_cellValueIsSetAndUndoneAndRedone_cellHasValue
-     */
     @Test
     public void redo_cellValueIsSetAndUndoneAndRedone_cellHasValue() {
         headerPage.createNewSpreadsheet();
@@ -65,9 +53,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("a", spreadsheet.getCellAt("A1").getValue());
     }
 
-    /**
-     * undo_cellValuesHasDeletedAndUndone_cellsHaveValue
-     */
     @Test
     public void undo_cellValuesHasDeletedAndUndone_cellsHaveValue() {
         headerPage.createNewSpreadsheet();
@@ -83,9 +68,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("A1=a, A2=b", selectionValue);
     }
 
-    /**
-     * undo_cellValuesHasDeletedAndUndoneAndRedone_cellsHasNoValue
-     */
     @Test
     public void undo_cellValuesHasDeletedAndUndoneAndRedone_cellsHasNoValue() {
         headerPage.createNewSpreadsheet();
@@ -102,9 +84,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("A1=, A2=", selectionValue);
     }
 
-    /**
-     * undo_cellValuesHasDeletedAndUndoneRedoneAndUndone_cellsHaveValues
-     */
     @Test
     public void undo_cellValuesHasDeletedAndUndoneRedoneAndUndone_cellsHaveValues() {
         headerPage.createNewSpreadsheet();
@@ -122,9 +101,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("A1=a, A2=b", selectionValue);
     }
 
-    /**
-     * undo_addRowAndUndone_addedRowIsRemoved
-     */
     @Test
     public void undo_addRowAndUndone_addedRowIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -139,9 +115,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("a", spreadsheet.getCellAt("A1").getValue());
     }
 
-    /**
-     * redo_addRowAndUndoneAndRedo_rowIsAdded
-     */
     @Test
     public void redo_addRowAndUndoneAndRedo_rowIsAdded() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -158,9 +131,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("a", spreadsheet.getCellAt("A2").getValue());
     }
 
-    /**
-     * undo_removeRowAndUndone_removedRowIsAdded
-     */
     @Test
     public void undo_removeRowAndUndone_removedRowIsAdded() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -175,9 +145,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("a", spreadsheet.getCellAt("A1").getValue());
     }
 
-    /**
-     * redo_removeRowAndUndoneAndRedo_rowIsRemoved
-     */
     @Test
     public void redo_removeRowAndUndoneAndRedo_rowIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -194,9 +161,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * undo_removeRowWithCommentAndUndo_cellStillHasComment
-     */
     @Test
     public void undo_removeRowWithCommentAndUndo_cellStillHasComment() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -216,9 +180,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * undo_userAddsCommentAndRemovesTheRowAndUndo_cellStillHasComment
-     */
     @Test
     public void undo_userAddsCommentAndRemovesTheRowAndUndo_cellStillHasComment() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -240,9 +201,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * undo_removeRowsWithStyledCellsAndUndo_cellsHaveStyles
-     */
     @Test
     public void undo_removeRowsWithStyledCellsAndUndo_cellsHaveStyles() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -262,9 +220,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertCorrectCss(spreadsheet);
     }
 
-    /**
-     * undo_addRowWithDateAndUndone_dateIsVisible
-     */
     @Test
     public void undo_addRowWithDateAndUndone_dateIsVisible() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -280,9 +235,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * undo_theSecondRowWithMergedCellIsRemovedAndUndo_cellIsMerged
-     */
     @Test
     public void undo_theSecondRowWithMergedCellIsRemovedAndUndo_cellIsMerged() {
         skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
@@ -304,9 +256,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * undo_theSecondRowWithInvalidFormulaIsRemovedAndUndo_formulaIndicatorIsPresent
-     */
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_theSecondRowWithInvalidFormulaIsRemovedAndUndo_formulaIndicatorIsPresent() {
@@ -326,9 +275,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * undo_conditionalFormattedCellsRemovedAndUndo_cellsAreStillConditionallyFormatted
-     */
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_conditionalFormattedCellsRemovedAndUndo_cellsAreStillConditionallyFormatted() {
@@ -348,9 +294,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-    /**
-     * undo_pasteRegionThenUndo_cellsHaveInitialValues
-     */
     @Test
     public void undo_pasteRegionThenUndo_cellsHaveInitialValues() {
         final SpreadsheetElement spreadsheet = setupSpreadSheetForRegionCopyPasteTest();
@@ -377,9 +320,6 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("D1=3, E1=4", selectionValue);
     }
 
-    /**
-     * undo_pasteRegionThenUndoAndRedo_cellsHavePastedValues
-     */
     @Test
     public void undo_pasteRegionThenUndoAndRedo_cellsHavePastedValues() {
         final SpreadsheetElement spreadsheet = setupSpreadSheetForRegionCopyPasteTest();

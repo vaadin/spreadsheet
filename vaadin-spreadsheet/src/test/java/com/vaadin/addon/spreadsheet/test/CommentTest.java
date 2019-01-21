@@ -14,14 +14,8 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.testutil.ContextMenuHelper;
 import com.vaadin.testbench.parallel.Browser;
 
-/**
- * CommentTest
- */
 public class CommentTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * commentOverlay_sheetWithCommentsIsLoaded_overlayIsShownForVisibleComments
-     */
     @Test
     public void commentOverlay_sheetWithCommentsIsLoaded_overlayIsShownForVisibleComments() {
         headerPage.createNewSpreadsheet();
@@ -32,9 +26,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertCommentOverlayIsShownOnHover("first cell comment");
     }
 
-    /**
-     * commentOverlay_commentsAreSetFromServerSide_overlayIsShownForVisibleComments
-     */
     @Test
     public void commentOverlay_commentsAreSetFromServerSide_overlayIsShownForVisibleComments() {
         headerPage.createNewSpreadsheet();
@@ -45,9 +36,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertCommentOverlayIsShownOnHover("first cell comment");
     }
 
-    /**
-     * commentOverlay_userHoversInvalidFormula_overlayIsShown
-     */
     @Test
     public void commentOverlay_userHoversInvalidFormula_overlayIsShown() {
         headerPage.createNewSpreadsheet();
@@ -59,10 +47,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertCommentOverlayIsShownOnHover("Invalid formula");
     }
 
-    /**
-     * openFileWithComment_deleteComment_NoException
-     * @throws InterruptedException
-     */
     @Test
     public void openFileWithComment_deleteComment_NoException()
             throws InterruptedException {
@@ -76,10 +60,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertNoErrorIndicatorDetected();
     }
 
-    /**
-     * openFileWithComment_showComment_NoException
-     * @throws InterruptedException
-     */
     @Test
     public void openFileWithComment_showComment_NoException()
             throws InterruptedException {
@@ -93,10 +73,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertNoErrorIndicatorDetected();
     }
 
-    /**
-     * contextClick_on_commentIndicator
-     * @throws InterruptedException
-     */
     @Test
     public void contextClick_on_commentIndicator()
             throws InterruptedException {
@@ -112,9 +88,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * removeRow_removeRowWithComment_commentIsRemoved
-     */
     @Test
     public void removeRow_removeRowWithComment_commentIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox",
@@ -144,10 +117,6 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         assertCommentPresent(commentContains);
     }
 
-    /**
-     * moveMouseOverCell
-     * @param cellAddress
-     */
     public void moveMouseOverCell(String cellAddress) {
         SheetCellElement cell = $(SpreadsheetElement.class).first()
                 .getCellAt(cellAddress);

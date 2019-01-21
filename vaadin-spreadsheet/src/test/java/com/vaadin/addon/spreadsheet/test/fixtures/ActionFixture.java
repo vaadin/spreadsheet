@@ -9,9 +9,6 @@ import com.vaadin.addon.spreadsheet.test.testutil.SpreadsheetActionHandler;
 import com.vaadin.addon.spreadsheet.test.testutil.SpreadsheetHelper;
 import com.vaadin.event.Action;
 
-/**
- * ActionFixture
- */
 public class ActionFixture implements SpreadsheetFixture {
 
     @Override

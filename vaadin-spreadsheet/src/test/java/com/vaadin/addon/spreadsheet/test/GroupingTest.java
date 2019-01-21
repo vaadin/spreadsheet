@@ -15,14 +15,8 @@ import org.openqa.selenium.WebElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.By;
 
-/**
- * GroupingTest
- */
 public class GroupingTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * IMAGE_XPATH
-     */
     public static final String IMAGE_XPATH = "//div[contains(@class, 'sheet-image')]";
 
     /**
@@ -30,7 +24,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
      *
      * Note that this screenshot tests different themes so hence page must be
      * loaded between screenshot comparisons.
-     * @throws Exception 
      */
     @Test
     public void grouping_themeHasChanged_theSpreadsheetIsRenderedCorrectly() throws Exception {
@@ -43,7 +36,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
 
     /**
      * Ticket #18912
-     * @throws Exception 
      */
     @Test
     public void grouping_headersAreHidden_groupingElementsHaveCorrectSize() throws Exception {
@@ -59,11 +51,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
         assertEquals(110, rowGrouping.getSize().getHeight());
     }
 
-    /**
-     * grouping_collapseColumnGroup_imageInsideGroupShrink
-     * @throws IOException
-     * @throws InterruptedException
-     */
     @Test
     public void grouping_collapseColumnGroup_imageInsideGroupShrink() throws IOException, InterruptedException {
         SpreadsheetElement spreadsheetElement =loadImageFile();
@@ -77,11 +64,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     }
 
 
-    /**
-     * grouping_expandColumnGroup_imageInsideGroupExpand
-     * @throws IOException
-     * @throws InterruptedException
-     */
     @Test
     public void grouping_expandColumnGroup_imageInsideGroupExpand() throws IOException, InterruptedException {
         SpreadsheetElement spreadsheetElement =loadImageFile();
@@ -96,11 +78,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
         assertThat("Image width", Integer.parseInt(width), greaterThan(500));
     }
 
-    /**
-     * grouping_collapseRowGroup_imageInsideGroupShrink
-     * @throws IOException
-     * @throws InterruptedException
-     */
     @Test
     public void grouping_collapseRowGroup_imageInsideGroupShrink() throws IOException, InterruptedException {
         SpreadsheetElement spreadsheetElement =loadImageFile();
@@ -113,11 +90,6 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
         assertThat("Image height", Double.parseDouble(height), lessThan(30.0));
     }
 
-    /**
-     * grouping_expandRowGroup_imageInsideRowExpand
-     * @throws IOException
-     * @throws InterruptedException
-     */
     @Test
     public void grouping_expandRowGroup_imageInsideRowExpand() throws IOException, InterruptedException {
         SpreadsheetElement spreadsheetElement =loadImageFile();

@@ -41,9 +41,6 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class InsertDeleteCellCommentAction extends SpreadsheetAction {
 
-    /**
-     * 
-     */
     public InsertDeleteCellCommentAction() {
         super("");
     }

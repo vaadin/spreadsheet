@@ -7,14 +7,8 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-/**
- * LockTest
- */
 public class LockTest extends AbstractSpreadsheetTestCase {
 
-    /**
-     * testLockedCells
-     */
     @Ignore("Fails with all browsers, user can still add content to B2 after lock fixture is run")
     @Test
     public void testLockedCells() {

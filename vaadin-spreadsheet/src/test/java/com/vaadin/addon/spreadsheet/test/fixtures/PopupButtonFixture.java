@@ -15,9 +15,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomField;
 import com.vaadin.ui.NativeSelect;
 
-/**
- * PopupButtonFixture
- */
 public class PopupButtonFixture implements SpreadsheetFixture {
 
     private static final List<String> VALUES = Arrays.asList(new String[] {
@@ -42,13 +39,8 @@ public class PopupButtonFixture implements SpreadsheetFixture {
     }
 }
 
-/**
- * DataValidationButton
- */
 class DataValidationButton extends PopupButton {
-	private static final long serialVersionUID = 1L;
-
-	private final CellListSelectComponent cellListSelectComponent;
+    private final CellListSelectComponent cellListSelectComponent;
 
     public DataValidationButton(Spreadsheet parent,Collection<String> values) {
         super();
@@ -100,6 +92,5 @@ class CellListSelectComponent extends CustomField<String> {
 
     @Override
     protected void doSetValue(String value) {
-    	// ignore
     }
 }

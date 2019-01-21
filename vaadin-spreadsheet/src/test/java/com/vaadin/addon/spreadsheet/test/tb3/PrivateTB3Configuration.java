@@ -23,14 +23,11 @@ import com.vaadin.testbench.annotations.RunOnHub;
 @BrowserFactory(VaadinBrowserFactory.class)
 public abstract class PrivateTB3Configuration extends ScreenshotTB3Test {
     /**
-     * SCREENSHOT_DIRECTORY
+     *
      */
     public static final String SCREENSHOT_DIRECTORY = "com.vaadin.testbench.screenshot.directory";
     private static final String RUN_LOCALLY_PROPERTY = "com.vaadin.testbench.runLocally";
     private static final String HOSTNAME_PROPERTY = "com.vaadin.testbench.deployment.hostname";
-    /**
-     * PORT_PROPERTY
-     */
     public static final String PORT_PROPERTY = "com.vaadin.testbench.deployment.port";
     private static final String DEPLOYMENT_PROPERTY = "com.vaadin.testbench.deployment.url";
     private static final String HUB_URL = "com.vaadin.testbench.hub.url";
@@ -48,16 +45,8 @@ public abstract class PrivateTB3Configuration extends ScreenshotTB3Test {
         }
     }
 
-    /**
-     * DEFAULT_PORT
-     */
     public static String DEFAULT_PORT = "9998";
 
-    /**
-     * getProperty
-     * @param name
-     * @return String
-     */
     protected static String getProperty(String name) {
         String property = properties.getProperty(name);
         if (property == null) {
@@ -67,11 +56,6 @@ public abstract class PrivateTB3Configuration extends ScreenshotTB3Test {
         return property;
     }
 
-    /**
-     * getSource
-     * @param propertyName
-     * @return String
-     */
     private static String getSource(String propertyName) {
         if (properties.containsKey(propertyName)) {
             return propertiesFile.getAbsolutePath();

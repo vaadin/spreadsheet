@@ -10,14 +10,8 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.FormulaFormatter;
 
-/**
- * FormulaFormatterTest
- */
 public class FormulaFormatterTest {
 
-    /**
-     * cellFormulaLocalizationInput_formulaWithFinnishLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationInput_formulaWithFinnishLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("fi", "FI");
@@ -37,9 +31,6 @@ public class FormulaFormatterTest {
                         locale));
     }
 
-    /**
-     * cellFormulaLocalizationInput_formulaWithItalianLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationInput_formulaWithItalianLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("it", "IT");
@@ -59,9 +50,6 @@ public class FormulaFormatterTest {
                         locale));
     }
 
-    /**
-     * cellFormulaLocalizationInput_formulaWithUSLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationInput_formulaWithUSLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("en", "US");
@@ -71,9 +59,6 @@ public class FormulaFormatterTest {
                 manager.unFormatFormulaValue("1000.20 + 2000.10", locale));
     }
 
-    /**
-     * cellFormulaLocalizationOutput_formulaWithFinnishLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationOutput_formulaWithFinnishLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("fi", "FI");
@@ -93,9 +78,6 @@ public class FormulaFormatterTest {
                         locale));
     }
 
-    /**
-     * cellFormulaLocalizationOutput_formulaWithItalianLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationOutput_formulaWithItalianLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("it", "IT");
@@ -115,9 +97,6 @@ public class FormulaFormatterTest {
                         locale));
     }
 
-    /**
-     * cellFormulaLocalizationOutput_formulaWithUSLocale_formulaFormattedCorrectly
-     */
     @Test
     public void cellFormulaLocalizationOutput_formulaWithUSLocale_formulaFormattedCorrectly() {
         Locale locale = new Locale("en", "US");
@@ -127,9 +106,6 @@ public class FormulaFormatterTest {
                 manager.reFormatFormulaValue("1000.20 + 2000.10", locale));
     }
 
-    /**
-     * cellFormulationValidation_validInputFormulasWithFinnishLocale_formulaValid
-     */
     @Test
     public void cellFormulationValidation_validInputFormulasWithFinnishLocale_formulaValid() {
         final FormulaFormatter formulaFormatter = new FormulaFormatter();
@@ -146,9 +122,6 @@ public class FormulaFormatterTest {
                 "=HYPERLINK(\"http://www.vaadin,com\";  \"ups\")", locale));
     }
 
-    /**
-     * cellFormulationValidation_validInputFormulasWithItalianLocale_formulaValid
-     */
     @Test
     public void cellFormulationValidation_validInputFormulasWithItalianLocale_formulaValid() {
         final FormulaFormatter formulaFormatter = new FormulaFormatter();
@@ -165,9 +138,6 @@ public class FormulaFormatterTest {
                 "=HYPERLINK(\"http://www.vaadin,com\";  \"ups\")", locale));
     }
 
-    /**
-     * cellFormulationValidation_inputWithInvalidDecimalSeparator_formulaNotValid
-     */
     @Test
     public void cellFormulationValidation_inputWithInvalidDecimalSeparator_formulaNotValid() {
         final FormulaFormatter formulaFormatter = new FormulaFormatter();

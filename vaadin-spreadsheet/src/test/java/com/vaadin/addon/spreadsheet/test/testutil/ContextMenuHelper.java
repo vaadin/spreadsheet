@@ -8,22 +8,12 @@ import org.openqa.selenium.interactions.Actions;
 
 import com.vaadin.testbench.TestBenchTestCase;
 
-/**
- * ContextMenuHelper
- */
 public class ContextMenuHelper extends SeleniumHelper {
 	
-	/**
-	 * @param driver
-	 */
 	public ContextMenuHelper(WebDriver driver) {
 		super(driver);
 	}
 
-	/**
-	 * clickItem
-	 * @param caption
-	 */
 	public void clickItem (String caption) {
 		try {
 		new Actions(driver)
@@ -35,11 +25,6 @@ public class ContextMenuHelper extends SeleniumHelper {
 		TestBenchTestCase.testBench(driver).waitForVaadin();
 	}
 
-	/**
-	 * hasOption
-	 * @param caption
-	 * @return boolean
-	 */
 	public boolean hasOption (String caption) {
 		return driver.findElements(By.xpath("//div[@class='popupContent']//*[text()='"+caption+"']")).size()!=0;
 	}

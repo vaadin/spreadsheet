@@ -216,7 +216,6 @@ public class PopupButton extends AbstractComponent implements HasComponents {
 
     /**
      * Set the contents of the popup.
-     * @param content 
      *
      */
     public void setContent(Component content) {
@@ -225,7 +224,6 @@ public class PopupButton extends AbstractComponent implements HasComponents {
 
     /**
      * Get the contents of the popup.
-     * @return content
      */
     public Component getContent() {
         return child;
@@ -251,10 +249,6 @@ public class PopupButton extends AbstractComponent implements HasComponents {
         getState().active = active;
     }
     
-    /**
-     * isActive
-     * @return boolean
-     */
     public boolean isActive() {
         return getState().active;
     }
@@ -352,9 +346,6 @@ public class PopupButton extends AbstractComponent implements HasComponents {
      * {@link PopupButton}.
      */
     public interface PopupOpenListener extends Serializable {
-        /**
-         * POPUP_OPEN_METHOD
-         */
         public static final Method POPUP_OPEN_METHOD = ReflectTools.findMethod(
                 PopupOpenListener.class, "onPopupOpen", PopupOpenEvent.class);
 
@@ -399,9 +390,6 @@ public class PopupButton extends AbstractComponent implements HasComponents {
      * {@link PopupButton}.
      */
     public interface PopupCloseListener extends Serializable {
-        /**
-         * POPUP_CLOSE_METHOD
-         */
         public static final Method POPUP_CLOSE_METHOD = ReflectTools
                 .findMethod(PopupCloseListener.class, "onPopupClose",
                         PopupCloseEvent.class);

@@ -86,11 +86,6 @@ public class SheetChartWrapper extends SheetOverlayWrapper implements
         }
     }
 
-    /**
-     * @param anchor
-     * @param chartXml
-     * @param spreadsheet
-     */
     public SheetChartWrapper(XSSFClientAnchor anchor, XSSFChart chartXml,
             Spreadsheet spreadsheet) {
         super(anchor);
@@ -124,10 +119,6 @@ public class SheetChartWrapper extends SheetOverlayWrapper implements
         wrapper.setMinimizeListener(listener);
     }
 
-    /**
-     * setChartCreator
-     * @param newChartCreator
-     */
     public static void setChartCreator(ChartCreator newChartCreator) {
         chartCreator = newChartCreator;
     }

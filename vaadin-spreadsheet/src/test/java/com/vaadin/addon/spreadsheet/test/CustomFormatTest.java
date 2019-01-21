@@ -8,9 +8,6 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
-/**
- * CustomFormatTest
- */
 public class CustomFormatTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
@@ -26,9 +23,6 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
         setLocale(Locale.US);
     }
 
-    /**
-     * assertCorrectValuesAfterLoading
-     */
     @Test
     public void assertCorrectValuesAfterLoading() {
         assertNumbersColumn();
@@ -118,36 +112,24 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
         assertCellValue("G19", "text");
     }
 
-    /**
-     * customFormatFourParts_enterNumberAndChangeLocale_getsFormatted
-     */
     @Test
     public void customFormatFourParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C1", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
-    /**
-     * customFormatThreeParts_enterNumberAndChangeLocale_getsFormatted
-     */
     @Test
     public void customFormatThreeParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C6", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
-    /**
-     * customFormatTwoParts_enterNumberAndChangeLocale_getsFormatted
-     */
     @Test
     public void customFormatTwoParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C11", "=5555555.5", "5.555.555,5",
             Locale.ITALY);
     }
 
-    /**
-     * customFormatOnePart_enterNumberAndChangeLocale_getsFormatted
-     */
     @Test
     public void customFormatOnePart_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C16", "=5555555.5", "5.555.555,5",

@@ -79,10 +79,6 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     private CopyPasteHandler handler;
     private HandlerRegistration nativePreviewHandler;
 
-    /**
-     * @param widget
-     * @param handler
-     */
     public CopyPasteTextBox(SheetWidget widget, CopyPasteHandler handler) {
 
         this.widget = widget;
@@ -179,9 +175,6 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
         }
     }
 
-    /**
-     * onDestroy
-     */
     public void onDestroy() {
         if (nativePreviewHandler != null) {
             nativePreviewHandler.removeHandler();
