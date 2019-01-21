@@ -55,6 +55,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.SheetVisibility;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -308,6 +309,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     private SpreadsheetDefaultActionHandler defaultActionHandler;
 
+    /**
+     * merged region counter
+     */
     protected int mergedRegionCounter;
 
     private Workbook workbook;
@@ -325,6 +329,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     private String defaultPercentageFormat = "0.00%";
 
+    /**
+     * initial sheet selection
+     */
     protected String initialSheetSelection = null;
 
     private Set<Component> customComponents = new HashSet<Component>();
@@ -721,7 +728,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Returns true if embedded charts are displayed
      * 
      * @see #setChartsEnabled(boolean)
-     * @return
+     * @return true if charts are enabled
      */
     public boolean isChartsEnabled() {
         return chartsEnabled;
@@ -949,7 +956,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * See {@link Workbook#setSheetHidden(int, int)}.
+     * See {@link Workbook#setSheetHidden(int, boolean)}.
      * <p>
      * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
      * status on currently visible/hidden/very hidden sheets.
@@ -977,7 +984,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        workbook.setSheetHidden(sheetPOIIndex, hidden);
+        SheetVisibility visibility = isVeryHidden ? SheetVisibility.VERY_HIDDEN 
+        		: (isHidden ? SheetVisibility.HIDDEN : SheetVisibility.VISIBLE);
+        
+        workbook.setSheetVisibility(sheetPOIIndex, visibility);
 
         // skip component reload if "nothing changed"
         if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0
@@ -2150,6 +2160,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Get the common {@link FormulaEvaluator} instance.
+     * @return formula evalutor
      */
     public FormulaEvaluator getFormulaEvaluator() {
         return formulaEvaluator;
@@ -2162,7 +2173,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 for (short c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
                     Cell cell = row.getCell(c);
                     if (cell != null
-                            && cell.getCellTypeEnum() != CellType.BLANK) {
+                            && cell.getCellType() != CellType.BLANK) {
                         return r;
                     }
                 }
@@ -4064,12 +4075,19 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public abstract static class ValueChangeEvent extends Component.Event {
         private final Set<CellReference> changedCells;
 
+        /**
+         * @param source
+         * @param changedCells
+         */
         public ValueChangeEvent(Component source,
                 Set<CellReference> changedCells) {
             super(source);
             this.changedCells = changedCells;
         }
 
+        /**
+         * @return set of changed cells
+         */
         public Set<CellReference> getChangedCells() {
             return changedCells;
         }
@@ -4080,6 +4098,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public static class CellValueChangeEvent extends ValueChangeEvent {
 
+        /**
+         * @param source
+         * @param changedCells
+         */
         public CellValueChangeEvent(Component source,
                 Set<CellReference> changedCells) {
             super(source, changedCells);
@@ -4093,6 +4115,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public static class FormulaValueChangeEvent extends ValueChangeEvent {
 
+        /**
+         * @param source
+         * @param changedCells
+         */
         public FormulaValueChangeEvent(Component source,
                 Set<CellReference> changedCells) {
             super(source, changedCells);
@@ -4228,6 +4254,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Used for knowing when a user has changed the cell selection in any way.
      */
     public interface SelectionChangeListener extends Serializable {
+        /**
+         * SELECTION_CHANGE_METHOD
+         */
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(SelectionChangeListener.class, "onSelectionChange",
                         SelectionChangeEvent.class);
@@ -4246,6 +4275,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * UI.
      */
     public interface CellValueChangeListener extends Serializable {
+        /**
+         * CELL_VALUE_CHANGE_METHOD
+         */
         public static final Method CELL_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(CellValueChangeListener.class, "onCellValueChange",
                         CellValueChangeEvent.class);
@@ -4264,6 +4296,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * the Spreadsheet UI making the formula value change
      */
     public interface FormulaValueChangeListener extends Serializable {
+        /**
+         * FORMULA_VALUE_CHANGE_METHOD
+         */
         public static final Method FORMULA_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(FormulaValueChangeListener.class,
                         "onFormulaValueChange", FormulaValueChangeEvent.class);
@@ -4339,6 +4374,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public static class ProtectedEditEvent extends Component.Event {
 
+        /**
+         * @param source
+         */
         public ProtectedEditEvent(Component source) {
             super(source);
         }
@@ -4348,6 +4386,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * A listener for when an attempt to modify a locked cell has been made.
      */
     public interface ProtectedEditListener extends Serializable {
+        /**
+         * SELECTION_CHANGE_METHOD
+         */
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(ProtectedEditListener.class, "writeAttempted",
                         ProtectedEditEvent.class);
@@ -4521,6 +4562,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * A listener for when a sheet is selected.
      */
     public interface SheetChangeListener extends Serializable {
+        /**
+         * SHEET_CHANGE_METHOD
+         */
         public static final Method SHEET_CHANGE_METHOD = ReflectTools
                 .findMethod(SheetChangeListener.class, "onSheetChange",
                         SheetChangeEvent.class);
@@ -4569,7 +4613,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * 
      * @see com.vaadin.ui.HasComponents#iterator()
      */
-    @SuppressWarnings("unchecked")
     @Override
     public Iterator<Component> iterator() {
         return new IteratorChain<Component>(Arrays.asList(
@@ -4853,6 +4896,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * into the Spreadsheet.
      * <p>
      * Default is "0.00%".
+     * @param defaultPercentageFormat 
      */
     public void setDefaultPercentageFormat(String defaultPercentageFormat) {
         this.defaultPercentageFormat = defaultPercentageFormat;
@@ -4978,6 +5022,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         return !isSheetSelectionBarVisible() && !isFunctionBarVisible();
     }
 
+    /**
+     * @param invalidFormulaErrorMessage
+     */
     public void setInvalidFormulaErrorMessage(String invalidFormulaErrorMessage) {
         getState().invalidFormulaErrorMessage = invalidFormulaErrorMessage;
     }
@@ -5197,6 +5244,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
     }
 
+    /**
+     * @param image
+     */
     public void addSheetOverlay(SheetOverlayWrapper image) {
         sheetOverlays.add(image);
     }
@@ -5227,11 +5277,18 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public static class RowHeaderDoubleClickEvent extends Component.Event {
         private final int rowIndex;
 
+        /**
+         * @param source
+         * @param row
+         */
         public RowHeaderDoubleClickEvent(Component source, int row) {
             super(source);
             rowIndex = row;
         }
 
+        /**
+         * @return row index
+         */
         public int getRowIndex() {
             return rowIndex;
         }
@@ -5241,6 +5298,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Interface for listening a {@link RowHeaderDoubleClickEvent} event
      **/
     public interface RowHeaderDoubleClickListener extends Serializable {
+        /**
+         * ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK
+         */
         Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
             .findMethod(RowHeaderDoubleClickListener.class,
                 "onRowHeaderDoubleClick", RowHeaderDoubleClickEvent.class);

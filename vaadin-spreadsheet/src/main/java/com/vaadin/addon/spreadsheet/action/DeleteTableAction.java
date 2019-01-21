@@ -35,10 +35,16 @@ import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 @SuppressWarnings("serial")
 public class DeleteTableAction extends SpreadsheetAction {
 
+    /**
+     * constructor
+     */
     public DeleteTableAction() {
         super("");
     }
 
+    /**
+     * tableToDelete
+     */
     protected SpreadsheetTable tableToDelete;
 
     @Override

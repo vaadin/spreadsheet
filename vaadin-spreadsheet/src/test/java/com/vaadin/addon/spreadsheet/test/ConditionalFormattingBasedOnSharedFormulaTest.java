@@ -9,6 +9,9 @@ import org.junit.Test;
 import com.google.common.collect.Sets;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * ConditionalFormattingBasedOnSharedFormulaTest
+ */
 public class ConditionalFormattingBasedOnSharedFormulaTest
     extends AbstractSpreadsheetTestCase {
     
@@ -27,6 +30,9 @@ public class ConditionalFormattingBasedOnSharedFormulaTest
             .loadFile("conditional_formatting_shared_formula.xlsx", this);
     }
 
+    /**
+     * loadSpreadsheetWithConditionalFormattingInA1A2_A3B4_D1G5___CheckCellFormatting
+     */
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA1A2_A3B4_D1G5___CheckCellFormatting() {
         for (String cellAddress : cellWithTrueCondition) {

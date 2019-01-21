@@ -16,6 +16,9 @@ import org.apache.poi.ss.usermodel.Sheet;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * ValueHandlerFixture
+ */
 public class ValueHandlerFixture implements SpreadsheetFixture {
 
     @Override

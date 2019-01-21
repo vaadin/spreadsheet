@@ -23,6 +23,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
+    /**
+     * shouldNotChangeCellWhenEditingAndArrowRightKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenEditingAndArrowRightKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -37,6 +40,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenEditingAndArrowLeftKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenEditingAndArrowLeftKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -51,6 +57,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenEditingAndArrowUpKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenEditingAndArrowUpKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -65,6 +74,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenEditingAndArrowDownKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenEditingAndArrowDownKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -79,6 +91,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenDoubleClickEditingAndArrowRightKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenDoubleClickEditingAndArrowRightKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -93,6 +108,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenDoubleClickEditingAndArrowLeftKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenDoubleClickEditingAndArrowLeftKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -107,6 +125,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenDoubleClickEditingAndArrowDownKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenDoubleClickEditingAndArrowDownKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -121,6 +142,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldNotChangeCellWhenDoubleClickEditingAndArrowUpKeyIsPressed
+     */
     @Test
     public void shouldNotChangeCellWhenDoubleClickEditingAndArrowUpKeyIsPressed() {
         final SheetCellElement b2 = spreadSheet.getCellAt("B2");
@@ -135,6 +159,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B2"));
     }
 
+    /**
+     * shouldSelectCellToTheRightWhenSingleClickAndArrowRightKeyIsPressed
+     */
     @Test
     public void shouldSelectCellToTheRightWhenSingleClickAndArrowRightKeyIsPressed() {
         sheetController.clickCell("B2");
@@ -148,6 +175,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("C2"));
     }
 
+    /**
+     * shouldSelectCellToTheLeftWhenSingleClickAndArrowLeftKeyIsPressed
+     */
     @Test
     public void shouldSelectCellToTheLeftWhenSingleClickAndArrowLeftKeyIsPressed() {
         sheetController.clickCell("B2");
@@ -161,6 +191,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("A2"));
     }
 
+    /**
+     * shouldSelectCellToTheTopWhenSingleClickAndArrowUpKeyIsPressed
+     */
     @Test
     public void shouldSelectCellToTheTopWhenSingleClickAndArrowUpKeyIsPressed() {
         sheetController.clickCell("B2");
@@ -174,6 +207,9 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         assertThat(selectedCell, is("B1"));
     }
 
+    /**
+     * shouldSelectCellToTheBottomWhenSingleClickAndArrowDownKeyIsPressed
+     */
     @Test
     public void shouldSelectCellToTheBottomWhenSingleClickAndArrowDownKeyIsPressed() {
         sheetController.clickCell("B2");

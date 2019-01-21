@@ -20,6 +20,10 @@ import com.vaadin.ui.declarative.Design;
  */
 public class DeclarativeTest {
 
+    /**
+     * testSpreadsheetToFromDesign
+     * @throws Exception
+     */
     @Test
     public void testSpreadsheetToFromDesign() throws Exception {
         File file = null;

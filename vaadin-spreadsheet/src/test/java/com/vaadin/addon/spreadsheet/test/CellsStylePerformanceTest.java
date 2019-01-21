@@ -16,10 +16,19 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 import com.vaadin.testbench.By;
 
+/**
+ * CellsStylePerformanceTest
+ */
 public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * collector
+     */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
+    /**
+     * sheetController
+     */
     private SheetController sheetController;
 
 
@@ -31,6 +40,9 @@ public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
                 getDesiredCapabilities());
     }
 
+    /**
+     * spreadsheetWithManyStyles_setValueInCell_styleUpdateTimeLessThanASecond void
+     */
     @Test
     public void spreadsheetWithManyStyles_setValueInCell_styleUpdateTimeLessThanASecond() {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile("cell_styles_performance.xlsx", this);

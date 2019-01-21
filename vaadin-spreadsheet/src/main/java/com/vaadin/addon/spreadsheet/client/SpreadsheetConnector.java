@@ -51,6 +51,9 @@ import com.vaadin.client.ui.layout.ElementResizeListener;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
 
+/**
+ * SpreadsheetConnector
+ */
 @SuppressWarnings("serial")
 @Connect(value = Spreadsheet.class, loadStyle = LoadStyle.DEFERRED)
 public class SpreadsheetConnector extends AbstractHasComponentsConnector
@@ -516,7 +519,13 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         getWidget().refreshOverlayPositions();
     }
 
+    /**
+     * CommsTrigger
+     */
     public interface CommsTrigger {
+        /**
+         * sendUpdates
+         */
         void sendUpdates();
     }
 }

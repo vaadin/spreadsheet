@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * CreateNewTest
+ */
 public class CreateNewTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
@@ -19,11 +22,19 @@ public class CreateNewTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.createNewSpreadsheet();
     }
 
+    /**
+     * testCreateNewSpreadsheet
+     * @throws Exception
+     */
     @Test
     public void testCreateNewSpreadsheet() throws Exception {
         assertTrue(spreadsheetPage.isDisplayed());
     }
 
+    /**
+     * testNewSpreadsheetHasA1Focused
+     * @throws Exception
+     */
     @Test
     public void testNewSpreadsheetHasA1Focused() throws Exception {
         assertEquals("A1", spreadsheetPage.getAddressFieldValue());

@@ -4,6 +4,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * SheetsFixture
+ */
 public class SheetsFixture implements SpreadsheetFixture {
 
     @Override

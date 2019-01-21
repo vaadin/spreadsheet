@@ -12,8 +12,14 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * RowHeaderDoubleClickTest
+ */
 public class RowHeaderDoubleClickTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * loadFixture_doubleClickOnRowHeader_rowHeaderDoubleClickEventFired
+     */
     @Test
     public void loadFixture_doubleClickOnRowHeader_rowHeaderDoubleClickEventFired() {
         final SpreadsheetPage spreadsheetPage = headerPage

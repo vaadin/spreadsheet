@@ -21,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
@@ -40,8 +41,11 @@ public class HSSFColorConverter implements ColorConverter {
     private String defaultBackgroundColor;
     private String defaultColor;
 
-    private static final HSSFColor HSSF_AUTO = new HSSFColor.AUTOMATIC();
+    private static final HSSFColorPredefined HSSF_AUTO = HSSFColorPredefined.AUTOMATIC;
 
+    /**
+     * @param wb
+     */
     public HSSFColorConverter(HSSFWorkbook wb) {
         this.wb = wb;
         // If there is no custom palette, then this creates a new one that is
@@ -87,13 +91,13 @@ public class HSSFColorConverter implements ColorConverter {
         String backgroundColor = null;
         HSSFColor fillForegroundColorColor = cs.getFillForegroundColorColor();
         if (fillForegroundColorColor != null
-                && fillForegroundColor != HSSFColor.AUTOMATIC.index) {
+                && fillForegroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
             backgroundColor = styleColor(fillForegroundColor);
         } else {
             HSSFColor fillBackgroundColorColor = cs
                     .getFillBackgroundColorColor();
             if (fillBackgroundColorColor != null
-                    && fillBackgroundColor != HSSFColor.AUTOMATIC.index) {
+                    && fillBackgroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
                 backgroundColor = styleColor(fillBackgroundColor);
             }
         }
@@ -136,13 +140,13 @@ public class HSSFColorConverter implements ColorConverter {
 
         HSSFColor fillForegroundColorColor = cs.getFillForegroundColorColor();
         if (fillForegroundColorColor != null
-                && fillForegroundColor != HSSFColor.AUTOMATIC.index) {
+                && fillForegroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
             return true;
         } else {
             HSSFColor fillBackgroundColorColor = cs
                     .getFillBackgroundColorColor();
             if (fillBackgroundColorColor != null
-                    && fillBackgroundColor != HSSFColor.AUTOMATIC.index) {
+                    && fillBackgroundColor != HSSFColorPredefined.AUTOMATIC.getIndex()) {
                 return true;
             }
         }

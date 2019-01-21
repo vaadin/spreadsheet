@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * ConditionalFormattingBasedOnFormulaTest
+ */
 public class ConditionalFormattingBasedOnFormulaTest
     extends AbstractSpreadsheetTestCase {
 
@@ -23,6 +26,9 @@ public class ConditionalFormattingBasedOnFormulaTest
         spreadsheetPage.selectSheetAt(1);
     }
 
+    /**
+     * loadSpreadsheetWithConditionalFormattingInA2_MakeConditionFalse_CellA2FilledWhite
+     */
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionFalse_CellA2FilledWhite() {
         spreadsheetPage.setCellValue("A1", VALUE);
@@ -30,6 +36,9 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(FALSE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
 
+    /**
+     * loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed
+     */
     @Test
     public void loadSpreadsheetWithConditionalFormattingInA2_MakeConditionTrue_CellA2FilledRed() {
         spreadsheetPage.setCellValue("A1", VALUE);
@@ -37,6 +46,9 @@ public class ConditionalFormattingBasedOnFormulaTest
         assertEquals(TRUE_CONDITION_COLOR, spreadsheetPage.getCellColor("A2"));
     }
     
+    /**
+     * loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells
+     */
     @Test
     public void loadSpreadsheetWithConditionalFormattingRulesInRow10_EvaluateFormatting_CheckColorOfCells(){
         String a10WithConditionEqualsToOne = spreadsheetPage.getCellColor("A10");

@@ -17,8 +17,15 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
+/**
+ * MergedCellOverflowTest
+ */
 public class MergedCellOverflowTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * overflow_spreadsheetWithMergedAndFormattedArea_noOverflowFromFirstCell
+     * @throws IOException
+     */
     @Test
     public void overflow_spreadsheetWithMergedAndFormattedArea_noOverflowFromFirstCell()
             throws IOException {

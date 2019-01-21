@@ -8,11 +8,14 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * CommentFixture
+ */
 public class CommentFixture implements SpreadsheetFixture {
 
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {
-        Drawing drawing = spreadsheet.getActiveSheet().createDrawingPatriarch();
+        Drawing<?> drawing = spreadsheet.getActiveSheet().createDrawingPatriarch();
         CreationHelper factory = spreadsheet.getActiveSheet().getWorkbook()
                 .getCreationHelper();
 

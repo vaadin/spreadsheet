@@ -42,6 +42,9 @@ public class SpreadsheetTable implements Serializable {
     private final CellRangeAddress fullTableRegion;
     private final Sheet sheet;
     private final Spreadsheet spreadsheet;
+    /**
+     * popupButtons
+     */
     protected final Map<CellReference, PopupButton> popupButtons;
 
     /**

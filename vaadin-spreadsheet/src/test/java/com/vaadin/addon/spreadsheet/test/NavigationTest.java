@@ -16,6 +16,9 @@ import com.vaadin.addon.spreadsheet.elements.AddressUtil;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * NavigationTest
+ */
 public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
@@ -27,6 +30,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         spreadsheetPage = headerPage.createNewSpreadsheet();
     }
 
+    /**
+     * testClickingOnCellsUpdatesAddressFieldAndUpdatesSelection
+     * @throws Exception
+     */
     @Test
     public void testClickingOnCellsUpdatesAddressFieldAndUpdatesSelection()
             throws Exception {
@@ -49,6 +56,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("Q15", spreadsheetPage.isCellSelected("Q15"));
     }
 
+    /**
+     * testUpdatingAddressFieldMovesSelection
+     * @throws Exception
+     */
     @Test
     public void testUpdatingAddressFieldMovesSelection() throws Exception {
         spreadsheetPage.setAddressFieldValue("A5");
@@ -64,12 +75,20 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("AC2", spreadsheetPage.isCellSelected("AC2"));
     }
 
+    /**
+     * testDragSelection
+     * @throws Exception
+     */
     @Test
     public void testDragSelection() throws Exception {
         spreadsheetPage.dragFromCellToCell("C5", "F11");
         assertSelectionRange("C5:F11", true);
     }
 
+    /**
+     * testKeyboardSelection
+     * @throws Exception
+     */
     @Test
     public void testKeyboardSelection() throws Exception {
         spreadsheetPage.clickOnCell("H10");
@@ -82,6 +101,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertActiveCellInsideSelection("H10");
     }
 
+    /**
+     * testAddressFieldUpdatesWhenDragging
+     * @throws Exception
+     */
     @Test
     public void testAddressFieldUpdatesWhenDragging() throws Exception {
         new Actions(getDriver()).clickAndHold(spreadsheetPage.getCellAt(8, 10))
@@ -108,6 +131,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertAddressFieldValue("H10", spreadsheetPage.getAddressFieldValue());
     }
 
+    /**
+     * testAddressFieldUpdatesWhenShiftSelecting
+     * @throws Exception
+     */
     @Test
     @Ignore("Known bug in Spreadsheet component implementation (notimetofix) - Shift selection does not update address field")
     public void testAddressFieldUpdatesWhenShiftSelecting() throws Exception {
@@ -130,6 +157,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertAddressFieldValue("H10", spreadsheetPage.getAddressFieldValue());
     }
 
+    /**
+     * testGrowShrinkSelectionWithShiftArrowsHorizontal
+     * @throws Exception
+     */
     @Test
     public void testGrowShrinkSelectionWithShiftArrowsHorizontal()
             throws Exception {
@@ -169,6 +200,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertNotSelectedCell("J10", spreadsheetPage.isCellSelected("J10"));
     }
 
+    /**
+     * testGrowShrinkSelectionWithShiftArrowsVertical
+     * @throws Exception
+     */
     @Test
     public void testGrowShrinkSelectionWithShiftArrowsVertical()
             throws Exception {
@@ -208,12 +243,20 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertNotSelectedCell("H12", spreadsheetPage.isCellSelected("H12"));
     }
 
+    /**
+     * testEnterSelectionRangeInAddress
+     * @throws Exception
+     */
     @Test
     public void testEnterSelectionRangeInAddress() throws Exception {
         spreadsheetPage.setAddressFieldValue("A1:C7");
         assertSelectionRange("A1:C7", true);
     }
 
+    /**
+     * testEnterSelectionRangeInAddress_outsideOfViewport
+     * @throws Exception
+     */
     @Test
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {
@@ -222,6 +265,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("AT1:AV7", true);
     }
 
+    /**
+     * testKeyboardNavigation
+     * @throws Exception
+     */
     @Test
     public void testKeyboardNavigation() throws Exception {
         skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
@@ -257,6 +304,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("J10", spreadsheetPage.isCellSelected("J10"));
     }
 
+    /**
+     * testNavigationInSelectionWithEnterAndTab
+     * @throws Exception
+     */
     @Test
     @Ignore("Keys.RETURN loses active position indication")
     public void testNavigationInSelectionWithEnterAndTab() throws Exception {
@@ -289,6 +340,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("A1:C2", true);
     }
 
+    /**
+     * testRightKeyDiscardsSelection
+     * @throws Exception
+     */
     @Test
     public void testRightKeyDiscardsSelection() throws Exception {
         spreadsheetPage.setAddressFieldValue("A1:B2");
@@ -302,6 +357,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertNotSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
     }
 
+    /**
+     * testDownKeyDiscardsSelection
+     * @throws Exception
+     */
     @Test
     public void testDownKeyDiscardsSelection() throws Exception {
         spreadsheetPage.setAddressFieldValue("A1:B2");
@@ -315,6 +374,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertNotSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
     }
 
+    /**
+     * testLeftKeyDiscardsSelection
+     * @throws Exception
+     */
     @Test
     public void testLeftKeyDiscardsSelection() throws Exception {
         spreadsheetPage.setAddressFieldValue("B1:C2");
@@ -326,6 +389,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("B1:C2", false);
     }
 
+    /**
+     * testUpKeyDiscardsSelection
+     * @throws Exception
+     */
     @Test
     public void testUpKeyDiscardsSelection() throws Exception {
         spreadsheetPage.setAddressFieldValue("A2:B3");
@@ -337,6 +404,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("A2:B3", false);
     }
 
+    /**
+     * testShiftArrowsShrinksSelectionWhenActiveOnEdgeOfSelection
+     * @throws Exception
+     */
     @Test
     public void testShiftArrowsShrinksSelectionWhenActiveOnEdgeOfSelection()
             throws Exception {
@@ -345,6 +416,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("C4:E6", true);
     }
 
+    /**
+     * testSheetScrollsWhenPushingAgainstRightEdge
+     * @throws Exception
+     */
     @Test
     public void testSheetScrollsWhenPushingAgainstRightEdge() throws Exception {
         skipBrowser("AA1 is selected instead of AB1", Browser.IE11);
@@ -361,6 +436,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("AD1", spreadsheetPage.isCellSelected("AD1"));
     }
 
+    /**
+     * testSheetScrollsWhenPushingAgainstBottomEdge
+     * @throws Exception
+     */
     @Test
     public void testSheetScrollsWhenPushingAgainstBottomEdge() throws Exception {
         skipBrowser("Sending multiple keys fails in IE sometimes", Browser.IE9, Browser.IE10, Browser.IE11);
@@ -378,6 +457,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("A44", spreadsheetPage.isCellSelected("A44"));
     }
 
+    /**
+     * testEnterAndTabWhenFormulaFieldIsFocused
+     * @throws Exception
+     */
     @Test
     public void testEnterAndTabWhenFormulaFieldIsFocused() throws Exception {
         skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
@@ -405,6 +488,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("J10", spreadsheetPage.isCellSelected("J10"));
     }
 
+    /**
+     * testClickOnColumnHeaderSelectsColumn
+     * @throws Exception
+     */
     @Test
     public void testClickOnColumnHeaderSelectsColumn() throws Exception {
         spreadsheetPage.clickOnColumnHeader("B");
@@ -414,6 +501,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectionRange("C1:C20", false);
     }
 
+    /**
+     * testClickOnRowHeaderSelectsRow
+     * @throws Exception
+     */
     @Test
     public void testClickOnRowHeaderSelectsRow() throws Exception {
         spreadsheetPage.clickOnRowHeader(10);
@@ -424,6 +515,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertActiveCellInsideSelection("A10");
     }
 
+    /**
+     * testShiftClickShouldSelect
+     * @throws Exception
+     */
     @Test
     public void testShiftClickShouldSelect() throws Exception {
         skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -437,6 +532,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertActiveCellInsideSelection("B2");
     }
 
+    /**
+     * testShiftClickOnColumnHeader
+     * @throws Exception
+     */
     @Test
     public void testShiftClickOnColumnHeader() throws Exception {
         skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -451,6 +550,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertActiveCellInsideSelection("B2");
     }
 
+    /**
+     * testShiftClickOnRowHeader
+     * @throws Exception
+     */
     @Test
     public void testShiftClickOnRowHeader() throws Exception {
         skipBrowser("Range selection assertion fails", Browser.FIREFOX, Browser.PHANTOMJS);
@@ -466,6 +569,10 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertActiveCellInsideSelection("B10");
     }
 
+    /**
+     * testSelectCellsByCtrlClick
+     * @throws Exception
+     */
     @Test
     public void testSelectCellsByCtrlClick() throws Exception {
         skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);

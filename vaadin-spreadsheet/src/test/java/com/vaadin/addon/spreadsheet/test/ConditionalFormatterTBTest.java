@@ -9,6 +9,9 @@ import org.junit.Test;
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
+/**
+ * ConditionalFormatterTBTest
+ */
 public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetElement spreadSheet;
@@ -22,6 +25,10 @@ public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
+    /**
+     * conditionalFormattingForFormulaCell_updateFormulaReference_formattingApplied
+     * @throws Exception
+     */
     @Test
     public void conditionalFormattingForFormulaCell_updateFormulaReference_formattingApplied()
             throws Exception {
@@ -40,6 +47,9 @@ public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
                 formulaCell.getCssValue("background-color"));
     }
 
+    /**
+     * conditionalFormattingForStringCell_equalsWithQuotationMarks_formattingMatches
+     */
     @Test
     public void conditionalFormattingForStringCell_equalsWithQuotationMarks_formattingMatches() {
         SheetCellElement targetCell = spreadSheet.getCellAt("A5");
@@ -59,6 +69,7 @@ public class ConditionalFormatterTBTest extends AbstractSpreadsheetTestCase {
 
     /**
      * Ticket #18702
+     * @throws IOException 
      */
     @Test
     public void conditionalFormatting_formulaWithRelativeRowCol_formattingApplied()

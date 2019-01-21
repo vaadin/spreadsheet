@@ -9,6 +9,9 @@ import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * HyperLinkFixture
+ */
 public class HyperLinkFixture implements SpreadsheetFixture {
 
     @Override

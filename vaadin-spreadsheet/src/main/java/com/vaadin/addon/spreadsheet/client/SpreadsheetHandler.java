@@ -23,35 +23,60 @@ import java.util.Map;
 import com.vaadin.addon.spreadsheet.client.GroupingWidget.GroupingHandler;
 import com.vaadin.shared.annotations.Delayed;
 
+/**
+ * SpreadsheetHandler
+ */
 public interface SpreadsheetHandler extends GroupingHandler {
 
     /**
      * These cells have become visible and possibly need the content, if has not
      * been given previously or has not changed.
+     * @param firstRow 
+     * @param firstColumn 
+     * @param lastRow 
+     * @param lastColumn 
      */
     @Delayed(lastOnly = true)
     public void onSheetScroll(int firstRow, int firstColumn, int lastRow,
             int lastColumn);
 
-    /** Address field value changed. */
+    /** Address field value changed. 
+     * @param value 
+     */
     public void sheetAddressChanged(String value);
 
-    /** Single cell selected inside sheet. */
+    /** Single cell selected inside sheet. 
+     * @param row 
+     * @param column 
+     * @param oldSelectionRangeDiscarded 
+     */
     @Delayed
     public void cellSelected(int row, int column,
             boolean oldSelectionRangeDiscarded);
 
-    /** Cell range selected from scratch. Actual selected cell not changed. */
+    /** Cell range selected from scratch. Actual selected cell not changed. 
+     * @param row1 
+     * @param col1 
+     * @param row2 
+     * @param col2
+     */
     @Delayed
     public void cellRangeSelected(int row1, int col1, int row2, int col2);
 
-    /** Single cell added to selection. Selection changed to this. */
+    /** Single cell added to selection. Selection changed to this. 
+     * @param row 
+     * @param column 
+     */
     @Delayed
     public void cellAddedToSelectionAndSelected(int row, int column);
 
     /**
      * Multiple cells added to previous range selection. Actual selected cell
      * not changed.
+     * @param row1 
+     * @param col1 
+     * @param row2 
+     * @param col2 
      */
     @Delayed
     public void cellsAddedToRangeSelection(int row1, int col1, int row2,
@@ -131,6 +156,12 @@ public interface SpreadsheetHandler extends GroupingHandler {
     @Delayed
     public void selectionDecreasePainted(int row, int col);
 
+    /**
+     * cellValueEdited
+     * @param row
+     * @param col
+     * @param value
+     */
     public void cellValueEdited(int row, int col, String value);
 
     /**
@@ -240,6 +271,10 @@ public interface SpreadsheetHandler extends GroupingHandler {
      */
     public void onRedo();
 
+    /**
+     * setCellStyleWidthRatios
+     * @param cellStyleWidthRatioMap void
+     */
     public void setCellStyleWidthRatios(
             HashMap<Integer, Float> cellStyleWidthRatioMap);
 
@@ -261,6 +296,12 @@ public interface SpreadsheetHandler extends GroupingHandler {
      */
     public void clearSelectedCellsOnCut();
 
+    /**
+     * updateCellComment
+     * @param text
+     * @param col
+     * @param row void
+     */
     public void updateCellComment(String text, int col, int row);
 
 }

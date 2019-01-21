@@ -2,7 +2,6 @@ package com.vaadin.addon.spreadsheet.test;
 
 import java.util.Locale;
 
-import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,12 +11,15 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
+/**
+ * FormulaFormatTest
+ */
 public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * formulaLocaleFormatting_italianLocale_formulaHandledCorrectly
+     * @throws InterruptedException
+     */
     @Test
     public void formulaLocaleFormatting_italianLocale_formulaHandledCorrectly()
             throws InterruptedException {
@@ -64,6 +66,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
         });
     }
 
+    /**
+     * formulaLocaleFormatting_englishLocale_formulaHandledCorrectly
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaLocaleFormatting_englishLocale_formulaHandledCorrectly()
             throws InterruptedException {
@@ -110,6 +116,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
         });
     }
 
+    /**
+     * formulaLocaleFormatting_changeLocale_formulaHandledCorrectly
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaLocaleFormatting_changeLocale_formulaHandledCorrectly()
             throws InterruptedException {
@@ -144,6 +154,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
 
     }
 
+    /**
+     * formulaFormatting_invalidFormula_cellHasInvalidFormulaIndicator
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaFormatting_invalidFormula_cellHasInvalidFormulaIndicator()
             throws InterruptedException {
@@ -169,6 +183,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
         });
     }
 
+    /**
+     * formulaFormatting_setCommentToCellWithInvalidFormula_cellValueIsStillInvalidFormula
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaFormatting_setCommentToCellWithInvalidFormula_cellValueIsStillInvalidFormula()
             throws InterruptedException {
@@ -188,6 +206,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
         });
     }
 
+    /**
+     * formulaFormatting_removeCommentFromCellWithInvalidFormula_cellValueIsStillInvalidFormula
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaFormatting_removeCommentFromCellWithInvalidFormula_cellValueIsStillInvalidFormula()
             throws InterruptedException {
@@ -210,6 +232,10 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
         });
     }
 
+    /**
+     * formulaFormatting_addFreezePaneWhileACellHasAnInvalidFormula_cellStillHasInvalidFormulaIndicator
+     * @throws InterruptedException void
+     */
     @Test
     public void formulaFormatting_addFreezePaneWhileACellHasAnInvalidFormula_cellStillHasInvalidFormulaIndicator()
             throws InterruptedException {

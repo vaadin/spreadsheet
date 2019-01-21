@@ -15,8 +15,14 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.By;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
+/**
+ * GroupingPerformanceTest
+ */
 public class GroupingPerformanceTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * collector
+     */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private int startMillis = 0;
@@ -28,6 +34,10 @@ public class GroupingPerformanceTest extends AbstractSpreadsheetTestCase {
         super.setUp();
     }
 
+    /**
+     * spreadsheetWithGroupings_expandGroup_doesNotReloadEverything
+     * @throws Exception
+     */
     @Test
     public void spreadsheetWithGroupings_expandGroup_doesNotReloadEverything()
             throws Exception {

@@ -21,8 +21,17 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 
+/**
+ * CustomComponentFixture
+ */
 public class CustomComponentFixture implements SpreadsheetFixture {
 
+    /**
+     * getCompByCell
+     * @param row
+     * @param col
+     * @return String
+     */
     static public String getCompByCell(int row, int col) {
         if (row == 1 && col == 1) {
             return "textfield";
@@ -68,18 +77,26 @@ public class CustomComponentFixture implements SpreadsheetFixture {
 
 }
 
+/**
+ * AbstractComponentFactory
+ */
 abstract class AbstractComponentFactory implements SpreadsheetComponentFactory {
+	private static final long serialVersionUID = 1L;
 
-    @Override
+	@Override
     public Component getCustomComponentForCell(Cell cell, int rowIndex, int columnIndex, Spreadsheet spreadsheet, Sheet sheet) {
           return null;
     }
 
 }
 
+/**
+ * ComponentEditorFactory
+ */
 class ComponentEditorFactory extends AbstractComponentFactory {
+	private static final long serialVersionUID = 1L;
 
-    @Override
+	@Override
     public Component getCustomEditorForCell(Cell cell, final int rowIndex,
                                                final int columnIndex, final Spreadsheet spreadsheet, Sheet sheet) {
 
@@ -130,24 +147,21 @@ class ComponentEditorFactory extends AbstractComponentFactory {
         if (curCell != null) {
             switch (CustomComponentFixture.getCompByCell(rowIndex, columnIndex)) {
                 case "textfield": {
-                    @SuppressWarnings("unchecked")
                     final TextField field = (TextField) customEditor;
                     String value = spreadsheet.getCellValue(curCell);
                     field.setValue(value);
                     break;
                 }
                 case "textarea": {
-                    @SuppressWarnings("unchecked")
                     final TextArea ta = (TextArea) customEditor;
                     String value = spreadsheet.getCellValue(curCell);
                     ta.setValue(value);
                     break;
                 }
                 case "checkbox": {
-                    @SuppressWarnings("unchecked")
                     final CheckBox cb = (CheckBox) customEditor;
                     String value = spreadsheet.getCellValue(curCell);
-                    cb.setValue(Boolean.parseBoolean(value));
+                    cb.setValue(Boolean.valueOf(value));
                     break;
                 }
                 case "datefield": {
@@ -165,12 +179,12 @@ class ComponentEditorFactory extends AbstractComponentFactory {
                     final Slider slider = (Slider) customEditor;
                     String value = spreadsheet.getCellValue(curCell);
 
-                    slider.setValue(Double.parseDouble(value));
+                    slider.setValue(Double.valueOf(value));
                     break;
                 }
                 case "combobox": {
                     @SuppressWarnings("unchecked")
-                    final NativeSelect<String> select = (NativeSelect) customEditor;
+                    final NativeSelect<String> select = (NativeSelect<String>) customEditor;
                     String value = spreadsheet.getCellValue(curCell);
                     select.setValue(value);
                     break;

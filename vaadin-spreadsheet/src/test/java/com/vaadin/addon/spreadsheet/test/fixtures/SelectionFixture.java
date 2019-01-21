@@ -4,6 +4,9 @@ import org.apache.poi.ss.util.CellReference;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * SelectionFixture
+ */
 public class SelectionFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {

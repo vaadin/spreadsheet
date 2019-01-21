@@ -31,6 +31,7 @@ public interface ValueChangeCommand extends Command {
 
     /**
      * Returns the cells that had their value(s) changed.
+     * @return changed cells
      */
     public Set<CellReference> getChangedCells();
 

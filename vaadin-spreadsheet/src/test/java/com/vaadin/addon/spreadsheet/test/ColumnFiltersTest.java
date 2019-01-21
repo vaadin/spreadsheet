@@ -7,22 +7,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTTable;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 
+/**
+ * ColumnFiltersTest
+ */
 public class ColumnFiltersTest {
 
     final String TABLE1_RANGE = "B2:B4";
@@ -31,6 +35,9 @@ public class ColumnFiltersTest {
     private XSSFWorkbook workbook;
     private Spreadsheet spreadsheet;
 
+    /**
+     * setUp
+     */
     @Before
     public void setUp() {
         workbook = new XSSFWorkbook();
@@ -61,6 +68,9 @@ public class ColumnFiltersTest {
         spreadsheet = new Spreadsheet(workbook);
     }
 
+    /**
+     * sheetWithFilters_loadWorkbook_filtersPreserved
+     */
     @Test
     public void sheetWithFilters_loadWorkbook_filtersPreserved() {
         assertNotNull(spreadsheet.getTables());
@@ -69,11 +79,12 @@ public class ColumnFiltersTest {
             spreadsheet.getTables().iterator().next().getFullTableRegion());
     }
 
+    /**
+     * sheetWithTables_loadWorkbook_tablesPreserved
+     */
     @Test
     public void sheetWithTables_loadWorkbook_tablesPreserved() {
-        XSSFTable table = workbook.getSheetAt(0).createTable();
-        CTTable ctTable = table.getCTTable();
-        ctTable.setRef(TABLE2_RANGE);
+        XSSFTable table = workbook.getSheetAt(0).createTable(new AreaReference(TABLE2_RANGE, null));
 
         spreadsheet.setWorkbook(workbook);
 
@@ -94,6 +105,10 @@ public class ColumnFiltersTest {
             anyOf(is(table1), is(table2)));
     }
     
+    /**
+     * loadFile_filteredColumnsLoadedAsActive
+     * @throws Exception
+     */
     @Test
     public void loadFile_filteredColumnsLoadedAsActive() throws Exception {
         Spreadsheet spr = new Spreadsheet(

@@ -7,10 +7,19 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.vaadin.testbench.commands.CanWaitForVaadin;
 
+/**
+ * ModifierController
+ */
 public class ModifierController extends SheetController {
 
     private Keys modifier;
 
+    /**
+     * @param driver
+     * @param modifier
+     * @param sleeper
+     * @param desiredCapabilities
+     */
     public ModifierController(WebDriver driver, Keys modifier,
             CanWaitForVaadin sleeper, DesiredCapabilities desiredCapabilities) {
         super(driver, sleeper, desiredCapabilities);

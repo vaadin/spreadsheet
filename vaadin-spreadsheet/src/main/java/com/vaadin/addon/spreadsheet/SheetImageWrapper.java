@@ -45,6 +45,11 @@ public class SheetImageWrapper extends SheetOverlayWrapper implements
     private final byte[] data;
     private final String MIMEType;
 
+    /**
+     * @param anchor
+     * @param MIMEType
+     * @param data
+     */
     public SheetImageWrapper(ClientAnchor anchor, String MIMEType, byte[] data) {
         super(anchor);
         this.MIMEType = MIMEType;

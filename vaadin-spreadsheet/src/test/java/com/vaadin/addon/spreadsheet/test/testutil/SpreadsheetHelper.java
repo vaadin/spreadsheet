@@ -11,15 +11,27 @@ import org.apache.poi.ss.util.CellReference;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 
+/**
+ * SpreadsheetHelper
+ */
 public class SpreadsheetHelper {
 
     private Spreadsheet spreadsheet;
 
+    /**
+     * @param spreadsheet
+     */
     public SpreadsheetHelper(Spreadsheet spreadsheet) {
         super();
         this.spreadsheet = spreadsheet;
     }
 
+    /**
+     * retrieveCell
+     * @param row
+     * @param column
+     * @return Cell
+     */
     public Cell retrieveCell(int row, int column) {
         Sheet sheet = spreadsheet.getActiveSheet();
         Row r = sheet.getRow(row);
@@ -35,6 +47,11 @@ public class SpreadsheetHelper {
         return cell;
     }
 
+    /**
+     * selectedCell
+     * @param event
+     * @return HashMap<String,Cell>
+     */
     public HashMap<String, Cell> selectedCell(SelectionChangeEvent event) {
 
         CellMap cells = new CellMap();

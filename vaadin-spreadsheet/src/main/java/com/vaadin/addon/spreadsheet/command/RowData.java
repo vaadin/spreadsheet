@@ -179,7 +179,7 @@ class RowData implements Serializable {
             }
             hyperlink = cell.getHyperlink();
             cellStyle = cell.getCellStyle();
-            cellType = cell.getCellTypeEnum();
+            cellType = cell.getCellType();
 
             switch (cellType) {
             	case _NONE:
@@ -270,7 +270,7 @@ class RowData implements Serializable {
         }
 
         public void writeTo(Cell cell) {
-            Drawing drawingPatriarch = cell.getSheet().createDrawingPatriarch();
+            Drawing<?> drawingPatriarch = cell.getSheet().createDrawingPatriarch();
             CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
 
             Comment newCellComment = drawingPatriarch.createCellComment(clientAnchor);

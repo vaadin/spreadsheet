@@ -14,8 +14,14 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
+/**
+ * GenericTest
+ */
 public class GenericTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * testKeyboardNavigation
+     */
     @Test
     public void testKeyboardNavigation() {
         headerPage.createNewSpreadsheet();
@@ -34,6 +40,9 @@ public class GenericTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("Y", c2.getValue());
     }
 
+    /**
+     * testDates
+     */
     @Test
     public void testDates() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
@@ -61,6 +70,9 @@ public class GenericTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals(today + 3, Long.parseLong(b1.getValue()));
     }
 
+    /**
+     * numericCell_newPercentageCell_cellStaysNumeric
+     */
     @Test
     public void numericCell_newPercentageCell_cellStaysNumeric() {
         setLocale(Locale.US);
@@ -82,6 +94,9 @@ public class GenericTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("19.00%", spreadsheetPage.getCellValue("A3"));
     }
 
+    /**
+     * percentageCell_newNumericCell_cellStaysNumeric
+     */
     @Test
     public void percentageCell_newNumericCell_cellStaysNumeric() {
         setLocale(Locale.US);
@@ -105,6 +120,9 @@ public class GenericTest extends AbstractSpreadsheetTestCase {
     }
 
 
+    /**
+     * testFormats
+     */
     @Test
     public void testFormats() {
         //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
@@ -134,6 +152,9 @@ public class GenericTest extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("3.14E+00", spreadsheet.getCellValue("F6"));
     }
 
+    /**
+     * testStringCellType
+     */
     @Test
     public void testStringCellType() {
         SpreadsheetPage spreadsheet = headerPage.createNewSpreadsheet();

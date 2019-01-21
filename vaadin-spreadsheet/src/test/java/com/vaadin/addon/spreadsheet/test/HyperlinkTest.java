@@ -45,56 +45,89 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
         testInternal("A6", "B6");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_internalFromFormulaMovesToCorrectCell
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_internalFromFormulaMovesToCorrectCell() {
         testInternal("A4", "B4");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_internalFromLinkMovesToCorrectCell
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_internalFromLinkMovesToCorrectCell() {
         testInternal("A5", "B5");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_externalFromLinkOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromLinkOpensPopupToCorrectPage() {
         testExternal("A3", "google");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("A2", "google");
     }
 
+    /**
+     * hyperlinkWithSpace_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlinkWithSpace_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("A7", "google");
     }
 
+    /**
+     * hyperlinkWithBracketAndSpace1_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlinkWithBracketAndSpace1_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("A8", "google");
     }
 
+    /**
+     * hyperlinkWithBracketAndSpace2_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlinkWithBracketAndSpace2_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("A10", "google");
     }
 
+    /**
+     * hyperlinkInFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlinkInFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("I1", "google");
     }
 
+    /**
+     * hyperlinkInSharedFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlinkInSharedFormula_sheetWithHyperLinks_externalFromFormulaOpensPopupToCorrectPage() {
         testExternal("I2", "mail");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_externalFromMergedCellOpensPopupToCorrectPage
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_externalFromMergedCellOpensPopupToCorrectPage() {
         testExternal("C7", "google");
     }
 
+    /**
+     * hyperlink_sheetWithHyperLinks_internalFromFileNameFormulaMovesToCorrectSheetAndCell
+     */
     @Test
     public void hyperlink_sheetWithHyperLinks_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
@@ -108,6 +141,9 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
                 spreadsheetPage.getFormulaFieldValue());
     }
 
+    /**
+     * hyperlink_sheetWithNumericSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell
+     */
     @Test
     public void hyperlink_sheetWithNumericSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
@@ -121,6 +157,9 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
                 spreadsheetPage.getFormulaFieldValue());
     }
 
+    /**
+     * hyperlink_sheetWithSpacesInSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell
+     */
     @Test
     public void hyperlink_sheetWithSpacesInSheetName_internalFromFileNameFormulaMovesToCorrectSheetAndCell() {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(
@@ -136,6 +175,7 @@ public class HyperlinkTest extends AbstractSpreadsheetTestCase {
 
     /**
      * SHEET-86. Test that hyperlinks are immediately updated.
+     * @throws IOException 
      */
     @Test
     public void hyperlinkState_hyperlinkModified_hyperlinkUpdated()

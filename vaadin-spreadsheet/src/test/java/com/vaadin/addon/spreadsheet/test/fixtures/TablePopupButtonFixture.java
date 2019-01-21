@@ -10,6 +10,9 @@ import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.Grid;
 
+/**
+ * TablePopupButtonFixture
+ */
 @SuppressWarnings("serial")
 public class TablePopupButtonFixture implements SpreadsheetFixture {
 
@@ -36,6 +39,9 @@ public class TablePopupButtonFixture implements SpreadsheetFixture {
                 });
     }
 
+    /**
+     * ItemThing
+     */
     public class ItemThing implements Serializable {
         private String value;
 
@@ -43,6 +49,10 @@ public class TablePopupButtonFixture implements SpreadsheetFixture {
             value = s;
         }
 
+        /**
+         * getValue
+         * @return String
+         */
         public String getValue() {
             return value;
         }

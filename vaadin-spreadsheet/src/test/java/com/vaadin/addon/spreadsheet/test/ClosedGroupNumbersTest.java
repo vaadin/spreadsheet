@@ -12,8 +12,15 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.By;
 
+/**
+ * ClosedGroupNumbersTest
+ */
 public class ClosedGroupNumbersTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * expandGroup_spreadsheetWithClosedGroupThatContainsNumbers_noPlaceholder
+     * @throws IOException
+     */
     @Test
     public void expandGroup_spreadsheetWithClosedGroupThatContainsNumbers_noPlaceholder()
             throws IOException {

@@ -1,8 +1,14 @@
 package com.vaadin.addon.spreadsheet.test.fixtures;
 
+/**
+ * ClassFixtureFactory
+ */
 public class ClassFixtureFactory extends Instantiator<SpreadsheetFixture>
         implements SpreadsheetFixtureFactory {
 
+    /**
+     * @param clazz
+     */
     public ClassFixtureFactory(Class<? extends SpreadsheetFixture> clazz) {
         super(clazz);
     }

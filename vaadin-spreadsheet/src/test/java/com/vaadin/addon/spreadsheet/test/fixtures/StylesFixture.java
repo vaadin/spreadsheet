@@ -11,6 +11,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.SpreadsheetStyleFactory;
 
+/**
+ * StylesFixture
+ */
 public class StylesFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {

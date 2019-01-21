@@ -41,6 +41,9 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 @SuppressWarnings("serial")
 public class InsertDeleteCellCommentAction extends SpreadsheetAction {
 
+    /**
+     * 
+     */
     public InsertDeleteCellCommentAction() {
         super("");
     }
@@ -110,7 +113,7 @@ public class InsertDeleteCellCommentAction extends SpreadsheetAction {
     private void createCellComment(Spreadsheet spreadsheet, Sheet sheet,
                                    Cell cell, CellReference cellRef) {
         CreationHelper factory = sheet.getWorkbook().getCreationHelper();
-        Drawing drawing = sheet.createDrawingPatriarch();
+        Drawing<?> drawing = sheet.createDrawingPatriarch();
 
         ClientAnchor anchor = factory.createClientAnchor();
         anchor.setCol1(cell.getColumnIndex());

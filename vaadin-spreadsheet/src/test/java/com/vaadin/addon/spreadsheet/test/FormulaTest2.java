@@ -11,6 +11,9 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.annotations.BrowserConfiguration;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * FormulaTest2
+ */
 public class FormulaTest2 extends AbstractSpreadsheetTestCase {
 
     private final String[] integerColumn = { "1", "2", "3", "4" };
@@ -33,6 +36,9 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         spreadSheet = $(SpreadsheetElement.class).first();
     }
 
+    /**
+     * testGenericFormula
+     */
     @Test
     public void testGenericFormula() {
         sheetController.selectCell("A1");
@@ -50,6 +56,9 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("24", sheetController.getCellContent("B4"));
     }
 
+    /**
+     * testCount
+     */
     @Test
     public void testCount() {
         sheetController.selectCell("A1");
@@ -65,6 +74,9 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("5", spreadSheet.getCellAt("B2").getValue());
     }
 
+    /**
+     * testSubTotals
+     */
     @Test
     public void testSubTotals() {
         spreadSheet.getCellAt("A1").setValue("10");
@@ -96,6 +108,9 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("100", sheetController.getCellContent("C4"));
     }
 
+    /**
+     * testRecursiveFormulas
+     */
     @Test
     public void testRecursiveFormulas() {
         spreadSheet.getCellAt("A1").setValue("10");
@@ -112,6 +127,9 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("90", spreadSheet.getCellAt("B2").getValue());
     }
 
+    /**
+     * testFloatOperations
+     */
     @Test
     public void testFloatOperations() {
         for (int i = 0; i < floatColumn.length; i++) {

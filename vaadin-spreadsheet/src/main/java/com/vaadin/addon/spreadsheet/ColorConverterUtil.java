@@ -2,14 +2,17 @@ package com.vaadin.addon.spreadsheet;
 
 import java.io.Serializable;
 
-import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
-
+/**
+ * ColorConverterUtil
+ */
 public class ColorConverterUtil implements Serializable {
+	private static final long serialVersionUID = 1L;
 
+	/**
+     * toRGBA
+     * @param argb
+     * @return String
+     */
     public static String toRGBA(byte[] argb) {
         int rgba[] = new int[3];
         for (int i = 1; i < argb.length; i++) {
@@ -24,27 +27,11 @@ public class ColorConverterUtil implements Serializable {
         return buildRgba(rgba, x);
     }
 
-    public static String getIndexedARGB(XSSFWorkbook workbook,
-        XSSFColor color) {
-        if (color.isIndexed() && hasCustomIndexedColors(workbook)) {
-            try {
-                StylesTable styleSource = workbook.getStylesSource();
-
-                CTRgbColor ctRgbColor = styleSource.getCTStylesheet().getColors()
-                    .getIndexedColors().getRgbColorList().get(color.getIndex());
-
-                String rgb = ctRgbColor.getDomNode().getAttributes()
-                    .getNamedItem("rgb").getNodeValue();
-                return toRGBA(rgb);
-            } catch (IndexOutOfBoundsException e) {
-                return color.getARGBHex();
-            }
-        }
-
-        return color.getARGBHex();
-
-    }
-
+    /**
+     * toRGBA
+     * @param hexARGB
+     * @return String
+     */
     public static String toRGBA(String hexARGB) {
         int rgba[] = new int[3];
 
@@ -55,18 +42,12 @@ public class ColorConverterUtil implements Serializable {
         return buildRgba(rgba, alpha);
     }
 
-    public static boolean hasCustomIndexedColors(XSSFWorkbook workbook) {
-        StylesTable stylesSource = workbook.getStylesSource();
-        CTColors ctColors = stylesSource.getCTStylesheet().getColors();
-        if (ctColors == null) {
-            return false;
-        }
-        if (ctColors.getIndexedColors() == null) {
-            return false;
-        }
-        return true;
-    }
-
+    /**
+     * buildRgba
+     * @param rgb
+     * @param alpha
+     * @return String
+     */
     public static String buildRgba(int[] rgb, float alpha) {
         StringBuilder sb = new StringBuilder();
         sb.append("rgba(");

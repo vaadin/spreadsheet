@@ -8,11 +8,18 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
+/**
+ * BordersWithHiddenColumnsAndRowsTest
+ */
 public class BordersWithHiddenColumnsAndRowsTest
     extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
 
+    /**
+     * test
+     * @throws Exception
+     */
     @Test
     public void test() throws Exception {
         spreadsheetPage = headerPage

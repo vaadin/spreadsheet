@@ -20,6 +20,9 @@ package com.vaadin.addon.spreadsheet.client;
 import com.vaadin.client.ui.Action;
 import com.vaadin.client.ui.ActionOwner;
 
+/**
+ * SpreadsheetAction
+ */
 public class SpreadsheetAction extends Action {
 
     private SpreadsheetServerRpc rpc;
@@ -31,10 +34,20 @@ public class SpreadsheetAction extends Action {
 
     private SpreadsheetWidget widget;
 
+    /**
+     * @param owner
+     */
     public SpreadsheetAction(ActionOwner owner) {
         super(owner);
     }
 
+    /**
+     * @param owner
+     * @param rpc
+     * @param key
+     * @param type
+     * @param widget
+     */
     public SpreadsheetAction(ActionOwner owner, SpreadsheetServerRpc rpc,
             String key, int type, SpreadsheetWidget widget) {
         this(owner);

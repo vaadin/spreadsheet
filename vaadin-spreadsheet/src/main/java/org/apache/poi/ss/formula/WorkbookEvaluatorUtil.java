@@ -33,6 +33,10 @@ public class WorkbookEvaluatorUtil {
 
     /**
      * Evaluate formula Ptg[] tokens
+     * @param spreadsheet 
+     * @param ptgs 
+     * @param cell 
+     * @return ValueEval
      */
     public static ValueEval evaluate(Spreadsheet spreadsheet, Ptg[] ptgs,
         Cell cell) {
@@ -46,6 +50,11 @@ public class WorkbookEvaluatorUtil {
         return workbookEvaluator.evaluateFormula(ec, ptgs);
     }
 
+    /**
+     * getEvaluationWorkbook
+     * @param spreadsheet
+     * @return BaseXSSFEvaluationWorkbook
+     */
     public static BaseXSSFEvaluationWorkbook getEvaluationWorkbook(Spreadsheet spreadsheet) {
         return (BaseXSSFEvaluationWorkbook) ((BaseXSSFFormulaEvaluator) spreadsheet.getFormulaEvaluator())._getWorkbookEvaluator().getWorkbook();
     }

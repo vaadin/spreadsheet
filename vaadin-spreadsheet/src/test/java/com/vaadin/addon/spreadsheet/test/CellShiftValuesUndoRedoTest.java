@@ -12,8 +12,14 @@ import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.By;
 
+/**
+ * CellShiftValuesUndoRedoTest
+ */
 public class CellShiftValuesUndoRedoTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * undoRedo_CellShiftValues_ValuesAreUpdatedAsExpectedWithNoErrors
+     */
     @Test
     public void undoRedo_CellShiftValues_ValuesAreUpdatedAsExpectedWithNoErrors() {
         headerPage.createNewSpreadsheet();

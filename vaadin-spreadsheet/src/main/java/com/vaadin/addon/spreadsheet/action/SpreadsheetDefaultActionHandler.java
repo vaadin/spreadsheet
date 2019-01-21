@@ -40,6 +40,9 @@ public class SpreadsheetDefaultActionHandler implements Handler {
 
     private final List<SpreadsheetAction> defaultActions;
 
+    /**
+     * default constructor
+     */
     public SpreadsheetDefaultActionHandler() {
         defaultActions = new ArrayList<SpreadsheetAction>();
         defaultActions.add(new HideHeaderAction());

@@ -2,6 +2,9 @@ package com.vaadin.addon.spreadsheet.test.fixtures;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * LargeSpreadsheetFixture
+ */
 public class LargeSpreadsheetFixture implements SpreadsheetFixture {
 
     @Override

@@ -74,6 +74,10 @@ public abstract class AbstractTB3Test extends ParallelTest {
         }
     }
 
+    /**
+     * @param key
+     * @return system property boolean
+     */
     protected boolean getBooleanProperty(String key) {
         return Boolean.parseBoolean(System.getProperty(key));
     }

@@ -8,6 +8,9 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.parallel.Browser;
 
+/**
+ * RowShiftTests
+ */
 public class RowShiftTests extends AbstractSpreadsheetTestCase {
 
 
@@ -23,6 +26,9 @@ public class RowShiftTests extends AbstractSpreadsheetTestCase {
         headerPage.createNewSpreadsheet();
         spreadsheet = $(SpreadsheetElement.class).first();
     }
+    /**
+     * testBasic
+     */
     @Test
     public void testBasic() {
         createRow(10,1);
@@ -37,6 +43,9 @@ public class RowShiftTests extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("8",spreadsheet.getCellAt("A8").getValue());
     }
 
+    /**
+     * testFormula
+     */
     @Test
     public void testFormula() {
         skipBrowser("Sending multiple keys fails with IE", Browser.IE9, Browser.IE10, Browser.IE11);
@@ -55,6 +64,9 @@ public class RowShiftTests extends AbstractSpreadsheetTestCase {
         Assert.assertEquals("6",spreadsheet.getCellAt("C9").getValue());
     }
 
+    /**
+     * testDeleteFormulaReference
+     */
     @Test
     public void testDeleteFormulaReference() {
         skipBrowser("sheetController.putCellContent() fails with PhantomJS", Browser.PHANTOMJS);

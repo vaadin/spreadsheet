@@ -18,6 +18,9 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+/**
+ * ClassesSerializableTest
+ */
 public class ClassesSerializableTest extends TestCase {
 
     /**
@@ -219,16 +222,17 @@ public class ClassesSerializableTest extends TestCase {
     private Collection<String> findClassesInJar(File file) throws IOException {
         Collection<String> classes = new ArrayList<String>();
 
-        JarFile jar = new JarFile(file);
-        Enumeration<JarEntry> e = jar.entries();
-        while (e.hasMoreElements()) {
-            JarEntry entry = e.nextElement();
-            if (entry.getName().endsWith(".class")) {
-                String nameWithoutExtension = entry.getName().replaceAll(
-                        "\\.class", "");
-                String className = nameWithoutExtension.replace('/', '.');
-                classes.add(className);
-            }
+        try (JarFile jar = new JarFile(file)) {
+	        Enumeration<JarEntry> e = jar.entries();
+	        while (e.hasMoreElements()) {
+	            JarEntry entry = e.nextElement();
+	            if (entry.getName().endsWith(".class")) {
+	                String nameWithoutExtension = entry.getName().replaceAll(
+	                        "\\.class", "");
+	                String className = nameWithoutExtension.replace('/', '.');
+	                classes.add(className);
+	            }
+	        }
         }
         return classes;
     }

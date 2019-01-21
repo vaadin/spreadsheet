@@ -30,8 +30,14 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.vaadin.client.ui.VLabel;
 import com.vaadin.client.ui.VOverlay;
 
+/**
+ * CellComment
+ */
 public class CellComment extends VOverlay {
 
+    /**
+     * COMMENT_OVERLAY_LINE_CLASSNAME
+     */
     protected static final String COMMENT_OVERLAY_LINE_CLASSNAME = "comment-overlay-line";
     private static final String COMMENT_OVERLAY_CLASSNAME = "v-spreadsheet-comment-overlay";
     private static final String COMMENT_OVERLAY_AUTHOR_CLASSNAME = "comment-overlay-author";
@@ -61,6 +67,10 @@ public class CellComment extends VOverlay {
     private int cellRow;
     private int cellCol;
 
+    /**
+     * @param owner
+     * @param paneElement
+     */
     public CellComment(final SheetWidget owner, Element paneElement) {
         this.paneElement = paneElement;
 
@@ -109,10 +119,16 @@ public class CellComment extends VOverlay {
         label.addClickHandler(clickHandler);
     }
 
+    /**
+     * bringForward 
+     */
     public void bringForward() {
         setZIndex(35);
     }
 
+    /**
+     * pushBack 
+     */
     public void pushBack() {
         setZIndex(30);
     }
@@ -123,20 +139,38 @@ public class CellComment extends VOverlay {
         line.removeFromParent();
     }
 
+    /**
+     * setCommentText
+     * @param text 
+     */
     public void setCommentText(String text) {
         label.setText(text);
         hideIfNoContent(label);
         showOrHideSeparator();
     }
 
+    /**
+     * getCol
+     * @return int
+     */
     public int getCol() {
         return cellCol;
     }
 
+    /**
+     * getRow
+     * @return int
+     */
     public int getRow() {
         return cellRow;
     }
 
+    /**
+     * show
+     * @param cellElement
+     * @param row
+     * @param col 
+     */
     public void show(Element cellElement, int row, int col) {
         this.cellElement = cellElement;
         cellRow = row;
@@ -149,6 +183,12 @@ public class CellComment extends VOverlay {
         setVisible(true);
     }
 
+    /**
+     * showDependingToCellRightCorner
+     * @param cellElement
+     * @param row
+     * @param col
+     */
     public void showDependingToCellRightCorner(Element cellElement, int row,
             int col) {
         this.cellElement = cellElement;
@@ -161,6 +201,9 @@ public class CellComment extends VOverlay {
         refreshPositionAccordingToCellRightCorner();
     }
 
+    /**
+     * refreshPositionAccordingToCellRightCorner 
+     */
     public void refreshPositionAccordingToCellRightCorner() {
         // do not set overlay visible if the cell top-right corner is not
         // visible on sheet
@@ -268,10 +311,18 @@ public class CellComment extends VOverlay {
         paneElement.appendChild(line);
     }
 
+    /**
+     * setSheetElement
+     * @param paneElement
+     */
     public void setSheetElement(Element paneElement) {
         this.paneElement = paneElement;
     }
 
+    /**
+     * setEditMode
+     * @param editMode
+     */
     public void setEditMode(boolean editMode) {
         if (editMode) {
             input.setValue(label.getText());
@@ -289,12 +340,20 @@ public class CellComment extends VOverlay {
         showOrHideSeparator();
     }
 
+    /**
+     * setAuthor
+     * @param authorName
+     */
     public void setAuthor(String authorName) {
         author.setText(authorName);
         hideIfNoContent(author);
         showOrHideSeparator();
     }
 
+    /**
+     * setInvalidFormulaMessage
+     * @param invalidFormulaMessage
+     */
     public void setInvalidFormulaMessage(String invalidFormulaMessage) {
         invalidFormula.setText(invalidFormulaMessage);
         hideIfNoContent(invalidFormula);

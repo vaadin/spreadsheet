@@ -20,6 +20,8 @@ public class ConditionalFormatterTest {
 
     /**
      * Ticket #17595
+     * @throws URISyntaxException 
+     * @throws IOException 
      */
     @Test
     public void createConditionalFormatterRules_sheetWithStringFormatRuleForNumericCell_rulesCreatedWithoutExceptions()
@@ -36,6 +38,8 @@ public class ConditionalFormatterTest {
      *         assert false : "hashCode not designed";
      * }. Assertions can be disabled with -DenableAssertions=false in maven.
      * HashCode issue reported in SHEET-120
+     * @throws URISyntaxException 
+     * @throws IOException 
      */
     @Test
     public void matchesFormula_rulesWithoutFormula_formulasEvaluatedWithoutExceptions()
@@ -45,6 +49,11 @@ public class ConditionalFormatterTest {
                 "ConditionalFormatterSamples.xlsx", 3);
     }
 
+    /**
+     * createConditionalFormatterRules_ruleWithNullBackgroundColor_rulesCreatedWithoutExceptions
+     * @throws URISyntaxException
+     * @throws IOException void
+     */
     @Test
     public void createConditionalFormatterRules_ruleWithNullBackgroundColor_rulesCreatedWithoutExceptions()
             throws URISyntaxException, IOException {

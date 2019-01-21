@@ -16,29 +16,48 @@ import com.vaadin.testbench.By;
  */
 public class HiddenAndFrozenTest extends AbstractSpreadsheetTestCase {
 
+    /**
+     * freezePane_sheetWithHiddenAndFrozenRowsAndColumns_freezePanePositionedCorrectly void
+     */
     @Test
     public void freezePane_sheetWithHiddenAndFrozenRowsAndColumns_freezePanePositionedCorrectly() {
         assertFreezePanePositionedCorrectly("hidden_and_frozen.xlsx", 11, 9,
                 "O15");
     }
 
+    /**
+     * freezePane_sheetWithMoreHiddenThanFrozenRowsAndColumns_freezePanePositionedCorrectly void
+     */
     @Test
     public void freezePane_sheetWithMoreHiddenThanFrozenRowsAndColumns_freezePanePositionedCorrectly() {
         assertFreezePanePositionedCorrectly("more_hidden_than_frozen.xlsx", 1,
                 1, "E7");
     }
 
+    /**
+     * freezePane_sheetWithRandomHiddenAndFrozenRowsAndColumns_freezePanePositionedCorrectly void
+     */
     @Test
     public void freezePane_sheetWithRandomHiddenAndFrozenRowsAndColumns_freezePanePositionedCorrectly() {
         assertFreezePanePositionedCorrectly("randomly_hidden_and_frozen.xlsx",
                 5, 3, "H15");
     }
     
+    /**
+     * freezePane_sheetWithImplicitlyHiddenFrozenRowsAndColumns_freezePanePositionedCorrectly void
+     */
     @Test
     public void freezePane_sheetWithImplicitlyHiddenFrozenRowsAndColumns_freezePanePositionedCorrectly() {
         assertFreezePanePositionedCorrectly("scrolled_frozen.xlsx", 2, 4, "G5");
     }
 
+    /**
+     * assertFreezePanePositionedCorrectly
+     * @param filename
+     * @param frozenRows
+     * @param frozenColumns
+     * @param regularCell void
+     */
     private void assertFreezePanePositionedCorrectly(String filename,
             int frozenRows, int frozenColumns, String regularCell) {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(filename, this);

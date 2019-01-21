@@ -19,6 +19,9 @@ package com.vaadin.addon.spreadsheet.client;
 
 import com.vaadin.shared.AbstractComponentState;
 
+/**
+ * PopupButtonState
+ */
 @SuppressWarnings("serial")
 public class PopupButtonState extends AbstractComponentState {
 
@@ -26,9 +29,24 @@ public class PopupButtonState extends AbstractComponentState {
     public int col;
     /** 1-based */
     public int row;
+    /**
+     * active
+     */
     public boolean active;
+    /**
+     * headerHidden
+     */
     public boolean headerHidden;
+    /**
+     * popupHeight
+     */
     public String popupHeight = null;
+    /**
+     * popupWidth
+     */
     public String popupWidth = null;
+    /**
+     * sheet
+     */
     public String sheet;
 }

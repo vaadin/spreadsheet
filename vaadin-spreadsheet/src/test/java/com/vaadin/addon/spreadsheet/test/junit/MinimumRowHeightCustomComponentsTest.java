@@ -18,11 +18,17 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+/**
+ * MinimumRowHeightCustomComponentsTest
+ */
 public class MinimumRowHeightCustomComponentsTest {
 
     private static final float CUSTOM_ROW_HEIGTH = 15f;
     private PublicSpreadsheet spreadsheet;
 
+    /**
+     * PublicSpreadsheet
+     */
     private static class PublicSpreadsheet extends Spreadsheet {
         PublicSpreadsheet(Workbook wb) {
             super(wb);
@@ -40,6 +46,10 @@ public class MinimumRowHeightCustomComponentsTest {
         }
     }
 
+    /**
+     * setUp
+     * @throws Exception
+     */
     @Before
     public void setUp() throws Exception {
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -82,6 +92,10 @@ public class MinimumRowHeightCustomComponentsTest {
         new TestableUI(spreadsheet);
     }
 
+    /**
+     * defaultMinimumRowHeightIs30
+     * @throws Exception
+     */
     @Test
     public void defaultMinimumRowHeightIs30() throws Exception {
         spreadsheet.onSheetScroll(1, 1, 20, 20);
@@ -89,6 +103,10 @@ public class MinimumRowHeightCustomComponentsTest {
         assertThat(spreadsheet.getState().rowH[1], is(30f));
     }
 
+    /**
+     * defaultMinimumRowHeightDifferentFromDefault
+     * @throws Exception
+     */
     @Test
     public void defaultMinimumRowHeightDifferentFromDefault() throws Exception {
         spreadsheet.setMinimumRowHeightForComponents(10);

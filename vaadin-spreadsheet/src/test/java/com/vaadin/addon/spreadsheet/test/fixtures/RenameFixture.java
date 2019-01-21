@@ -4,6 +4,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
+/**
+ * RenameFixture
+ */
 public class RenameFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {

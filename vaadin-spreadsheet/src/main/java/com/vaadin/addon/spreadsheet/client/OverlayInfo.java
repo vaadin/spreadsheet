@@ -19,27 +19,66 @@ package com.vaadin.addon.spreadsheet.client;
 
 import java.io.Serializable;
 
+/**
+ * OverlayInfo
+ */
 @SuppressWarnings("serial")
 public class OverlayInfo implements Serializable {
+    /**
+     * Type
+     */
     public enum Type {
+        /**
+         * IMAGE
+         */
         IMAGE,
+        /**
+         * COMPONENT
+         */
         COMPONENT
     };
     
+    /**
+     * constructor
+     */
     public OverlayInfo() {
     }
 
+    /**
+     * @param t
+     */
     public OverlayInfo(Type t) {
         type = t;
     }    
     
+    /**
+     * type
+     */
     public Type type = Type.IMAGE;
 
+    /**
+     * col
+     */
     public int col;
+    /**
+     * row
+     */
     public int row;
+    /**
+     * width
+     */
     public float width;
+    /**
+     * height
+     */
     public float height;
+    /**
+     * dy
+     */
     public float dy;
+    /**
+     * dx
+     */
     public float dx;
 
     @Override

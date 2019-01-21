@@ -5,6 +5,9 @@ import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.server.VaadinServlet;
 
+/**
+ * TestServlet
+ */
 @WebServlet(value = "/*", asyncSupported = true, initParams = {
         @WebInitParam(name = "heartbeatInterval", value = "10"),
         @WebInitParam(name = "UIProvider", value = "com.vaadin.addon.spreadsheet.test.demoapps.TestUIProviderImpl") })

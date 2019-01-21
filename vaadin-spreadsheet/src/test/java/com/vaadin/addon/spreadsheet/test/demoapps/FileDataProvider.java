@@ -22,6 +22,7 @@ class FileDataProvider {
      *
      * @param root root folder
      * @param filter Regexp for filtering files.
+     * @param logger 
      * @return a ListDataProvider of File
      */
     public static ListDataProvider<File> create(URI root, String filter, Logger logger) {
@@ -34,6 +35,7 @@ class FileDataProvider {
      *            root folder
      * @param filter
      *            Regexp for filtering files.
+     * @param logger 
      * @return a List of Files
      */
     public static List<File> getFiles(URI root, String filter, Logger logger) {
