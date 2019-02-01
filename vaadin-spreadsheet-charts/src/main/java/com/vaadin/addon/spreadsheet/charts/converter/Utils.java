@@ -99,15 +99,15 @@ public class Utils {
      * formula.
      * @param version to infer max # of rows for column-only formula references
      * @param formula containing possibly non-contiguous area refrences
-     * @return  array of references
+     * @return array of references
      */
     public static AreaReference[] getAreaReferences(SpreadsheetVersion version, String formula) {
-    	String formulaIn = formula;
+        String formulaIn = formula;
         // generateContiguous cannot parse a formula in parentheses
         if (formulaIn.startsWith("(") && formulaIn.endsWith(")")) {
-        	formulaIn = formulaIn.substring(1, formulaIn.length() - 1);
+            formulaIn = formulaIn.substring(1, formulaIn.length() - 1);
         }
-        
+
         return AreaReference.generateContiguous(version, formulaIn);
     }
 

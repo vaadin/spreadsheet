@@ -414,7 +414,7 @@ public class CellValueManager implements Serializable {
         case ERROR:
             return String.valueOf(cell.getErrorCellValue());
         default:
-        	return "";
+            return "";
         }
     }
 

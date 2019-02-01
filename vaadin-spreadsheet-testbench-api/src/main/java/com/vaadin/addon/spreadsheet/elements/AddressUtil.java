@@ -89,7 +89,7 @@ public class AddressUtil implements Serializable {
      * @return The numeric value of the address
      */
     private static int charAddressToInt(String address) {
-    	int result = 0;
+        int result = 0;
         String reversed = new StringBuffer(address.toUpperCase()).reverse().toString();
         for (int i = 0; i < reversed.length(); i++) {
             result += ((reversed.charAt(i) - 'A') + 1) * Math.pow(26, i);

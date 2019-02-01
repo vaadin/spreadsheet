@@ -108,13 +108,15 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     }
 
-    private static final Map<HorizontalAlignment, String> ALIGN = mapFor(HorizontalAlignment.LEFT, "left",
-    		HorizontalAlignment.CENTER, "center", HorizontalAlignment.RIGHT, "right", HorizontalAlignment.FILL, "left",
-    		HorizontalAlignment.JUSTIFY, "left", HorizontalAlignment.CENTER_SELECTION, "center");
+    private static final Map<HorizontalAlignment, String> ALIGN = mapFor(
+            HorizontalAlignment.LEFT, "left", HorizontalAlignment.CENTER,
+            "center", HorizontalAlignment.RIGHT, "right",
+            HorizontalAlignment.FILL, "left", HorizontalAlignment.JUSTIFY,
+            "left", HorizontalAlignment.CENTER_SELECTION, "center");
 
     private static final Map<VerticalAlignment, String> VERTICAL_ALIGN = mapFor(
-    		VerticalAlignment.BOTTOM, "flex-end", VerticalAlignment.CENTER, "center",
-    		VerticalAlignment.TOP, "flex-start");
+            VerticalAlignment.BOTTOM, "flex-end", VerticalAlignment.CENTER,
+            "center", VerticalAlignment.TOP, "flex-start");
 
     static final Map<org.apache.poi.ss.usermodel.BorderStyle, BorderStyle> BORDER = mapFor(
             org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT, BorderStyle.DASHED_THIN,

@@ -861,9 +861,9 @@ public class ConditionalFormatter implements Serializable {
             return eval instanceof NumericValueEval || isFormulaNumericType;
         case FORMULA:
             return isCoherentTypeFormula(eval, isFormulaStringType,
-                isFormulaBooleanType, isFormulaNumericType);
+                    isFormulaBooleanType, isFormulaNumericType);
         default:
-        	return false;
+            return false;
         }
     }
 

@@ -91,10 +91,8 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
         if (color.isIndexed() && hasCustomIndexedColors(workbook)) {
             try {
                 StylesTable styleSource = workbook.getStylesSource();
-
                 CTRgbColor ctRgbColor = styleSource.getCTStylesheet().getColors()
                     .getIndexedColors().getRgbColorList().get(color.getIndex());
-
                 String rgb = ctRgbColor.getDomNode().getAttributes()
                     .getNamedItem("rgb").getNodeValue();
                 return ColorConverterUtil.toRGBA(rgb);
@@ -102,9 +100,7 @@ public class XSSFColorConverterTest extends AbstractSpreadsheetTestCase {
                 return color.getARGBHex();
             }
         }
-
         return color.getARGBHex();
-
     }
 
     private static boolean hasCustomIndexedColors(XSSFWorkbook workbook) {

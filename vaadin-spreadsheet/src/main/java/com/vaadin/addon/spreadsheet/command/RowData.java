@@ -182,7 +182,7 @@ class RowData implements Serializable {
             cellType = cell.getCellType();
 
             switch (cellType) {
-            	case _NONE:
+                case _NONE:
                 case BLANK:
                     stringCellValue = cell.getStringCellValue();
                     break;
@@ -222,7 +222,7 @@ class RowData implements Serializable {
             cell.setCellType(cellType);
 
             switch (cellType) {
-            	case _NONE:
+                case _NONE:
                 case BLANK:
                     cell.setCellValue(stringCellValue);
                     break;

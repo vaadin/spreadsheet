@@ -295,7 +295,7 @@ class ColorUtils {
     }
 
     private static float HueToRGB(float p, float q, float hue) {
-    	float h = hue;
+        float h = hue;
         if (h < 0)
             h += 1;
 

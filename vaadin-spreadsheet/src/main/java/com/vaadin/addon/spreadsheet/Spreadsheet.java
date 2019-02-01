@@ -978,9 +978,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
-        SheetVisibility visibility = isVeryHidden ? SheetVisibility.VERY_HIDDEN 
-        		: (isHidden ? SheetVisibility.HIDDEN : SheetVisibility.VISIBLE);
-        
+        SheetVisibility visibility = isVeryHidden ? SheetVisibility.VERY_HIDDEN
+                : (isHidden ? SheetVisibility.HIDDEN : SheetVisibility.VISIBLE);
+
         workbook.setSheetVisibility(sheetPOIIndex, visibility);
 
         // skip component reload if "nothing changed"
