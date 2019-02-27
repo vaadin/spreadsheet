@@ -448,7 +448,10 @@ public class CellValueManager implements Serializable {
         for (CellRangeAddress range : cell.getSheet().getMergedRegions()) {
             if (range.isInRange(cell)) {
                 int w = 0;
-                for (int c=range.getFirstColumn(); c <= range.getLastColumn(); c++) w += spreadsheet.getState(false).colW[c];
+                for (int c = range.getFirstColumn(); c <= range
+                        .getLastColumn(); c++) {
+                    w += spreadsheet.getState(false).colW[c];
+                }
                 return w;
             }
         }
