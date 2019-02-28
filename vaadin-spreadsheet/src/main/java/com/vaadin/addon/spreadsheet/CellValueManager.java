@@ -438,7 +438,7 @@ public class CellValueManager implements Serializable {
                 getCellWidth(cell) - 4);
         return stringPixels.compareTo(columnWidth) <= 0;
     }
-    
+
     /**
      * Calculate cell width, accounting for merged cells (see #655)
      * @param cell
