@@ -2,8 +2,8 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,9 +40,8 @@ public class MergedCellNarrowFirstColumnTest extends AbstractSpreadsheetTestCase
             }
             underlyingCell = (TestBenchElement) element;
         }
-        if (underlyingCell == null) {
-            fail("underlying cell not found");
-        }
+        assertNotNull("underlying cell not found", underlyingCell);
+
         SheetCellElement cellElement = underlyingCell
                 .wrap(SheetCellElement.class);
         if (!BrowserUtil.isPhantomJS(getDesiredCapabilities())
