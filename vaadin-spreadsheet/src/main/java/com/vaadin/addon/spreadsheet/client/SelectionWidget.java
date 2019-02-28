@@ -824,9 +824,6 @@ public class SelectionWidget extends Composite {
             setFillMode(false);
         }
 
-        if (!dragging) {
-            showTouchActions();
-        }
     }
 
     public void setPaintPosition(int col1, int col2, int row1, int row2) {
@@ -844,128 +841,6 @@ public class SelectionWidget extends Composite {
         }
         if (horizontalSplitPosition > 0) {
             paintBottomLeft.setPosition(col1, col2, row1, row2);
-        }
-    }
-
-    private void showTouchActions() {
-        if (touchMode) {
-            // show touch actions in popup
-
-            if (touchActions != null) {
-                // remove old
-                touchActions.hide();
-            }
-
-            touchActions = new VOverlay(true);
-            touchActions.setOwner((Widget) sheetWidget.actionHandler);
-            touchActions.addStyleName("v-contextmenu");
-
-            final MenuBar m = new MenuBar();
-            m.addItem(new SafeHtmlBuilder().appendEscaped("Fill").toSafeHtml(),
-                    new ScheduledCommand() {
-
-                        @Override
-                        public void execute() {
-                            setFillMode(true);
-                            touchActions.hide();
-                        }
-                    });
-
-            touchActions.add(m);
-
-            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-                @Override
-                public void execute() {
-                    touchActions
-                            .setPopupPositionAndShow(new PositionCallback() {
-
-                                @Override
-                                public void setPosition(int offsetWidth,
-                                        int offsetHeight) {
-                                    // above top border
-                                    int top = 0;
-                                    int left = 0;
-                                    int bottom = 0;
-                                    int width = 0;
-                                    int parentTop = 0;
-                                    if (topRight != null
-                                            && topRight.isVisible()) {
-                                        top = topRight.top.getAbsoluteTop();
-                                        left = topRight.top.getAbsoluteLeft();
-                                        width = topRight.top.getClientWidth();
-                                        bottom = topRight.bottom
-                                                .getAbsoluteBottom() + 5;
-                                        if (topLeft.isVisible()) {
-                                            width += topLeft.top
-                                                    .getClientWidth();
-                                        }
-                                        if (bottomRight.isVisible()) {
-                                            bottom = bottomRight.bottom
-                                                    .getAbsoluteBottom() + 5;
-                                        }
-                                    } else if (topLeft != null
-                                            && topLeft.isVisible()) {
-                                        top = topLeft.top.getAbsoluteTop();
-                                        left = topLeft.top.getAbsoluteLeft();
-                                        width = topLeft.top.getClientWidth();
-                                        bottom = topLeft.bottom
-                                                .getAbsoluteBottom() + 5;
-                                        if (bottomLeft.isVisible()) {
-                                            bottom = bottomLeft.bottom
-                                                    .getAbsoluteBottom() + 5;
-                                        }
-                                    } else if (bottomLeft != null
-                                            && bottomLeft.isVisible()) {
-                                        top = bottomLeft.top.getAbsoluteTop();
-                                        left = bottomLeft.top.getAbsoluteLeft();
-                                        width = bottomLeft.top.getClientWidth();
-                                        bottom = bottomLeft.bottom
-                                                .getAbsoluteBottom() + 5;
-                                        if (bottomRight.isVisible()) {
-                                            width += bottomRight.top
-                                                    .getClientWidth();
-                                        }
-                                    } else {
-                                        top = bottomRight.top.getAbsoluteTop();
-                                        left = bottomRight.top
-                                                .getAbsoluteLeft();
-                                        width = bottomRight.top
-                                                .getClientWidth();
-                                        bottom = bottomRight.bottom
-                                                .getAbsoluteBottom() + 5;
-                                    }
-                                    if (width > sheetWidget.getElement()
-                                            .getClientWidth()) {
-                                        width = sheetWidget.getElement()
-                                                .getClientWidth();
-                                    }
-
-                                    if (sheetWidget.hasFrozenRows()) {
-                                        parentTop = sheetWidget
-                                                .getTopRightPane()
-                                                .getAbsoluteTop();
-                                    } else {
-                                        parentTop = sheetWidget
-                                                .getBottomRightPane()
-                                                .getAbsoluteTop();
-                                    }
-
-                                    top -= offsetHeight + 5;
-                                    left += (width / 2) - (offsetWidth / 2);
-
-                                    if (parentTop > top) {
-                                        // put under instead
-                                        top = bottom + 5;
-                                    }
-                                    touchActions.setPopupPosition(left, top);
-
-                                    // TODO check for room
-                                }
-                            });
-                    touchActions.show();
-                }
-            });
         }
     }
 
@@ -1224,7 +1099,6 @@ public class SelectionWidget extends Composite {
                 sheetWidget.getSelectedCellRow(), tempRow);
 
         dragging = false;
-        showTouchActions();
     }
 
     protected void setFillMode(boolean fillMode) {

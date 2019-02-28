@@ -118,6 +118,8 @@ public class SheetWidget extends Panel {
 
     private final SelectionWidget selectionWidget;
 
+    private final SheetContextHandler sheetContextHandler;
+    
     private final VOverlay hyperlinkTooltip;
 
     private final VOverlay resizeTooltip;
@@ -569,6 +571,8 @@ public class SheetWidget extends Panel {
         copyPasteBox = new CopyPasteTextBox(this, getCopyPasteHandler());
         getElement().appendChild(copyPasteBox.getElement());
 
+        sheetContextHandler = new SheetContextHandler(this);
+        
         initListeners();
 
         scrollHandler = new VLazyExecutor(SCROLL_HANDLER_TRIGGER_DELAY,
@@ -1008,6 +1012,7 @@ public class SheetWidget extends Panel {
     }
 
     protected void onSheetScroll(Event event) {
+        sheetContextHandler.cancelTimer();
         scrollHandler.trigger();
         moveHeadersToMatchScroll();
         updateOverflownMergedCellSizes();
@@ -1186,7 +1191,7 @@ public class SheetWidget extends Panel {
             event.preventDefault();
             if (event.getButton() == NativeEvent.BUTTON_RIGHT) {
                 Event.releaseCapture(sheet);
-                actionHandler.onCellRightClick(event, targetCol, targetRow);
+                // handled by ContextMenuEvent or iOS touch event with timer (SheetInputEventListener)
             } else {
                 sheet.focus();
                 // quit input if active
@@ -1761,30 +1766,6 @@ public class SheetWidget extends Panel {
                         }
                     }
                 });
-        addDomHandler(new ContextMenuHandler() {
-
-            @Override
-            public void onContextMenu(ContextMenuEvent event) {
-                if (actionHandler.hasCustomContextMenu()) {
-                    Element target = event.getNativeEvent().getEventTarget()
-                            .cast();
-                    String className = target.getAttribute("class");
-                    int i = jsniUtil.isHeader(className);
-                    if (i == 1 || i == 2) {
-                        int index = jsniUtil.parseHeaderIndex(className);
-                        if (i == 1) {
-                            actionHandler.onRowHeaderRightClick(
-                                    event.getNativeEvent(), index);
-                        } else {
-                            actionHandler.onColumnHeaderRightClick(
-                                    event.getNativeEvent(), index);
-                        }
-                    }
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            }
-        }, ContextMenuEvent.getType());
     }
 
     protected boolean isEditingCell() {
@@ -2928,6 +2909,7 @@ public class SheetWidget extends Panel {
      * handler (if needed).
      */
     private void onSheetScroll() {
+        sheetContextHandler.cancelTimer();
         int scrollTop = sheet.getScrollTop();
         int scrollLeft = sheet.getScrollLeft();
         int vScrollDiff = scrollTop - previousScrollTop;
