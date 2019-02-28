@@ -503,7 +503,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
                     while (i < mergedRegions.size()) {
                         MergedRegion newMergedRegion = mergedRegions.get(i);
                         sheetWidget.addMergedRegion(newMergedRegion);
-                        Cell cell = getSheetWidget().getCell(
+                        Cell cell = sheetWidget.getCell(
                                 newMergedRegion.col1, newMergedRegion.row1);
                         if (cell != null) {
                             // initial display only used single column width,
