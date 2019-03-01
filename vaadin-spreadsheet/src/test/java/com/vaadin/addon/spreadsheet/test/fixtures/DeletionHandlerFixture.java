@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -29,7 +30,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean cellDeleted(Cell cell, Sheet sheet, int colIndex,
                     int rowIndex, FormulaEvaluator formulaEvaluator,
-                    DataFormatter formatter) {
+                    DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
                 String message = "Deleting: " + rowIndex + ":" + colIndex;
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return true;
@@ -38,10 +40,11 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean individualSelectedCellsDeleted(
                     List<CellReference> individualSelectedCells, Sheet sheet,
-                    FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
-                String message = "Deleting: "
-                        + MultiplexerCellDeletionHandler
-                                .parseIndividualSelectedCellsKey(individualSelectedCells);
+                    FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
+                String message = "Deleting: " + MultiplexerCellDeletionHandler
+                        .parseIndividualSelectedCellsKey(
+                                individualSelectedCells);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return true;
             }
@@ -49,10 +52,10 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean cellRangeDeleted(
                     List<CellRangeAddress> cellRangeAddresses, Sheet sheet,
-                    FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
-                String message = "Deleting: "
-                        + MultiplexerCellDeletionHandler
-                                .parseCellRangeKey(cellRangeAddresses);
+                    FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
+                String message = "Deleting: " + MultiplexerCellDeletionHandler
+                        .parseCellRangeKey(cellRangeAddresses);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return true;
             }
@@ -63,7 +66,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean cellDeleted(Cell cell, Sheet sheet, int colIndex,
                     int rowIndex, FormulaEvaluator formulaEvaluator,
-                    DataFormatter formatter) {
+                    DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
                 String message = "Attempting to delete: " + rowIndex + ":"
                         + colIndex;
                 Notification.show(message, Type.ERROR_MESSAGE);
@@ -73,10 +77,12 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean individualSelectedCellsDeleted(
                     List<CellReference> individualSelectedCells, Sheet sheet,
-                    FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
+                    FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
                 String message = "Attempting to delete: "
                         + MultiplexerCellDeletionHandler
-                                .parseIndividualSelectedCellsKey(individualSelectedCells);
+                                .parseIndividualSelectedCellsKey(
+                                        individualSelectedCells);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return false;
             }
@@ -84,7 +90,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
             @Override
             public boolean cellRangeDeleted(
                     List<CellRangeAddress> cellRangeAddresses, Sheet sheet,
-                    FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
+                    FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+                    ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
                 String message = "Attempting to delete: "
                         + MultiplexerCellDeletionHandler
                                 .parseCellRangeKey(cellRangeAddresses);
@@ -118,7 +125,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
     }
 }
 
-class MultiplexerCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
+class MultiplexerCellDeletionHandler
+        implements Spreadsheet.CellDeletionHandler {
 
     private Map<String, Spreadsheet.CellDeletionHandler> handlerFactories = new HashMap<String, Spreadsheet.CellDeletionHandler>();
 
@@ -130,26 +138,30 @@ class MultiplexerCellDeletionHandler implements Spreadsheet.CellDeletionHandler 
     @Override
     public boolean cellDeleted(Cell cell, Sheet sheet, int colIndex,
             int rowIndex, FormulaEvaluator formulaEvaluator,
-            DataFormatter formatter) {
+            DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
         if (!handlerFactories.containsKey(rowIndex + ":" + colIndex)) {
             return true;
         }
 
-        return handlerFactories.get(rowIndex + ":" + colIndex).cellDeleted(
-                cell, sheet, colIndex, rowIndex, formulaEvaluator, formatter);
+        return handlerFactories.get(rowIndex + ":" + colIndex).cellDeleted(cell,
+                sheet, colIndex, rowIndex, formulaEvaluator, formatter,
+                conditionalFormattingEvaluator);
     }
 
     @Override
     public boolean individualSelectedCellsDeleted(
             List<CellReference> individualSelectedCells, Sheet sheet,
-            FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
+            FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
         String key = parseIndividualSelectedCellsKey(individualSelectedCells);
         if (!handlerFactories.containsKey(key)) {
             return true;
         }
 
         return handlerFactories.get(key).individualSelectedCellsDeleted(
-                individualSelectedCells, sheet, formulaEvaluator, formatter);
+                individualSelectedCells, sheet, formulaEvaluator, formatter,
+                conditionalFormattingEvaluator);
     }
 
     public static String parseIndividualSelectedCellsKey(
@@ -173,14 +185,16 @@ class MultiplexerCellDeletionHandler implements Spreadsheet.CellDeletionHandler 
     @Override
     public boolean cellRangeDeleted(List<CellRangeAddress> cellRangeAddresses,
             Sheet sheet, FormulaEvaluator formulaEvaluator,
-            DataFormatter formatter) {
+            DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
         String key = parseCellRangeKey(cellRangeAddresses);
         if (!handlerFactories.containsKey(key)) {
             return true;
         }
 
         return handlerFactories.get(key).cellRangeDeleted(cellRangeAddresses,
-                sheet, formulaEvaluator, formatter);
+                sheet, formulaEvaluator, formatter,
+                conditionalFormattingEvaluator);
     }
 
     public static String parseCellRangeKey(
@@ -217,11 +231,13 @@ class StackedCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
     @Override
     public boolean cellDeleted(Cell cell, Sheet sheet, int colIndex,
             int rowIndex, FormulaEvaluator formulaEvaluator,
-            DataFormatter formatter) {
+            DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
 
         for (Spreadsheet.CellDeletionHandler handler : handlers) {
             if (!handler.cellDeleted(cell, sheet, colIndex, rowIndex,
-                    formulaEvaluator, formatter)) {
+                    formulaEvaluator, formatter,
+                    conditionalFormattingEvaluator)) {
                 return false;
             }
         }
@@ -232,12 +248,13 @@ class StackedCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
     @Override
     public boolean individualSelectedCellsDeleted(
             List<CellReference> individualSelectedCells, Sheet sheet,
-            FormulaEvaluator formulaEvaluator, DataFormatter formatter) {
+            FormulaEvaluator formulaEvaluator, DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
 
         for (Spreadsheet.CellDeletionHandler handler : handlers) {
-            if (!handler
-                    .individualSelectedCellsDeleted(individualSelectedCells,
-                            sheet, formulaEvaluator, formatter)) {
+            if (!handler.individualSelectedCellsDeleted(individualSelectedCells,
+                    sheet, formulaEvaluator, formatter,
+                    conditionalFormattingEvaluator)) {
                 return false;
             }
         }
@@ -248,11 +265,13 @@ class StackedCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
     @Override
     public boolean cellRangeDeleted(List<CellRangeAddress> cellRangeAddresses,
             Sheet sheet, FormulaEvaluator formulaEvaluator,
-            DataFormatter formatter) {
+            DataFormatter formatter,
+            ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
 
         for (Spreadsheet.CellDeletionHandler handler : handlers) {
             if (!handler.cellRangeDeleted(cellRangeAddresses, sheet,
-                    formulaEvaluator, formatter)) {
+                    formulaEvaluator, formatter,
+                    conditionalFormattingEvaluator)) {
                 return false;
             }
         }
