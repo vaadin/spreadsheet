@@ -50,27 +50,23 @@ public class DefaultHyperlinkCellClickHandler implements
             .getLogger(DefaultHyperlinkCellClickHandler.class.getName());
 
     private final Spreadsheet spreadsheet;
-    private Navigator navigator;
     private HyperlinkOpenStyle openStyle;
 
     /**
      * @param spreadsheet
      */
     public DefaultHyperlinkCellClickHandler(Spreadsheet spreadsheet) {
-        this(spreadsheet, null, HyperlinkOpenStyle.NewTab);
+        this(spreadsheet, HyperlinkOpenStyle.NewTab);
     }
 
     /**
      * @param spreadsheet
-     * @param navigator
-     *            to use, if fragment links are present
      * @param openStyle
      *            defaults to {@link HyperlinkOpenStyle#NewTab} if null
      */
     public DefaultHyperlinkCellClickHandler(Spreadsheet spreadsheet,
-            Navigator navigator, HyperlinkOpenStyle openStyle) {
+            HyperlinkOpenStyle openStyle) {
         this.spreadsheet = spreadsheet;
-        this.navigator = navigator;
         this.openStyle = openStyle;
     }
 
@@ -81,23 +77,6 @@ public class DefaultHyperlinkCellClickHandler implements
      */
     protected Spreadsheet getSpreadsheet() {
         return spreadsheet;
-    }
-
-    /**
-     * expose for subclasses
-     * 
-     * @return the navigator
-     */
-    protected Navigator getNavigator() {
-        return navigator;
-    }
-
-    /**
-     * @param navigator
-     *            the navigator to set, or null to skip view navigation
-     */
-    public void setNavigator(Navigator navigator) {
-        this.navigator = navigator;
     }
 
     /**
@@ -134,9 +113,11 @@ public class DefaultHyperlinkCellClickHandler implements
             }
         } else if (isHyperlinkFormulaCell(cell)) {
             String address = getHyperlinkFunctionTarget(cell);
+            UI ui = UI.getCurrent();
+            final Navigator navigator = ui == null ? null : ui.getNavigator();
             if (address.startsWith("#!") && navigator != null) {
                 // non-push fragment navigation - requires navigator
-                navigateFragment(address.substring(2));
+                navigator.navigateTo(address.substring(2));
             } else if (address.startsWith("#")) { // inter-sheet address
                 navigateTo(cell, address.substring(1));
             } else if (address.startsWith("[") && address.contains("]")) {
@@ -207,8 +188,8 @@ public class DefaultHyperlinkCellClickHandler implements
     }
 
     /**
-     * we parse the formula with a POI trick so we don't have to use tricky
-     * regular expressions that can hit terminal runaway evaluation cases
+     * we parse the formula with a formula/POI trick so we don't have to use
+     * tricky regular expressions that hit terminal runaway evaluation cases
      * 
      * see: https://www.regular-expressions.info/catastrophic.html
      * 
@@ -220,7 +201,7 @@ public class DefaultHyperlinkCellClickHandler implements
      * IF(true, arg1[, arg2])
      * </pre>
      */
-    private String getFirstArgumentFromFormula(Cell cell) {
+    protected String getFirstArgumentFromFormula(Cell cell) {
         String formula = cell.getCellFormula()
                 .replaceFirst("(?i)hyperlink\\s*\\(", "IF(true, ");
 
@@ -252,17 +233,6 @@ public class DefaultHyperlinkCellClickHandler implements
     public final static boolean isHyperlinkFormulaCell(Cell cell) {
         return cell != null && cell.getCellType() == CellType.FORMULA
                 && cell.getCellFormula().startsWith("HYPERLINK(");
-    }
-
-    /**
-     * Typically only the navigator needs to be set, but this can be overridden
-     * if needed
-     * 
-     * @param viewFragment
-     */
-    protected void navigateFragment(String viewFragment) {
-        if (navigator != null)
-            navigator.navigateTo(viewFragment);
     }
 
     /**
