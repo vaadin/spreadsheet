@@ -114,10 +114,14 @@ public class DefaultHyperlinkCellClickHandler implements
         } else if (isHyperlinkFormulaCell(cell)) {
             String address = getHyperlinkFunctionTarget(cell);
             UI ui = UI.getCurrent();
-            final Navigator navigator = ui == null ? null : ui.getNavigator();
-            if (address.startsWith("#!") && navigator != null) {
+
+            // does nothing if no navigator present.  
+            // "#!" is an invalid start to an inter-sheet address
+            // (null sheet name)
+            if (address.startsWith("#!")) {
                 // non-push fragment navigation - requires navigator
-                navigator.navigateTo(address.substring(2));
+                final Navigator navigator = ui == null ? null : ui.getNavigator();
+                if (navigator != null) navigator.navigateTo(address.substring(2));
             } else if (address.startsWith("#")) { // inter-sheet address
                 navigateTo(cell, address.substring(1));
             } else if (address.startsWith("[") && address.contains("]")) {
@@ -137,7 +141,7 @@ public class DefaultHyperlinkCellClickHandler implements
      * @param cell
      * @param address
      */
-    protected void navigateTo(Cell cell, String address) {
+    private void navigateTo(Cell cell, String address) {
         if (address.contains("!")) { // has sheet name -> change
             String currentSheetName = cell.getSheet().getSheetName();
             String sheetName = address.substring(0, address.indexOf("!"));
