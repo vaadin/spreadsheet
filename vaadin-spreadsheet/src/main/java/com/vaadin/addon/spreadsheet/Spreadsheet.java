@@ -273,7 +273,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * An interface for handling clicks on cells that contain a hyperlink.
      * <p>
-     * Implement this interface and set it with 
+     * Implement this interface and set it with
      * {@link Spreadsheet#setHyperlinkCellClickHandler(HyperlinkCellClickHandler)}
      * to customize the default behavior.
      */
@@ -282,7 +282,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         /**
          * Called when a hyperlink cell has been clicked.
          * 
-         * Assumes the implementation knows which spreadsheet is in use if 
+         * Assumes the implementation knows which spreadsheet is in use if
          * needed, and how to navigate or perform some other action.
          * 
          * @param cell
@@ -291,7 +291,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
          *            The actual hyperlink
          */
         public void onHyperLinkCellClick(Cell cell, Hyperlink hyperlink);
-        
+
         /**
          * @return link target for use as a tooltip
          */
@@ -1351,11 +1351,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         // assume since the UI doesn't allow multiple sheet selections 
         // active sheet == selected tab
         workbook.setSelectedTab(sheetIndex);
-        
+
         // formulas defined relative to the sheet may need recalculation
         getFormulaEvaluator().clearAllCachedResultValues();
         getConditionalFormattingEvaluator().clearAllCachedValues();
-        
+
         reloadActiveSheetData();
         SpreadsheetFactory.reloadSpreadsheetData(this,
                 workbook.getSheetAt(sheetIndex));
@@ -1514,8 +1514,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *         defined
      */
     public Cell getCell(CellReference cellReference) {
-        return cellReference == null ? null : getCell(cellReference.getSheetName(),
-        		cellReference.getRow(), cellReference.getCol());
+        return cellReference == null ? null
+                : getCell(cellReference.getSheetName(), cellReference.getRow(),
+                        cellReference.getCol());
     }
 
     /**
@@ -2548,7 +2549,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             reloadImageSizesFromPOI = true;
             loadOrUpdateOverlays();
         }
-        
+
         getSpreadsheetStyleFactory().reloadActiveSheetCellStyles();
     }
 
@@ -2589,7 +2590,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             reloadImageSizesFromPOI = true;
             loadOrUpdateOverlays();
         }
-        
+
         getSpreadsheetStyleFactory().reloadActiveSheetCellStyles();
     }
 

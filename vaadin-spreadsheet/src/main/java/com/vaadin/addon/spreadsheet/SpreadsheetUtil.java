@@ -447,7 +447,7 @@ public class SpreadsheetUtil implements Serializable {
 
         return cellStyle.getCoreXf().getQuotePrefix();
     }
-    
+
     /**
      * evaluate the formula (which may just be a single cell or range string)
      * and find the bounding rectangle for the referenced cells.
