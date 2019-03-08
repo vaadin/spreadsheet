@@ -402,6 +402,7 @@ public class SheetTabSheet extends Widget {
         final Element e = Document.get().createDivElement();
         e.setInnerText(tabName);
         e.setClassName("sheet-tabsheet-tab");
+        e.setTitle(tabName);
         return e;
     }
 
