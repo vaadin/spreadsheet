@@ -244,10 +244,11 @@ public class DefaultHyperlinkCellClickHandler implements
      *            to navigate to
      */
     protected void openExternalLink(String address) {
-        if (openStyle != null)
+        if (openStyle != null) {
             openStyle.openExternalLink(address);
-        else
+        } else {
             HyperlinkOpenStyle.NewTab.openExternalLink(address);
+        }
     }
 
     /**
