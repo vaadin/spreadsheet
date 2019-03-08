@@ -25,18 +25,18 @@ public class DefaultHyperlinkCellClickHandlerTests {
         File testSheetFile = new File(testSheetResource.toURI());
 
         Workbook workbook = WorkbookFactory.create(testSheetFile);
-        
+
         final Spreadsheet ss = new Spreadsheet(workbook);
         ss.setActiveSheetIndex(0);
-        
+
         TestHyperlinkCellClickHandler handler = new TestHyperlinkCellClickHandler(ss);
-        
+
         // this tests the condition from #537, formula first argument is a cell
         // ref whose value is the link target
         assertEquals("#A3", handler.getFirstArgumentFromFormula(ss.getCell(0, 1)));
         assertEquals("https://www.google.com", handler.getFirstArgumentFromFormula(ss.getCell(1, 1)));
     }
-    
+
     public static class TestHyperlinkCellClickHandler extends DefaultHyperlinkCellClickHandler {
         public TestHyperlinkCellClickHandler(Spreadsheet spreadsheet) {
             super(spreadsheet);
