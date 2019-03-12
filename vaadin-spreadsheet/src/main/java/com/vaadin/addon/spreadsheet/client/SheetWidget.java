@@ -118,8 +118,6 @@ public class SheetWidget extends Panel {
 
     private final SelectionWidget selectionWidget;
 
-    private final SheetContextHandler sheetContextHandler;
-    
     private final VOverlay hyperlinkTooltip;
 
     private final VOverlay resizeTooltip;
@@ -571,8 +569,6 @@ public class SheetWidget extends Panel {
         copyPasteBox = new CopyPasteTextBox(this, getCopyPasteHandler());
         getElement().appendChild(copyPasteBox.getElement());
 
-        sheetContextHandler = new SheetContextHandler(this);
-        
         initListeners();
 
         scrollHandler = new VLazyExecutor(SCROLL_HANDLER_TRIGGER_DELAY,
@@ -1012,7 +1008,6 @@ public class SheetWidget extends Panel {
     }
 
     protected void onSheetScroll(Event event) {
-        sheetContextHandler.cancelTimer();
         scrollHandler.trigger();
         moveHeadersToMatchScroll();
         updateOverflownMergedCellSizes();
@@ -2909,7 +2904,7 @@ public class SheetWidget extends Panel {
      * handler (if needed).
      */
     private void onSheetScroll() {
-        sheetContextHandler.cancelTimer();
+        actionHandler.cancelContextClickTimer();
         int scrollTop = sheet.getScrollTop();
         int scrollLeft = sheet.getScrollLeft();
         int vScrollDiff = scrollTop - previousScrollTop;

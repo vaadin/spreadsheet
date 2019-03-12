@@ -28,10 +28,15 @@ import java.util.Set;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.dom.client.BrowserEvents;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,8 +44,10 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetWidget.SheetContextMenuHandler;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.client.ApplicationConnection;
+import com.vaadin.client.BrowserInfo;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
+import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractHasComponentsConnector;
 import com.vaadin.client.ui.Action;
@@ -48,6 +55,7 @@ import com.vaadin.client.ui.ActionOwner;
 import com.vaadin.client.ui.PostLayoutListener;
 import com.vaadin.client.ui.layout.ElementResizeEvent;
 import com.vaadin.client.ui.layout.ElementResizeListener;
+import com.vaadin.shared.MouseEventDetails;
 import com.vaadin.shared.ui.Connect;
 import com.vaadin.shared.ui.Connect.LoadStyle;
 
@@ -511,6 +519,90 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         }
     }
 
+    /**
+     * @see com.vaadin.client.ui.AbstractComponentConnector#sendContextClickEvent(com.vaadin.shared.MouseEventDetails, com.google.gwt.dom.client.EventTarget)
+     */
+    @Override
+    protected void sendContextClickEvent(MouseEventDetails details,
+            EventTarget eventTarget) {
+        
+        Element target = eventTarget.cast();
+
+        String className = target.getAttribute("class");
+
+        // click target is the inner div because IE10 and 9 are not compatible
+        // with 'pointer-events: none'
+        if ((BrowserInfo.get().isIE9() || BrowserInfo.get().isIE10())
+                && (className == null || className.isEmpty())) {
+            String parentClassName = target.getParentElement().getAttribute(
+                    "class");
+            if (parentClassName.contains("cell")) {
+                className = parentClassName;
+            }
+        }
+
+        SheetWidget sheetWidget = getWidget().getSheetWidget();
+        SheetJsniUtil jsniUtil = sheetWidget.getSheetJsniUtil();
+        NativeEvent evt = Document.get().createMouseEvent(
+                BrowserEvents.CONTEXTMENU,
+                true, 
+                true, 
+                0, 
+                details.getRelativeX(), 
+                details.getRelativeY(), 
+                details.getClientX(), 
+                details.getClientY(), 
+                details.isCtrlKey(), 
+                details.isAltKey(), 
+                details.isShiftKey(), 
+                details.isMetaKey(), 
+                NativeEvent.BUTTON_RIGHT, 
+                target
+        );
+
+        Event event = Event.as(evt);
+        
+        int i = jsniUtil.isHeader(className);
+        if (i == 1 || i == 2) {
+            int index = jsniUtil.parseHeaderIndex(className);
+            if (i == 1) {
+                sheetWidget.actionHandler.onRowHeaderRightClick(
+                        event, index);
+            } else {
+                sheetWidget.actionHandler.onColumnHeaderRightClick(
+                        event, index);
+            }
+        } else {
+            
+            if (className.contains("sheet") || target.getTagName().equals("input")
+                    || className.equals("floater")) {
+                return; // event target is one of the panes or input
+            }
+
+            if (sheetWidget.isEventInCustomEditorCell(event)) {
+                // allow sheet context menu on top of custom editors
+                sheetWidget.getSheetHandler().onCellRightClick(event, 
+                        sheetWidget.getSelectedCellColumn(),
+                        sheetWidget.getSelectedCellRow());
+            } else if (className.contains("cell")) {
+                if (className.equals("cell-comment-triangle")) {
+                    sheetWidget.jsniUtil.parseColRow(
+                            target.getParentElement().getAttribute(
+                                    "class"));
+                } else {
+                    sheetWidget.jsniUtil.parseColRow(className);
+                }
+                int targetCol = sheetWidget.jsniUtil.getParsedCol();
+                int targetRow = sheetWidget.jsniUtil.getParsedRow();
+                
+                sheetWidget.getSheetHandler()
+                .onCellRightClick(event, targetCol, targetRow);
+            }
+        }
+
+        WidgetUtil.clearTextSelection();
+    }
+    
     @Override
     public void postLayout() {
         getWidget().refreshOverlayPositions();

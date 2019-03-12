@@ -46,6 +46,7 @@ import com.vaadin.client.ServerConnector;
 import com.vaadin.client.Util;
 import com.vaadin.client.WidgetUtil;
 import com.vaadin.client.communication.RpcProxy;
+import com.vaadin.client.ui.AbstractComponentConnector;
 
 public class SpreadsheetWidget extends Composite implements SheetHandler,
         FormulaBarHandler, SheetTabSheetHandler, Focusable {
@@ -568,6 +569,24 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         }
     }
 
+    /**
+     * Cancel touch timers from sheet scroll and other events as needed
+     * 
+     * @see com.vaadin.addon.spreadsheet.client.SheetHandler#cancelContextClickTimer()
+     */
+    public void cancelContextClickTimer() {
+        callContextClickTimerCancel((AbstractComponentConnector) Util.findConnectorFor(this));
+    }
+
+    /**
+     * The method we need is private, but this is GWT, so we access it via JSNI
+     * @param ssCon need to use the direct class that declares the desired method
+     *              or the GWT compiler complains
+     */
+    private static native void callContextClickTimerCancel(AbstractComponentConnector ssCon) /*-{
+        ssCon.@com.vaadin.client.ui.AbstractComponentConnector::cancelTouchTimer()();
+    }-*/;
+    
     @Override
     public void onCellClick(int column, int row, String value,
             boolean shiftKey, boolean metaOrCtrlKey,

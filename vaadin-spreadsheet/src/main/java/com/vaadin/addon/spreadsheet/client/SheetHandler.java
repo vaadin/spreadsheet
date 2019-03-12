@@ -162,6 +162,11 @@ public interface SheetHandler extends GroupingHandler {
     void onCellRightClick(NativeEvent nativeEvent, int column, int row);
 
     /**
+     * if there is a connector iOS context click timer running, cancel it
+     */
+    void cancelContextClickTimer();
+    
+    /**
      * Called on right mouse button click on top of a row header
      *
      * @param nativeEvent

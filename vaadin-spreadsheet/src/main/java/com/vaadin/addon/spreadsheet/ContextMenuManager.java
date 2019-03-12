@@ -29,6 +29,7 @@ import com.vaadin.addon.spreadsheet.client.SpreadsheetActionDetails;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
 import com.vaadin.server.KeyMapper;
+import com.vaadin.shared.Registration;
 
 /**
  * ContextMenuManager is an utility class for the Spreadsheet component. This
@@ -50,6 +51,8 @@ public class ContextMenuManager implements Serializable {
     private final Spreadsheet spreadsheet;
 
     private int contextMenuHeaderIndex = -1;
+    
+    private Registration contextClickRegistration;
 
     /**
      * Constructs a new ContextMenuManager and ties it to the given Spreadsheet.
@@ -77,6 +80,7 @@ public class ContextMenuManager implements Serializable {
                 actionHandlers.add(actionHandler);
             }
         }
+        checkContextClickHandler();
     }
 
     /**
@@ -94,6 +98,7 @@ public class ContextMenuManager implements Serializable {
                 actionMapper = null;
             }
         }
+        checkContextClickHandler();
     }
 
     /**
@@ -106,6 +111,21 @@ public class ContextMenuManager implements Serializable {
         return actionHandlers != null && actionHandlers.size() > 0;
     }
 
+    private void checkContextClickHandler() {
+        if (hasActionHandlers()) {
+            if (contextClickRegistration == null) {
+                contextClickRegistration = spreadsheet
+                        .addContextClickListener(event -> {
+                            // this is never called, only here to tell the connector to
+                            // watch for context events
+                        });
+            }
+        } else if (contextClickRegistration != null) {
+            contextClickRegistration.remove();
+            contextClickRegistration = null;
+        }
+    }
+    
     /**
      * This method is called when a context menu event has happened on any cell
      * of the target Spreadsheet.
