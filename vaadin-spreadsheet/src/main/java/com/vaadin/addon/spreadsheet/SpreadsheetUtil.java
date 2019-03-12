@@ -546,12 +546,6 @@ public class SpreadsheetUtil implements Serializable {
             final RefListEval list = (RefListEval) rawEval;
             for (ValueEval eval : list.getList())
                 getAllReferencedCells(eval, spreadsheet, cells);
-        } else if (rawEval instanceof ExternalNameEval) {
-            // TODO: now what? Ignore this?
-            final ExternalNameEval exEval = (ExternalNameEval) rawEval;
-            throw new RuntimeException(
-                    "found external name '" + exEval.getName().getNameText()
-                            + "' but don't know what to do next.");
         } // ignore others, static values, not cell references
     }
 }

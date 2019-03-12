@@ -113,12 +113,12 @@ public class DefaultHyperlinkCellClickHandler implements
             }
         } else if (isHyperlinkFormulaCell(cell)) {
             String address = getHyperlinkFunctionTarget(cell);
-            UI ui = UI.getCurrent();
 
             // does nothing if no navigator present.  
             // "#!" is an invalid start to an inter-sheet address
             // (null sheet name)
             if (address.startsWith("#!")) {
+                UI ui = UI.getCurrent();
                 // non-push fragment navigation - requires navigator
                 final Navigator navigator = ui == null ? null : ui.getNavigator();
                 if (navigator != null) navigator.navigateTo(address.substring(2));
