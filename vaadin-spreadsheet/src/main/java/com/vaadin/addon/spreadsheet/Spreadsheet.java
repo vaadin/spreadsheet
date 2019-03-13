@@ -960,40 +960,40 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * If the currently active sheet is set hidden, another sheet is set as
      * active sheet automatically. At least one sheet should be always visible.
      * 
+     * @param hidden
+     *            Visibility state to set: 0-visible, 1-hidden, 2-very hidden.
      * @param sheetPOIIndex
      *            Index of the target sheet within the POI model, 0-based
-     * @param visibility
-     *            Visibility state to set: visible, hidden, very hidden.
      * @throws IllegalArgumentException
      *             If the index or state is invalid, or if trying to hide the
      *             only visible sheet.
      */
-    public void setSheetHidden(int sheetPOIIndex, SheetVisibility visibility) 
+    public void setSheetHidden(int sheetPOIIndex, int hidden)
             throws IllegalArgumentException {
         // POI allows user to hide all sheets ...
-        if (visibility != SheetVisibility.VISIBLE
+        if (hidden != 0
                 && SpreadsheetUtil.getNumberOfVisibleSheets(workbook) == 1
-                && ! (workbook.isSheetHidden(sheetPOIIndex)
-                        || workbook.isSheetVeryHidden(sheetPOIIndex))) {
+                && !workbook.isSheetHidden(sheetPOIIndex)) {
             throw new IllegalArgumentException(
                     "At least one sheet should be always visible.");
         }
         boolean isHidden = workbook.isSheetHidden(sheetPOIIndex);
         boolean isVeryHidden = workbook.isSheetVeryHidden(sheetPOIIndex);
         int activeSheetIndex = workbook.getActiveSheetIndex();
+        SheetVisibility visibility = isVeryHidden ? SheetVisibility.VERY_HIDDEN
+                : (isHidden ? SheetVisibility.HIDDEN : SheetVisibility.VISIBLE);
 
         workbook.setSheetVisibility(sheetPOIIndex, visibility);
 
         // skip component reload if "nothing changed"
-        if ( (visibility == SheetVisibility.VISIBLE && (isHidden || isVeryHidden))
-                || (visibility != SheetVisibility.VISIBLE
-                    && !(isHidden || isVeryHidden)) ) {
+        if (hidden == 0 && (isHidden || isVeryHidden) || hidden != 0
+                && !(isHidden && isVeryHidden)) {
             if (sheetPOIIndex != activeSheetIndex) {
                 reloadSheetNames();
                 getState().sheetIndex = getSpreadsheetSheetIndex(activeSheetIndex) + 1;
             } else { // the active sheet can be only set as hidden
                 int oldVisibleSheetIndex = getState().sheetIndex - 1;
-                if (visibility != SheetVisibility.VISIBLE
+                if (hidden != 0
                         && activeSheetIndex == (workbook.getNumberOfSheets() - 1)) {
                     // hiding the active sheet, and it was the last sheet
                     oldVisibleSheetIndex--;
@@ -1005,30 +1005,6 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                         .reloadSpreadsheetData(this, getActiveSheet());
             }
         }
-    }
-    
-    /**
-     * See {@link Workbook#setSheetHidden(int, boolean)}.
-     * <p>
-     * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
-     * status on currently visible/hidden/very hidden sheets.
-     * 
-     * If the currently active sheet is set hidden, another sheet is set as
-     * active sheet automatically. At least one sheet should be always visible.
-     * 
-     * @param hidden
-     *            Visibility state to set: 0-visible, 1-hidden, 2-very hidden.
-     * @param sheetPOIIndex
-     *            Index of the target sheet within the POI model, 0-based
-     * @throws IllegalArgumentException
-     *             If the index or state is invalid, or if trying to hide the
-     *             only visible sheet.
-     * @deprecated use {@link #setSheetHidden(int, SheetVisibility)}
-     */
-    @Deprecated
-    public void setSheetHidden(int sheetPOIIndex, int hidden)
-            throws IllegalArgumentException {
-        setSheetHidden(sheetPOIIndex, SheetVisibility.values()[hidden]);
     }
 
     /**
