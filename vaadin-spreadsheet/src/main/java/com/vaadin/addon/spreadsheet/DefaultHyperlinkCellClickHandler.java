@@ -137,9 +137,6 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * Navigate to a spreadsheet location
-     * 
-     * @param cell
-     * @param address
      */
     private void navigateTo(Cell cell, String address) {
         if (address.contains("!")) { // has sheet name -> change
