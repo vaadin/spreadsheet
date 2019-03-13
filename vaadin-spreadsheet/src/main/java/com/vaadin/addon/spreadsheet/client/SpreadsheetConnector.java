@@ -24,7 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -579,7 +578,8 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 return; // event target is one of the panes or input
             }
 
-            if (sheetWidget.isEventInCustomEditorCell(event)) {
+            // event we created above doesn't have an actual target, so can't use that
+            if (sheetWidget.isEventInCustomEditorCell(target)) {
                 // allow sheet context menu on top of custom editors
                 sheetWidget.getSheetHandler().onCellRightClick(event, 
                         sheetWidget.getSelectedCellColumn(),
@@ -597,6 +597,22 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 
                 sheetWidget.getSheetHandler()
                 .onCellRightClick(event, targetCol, targetRow);
+            } else {
+                // see if this is a custom component in a cell
+                // if it had it's own context menu, the event wouldn't get here
+                final Element ssElement = getWidget().getElement();
+                while (target != null && ! ssElement.equals(target)) {
+                    if (target.getClassName().contains(" cell ")) {
+                        className = target.getClassName();
+                        sheetWidget.jsniUtil.parseColRow(className);
+                        int targetCol = sheetWidget.jsniUtil.getParsedCol();
+                        int targetRow = sheetWidget.jsniUtil.getParsedRow();
+                        sheetWidget.getSheetHandler()
+                        .onCellRightClick(event, targetCol, targetRow);
+                        return;
+                    }
+                    target = target.getParentElement();
+                }
             }
         }
 

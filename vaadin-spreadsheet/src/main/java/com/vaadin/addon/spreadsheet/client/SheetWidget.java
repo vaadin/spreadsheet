@@ -1036,13 +1036,18 @@ public class SheetWidget extends Panel {
     }
 
     protected boolean isEventInCustomEditorCell(Event event) {
+        final Element target = event.getEventTarget().cast();
+        return isEventInCustomEditorCell(target);
+    }
+    protected boolean isEventInCustomEditorCell(Element target) {
         if (customEditorWidget != null) {
-            final Element target = event.getEventTarget().cast();
             final Element customWidgetElement = customEditorWidget.getElement();
-            return (customWidgetElement.isOrHasChild(target) || customWidgetElement
-                    .getParentElement() != null
-                    && customWidgetElement.getParentElement().isOrHasChild(
-                            target));
+            final Element customEditorParent = customWidgetElement.getParentElement();
+            boolean isEventInCustomEditorCell = customWidgetElement.isOrHasChild(target)
+                    || (customEditorParent != null
+                    && customEditorParent.isOrHasChild(
+                            target) );
+            return isEventInCustomEditorCell;
         }
         return false;
     }
