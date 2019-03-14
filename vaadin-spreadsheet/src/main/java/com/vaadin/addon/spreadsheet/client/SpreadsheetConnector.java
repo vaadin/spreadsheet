@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -36,7 +37,6 @@ import com.google.gwt.event.dom.client.ContextMenuEvent;
 import com.google.gwt.event.dom.client.ContextMenuHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
@@ -87,6 +87,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 final ArrayList<SpreadsheetActionDetails> actionDetails) {
             int left;
             int top;
+            // getTouchOrMouseClientX/Y() add in scroll position, don't repeat
             if (latestCellContextMenuEvent != null) {
                 left = SpreadsheetWidget
                         .getTouchOrMouseClientX(latestCellContextMenuEvent);
@@ -98,8 +99,6 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 top = SpreadsheetWidget
                         .getTouchOrMouseClientY(latestHeaderContextMenuEvent);
             }
-            top += Window.getScrollTop();
-            left += Window.getScrollLeft();
             getConnection().getContextMenu().showAt(new ActionOwner() {
 
                 @Override
