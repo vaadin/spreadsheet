@@ -165,7 +165,7 @@ public interface SheetHandler extends GroupingHandler {
      * if there is a connector iOS context click timer running, cancel it
      */
     void cancelContextClickTimer();
-    
+
     /**
      * Called on right mouse button click on top of a row header
      *

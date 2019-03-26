@@ -125,7 +125,7 @@ public class ContextMenuManager implements Serializable {
             contextClickRegistration = null;
         }
     }
-    
+
     /**
      * This method is called when a context menu event has happened on any cell
      * of the target Spreadsheet.

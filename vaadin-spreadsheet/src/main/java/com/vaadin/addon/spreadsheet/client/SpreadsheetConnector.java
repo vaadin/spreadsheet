@@ -523,7 +523,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
     @Override
     protected void sendContextClickEvent(MouseEventDetails details,
             EventTarget eventTarget) {
-        
+
         Element target = eventTarget.cast();
 
         String className = target.getAttribute("class");
@@ -559,7 +559,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
         );
 
         Event event = Event.as(evt);
-        
+
         int i = jsniUtil.isHeader(className);
         if (i == 1 || i == 2) {
             int index = jsniUtil.parseHeaderIndex(className);
@@ -571,7 +571,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                         event, index);
             }
         } else {
-            
+
             if (className.contains("sheet") || target.getTagName().equals("input")
                     || className.equals("floater")) {
                 return; // event target is one of the panes or input
@@ -617,7 +617,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
 
         WidgetUtil.clearTextSelection();
     }
-    
+
     @Override
     public void postLayout() {
         getWidget().refreshOverlayPositions();

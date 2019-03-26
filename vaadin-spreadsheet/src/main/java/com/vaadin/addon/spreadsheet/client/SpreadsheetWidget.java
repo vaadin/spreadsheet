@@ -594,7 +594,7 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     private static native void callContextClickTimerCancel(AbstractComponentConnector ssCon) /*-{
         ssCon.@com.vaadin.client.ui.AbstractComponentConnector::cancelTouchTimer()();
     }-*/;
-    
+
     @Override
     public void onCellClick(int column, int row, String value,
             boolean shiftKey, boolean metaOrCtrlKey,
