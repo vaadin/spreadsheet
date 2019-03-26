@@ -51,7 +51,7 @@ public class ContextMenuManager implements Serializable {
     private final Spreadsheet spreadsheet;
 
     private int contextMenuHeaderIndex = -1;
-    
+
     private Registration contextClickRegistration;
 
     /**

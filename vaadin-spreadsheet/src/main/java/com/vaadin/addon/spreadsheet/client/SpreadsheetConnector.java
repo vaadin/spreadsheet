@@ -129,7 +129,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 }
             }, left, top);
         }
-        
+
         @Override
         public void setSelectedCellAndRange(String name, int col, int row, int c1, int c2,
                 int r1, int r2, boolean scroll) {
@@ -593,7 +593,7 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
                 }
                 int targetCol = sheetWidget.jsniUtil.getParsedCol();
                 int targetRow = sheetWidget.jsniUtil.getParsedRow();
-                
+
                 sheetWidget.getSheetHandler()
                 .onCellRightClick(event, targetCol, targetRow);
             } else {
