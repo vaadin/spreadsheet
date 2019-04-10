@@ -41,6 +41,7 @@ public class SheetFilterTableTest extends AbstractSpreadsheetTestCase {
         headerPage.loadTestFixture(TestFixtures.SpreadsheetTable);
         final SheetCellElement cell = spreadsheet.getCellAt("B2");
         cell.contextClick();
+        waitForContexMenu();
         spreadsheet.getContextMenu().getItem("Delete Table B2:F6").click();
         waitUntil(new ExpectedCondition<Boolean>() {
             @Override
