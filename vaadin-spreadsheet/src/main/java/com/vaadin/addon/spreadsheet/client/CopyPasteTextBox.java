@@ -77,14 +77,12 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
     private SheetWidget widget;
     private CopyPasteHandler handler;
-    private HandlerRegistration nativePreviewHandler;
+    private HandlerRegistration nativePreviewHandlerRegistration;
 
     public CopyPasteTextBox(SheetWidget widget, CopyPasteHandler handler) {
 
         this.widget = widget;
         this.handler = handler;
-
-        nativePreviewHandler = Event.addNativePreviewHandler(this);
 
         getElement().getStyle().setPosition(Position.ABSOLUTE);
         getElement().getStyle().setZIndex(100);
@@ -92,6 +90,10 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
         // gets round browser security (field must be 'visible' when copying)
         getElement().getStyle().setOpacity(0);
+    }
+
+    public void registerHandler() {
+        nativePreviewHandlerRegistration = Event.addNativePreviewHandler(this);
     }
 
     @Override
@@ -176,9 +178,8 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     }
 
     public void onDestroy() {
-        if (nativePreviewHandler != null) {
-            nativePreviewHandler.removeHandler();
+        if (nativePreviewHandlerRegistration != null) {
+            nativePreviewHandlerRegistration.removeHandler();
         }
     }
-
 }
