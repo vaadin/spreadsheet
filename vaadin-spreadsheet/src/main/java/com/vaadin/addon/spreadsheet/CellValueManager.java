@@ -45,6 +45,7 @@ import org.apache.poi.hssf.record.RecordBase;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFHyperlink;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.formula.FormulaParseException;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.usermodel.Cell;
@@ -186,9 +187,17 @@ public class CellValueManager implements Serializable {
         return spreadsheet.getFormulaEvaluator();
     }
 
+    /**
+     * @return the common {@link ConditionalFormattingEvaluator} instance from
+     *         {@link Spreadsheet}
+     */
+    protected ConditionalFormattingEvaluator getConditionalFormattingEvaluator() {
+        return spreadsheet.getConditionalFormattingEvaluator();
+    }
+
     private String getCachedFormulaCellValue(Cell formulaCell) {
         String result = null;
-        switch (formulaCell.getCachedFormulaResultTypeEnum()) {
+        switch (formulaCell.getCachedFormulaResultType()) {
         case BLANK:
         case FORMULA:
         case _NONE:
@@ -223,14 +232,15 @@ public class CellValueManager implements Serializable {
         cellData.locked = spreadsheet.isCellLocked(cell);
         try {
             if (!spreadsheet.isCellHidden(cell)) {
-                if (cell.getCellTypeEnum() == CellType.FORMULA) {
+                if (cell.getCellType() == CellType.FORMULA) {
                     cellData.formulaValue = formulaFormatter
                             .reFormatFormulaValue(cell.getCellFormula(),
                                     spreadsheet.getLocale());
                     try {
                         String oldValue = getCachedFormulaCellValue(cell);
                         String newValue = formatter.formatCellValue(cell,
-                                getFormulaEvaluator());
+                                getFormulaEvaluator(),
+                                getConditionalFormattingEvaluator());
                         if (!newValue.equals(oldValue)) {
                             changedFormulaCells.add(new CellReference(cell));
                         }
@@ -253,11 +263,11 @@ public class CellValueManager implements Serializable {
             }
 
             String formattedCellValue = formatter.formatCellValue(cell,
-                    getFormulaEvaluator());
+                    getFormulaEvaluator(), getConditionalFormattingEvaluator());
 
             if (!spreadsheet.isCellHidden(cell)) {
-                if (cell.getCellTypeEnum() == CellType.FORMULA
-                        || cell.getCellTypeEnum() == CellType.NUMERIC) {
+                if (cell.getCellType() == CellType.FORMULA
+                        || cell.getCellType() == CellType.NUMERIC) {
                     formattedCellValue = formattedCellValue.replaceAll(
                             "^-(?=0(.0*)?$)", "");
                 }
@@ -282,9 +292,9 @@ public class CellValueManager implements Serializable {
                 cellData.needsMeasure = false;
                 if (!cellStyle.getWrapText()
                         && (!SpreadsheetUtil.cellContainsDate(cell)
-                                && cell.getCellTypeEnum() == CellType.NUMERIC
-                                || cell.getCellTypeEnum() == CellType.STRING || (cell
-                                .getCellTypeEnum() == CellType.FORMULA && !cell
+                                && cell.getCellType() == CellType.NUMERIC
+                                || cell.getCellType() == CellType.STRING || (cell
+                                .getCellType() == CellType.FORMULA && !cell
                                 .getCellFormula().startsWith("HYPERLINK")))) {
                     if (!doesValueFit(cell, formattedCellValue)) {
                         if (valueContainsOnlyNumbers(formattedCellValue)
@@ -297,25 +307,24 @@ public class CellValueManager implements Serializable {
                                                     .get((int) cell
                                                             .getCellStyle()
                                                             .getIndex()),
-                                            spreadsheet.getState(false).colW[cell
-                                                    .getColumnIndex()] - 10);
-                        } else if (cell.getCellTypeEnum() != CellType.STRING
-                                && (cell.getCellTypeEnum() == CellType.FORMULA
-                                        && cell.getCachedFormulaResultTypeEnum() != CellType.STRING)) {
+                                            getCellWidth(cell) - 10);
+                        } else if (cell.getCellType() != CellType.STRING
+                                && (cell.getCellType() == CellType.FORMULA
+                                        && cell.getCachedFormulaResultType() != CellType.STRING)) {
                             cellData.needsMeasure = true;
                         }
                     }
                 }
 
-                if (cellStyle.getAlignmentEnum() == HorizontalAlignment.RIGHT) {
+                if (cellStyle.getAlignment() == HorizontalAlignment.RIGHT) {
                     cellData.cellStyle = cellData.cellStyle + " r";
-                } else if (cellStyle.getAlignmentEnum() == HorizontalAlignment.GENERAL) {
+                } else if (cellStyle.getAlignment() == HorizontalAlignment.GENERAL) {
                     if (SpreadsheetUtil.cellContainsDate(cell)
-                            || cell.getCellTypeEnum() == CellType.NUMERIC
-                            || (cell.getCellTypeEnum() == CellType.FORMULA
+                            || cell.getCellType() == CellType.NUMERIC
+                            || (cell.getCellType() == CellType.FORMULA
                                     && !cell.getCellFormula().startsWith(
                                             "HYPERLINK") && !(cell
-                                    .getCachedFormulaResultTypeEnum() == CellType.STRING))) {
+                                    .getCachedFormulaResultType() == CellType.STRING))) {
                         cellData.cellStyle = cellData.cellStyle + " r";
                     }
                 }
@@ -335,7 +344,7 @@ public class CellValueManager implements Serializable {
                 markedCells.add(SpreadsheetUtil.toKey(cell));
             }
 
-            if (cell.getCellTypeEnum() == CellType.NUMERIC
+            if (cell.getCellType() == CellType.NUMERIC
                     && DateUtil.isCellDateFormatted(cell)) {
                 cellData.originalValue = cellData.value;
             } else {
@@ -359,8 +368,8 @@ public class CellValueManager implements Serializable {
     }
 
     private void handleIsDisplayZeroPreference(Cell cell, CellData cellData) {
-        boolean isCellNumeric = cell.getCellTypeEnum() == CellType.NUMERIC;
-        boolean isCellFormula = cell.getCellTypeEnum() == CellType.FORMULA;
+        boolean isCellNumeric = cell.getCellType() == CellType.NUMERIC;
+        boolean isCellFormula = cell.getCellType() == CellType.FORMULA;
         boolean isApplicableCellType = isCellNumeric || isCellFormula;
 
         boolean displayZeroAsBlank = !cell.getSheet().isDisplayZeros();
@@ -377,7 +386,7 @@ public class CellValueManager implements Serializable {
      * for cells.
      */
     private boolean isGenerallCell(Cell cell) {
-        return cell.getCellTypeEnum() == CellType.NUMERIC
+        return cell.getCellType() == CellType.NUMERIC
                 && cell.getCellStyle().getDataFormatString()
                         .contains("General");
     }
@@ -387,7 +396,7 @@ public class CellValueManager implements Serializable {
             return "";
         }
 
-        CellType cellType = cell.getCellTypeEnum();
+        CellType cellType = cell.getCellType();
         switch (cellType) {
         case FORMULA:
             return cell.getCellFormula();
@@ -414,7 +423,7 @@ public class CellValueManager implements Serializable {
         case ERROR:
             return String.valueOf(cell.getErrorCellValue());
         default:
-        	return "";
+            return "";
         }
     }
 
@@ -436,8 +445,28 @@ public class CellValueManager implements Serializable {
         // FIXME We should probably measure this from the actual value since it
         // might be changed in the style
         BigDecimal columnWidth = new BigDecimal(
-                spreadsheet.getState(false).colW[cell.getColumnIndex()] - 4);
+                getCellWidth(cell) - 4);
         return stringPixels.compareTo(columnWidth) <= 0;
+    }
+
+    /**
+     * Calculate cell width, accounting for merged cells (see #655)
+     * @param cell
+     * @return cell width, including widths of any merged columns
+     */
+    protected int getCellWidth(Cell cell) {
+        for (CellRangeAddress range : cell.getSheet().getMergedRegions()) {
+            if (range.isInRange(cell)) {
+                int w = 0;
+                for (int c = range.getFirstColumn(); c <= range
+                        .getLastColumn(); c++) {
+                    w += spreadsheet.getState(false).colW[c];
+                }
+                return w;
+            }
+        }
+        // if we get here, cell is not in a merged region
+        return spreadsheet.getState(false).colW[cell.getColumnIndex()];
     }
 
     /**
@@ -593,7 +622,8 @@ public class CellValueManager implements Serializable {
         if (getCustomCellValueHandler() == null
                 || getCustomCellValueHandler().cellValueUpdated(cell,
                         activeSheet, col - 1, row - 1, value,
-                        getFormulaEvaluator(), formatter)) {
+                        getFormulaEvaluator(), formatter,
+                        getConditionalFormattingEvaluator())) {
             Exception exception = null;
             try {
                 // handle new cell creation
@@ -606,13 +636,13 @@ public class CellValueManager implements Serializable {
                     // modify existing cell, possibly switch type
                     formattedCellValue = getFormattedCellValue(cell);
                     final String key = SpreadsheetUtil.toKey(col, row);
-                    oldCellType = cell.getCellTypeEnum();
+                    oldCellType = cell.getCellType();
                     if (!sentCells.remove(key)) {
                         sentFormulaCells.remove(key);
                     }
 
                     // Old value was hyperlink => needs refresh
-                    if (cell.getCellTypeEnum() == CellType.FORMULA
+                    if (cell.getCellType() == CellType.FORMULA
                             && cell.getCellFormula().startsWith("HYPERLINK")) {
                         updateHyperlinks = true;
                     }
@@ -628,7 +658,7 @@ public class CellValueManager implements Serializable {
                                                   spreadsheetLocale);
 
                         formulaChanged =
-                            ((cell.getCellTypeEnum() == CellType.FORMULA)
+                            ((cell.getCellType() == CellType.FORMULA)
                                 && !newFormula.equals(cell.getCellFormula()));
                         cell.setCellType(CellType.FORMULA);
                         cell.setCellFormula(newFormula);
@@ -728,7 +758,7 @@ public class CellValueManager implements Serializable {
                 if (formattedCellValue == null
                         || !formattedCellValue
                                 .equals(getFormattedCellValue(cell))
-                        || oldCellType != cell.getCellTypeEnum()
+                        || oldCellType != cell.getCellType()
                         || formulaChanged) {
                     fireCellValueChangeEvent(cell);
                 }
@@ -757,7 +787,8 @@ public class CellValueManager implements Serializable {
      */
     private String getFormattedCellValue(Cell cell) {
         try {
-            return formatter.formatCellValue(cell, getFormulaEvaluator());
+            return formatter.formatCellValue(cell, getFormulaEvaluator(),
+                    getConditionalFormattingEvaluator());
         } catch (RuntimeException rte) {
             return null;
         }
@@ -917,7 +948,8 @@ public class CellValueManager implements Serializable {
             final Cell cell = row.getCell(colIndex);
             if (cell != null) {
                 return customCellDeletionHandler.cellDeleted(cell, activeSheet,
-                        colIndex, rowIndex, getFormulaEvaluator(), formatter);
+                        colIndex, rowIndex, getFormulaEvaluator(), formatter,
+                        getConditionalFormattingEvaluator());
             }
         }
         return true;
@@ -943,7 +975,7 @@ public class CellValueManager implements Serializable {
                 .getActiveSheetIndex());
         return customCellDeletionHandler.individualSelectedCellsDeleted(
                 individualSelectedCells, activeSheet, getFormulaEvaluator(),
-                formatter);
+                formatter, getConditionalFormattingEvaluator());
     }
 
     /**
@@ -963,7 +995,8 @@ public class CellValueManager implements Serializable {
         final Sheet activeSheet = workbook.getSheetAt(workbook
                 .getActiveSheetIndex());
         return customCellDeletionHandler.cellRangeDeleted(cellRangeAddresses,
-                activeSheet, getFormulaEvaluator(), formatter);
+                activeSheet, getFormulaEvaluator(), formatter,
+                getConditionalFormattingEvaluator());
     }
 
     /**
@@ -1106,7 +1139,7 @@ public class CellValueManager implements Serializable {
                         if (cell != null) {
                             final CellData cd = createCellDataForCell(cell);
                             if (cd != null) {
-                                CellType cellType = cell.getCellTypeEnum();
+                                CellType cellType = cell.getCellType();
                                 if (cellType == CellType.FORMULA) {
                                     sentFormulaCells.add(key);
                                 } else {
@@ -1160,7 +1193,7 @@ public class CellValueManager implements Serializable {
                         rowIndex + 1);
                 CellData cd = createCellDataForCell(cell);
                 // update formula cells
-                if (cell.getCellTypeEnum() == CellType.FORMULA) {
+                if (cell.getCellType() == CellType.FORMULA) {
                     if (cd != null) {
                         if (sentFormulaCells.contains(key)
                                 || markedCells.contains(key)) {
@@ -1263,7 +1296,7 @@ public class CellValueManager implements Serializable {
                     Cell cell = row.getCell(j);
                     if (cell != null) {
                         final String key = SpreadsheetUtil.toKey(j + 1, i + 1);
-                        if (cell.getCellTypeEnum() == CellType.FORMULA) {
+                        if (cell.getCellType() == CellType.FORMULA) {
                             sentFormulaCells.remove(key);
                         } else {
                             sentCells.remove(key);
@@ -1327,7 +1360,7 @@ public class CellValueManager implements Serializable {
                 } else {
                     markedCells.add(key);
                 }
-                if (cell.getCellTypeEnum() == CellType.FORMULA) {
+                if (cell.getCellType() == CellType.FORMULA) {
                     sentFormulaCells.remove(key);
                 } else {
                     sentCells.remove(key);

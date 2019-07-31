@@ -1,12 +1,14 @@
 package com.vaadin.addon.spreadsheet.test.fixtures;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Comment;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Drawing;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 public class AddOrRemoveCommentFixture implements SpreadsheetFixture {
 
@@ -41,7 +43,7 @@ public class AddOrRemoveCommentFixture implements SpreadsheetFixture {
     }
 
     private Comment createCommentTo(int row, int col) {
-        Drawing drawing = spreadsheet.getActiveSheet().createDrawingPatriarch();
+        Drawing<?> drawing = spreadsheet.getActiveSheet().createDrawingPatriarch();
         CreationHelper factory = spreadsheet.getActiveSheet().getWorkbook()
                 .getCreationHelper();
 
