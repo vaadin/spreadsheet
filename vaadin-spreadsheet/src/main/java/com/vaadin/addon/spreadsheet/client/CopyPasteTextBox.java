@@ -92,6 +92,9 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
         getElement().getStyle().setOpacity(0);
     }
 
+    /**
+     * Register the instance of {@link CopyPasteTextBox} to listen to all native events
+     */
     public void registerHandler() {
         nativePreviewHandlerRegistration = Event.addNativePreviewHandler(this);
     }
@@ -177,6 +180,9 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
         }
     }
 
+    /**
+     * Removes the registration of the handler responsible for native events
+     */
     public void onDestroy() {
         if (nativePreviewHandlerRegistration != null) {
             nativePreviewHandlerRegistration.removeHandler();
