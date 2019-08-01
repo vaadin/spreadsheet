@@ -13,15 +13,11 @@ import com.vaadin.ui.VerticalLayout;
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
 public class EmptySpreadsheetSizeFullUI extends UI {
 
-
-    private Spreadsheet spreadsheet = null;
-
     @Override
     protected void init(VaadinRequest request) {
         final VerticalLayout layout = new VerticalLayout();
         layout.setSizeFull();
         setContent(layout);
-        spreadsheet = new Spreadsheet();
-        layout.addComponents(spreadsheet);
+        layout.addComponents(new Spreadsheet());
     }
 }

@@ -186,6 +186,7 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     public void onDestroy() {
         if (nativePreviewHandlerRegistration != null) {
             nativePreviewHandlerRegistration.removeHandler();
+            nativePreviewHandlerRegistration = null;
         }
     }
 }
