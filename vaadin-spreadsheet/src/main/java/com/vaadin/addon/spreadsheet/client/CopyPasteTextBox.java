@@ -37,7 +37,6 @@ import com.google.gwt.user.client.ui.TextArea;
  * and oncut events, and put our string into the HTML clipboard instead of the
  * normal one.
  *
- * @author Thomas Mattsson / Vaadin Ltd.
  */
 public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
 
@@ -93,10 +92,13 @@ public class CopyPasteTextBox extends TextArea implements NativePreviewHandler {
     }
 
     /**
-     * Register the instance of {@link CopyPasteTextBox} to listen to all native events
+     * Register this instance to listen to all native events
      */
     public void registerHandler() {
-        nativePreviewHandlerRegistration = Event.addNativePreviewHandler(this);
+        if (nativePreviewHandlerRegistration == null) {
+            nativePreviewHandlerRegistration = Event
+                    .addNativePreviewHandler(this);
+        }
     }
 
     @Override
