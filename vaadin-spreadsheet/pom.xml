@@ -418,7 +418,7 @@
         <repository>
             <id>vaadin-addons</id>
             <name>Vaadin add-ons repository</name>
-            <url>http://tools.vaadin.com/nexus/content/repositories/vaadin-addons</url>
+            <url>https://tools.vaadin.com/nexus/content/repositories/vaadin-addons</url>
         </repository>
     </distributionManagement>
 
@@ -433,12 +433,6 @@
             <id>Vaadin releases</id>
             <url>https://oss.sonatype.org/content/repositories/vaadin-releases</url>
         </repository>
-
-        <repository>
-            <id>Apache POI</id>
-            <url>https://mvnrepository.com/artifact/org.apache.poi/poi</url>
-        </repository>
-
         <repository>
             <id>vaadin-addons</id>
             <url>https://maven.vaadin.com/vaadin-addons</url>
@@ -449,15 +443,6 @@
             <releases>
                 <enabled>false</enabled>
             </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>maven2-repository.dev.java.net</id>
-            <name>Java.net Maven 2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
-            <layout>default</layout>
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
