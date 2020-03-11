@@ -1192,6 +1192,12 @@ public class CellValueManager implements Serializable {
                 final String key = SpreadsheetUtil.toKey(columnIndex + 1,
                         rowIndex + 1);
 
+                // Mark for update if there are formatting rules.
+                if (spreadsheet.getConditionalFormatter()
+                    .getCellFormattingIndex(cell) != null) {
+                    markedCells.add(key);
+                }
+
                 // update formula cells
                 if (cell.getCellType() == CellType.FORMULA) {
                     if (sentFormulaCells.contains(key)
