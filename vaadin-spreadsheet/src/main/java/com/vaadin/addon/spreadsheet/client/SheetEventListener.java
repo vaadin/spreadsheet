@@ -95,11 +95,8 @@ public class SheetEventListener implements EventListener {
                 }
                 break;
             case Event.ONMOUSEUP:
-                if (event.getButton() == NativeEvent.BUTTON_RIGHT) {
-                    // Context menu is displayed on mouse up to prevent
-                    // contextmenu event on VContextMenu
-                    widget.onSheetMouseDown(event);
-                }
+                // now that context menus are handled with the contextMenuEvent
+                // this should do nothing.
                 break;
             case Event.ONDBLCLICK:
                 onSheetDoubleClick(event);

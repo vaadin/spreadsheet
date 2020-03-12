@@ -56,6 +56,7 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         ContextMenuHelper contextMenu = new ContextMenuHelper(driver);
         SheetCellElement cell = spreadsheet.getCellAt(3, 3);
         cell.contextClick();
+        waitForContexMenu();
         contextMenu.clickItem("Delete comment");
         assertNoErrorIndicatorDetected();
     }
@@ -69,6 +70,7 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         ContextMenuHelper contextMenu = new ContextMenuHelper(driver);
         SheetCellElement cell = spreadsheet.getCellAt(3, 3);
         cell.contextClick();
+        waitForContexMenu();
         contextMenu.clickItem("Show comment");
         assertNoErrorIndicatorDetected();
     }

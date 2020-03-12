@@ -1,6 +1,7 @@
 package com.vaadin.addon.spreadsheet.test.demoapps;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
+import com.vaadin.addon.spreadsheet.test.fixtures.ActionFixture;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.annotations.Widgetset;
@@ -20,6 +21,8 @@ public class TouchUI extends UI {
         setContent(ss);
         ss.setSizeFull();
         setSizeFull();
+
+        new ActionFixture().loadFixture(ss);
     }
 
 }

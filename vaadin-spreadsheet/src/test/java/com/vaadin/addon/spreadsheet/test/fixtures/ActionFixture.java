@@ -38,7 +38,13 @@ public class ActionFixture implements SpreadsheetFixture {
             }
 
             private void doubleValue(Cell cell) {
-                cell.setCellValue(cell.getNumericCellValue() * 2);
+                try {
+                    cell.setCellValue(cell.getNumericCellValue() * 2);
+                } catch (IllegalStateException 
+                        | NumberFormatException 
+                        | NullPointerException e) {
+                    // ignore
+                }
             }
         });
 

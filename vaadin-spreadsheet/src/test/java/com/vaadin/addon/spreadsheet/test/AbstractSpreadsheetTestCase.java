@@ -10,7 +10,9 @@ import java.util.Locale;
 import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetDemoUI;
@@ -64,6 +66,16 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
     protected void waitForElementPresent(By locator) {
         waitUntil(ExpectedConditions.presenceOfElementLocated(locator));
     }
+
+    protected void waitForContexMenu() {
+        waitUntil(new ExpectedCondition<Object>() {
+            @Override
+            public Object apply(WebDriver webDriver) {
+                return webDriver.findElements(By.className("v-contextmenu")).size() > 0;
+            }
+        });
+    }
+
 
     protected void setLocale(Locale locale) {
         $(NativeSelectElement.class).id("localeSelect")

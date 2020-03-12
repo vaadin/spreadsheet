@@ -35,4 +35,20 @@ public class SheetHeaderElement extends AbstractElement {
                 findElement(By.className("header-resize-dnd-second")),
                 getCommandExecutor());
     }
+    
+
+    /**
+     * Override to allow cell context menu tests to pass for PhantomJS.
+     * See the linked issue below for code.  PhantomJS doesn't support context
+     * menu directly with Selenium.
+     * 
+     * @see com.vaadin.testbench.TestBenchElement#contextClick()
+     * @see "https://github.com/ariya/phantomjs/issues/14005"
+     */
+    @Override
+    public void contextClick() {
+        // for PhantomJS, this won't open the context menu
+        super.contextClick();
+        ElementUtil.phantomJSContextClick(getDriver(), getWrappedElement());
+    }
 }

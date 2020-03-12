@@ -3,7 +3,6 @@ package com.vaadin.addon.spreadsheet.test;
 import java.util.Locale;
 
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
@@ -231,15 +230,6 @@ public class FormulaFormatTest extends AbstractSpreadsheetTestCase {
                         "style.appendChild(document.createTextNode(css)); " +
                         "document.head.appendChild(style);";
         executeScript(script);
-    }
-
-    private void waitForContexMenu() {
-        waitUntil(new ExpectedCondition<Object>() {
-            @Override
-            public Object apply(WebDriver webDriver) {
-                return webDriver.findElements(By.className("v-contextmenu")).size() > 0;
-            }
-        });
     }
 
 }
