@@ -21,7 +21,9 @@ import java.io.Serializable;
 
 import org.apache.poi.ss.usermodel.BorderFormatting;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Color;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
+import org.apache.poi.ss.usermodel.DifferentialStyleProvider;
 import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder.BorderSide;
 
 /**
@@ -71,6 +73,17 @@ public interface ColorConverter extends Serializable {
             BorderFormatting format);
 
     /**
+     * Returns CSS border definitions for the given attribute and color
+     * 
+     * @param attr
+     *            border CSS attribute
+     * @param colorInstance
+     *            POI color
+     * @return CSS color string
+     */
+    String getBorderColorCSS(String attr, Color colorInstance);
+
+    /**
      * Writes the default background and foreground colors as CSS styles from
      * the given cell style to the given string buffer.
      * 
@@ -101,6 +114,16 @@ public interface ColorConverter extends Serializable {
     public String getBackgroundColorCSS(ConditionalFormattingRule rule);
 
     /**
+     * Create a CSS color string for the background in the given style.
+     * 
+     * @param styleProvider
+     *            conditional format rule, table style, etc.
+     * @return valid color string with semicolon or <code>null</code> if no
+     *         color matches.
+     */
+    public String getBackgroundColorCSS(DifferentialStyleProvider styleProvider);
+
+     /**
      * Create a CSS color string for the font in the given rule.
      * 
      * @param rule
@@ -109,4 +132,14 @@ public interface ColorConverter extends Serializable {
      *         color matches.
      */
     public String getFontColorCSS(ConditionalFormattingRule rule);
+    
+    /**
+     * Create a CSS color string for the font in the given style provider.
+     * 
+     * @param styleProvider
+     *            conditional format rule, table style, etc.
+     * @return valid color string with semicolon or <code>null</code> if no
+     *         color matches.
+     */
+    public String getFontColorCSS(DifferentialStyleProvider styleProvider);
 }

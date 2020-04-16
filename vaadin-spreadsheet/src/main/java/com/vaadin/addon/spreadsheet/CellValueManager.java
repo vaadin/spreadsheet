@@ -64,6 +64,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 
+import com.vaadin.addon.spreadsheet.ConditionalFormatter.ConditionalFormatterEvaluator;
 import com.vaadin.addon.spreadsheet.Spreadsheet.CellDeletionHandler;
 import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueChangeEvent;
 import com.vaadin.addon.spreadsheet.Spreadsheet.CellValueHandler;
@@ -223,7 +224,12 @@ public class CellValueManager implements Serializable {
         return result;
     }
 
-    protected CellData createCellDataForCell(Cell cell) {
+    /**
+     * @param cell
+     * @param conditionalFormatter evaluator from a batch run of conditional formatting checks
+     * @return a new CellData instance
+     */
+    protected CellData createCellDataForCell(Cell cell, ConditionalFormatterEvaluator conditionalFormatter) {
         CellData cellData = new CellData();
         cellData.row = cell.getRowIndex() + 1;
         cellData.col = cell.getColumnIndex() + 1;
@@ -333,9 +339,8 @@ public class CellValueManager implements Serializable {
 
             // conditional formatting might be applied even if there isn't a
             // value (such as borders for the cell to the right)
-            Set<Integer> cellFormattingIndexes = spreadsheet
-                    .getConditionalFormatter().getCellFormattingIndex(cell);
-            if (cellFormattingIndexes != null) {
+            Set<Integer> cellFormattingIndexes = conditionalFormatter.getCellFormattingIndex(cell);
+            if (cellFormattingIndexes != null && !cellFormattingIndexes.isEmpty()) {
 
                 for (Integer i : cellFormattingIndexes) {
                     cellData.cellStyle = cellData.cellStyle + " cf" + i;
@@ -1126,32 +1131,37 @@ public class CellValueManager implements Serializable {
         @SuppressWarnings("unchecked")
         final Collection<String> customComponentCells = (Collection<String>) (componentIDtoCellKeysMap == null ? Collections
                 .emptyList() : componentIDtoCellKeysMap.values());
-        for (int r = firstRow - 1; r < lastRow; r++) {
-            Row row = activeSheet.getRow(r);
-            if (row != null && row.getLastCellNum() != -1
-                    && row.getLastCellNum() >= firstColumn) {
-                for (int c = firstColumn - 1; c < lastColumn; c++) {
-                    final String key = SpreadsheetUtil.toKey(c + 1, r + 1);
-                    if (!customComponentCells.contains(key)
-                            && !sentCells.contains(key)
-                            && !sentFormulaCells.contains(key)) {
-                        Cell cell = row.getCell(c);
-                        if (cell != null) {
-                            final CellData cd = createCellDataForCell(cell);
-                            if (cd != null) {
-                                CellType cellType = cell.getCellType();
-                                if (cellType == CellType.FORMULA) {
-                                    sentFormulaCells.add(key);
-                                } else {
-                                    sentCells.add(key);
+
+        // iterate in reverse row/column order (bottom right to top left) to match CSS order for border calculations,
+        // to avoid issues like #651 where cell values are not updated in the proper sequence.
+        spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
+                for (int r = lastRow - 1; r >= firstRow -1; r--) {
+                    Row row = activeSheet.getRow(r);
+                    if (row != null && row.getLastCellNum() != -1
+                            && row.getLastCellNum() >= firstColumn) {
+                        for (int c = lastColumn - 1; c >= firstColumn -1; c--) {
+                            final String key = SpreadsheetUtil.toKey(c + 1, r + 1);
+                            if (!customComponentCells.contains(key)
+                                    && !sentCells.contains(key)
+                                    && !sentFormulaCells.contains(key)) {
+                                Cell cell = row.getCell(c);
+                                if (cell != null) {
+                                    final CellData cd = createCellDataForCell(cell, formatter);
+                                    if (cd != null) {
+                                        CellType cellType = cell.getCellType();
+                                        if (cellType == CellType.FORMULA) {
+                                            sentFormulaCells.add(key);
+                                        } else {
+                                            sentCells.add(key);
+                                        }
+                                        cellData.add(cd);
+                                    }
                                 }
-                                cellData.add(cd);
                             }
                         }
                     }
                 }
-            }
-        }
+        });
         return cellData;
     }
 
@@ -1182,46 +1192,52 @@ public class CellValueManager implements Serializable {
         // update all cached formula cell values on client side, because they
         // might have changed. also make sure all marked cells are updated
         Iterator<Row> rows = sheet.rowIterator();
-        while (rows.hasNext()) {
-            final Row r = rows.next();
-            final Iterator<Cell> cells = r.cellIterator();
-            while (cells.hasNext()) {
-                final Cell cell = cells.next();
-                int rowIndex = cell.getRowIndex();
-                int columnIndex = cell.getColumnIndex();
-                final String key = SpreadsheetUtil.toKey(columnIndex + 1,
-                        rowIndex + 1);
+        // iterate in reverse row/column order (bottom right to top left) to match CSS order for border calculations,
+        // to avoid issues like #651 where cell values are not updated in the proper sequence.
+        spreadsheet.getConditionalFormatter().evaluateBatch(formatter -> {
+            for (int ri = sheet.getLastRowNum(); ri >= 0; ri--) {
+                final Row r = sheet.getRow(ri);
+                if (r == null) continue;
+                for (int ci = r.getLastCellNum() - 1; ci >= 0; ci--) {
+                    final Cell cell = r.getCell(ci);
+                    if (cell == null) continue;
+                    int rowIndex = cell.getRowIndex();
+                    int columnIndex = cell.getColumnIndex();
+                    final String key = SpreadsheetUtil.toKey(columnIndex + 1,
+                            rowIndex + 1);
 
-                // Mark for update if there are formatting rules.
-                if (spreadsheet.getConditionalFormatter()
-                    .getCellFormattingIndex(cell) != null) {
-                    markedCells.add(key);
-                }
-
-                // update formula cells
-                if (cell.getCellType() == CellType.FORMULA) {
-                    if (sentFormulaCells.contains(key)
-                            || markedCells.contains(key)) {
-                        CellData cd = createCellDataForCell(cell);
-                        if (cd == null) {
-                            // in case the formula cell value has changed to null or
-                            // empty; this case is probably quite rare, formula cell
-                            // pointing to a cell that was removed or had its value
-                            // cleared ???
-                            cd = new CellData();
-                            cd.col = columnIndex + 1;
-                            cd.row = rowIndex + 1;
-                            cd.cellStyle = "" + cell.getCellStyle().getIndex();
-                        }
-                        sentFormulaCells.add(key);
-                        updatedCellData.add(cd);
+                    // Mark for update if there are formatting rules.
+                    if (spreadsheet.getConditionalFormatter()
+                        .getCellFormattingIndex(cell) != null) {
+                        markedCells.add(key);
                     }
-                } else if (markedCells.contains(key)) {
-                    sentCells.add(key);
-                    updatedCellData.add(createCellDataForCell(cell));
+
+                    // update formula cells
+                    if (cell.getCellType() == CellType.FORMULA) {
+                        if (sentFormulaCells.contains(key)
+                                || markedCells.contains(key)) {
+                            CellData cd = createCellDataForCell(cell, formatter);
+                            if (cd == null) {
+                                // in case the formula cell value has changed to null or
+                                // empty; this case is probably quite rare, formula cell
+                                // pointing to a cell that was removed or had its value
+                                // cleared ???
+                                cd = new CellData();
+                                cd.col = columnIndex + 1;
+                                cd.row = rowIndex + 1;
+                                cd.cellStyle = "" + cell.getCellStyle().getIndex();
+                            }
+                            sentFormulaCells.add(key);
+                            updatedCellData.add(cd);
+                        }
+                    } else if (markedCells.contains(key)) {
+                        sentCells.add(key);
+                        updatedCellData.add(createCellDataForCell(cell, formatter));
+                    }
                 }
             }
-        }
+        });
+
         if (!changedFormulaCells.isEmpty()) {
             fireFormulaValueChangeEvent(changedFormulaCells);
             changedFormulaCells = new HashSet<CellReference>();
