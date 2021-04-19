@@ -20,7 +20,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jetty.version>9.3.9.v20160517</jetty.version>
-        <vaadin.version>8.0.0</vaadin.version>
+        <vaadin.version>8.12.4</vaadin.version>
         <testbench.version>5.1.0</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
