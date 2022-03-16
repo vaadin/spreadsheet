@@ -44,7 +44,6 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
@@ -1988,8 +1987,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             LOGGER.log(Level.FINEST, "Poi threw NullPointerException when trying to autofit column", e);
             return;
         }
-        int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex, AbstractExcelUtils
-            .getColumnWidthInPx(activeSheet.getColumnWidth(columnIndex)));
+		int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex,
+				(int) activeSheet.getColumnWidthInPixels(columnIndex));
 
         getState().colW[columnIndex] = columnPixelWidth;
         getCellValueManager().clearCacheForColumn(columnIndex + 1);
@@ -2561,9 +2560,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             getState().hiddenColumnIndexes
                     .remove(getState().hiddenColumnIndexes
                             .indexOf(columnIndex + 1));
-            getState().colW[columnIndex] = AbstractExcelUtils
-                    .getColumnWidthInPx(getActiveSheet().getColumnWidth(
-                            columnIndex));
+			getState().colW[columnIndex] = (int) getActiveSheet().getColumnWidthInPixels(columnIndex);
             getCellValueManager().clearCacheForColumn(columnIndex + 1);
             getCellValueManager().loadCellData(firstRow, columnIndex + 1,
                     lastRow, columnIndex + 1);
@@ -4028,8 +4025,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 continue;
             }
             Integer autofittedWidth = autofittedColumnWidths.get(cr);
-            int currentWidth = AbstractExcelUtils.getColumnWidthInPx(filteredSheet
-                .getColumnWidth(cr.getCol()));
+			int currentWidth = (int) filteredSheet.getColumnWidthInPixels(cr.getCol());
             // only update columns that haven't changed size since the last
             // autofit
             if (currentWidth == autofittedWidth) {

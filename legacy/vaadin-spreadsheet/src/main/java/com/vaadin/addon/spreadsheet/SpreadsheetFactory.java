@@ -33,7 +33,6 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFPicture;
@@ -51,6 +50,7 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.PaneInformation;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFChart;
 import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
@@ -562,8 +562,7 @@ public class SpreadsheetFactory implements Serializable {
                 colWidths[i] = 0;
                 hiddenColumnIndexes.add(i + 1);
             } else {
-                colWidths[i] = ExcelToHtmlUtils.getColumnWidthInPx(sheet
-                        .getColumnWidth(i));
+				colWidths[i] = (int) sheet.getColumnWidthInPixels(i);
             }
         }
         spreadsheet.getState().hiddenColumnIndexes = hiddenColumnIndexes;
@@ -1089,8 +1088,10 @@ public class SpreadsheetFactory implements Serializable {
 
     private static void setDefaultColumnWidth(Spreadsheet spreadsheet,
             final Sheet sheet) {
-        int charactersToPixels = ExcelToHtmlUtils.getColumnWidthInPx(sheet
-                .getDefaultColumnWidth() * 256);
+
+		// Formula taken from XSSFSheet.getColumnWidthInPixels
+		int charactersToPixels = (int) (sheet.getDefaultColumnWidth() / 256.0 * Units.DEFAULT_CHARACTER_WIDTH);
+
         if (charactersToPixels > 0) {
             spreadsheet.getState().defColW = charactersToPixels;
         } else {
