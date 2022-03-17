@@ -1,5 +1,13 @@
 # demo
 
+
+IMPORTANT 
+  - this project should be moved to an external repository
+  - some views can be moved or used in vaadin-spreadsheet-flow-integration-tests
+  - shoule not depend on spring
+
+
+
 This is an example project that can be used as a starting point to create your own Vaadin application with Spring Boot.
 It contains all the necessary configuration and some placeholder files to get you started.
 
