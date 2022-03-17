@@ -44,11 +44,27 @@
       <artifactId>gwt-dev</artifactId>
     </dependency>
 
-    <!-- TODO Remove this by copying original spreadsheet classes and dependencies -->
     <dependency>
-      <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-spreadsheet</artifactId>
-      <version>3.0-SNAPSHOT</version>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-server</artifactId>
+        <version>${framework.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-themes</artifactId>
+        <version>${framework.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-push</artifactId>
+        <version>${framework.version}</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-compatibility-themes</artifactId>
+        <version>${framework.version}</version>
+        <scope>test</scope>
     </dependency>
 
     <!-- TODO We should depend only on flow-client and gwt -->
