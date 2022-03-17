@@ -5,11 +5,11 @@
 
   <parent>
     <groupId>com.vaadin</groupId>
-    <artifactId>vaadin-spreadsheet-directorypackage</artifactId>
-    <version>3.0-SNAPSHOT</version>
+    <artifactId>vaadin-spreadsheet-flow-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
   </parent>
   <groupId>com.vaadin</groupId>
-  <artifactId>flow-gwtexporter</artifactId>
+  <artifactId>vaadin-spreadsheet-flow-client</artifactId>
   <packaging>jar</packaging>
 
   <properties>
@@ -44,10 +44,11 @@
       <artifactId>gwt-dev</artifactId>
     </dependency>
 
+    <!-- TODO Remove this by copying original spreadsheet classes and dependencies -->
     <dependency>
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-spreadsheet</artifactId>
-      <version>${project.version}</version>
+      <version>3.0-SNAPSHOT</version>
     </dependency>
 
     <!-- TODO We should depend only on flow-client and gwt -->
