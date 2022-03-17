@@ -9,14 +9,14 @@
     <packaging>war</packaging>
 
     <properties>
-        <java.version>8</java.version>
-        <flow.version>6.0.9</flow.version>
-        <vaadin.version>19.0.8</vaadin.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>11</java.version>
+        <vaadin.version>23.0.1</vaadin.version>
+        <flow.version>${vaadin.version}</flow.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <jetty.version>9.4.45.v20220203</jetty.version>
-        <jetty.http.port>8080</jetty.http.port>
-        <jetty.stop.port>9999</jetty.stop.port>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
     </properties>
 
     <repositories>
@@ -36,7 +36,7 @@
                 https://maven.vaadin.com/vaadin-prereleases/
             </url>
         </repository>
-        <!-- Repository used by many Vaadin add-ons -->
+        <!-- Repository used by many Vaadin add-ons: https://vaadin.com/directory -->
         <repository>
             <id>Vaadin Directory</id>
             <url>https://maven.vaadin.com/vaadin-addons</url>
@@ -45,9 +45,7 @@
             </snapshots>
         </repository>
     </repositories>
-
     <pluginRepositories>
-        <!-- The order of definitions matters. Explicitly defining central here to make sure it has the highest priority. -->
         <pluginRepository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
@@ -62,7 +60,6 @@
             </url>
         </pluginRepository>
     </pluginRepositories>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -80,63 +77,57 @@
             <groupId>com.vaadin</groupId>
             <!-- Replace artifactId with vaadin-core to use only free components -->
             <artifactId>vaadin</artifactId>
+            <exclusions>
+                <!-- Fusion is only supported in Spring Boot currently, exclude obsolete dependencies -->
+                <exclusion>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>fusion-endpoint</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+
+        <!-- Added to provide logging output as Flow uses -->
+        <!-- the unbound SLF4J no-operation (NOP) logger implementation -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spreadsheet-flow</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.bonigarcia</groupId>
-            <artifactId>webdrivermanager</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
 
         <dependency>
-            <groupId>com.github.appreciated</groupId>
-            <artifactId>color-picker-field-flow</artifactId>
-            <version>2.0.0.beta6</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <build>
+        <defaultGoal>jetty:run</defaultGoal>
         <plugins>
+            <!-- We use jetty plugin, replace it with your favourite developing servlet container -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
-                <configuration>
-                    <httpConnector>
-                        <port>${jetty.http.port}</port>
-                    </httpConnector>
-                    <scanIntervalSeconds>-1</scanIntervalSeconds>
-                    <stopPort>${jetty.stop.port}</stopPort>
-                    <stopWait>5</stopWait>
-                    <stopKey>foo</stopKey>
-                    <systemProperties>
-                        <force>true</force>
-                        <systemProperty>
-                            <name>project.basedir</name>
-                            <value>${project.basedir}</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>vaadin.productionMode</name>
-                            <value>true</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>vaadin.reuseDevServer</name>
-                            <value>true</value>
-                        </systemProperty>
-                    </systemProperties>
-                </configuration>
             </plugin>
+
+            <!--
+                Take care of synchronizing java dependencies and imports in
+                package.json and main.js files.
+                It also creates webpack.config.js if not exists yet.
+            -->
             <plugin>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
@@ -150,27 +141,28 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
+                <version>3.3.1</version>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-            </resource>
-            <resource>
-                <directory>src/main/resources</directory>
-            </resource>
-        </resources>
     </build>
 
     <profiles>
         <profile>
             <!-- Production mode is activated using -Pproduction -->
             <id>production</id>
+            <properties>
+                <vaadin.productionMode>true</vaadin.productionMode>
+            </properties>
+
+            <dependencies>
+                <dependency>
+                    <groupId>com.vaadin</groupId>
+                    <artifactId>flow-server-production-mode</artifactId>
+                </dependency>
+            </dependencies>
+
             <build>
                 <plugins>
                     <plugin>
@@ -185,33 +177,9 @@
                                 <phase>compile</phase>
                             </execution>
                         </executions>
-                        <configuration>
-                            <productionMode>true</productionMode>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
         </profile>
-
-        <profile>
-            <id>run-jetty</id>
-            <activation>
-                <property>
-                    <name>!skipJetty</name>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.eclipse.jetty</groupId>
-                        <artifactId>jetty-maven-plugin</artifactId>
-                        <configuration>
-                            <scanIntervalSeconds>5</scanIntervalSeconds>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-
     </profiles>
 </project>
