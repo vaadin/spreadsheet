@@ -13,9 +13,22 @@
   <packaging>jar</packaging>
 
   <properties>
+    <!-- TODO enable OBF when com.vaadin.spreadsheet.flowport.gwtexporter.client.SpreadsheetJsApi is exported to window -->
+    <gwt.style>pretty</gwt.style>
+    <gwt.draft.compile>false</gwt.draft.compile>    
+
     <gwt.target>GwtAddonExporter.html</gwt.target>
     <gwt.module>com.vaadin.spreadsheet.flowport.gwtexporter.GwtExporter</gwt.module>
     <gwt.hostedWebapp>${project.build.directory}/${project.build.finalName}</gwt.hostedWebapp>
+
+    <!-- optimizations -->
+    <gwt.loglevel>WARN</gwt.loglevel>
+    <gwt.disableCastChecking>true</gwt.disableCastChecking>
+    <gwt.enagleAssertions>false</gwt.enagleAssertions>
+    <gwt.closure>true</gwt.closure>
+
+    <!-- set to true to get soyc report -->
+    <gwt.report>false</gwt.report>
   </properties>
 
   <dependencyManagement>
@@ -108,6 +121,47 @@
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>gwt-maven-plugin</artifactId>
       </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>gwt-maven-plugin</artifactId>
+        <version>${gwt.version}</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>compile</goal>
+                    <!-- <goal>test</goal> -->
+                    <!-- <goal>generateAsync</goal> -->
+                </goals>
+            </execution>
+        </executions>
+        <configuration>
+          <runTarget>${gwt.target}</runTarget>
+          <modules>
+              <module>${gwt.module></module>
+          </modules>
+          <hostedWebapp>${gwt.hostedWebapp}</hostedWebapp>
+          <generateJsInteropExports>true</generateJsInteropExports>
+          <style>${gwt.style}</style>
+          <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
+          <draftCompile>${gwt.draft.compile}</draftCompile>
+
+          <logLevel>${gwt.loglevel}</logLevel>
+          <gwtVersion>${gwt.version}</gwtVersion>
+          <compileReport>${gwt.report}</compileReport>
+          <compileMetrics>${gwt.report}</compileMetrics>
+          <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+          <optimizationLevel>9</optimizationLevel>
+          <bindAddress>0.0.0.0</bindAddress>
+          <disableCastChecking>${gwt.disableCastChecking}</disableCastChecking>
+          <disableClassMetadata>${gwt.disableClassMetadata}</disableClassMetadata>
+          <enableAssertions>${gwt.enableAssertions}</enableAssertions>
+          <persistentunitcachedir>${project.build.directory}</persistentunitcachedir>
+          <modulePathPrefix>${modulePathPrefix}</modulePathPrefix>
+          <gen>${project.build.directory}/gen</gen>
+          <workDir>target</workDir>
+        </configuration>        
+    </plugin> 
 
       <plugin>
         <groupId>org.eclipse.jetty</groupId>
