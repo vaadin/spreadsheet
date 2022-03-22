@@ -13,7 +13,9 @@
  */
 
 import {LitElement, html, css, unsafeCSS} from 'lit-element';
-import { css_gwt, css_valo, Spreadsheet } from '@vaadin/flow-frontend/vaadin-spreadsheet/spreadsheet-export.js';
+import { Spreadsheet } from 'spreadsheet-export.js';
+import { css_gwt, css_valo } from 'spreadsheet-styles.js';
+
 
 /**
  * An example element.
