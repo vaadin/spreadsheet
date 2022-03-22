@@ -28,16 +28,12 @@ import com.google.gwt.event.logical.shared.CloseEvent;
 import com.google.gwt.event.logical.shared.CloseHandler;
 import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
-//import com.vaadin.addon.spreadsheet.PopupButton;
 import com.vaadin.client.ComponentConnector;
 import com.vaadin.client.ConnectorHierarchyChangeEvent;
 import com.vaadin.client.communication.StateChangeEvent;
 import com.vaadin.client.ui.AbstractHasComponentsConnector;
-//import com.vaadin.shared.ui.Connect;
-//import com.vaadin.shared.ui.Connect.LoadStyle;
 
 @SuppressWarnings("serial")
-//@Connect(value = PopupButton.class, loadStyle = LoadStyle.DEFERRED)
 public class PopupButtonConnector extends AbstractHasComponentsConnector
         implements ClickHandler, CloseHandler<PopupPanel> {
 

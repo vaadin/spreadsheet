@@ -35,7 +35,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
-//import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetWidget.SheetContextMenuHandler;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.client.ApplicationConnection;
@@ -50,12 +49,9 @@ import com.vaadin.client.ui.layout.ElementResizeEvent;
 import com.vaadin.client.ui.layout.ElementResizeListener;
 import com.vaadin.shared.communication.ServerRpc;
 import com.vaadin.shared.communication.SharedState;
-//import com.vaadin.shared.ui.Connect;
-//import com.vaadin.shared.ui.Connect.LoadStyle;
 import com.vaadin.spreadsheet.flowport.gwtexporter.client.SpreadsheetServerRpcImpl;
 
 @SuppressWarnings("serial")
-//@Connect(value = Spreadsheet.class, loadStyle = LoadStyle.DEFERRED)
 public class SpreadsheetConnector extends AbstractHasComponentsConnector
         implements PostLayoutListener {
 
