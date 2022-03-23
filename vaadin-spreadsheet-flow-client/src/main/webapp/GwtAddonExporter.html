@@ -1,71 +1,26 @@
 <!doctype html>
-<!-- The DOCTYPE declaration above will set the    -->
-<!-- browser's rendering engine into               -->
-<!-- "Standards Mode". Replacing this declaration  -->
-<!-- with a "Quirks Mode" doctype may lead to some -->
-<!-- differences in layout.                        -->
-
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-
-    <!--                                                               -->
-    <!-- Consider inlining CSS to reduce the number of requested files -->
-    <!--                                                               -->
     <link type="text/css" rel="stylesheet" href="GwtAddonExporter/gwt/standard/standard.css">
-    <link type="text/css" rel="stylesheet" href="GwtAddonExporter.css">
-    <link type="text/css" rel="stylesheet" href="valo.css">
-
+    <script type="text/javascript" language="javascript" src="GwtAddonExporter/GwtAddonExporter.nocache.js"></script>
     <style>
-      .spreadsheetport {
-        height: 400px;
-        width: 300px;
-      }
-      #mislot {
-        margin-bottom: 150px;
+      #main {
+        margin: 5em;
+        font-size: 14px;
       }
     </style>
-
-    <!--                                           -->
-    <!-- Any title is fine                         -->
-    <!--                                           -->
-    <title>Web Application Starter Project</title>
-
-    <!--                                           -->
-    <!-- This script loads your compiled module.   -->
-    <!-- If you add any GWT meta tags, they must   -->
-    <!-- be added before this line.                -->
-    <!--                                           -->
-    <script type="text/javascript" language="javascript" src="GwtAddonExporter/GwtAddonExporter.cache.js"></script>
   </head>
 
-  <!--                                           -->
-  <!-- The body can have arbitrary html, or      -->
-  <!-- you can leave the body empty if you want  -->
-  <!-- to create a completely dynamic UI.        -->
-  <!--                                           -->
   <body>
-
-  <div id="mislot" class="spreadsheetport"></div>
-
-
-  <script defer>
-
-    var s = new com.vaadin.spreadsheet.flowport.gwtexporter.client.SpreadsheetJsApi(document.getElementById("mislot"));
-
-    function addWidget() {
-    }
-
-    function setCols(cols) {
-      s.setCols(cols);
-    }
-
-    addWidget();
-
-  </script>
-
-  <button onclick="addWidget();">Add widget</button>
-  <button onclick="s.setCols(3);">setCols(3)</button>
-  <button onclick="s.setCols(4);">setCols(4)</button>
+    <div id="main">
+      <h2>Vaadin Spreadsheet</h2>
+      This page should have a demo of the spreadsheet, but since we need the flow server part for it, this is deliberavely empty.
+      <br/>
+      You can, though, inspect the exported client in the window object by using browser devtools.
+      <h2>Debugging</h2>
+      For debugging you might go to the <a href="http://localhost:9876" target="_blank">codeserver</a> main page for installing bookmarks or exploring static output files,
+      or just <a href="javascript:window.location.reload()">reload</a> this page after performing any change in the java code.
+    </div>
   </body>
 </html>

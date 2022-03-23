@@ -16,6 +16,7 @@ import {LitElement, html, css, unsafeCSS} from 'lit-element';
 import { Spreadsheet } from './spreadsheet-export.js';
 import css_gwt from './spreadsheet-styles-gwt.css';
 import css_valo from './spreadsheet-styles-valo.css';
+let ExportedSpreadsheet = Spreadsheet;
 
 /**
  * An example element.
@@ -224,7 +225,7 @@ export class VaadinSpreadsheet extends LitElement {
         document.body.appendChild(overlays);
       }
 
-      this.api = new Spreadsheet(this);
+      this.api = new ExportedSpreadsheet(this);
       console.log('updated')
       this.createCallbacks();
       console.log('callbacks created')
@@ -593,4 +594,38 @@ export class VaadinSpreadsheet extends LitElement {
 
 }
 
-window.customElements.define('vaadin-spreadsheet', VaadinSpreadsheet);
+const defineElement = () => window.customElements.define('vaadin-spreadsheet', VaadinSpreadsheet);
+
+// A workaround for using the GWT SuperDevMode server when running at localhost
+// - First we check that the application is running in localhost
+// - Second we try to contact SDM with a timeout of 200ms
+// - Finally we load the exported spreadsheet from the SDM instead of from local
+if (/localhost|127.0.0.1/.test(location.hostname)) { // Check that app is running in localhost
+  const sdmUrl = `http://${location.hostname}:9876/GwtAddonExporter/GwtAddonExporter.nocache.js`;
+  const controller = new AbortController();
+  setTimeout(() => controller.abort(), 200); // Try to contact SDM in 200ms
+  fetch(sdmUrl, {signal: controller.signal} )
+    .then(response => {
+      if (response.status != 200) {
+        throw('');
+      }
+      delete window.com; // spreadsheet is exported in com.vaadin namespace
+      const s = document.createElement('script');
+      s.src = sdmUrl;
+      document.head.prepend(s);
+      const id = setInterval(() => {
+        if (window.com) { // wait until spreadsheet is exported
+          clearInterval(id);
+          ExportedSpreadsheet = com.vaadin.spreadsheet.flowport.gwtexporter.client.SpreadsheetJsApi;
+          defineElement() // use spreadsheet from SDM
+          console.warn(`Spreadsheet is using GWT SDM at ${sdmUrl}`);
+          console.warn(`For recompiling GWT install the bookmark from http://${location.hostname}:9876/`);
+        }
+      }, 200);
+    }).catch(() => {
+      defineElement() // use spreadsheet from local
+    });
+} else {
+  defineElement() // use spreadsheet from local
+}
+
