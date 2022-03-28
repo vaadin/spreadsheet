@@ -11,8 +11,7 @@ import java.io.Serializable;
  * This program is available under Commercial Vaadin Developer License
  * 4.0 (CVDLv4).
  * 
- * You should have received a copy of the CVALv3 along with this program.
- * If not, see <https://vaadin.com/license/cvdl-4.0>.
+ * For the full License, see <https://vaadin.com/license/cvdl-4.0>.
  * #L%
  */
 
