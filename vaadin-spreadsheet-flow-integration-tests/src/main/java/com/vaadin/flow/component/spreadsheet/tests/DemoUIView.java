@@ -68,7 +68,7 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 @CssImport("./demo-view.css")
-@Route(value = "")
+@Route("vaadin-spreadsheet")
 @PageTitle("Demo")
 public class DemoUIView extends VerticalLayout implements Receiver {
 

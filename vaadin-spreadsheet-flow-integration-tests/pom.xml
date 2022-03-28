@@ -73,12 +73,6 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-        <!-- <dependency>
-            <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-flow-components-shared</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency> -->
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-spreadsheet-flow</artifactId>
@@ -107,12 +101,29 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-testbench-core</artifactId>
             <version>${testbench.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spreadsheet-testbench</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-flow-components-shared</artifactId>
+            <version>23.0-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        <!--        <dependency>-->
 <!--            <groupId>com.vaadin</groupId>-->
 <!--            <artifactId>vaadin-material-theme</artifactId>-->
 <!--            <version>${vaadin.version}</version>-->
@@ -169,10 +180,10 @@
                 <version>${jetty.version}</version>
                 <configuration combine.self="override">
                     <httpConnector>
-                        <port>9998</port>
+                        <port>8080</port>
                     </httpConnector>
                     <scanIntervalSeconds>-1</scanIntervalSeconds>
-                    <stopPort>8005</stopPort>
+                    <stopPort>9999</stopPort>
                     <stopWait>5</stopWait>
                     <stopKey>foo</stopKey>
                     <systemProperties>
