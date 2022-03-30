@@ -75,6 +75,12 @@
 
         <gwt.version>2.9.0</gwt.version>
 
+        <maven.surefire.plugin.version>2.22.2</maven.surefire.plugin.version>
+        <maven.failsafe.plugin.version>2.22.2</maven.failsafe.plugin.version>
+        <failsafe.forkCount>4</failsafe.forkCount>
+        <com.vaadin.tests.SharedBrowser.reuseBrowser>true</com.vaadin.tests.SharedBrowser.reuseBrowser>
+        <com.vaadin.testbench.Parameters.testsInParallel>1</com.vaadin.testbench.Parameters.testsInParallel>
+
         <junit.version>4.13.2</junit.version>
         <mockito.version>1.10.19</mockito.version>
         <testbench.version>8.0.0</testbench.version>
