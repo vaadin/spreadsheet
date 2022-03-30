@@ -1160,7 +1160,7 @@ public class ApplicationConnection implements HasHandlers {
      */
     public VContextMenu getContextMenu() {
         if (contextMenu == null) {
-            contextMenu = new SpreadsheetOverlay.ContextMenu();
+            contextMenu = new SpreadsheetOverlay.SpreadsheetContextMenu();
             contextMenu.setOwner(uIConnector.getWidget());
         }
         return contextMenu;

@@ -17,13 +17,13 @@ public class SpreadsheetOverlay extends VOverlay {
      *  A VContextMenu Implementation that attaches the overlay to the
      *  container added by vaadin-spreadsheet webcomponent 
      */
-    public static class ContextMenu extends VContextMenu {
-        public ContextMenu() {
+    public static class SpreadsheetContextMenu extends VContextMenu {
+        public SpreadsheetContextMenu() {
             DOM.setElementProperty(getElement(), "id", "PID_VAADIN_CM");
         }
         @Override
-        public com.google.gwt.user.client.Element getOverlayContainer() {
-            return getOverlayElement();
+        public Element getOverlayContainer() {
+            return getOverlayContainerElement();
         }    
     }
     
@@ -40,11 +40,11 @@ public class SpreadsheetOverlay extends VOverlay {
     }
 
     @Override
-    public com.google.gwt.user.client.Element getOverlayContainer() {
-        return getOverlayElement();
+    public Element getOverlayContainer() {
+        return getOverlayContainerElement();
     }
-    
-    private static Element getOverlayElement() {
+
+    private static Element getOverlayContainerElement() {
         Element overlays = DOM.getElementById("spreadsheet-overlays");
         return overlays == null ? RootPanel.getBodyElement() : overlays;
     }
