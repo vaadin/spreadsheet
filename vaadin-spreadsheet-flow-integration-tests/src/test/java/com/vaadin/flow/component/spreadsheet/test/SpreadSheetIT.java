@@ -1,6 +1,6 @@
 package com.vaadin.flow.component.spreadsheet.test;
 
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
 import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.tests.AbstractParallelTest;

@@ -1,4 +1,4 @@
-package com.vaadin.addon.spreadsheet.elements;
+package com.vaadin.flow.component.spreadsheet.testbench;
 
 import java.util.List;
 
