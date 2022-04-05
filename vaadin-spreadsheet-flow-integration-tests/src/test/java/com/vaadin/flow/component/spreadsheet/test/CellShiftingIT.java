@@ -1,10 +1,6 @@
 package com.vaadin.flow.component.spreadsheet.test;
 
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
-import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
-import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import static org.junit.Assert.assertFalse;
 
-@RunLocally(Browser.CHROME)
-public class CellShiftingIT extends AbstractParallelTest {
-
-    private SpreadsheetElement spreadsheet;
-    private TestHelpers testHelpers;
+public class CellShiftingIT extends AbstractSpreadsheetIT {
 
     @Before
     public void init() {
@@ -28,9 +20,7 @@ public class CellShiftingIT extends AbstractParallelTest {
                 super.getBaseURL() + "/vaadin-spreadsheet");
         getDriver().get(url);
 
-        testHelpers = new TestHelpers(getDriver());
-        spreadsheet = testHelpers.createNewSpreadsheet();
-        testHelpers.setSpreadsheetElement(spreadsheet);
+        createNewSpreadsheet();
     }
 
     @Test
@@ -38,7 +28,7 @@ public class CellShiftingIT extends AbstractParallelTest {
         String value = "value";
         shiftValue("A1", "A6", value);
 
-        Assert.assertEquals(value, spreadsheet.getCellAt("A2").getValue());
+        Assert.assertEquals(value, getSpreadsheet().getCellAt("A2").getValue());
     }
 
     @Test
@@ -46,7 +36,7 @@ public class CellShiftingIT extends AbstractParallelTest {
         String value = "value";
         shiftValue("A1", "F1", value);
 
-        Assert.assertEquals(value, spreadsheet.getCellAt("B1").getValue());
+        Assert.assertEquals(value, getSpreadsheet().getCellAt("B1").getValue());
     }
 
     @Test
@@ -54,11 +44,11 @@ public class CellShiftingIT extends AbstractParallelTest {
         String value = "value";
         shiftValue("A1", "A6", value);
 
-        SheetCellElement cellA2 = spreadsheet.getCellAt("A2");
+        SheetCellElement cellA2 = getSpreadsheet().getCellAt("A2");
         Assert.assertEquals(value, cellA2.getValue());
         // open input
         cellA2.doubleClick();
-        WebElement shiftSelection = spreadsheet.findElement(By
+        WebElement shiftSelection = getSpreadsheet().findElement(By
                 .className("paintmode"));
         // verify shifting indicator is not visible (SHEET-62)
         assertFalse(shiftSelection.isDisplayed());
@@ -66,12 +56,12 @@ public class CellShiftingIT extends AbstractParallelTest {
 
     private void shiftValue(String firstAddress, String lastAddress,
             String value) {
-        SheetCellElement firstCell = spreadsheet.getCellAt(firstAddress);
-        SheetCellElement lastCell = spreadsheet.getCellAt(lastAddress);
+        SheetCellElement firstCell = getSpreadsheet().getCellAt(firstAddress);
+        SheetCellElement lastCell = getSpreadsheet().getCellAt(lastAddress);
         firstCell.setValue(value);
-        testHelpers.selectCell(firstAddress);
+        selectCell(firstAddress);
         firstCell.click();
-        WebElement shiftHandle = spreadsheet.findElement(By
+        WebElement shiftHandle = getSpreadsheet().findElement(By
                 .className("s-corner"));
         new Actions(driver).dragAndDrop(shiftHandle, lastCell).perform();
         waitUntilCellHasValue(lastCell, value);

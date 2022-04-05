@@ -2,9 +2,6 @@ package com.vaadin.flow.component.spreadsheet.test;
 
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
-import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,11 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
-@RunLocally(Browser.CHROME)
-public class CellShiftValuesUndoRedoIT extends AbstractParallelTest {
-
-    private SpreadsheetElement spreadsheet;
-    private TestHelpers testHelpers;
+public class CellShiftValuesUndoRedoIT extends AbstractSpreadsheetIT {
 
     @Before
     public void init() {
@@ -27,30 +20,28 @@ public class CellShiftValuesUndoRedoIT extends AbstractParallelTest {
                 super.getBaseURL() + "/vaadin-spreadsheet");
         getDriver().get(url);
 
-        testHelpers = new TestHelpers(getDriver());
-        spreadsheet = testHelpers.createNewSpreadsheet();
-        testHelpers.setSpreadsheetElement(spreadsheet);
+        createNewSpreadsheet();
     }
 
     @Test
     public void undoRedo_CellShiftValues_ValuesAreUpdatedAsExpectedWithNoErrors() {
-        testHelpers.loadFile("500x200test.xlsx");
-        SheetCellElement target = spreadsheet.getCellAt("A9");
+        loadFile("500x200test.xlsx");
+        SheetCellElement target = getSpreadsheet().getCellAt("A9");
         Assert.assertEquals("9", target.getValue());
 
-        testHelpers.selectCell("A1");
+        selectCell("A1");
 
-        WebElement selectionCorner = spreadsheet.findElement(
+        WebElement selectionCorner = getSpreadsheet().findElement(
                 By.className("sheet-selection")).findElement(
                 By.className("s-corner"));
         // drag corner element of the selected cell to the target cell
         new Actions(driver).dragAndDrop(selectionCorner, target).perform();
 
-        ensureValueEquals(spreadsheet, "A9", "1");
+        ensureValueEquals(getSpreadsheet(), "A9", "1");
         undo();
-        ensureValueEquals(spreadsheet, "A9", "9");
+        ensureValueEquals(getSpreadsheet(), "A9", "9");
         redo();
-        ensureValueEquals(spreadsheet, "A9", "1");
+        ensureValueEquals(getSpreadsheet(), "A9", "1");
 
         assertNoErrorIndicatorDetected();
     }

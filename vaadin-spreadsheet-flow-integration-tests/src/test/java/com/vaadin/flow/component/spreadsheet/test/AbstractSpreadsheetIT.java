@@ -4,40 +4,28 @@ import com.vaadin.flow.component.combobox.testbench.ComboBoxElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
 import com.vaadin.flow.component.spreadsheet.tests.fixtures.TestFixtures;
-import com.vaadin.testbench.HasElementQuery;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
+import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
-import org.openqa.selenium.SearchContext;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
-class TestHelpers implements HasElementQuery {
+@RunLocally(Browser.CHROME)
+public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
-    private WebDriver driver;
-    private SpreadsheetElement spreadsheetElement;
-
-    TestHelpers(WebDriver driver) {
-        this.driver = driver;
-    }
-
-    public void setSpreadsheetElement(SpreadsheetElement spreadsheetElement) {
-        this.spreadsheetElement = spreadsheetElement;
-    }
-
-    public SpreadsheetElement getSpreadsheetElement() {
-        return spreadsheetElement;
-    }
+    private SpreadsheetElement spreadsheet;
 
     public void selectCell(String address) {
         // TODO: clean up solution
-        new Actions(driver).moveToElement(getSpreadsheetElement().getCellAt(address)).click().build()
+        new Actions(getDriver()).moveToElement(spreadsheet.getCellAt(address)).click().build()
                 .perform();
     }
 
     public void clickCell(String address) {
-        SheetCellElement cellElement = $(SpreadsheetElement.class).first()
+        SheetCellElement cellElement = spreadsheet
                 .getCellAt(address);
-        new Actions(driver).moveToElement(cellElement).click().build()
+        new Actions(getDriver()).moveToElement(cellElement).click().build()
                 .perform();
     }
 
@@ -45,21 +33,29 @@ class TestHelpers implements HasElementQuery {
         return $(SpreadsheetElement.class).first().getCellAt(address).getValue();
     }
 
-    public SpreadsheetElement createNewSpreadsheet() {
+    public void setSpreadsheet(SpreadsheetElement spreadsheet) {
+        this.spreadsheet = spreadsheet;
+    }
+
+    public SpreadsheetElement getSpreadsheet() {
+        return spreadsheet;
+    }
+
+    public void createNewSpreadsheet() {
         WebElement createBtn = $("vaadin-button").id("createNewBtn");
         createBtn.click();
 
-        return $(SpreadsheetElement.class).first();
+        setSpreadsheet($(SpreadsheetElement.class).first());
     }
 
-    public SpreadsheetElement loadFile(String fileName) {
+    public void loadFile(String fileName) {
         ComboBoxElement testSheetSelect = $(ComboBoxElement.class).id("testSheetSelect");
         testSheetSelect.selectByText(fileName);
 
         WebElement updateBtn = $("vaadin-button").id("update");
         updateBtn.click();
 
-        return $(SpreadsheetElement.class).first();
+        setSpreadsheet($(SpreadsheetElement.class).first());
     }
 
     public void loadTestFixture(TestFixtures fixture) {
@@ -70,10 +66,5 @@ class TestHelpers implements HasElementQuery {
         // sanity check
         Assert.assertEquals("Fixture not loaded correctly", fixture.toString(),
                 $(ComboBoxElement.class).id("fixtureSelect").getInputElementValue());
-    }
-
-    @Override
-    public SearchContext getContext() {
-        return this.driver;
     }
 }

@@ -1,10 +1,6 @@
 package com.vaadin.flow.component.spreadsheet.test;
 
-import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
 import com.vaadin.flow.component.spreadsheet.tests.fixtures.TestFixtures;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
-import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,11 +12,7 @@ import org.openqa.selenium.interactions.Actions;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RunLocally(Browser.CHROME)
-public class CellDeletionIT extends AbstractParallelTest {
-
-    private SpreadsheetElement spreadsheet;
-    private TestHelpers testHelpers;
+public class CellDeletionIT extends AbstractSpreadsheetIT {
 
     @Before
     public void init() {
@@ -28,89 +20,86 @@ public class CellDeletionIT extends AbstractParallelTest {
                 super.getBaseURL() + "/vaadin-spreadsheet");
         getDriver().get(url);
         
-        testHelpers = new TestHelpers(getDriver());
-        spreadsheet = testHelpers.createNewSpreadsheet();
-        testHelpers.setSpreadsheetElement(spreadsheet);
-
-        testHelpers.loadTestFixture(TestFixtures.DeletionHandler);
+        createNewSpreadsheet();
+        loadTestFixture(TestFixtures.DeletionHandler);
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellSucceedsWhenHandlerReturnsTrue() {
-        testHelpers.clickCell("B2");
+        clickCell("B2");
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("", testHelpers.getCellContent("B2"));
+        Assert.assertEquals("", getCellContent("B2"));
 
         assertNotificationContent("Deleting: 1:1");
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteSingleCellFailsWhenHandlerReturnsFalse() {
-        testHelpers.clickCell("C2");
+        clickCell("C2");
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("Try to delete me!", testHelpers.getCellContent("C2"));
+        Assert.assertEquals("Try to delete me!", getCellContent("C2"));
 
         assertNotificationContent("Attempting to delete: 1:2");
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellSucceedsWhenHandlerReturnsTrue() {
-        testHelpers.clickCell("B3");
-        spreadsheet.getCellAt("B5").click(5, 5,
+        clickCell("B3");
+        getSpreadsheet().getCellAt("B5").click(5, 5,
                 Keys.CONTROL);
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("", testHelpers.getCellContent("B3"));
-        Assert.assertEquals("", testHelpers.getCellContent("B5"));
+        Assert.assertEquals("", getCellContent("B3"));
+        Assert.assertEquals("", getCellContent("B5"));
 
         assertNotificationContent("Deleting: 2:1;4:1");
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellFailsWhenHandlerReturnsFalse() {
-        testHelpers.clickCell("C3");
-        spreadsheet.getCellAt("C5").click(5, 5,
+        clickCell("C3");
+        getSpreadsheet().getCellAt("C5").click(5, 5,
                 Keys.CONTROL);
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("Try to delete us too!", testHelpers.getCellContent("C3"));
-        Assert.assertEquals("Try to delete us too!", testHelpers.getCellContent("C5"));
+        Assert.assertEquals("Try to delete us too!", getCellContent("C3"));
+        Assert.assertEquals("Try to delete us too!", getCellContent("C5"));
 
         assertNotificationContent("Attempting to delete: 2:2;4:2");
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeSucceedsWhenHandlerReturnsTrue() {
-        testHelpers.clickCell("B6");
-        spreadsheet.getCellAt("B8").click(5, 5,
+        clickCell("B6");
+        getSpreadsheet().getCellAt("B8").click(5, 5,
                 Keys.SHIFT);
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("", testHelpers.getCellContent("B6"));
-        Assert.assertEquals("", testHelpers.getCellContent("B7"));
-        Assert.assertEquals("", testHelpers.getCellContent("B8"));
+        Assert.assertEquals("", getCellContent("B6"));
+        Assert.assertEquals("", getCellContent("B7"));
+        Assert.assertEquals("", getCellContent("B8"));
 
         assertNotificationContent("Deleting: 5:1-7:1");
     }
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeFailsWhenHandlerReturnsFalse() {
-        testHelpers.clickCell("C6");
-        spreadsheet.getCellAt("C8").click(5, 5,
+        clickCell("C6");
+        getSpreadsheet().getCellAt("C8").click(5, 5,
                 Keys.SHIFT);
 
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
 
-        Assert.assertEquals("Try to delete this range!", testHelpers.getCellContent("C6"));
-        Assert.assertEquals("Try to delete this range!", testHelpers.getCellContent("C7"));
-        Assert.assertEquals("Try to delete this range!", testHelpers.getCellContent("C8"));
+        Assert.assertEquals("Try to delete this range!", getCellContent("C6"));
+        Assert.assertEquals("Try to delete this range!", getCellContent("C7"));
+        Assert.assertEquals("Try to delete this range!", getCellContent("C8"));
 
         assertNotificationContent("Attempting to delete: 5:2-7:2");
     }

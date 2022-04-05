@@ -1,21 +1,13 @@
 package com.vaadin.flow.component.spreadsheet.test;
 
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
-import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
-import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
 
-@RunLocally(Browser.CHROME)
-public class CellOverflowIT extends AbstractParallelTest {
-
-    private SpreadsheetElement spreadsheet;
-    private TestHelpers testHelpers;
+public class CellOverflowIT extends AbstractSpreadsheetIT {
 
     @Before
     public void init() {
@@ -23,9 +15,7 @@ public class CellOverflowIT extends AbstractParallelTest {
                 super.getBaseURL() + "/vaadin-spreadsheet");
         getDriver().get(url);
 
-        testHelpers = new TestHelpers(getDriver());
-        spreadsheet = testHelpers.createNewSpreadsheet();
-        testHelpers.setSpreadsheetElement(spreadsheet);
+        createNewSpreadsheet();
     }
 
     @Test
@@ -34,9 +24,9 @@ public class CellOverflowIT extends AbstractParallelTest {
 
         String valueToTest = "aaaaabbbbccccddddeeee";
 
-        spreadsheet.getCellAt("B1").setValue(valueToTest);
+        getSpreadsheet().getCellAt("B1").setValue(valueToTest);
 
-        SheetCellElement a1 = spreadsheet.getCellAt("A1");
+        SheetCellElement a1 = getSpreadsheet().getCellAt("A1");
 
         a1.setValue("=B1");
         Assert.assertEquals(valueToTest, a1.getValue());
@@ -66,12 +56,12 @@ public class CellOverflowIT extends AbstractParallelTest {
     }
 
     private void assertNoOverflowForCell(String cell) {
-        SheetCellElement cellElement = spreadsheet.getCellAt(cell);
+        SheetCellElement cellElement = getSpreadsheet().getCellAt(cell);
 
         Assert.assertEquals("hidden", cellElement.getCssValue("overflow"));
     }
 
     private void loadWrapTextTest() {
-        testHelpers.loadFile("wrap_text_test.xlsx");
+        loadFile("wrap_text_test.xlsx");
     }
 }
