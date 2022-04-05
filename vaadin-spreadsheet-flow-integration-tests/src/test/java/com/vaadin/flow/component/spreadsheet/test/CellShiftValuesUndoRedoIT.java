@@ -79,9 +79,4 @@ public class CellShiftValuesUndoRedoIT extends AbstractSpreadsheetIT {
                 .build().perform();
     }
 
-    private void assertNoErrorIndicatorDetected() {
-        Assert.assertTrue("Error indicator detected when there should be none.",
-                findElements(By.className("v-errorindicator")).isEmpty());
-    }
-
 }

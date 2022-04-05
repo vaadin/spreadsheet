@@ -8,6 +8,7 @@ import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -66,5 +67,10 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
         // sanity check
         Assert.assertEquals("Fixture not loaded correctly", fixture.toString(),
                 $(ComboBoxElement.class).id("fixtureSelect").getInputElementValue());
+    }
+
+    public void assertNoErrorIndicatorDetected() {
+        Assert.assertTrue("Error indicator detected when there should be none.",
+                findElements(By.className("v-errorindicator")).isEmpty());
     }
 }
