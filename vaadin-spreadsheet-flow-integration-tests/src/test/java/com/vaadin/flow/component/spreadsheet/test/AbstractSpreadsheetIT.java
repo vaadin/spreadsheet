@@ -7,6 +7,7 @@ import com.vaadin.flow.component.spreadsheet.tests.fixtures.TestFixtures;
 import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
@@ -38,6 +39,15 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     public void setSpreadsheet(SpreadsheetElement spreadsheet) {
         this.spreadsheet = spreadsheet;
+    }
+
+    public void setCellValue(String address, String value) {
+        getSpreadsheet().getCellAt(address).setValue(value);
+    }
+
+    public void deleteCellValue(String cellAddress){
+        clickCell(cellAddress);
+        new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
     }
 
     public SpreadsheetElement getSpreadsheet() {
