@@ -32,7 +32,7 @@ public class SheetCellElement extends TestBenchElement {
         if (isNormalCell()) {
             doubleClick();
             WebElement cellValueInput = parent.getCellValueInput();
-            cellValueInput.clear();
+            executeScript("arguments[0].value=''", ((TestBenchElement) cellValueInput).getWrappedElement());
             cellValueInput.sendKeys(newValue);
             cellValueInput.sendKeys(Keys.TAB);
             getCommandExecutor().waitForVaadin();

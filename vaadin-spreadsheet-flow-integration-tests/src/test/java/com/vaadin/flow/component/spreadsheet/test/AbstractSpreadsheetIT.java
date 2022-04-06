@@ -16,15 +16,20 @@ import org.openqa.selenium.interactions.Actions;
 public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     private SpreadsheetElement spreadsheet;
+    private static final String BACKGROUND_COLOR = "background-color";
 
     public void selectCell(String address) {
         // TODO: clean up solution
-        new Actions(getDriver()).moveToElement(spreadsheet.getCellAt(address)).click().build()
+        new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address)).click().build()
                 .perform();
     }
 
+    public void selectSheetAt(int sheetIndex) {
+        getSpreadsheet().selectSheetAt(sheetIndex);
+    }
+
     public void clickCell(String address) {
-        SheetCellElement cellElement = spreadsheet
+        SheetCellElement cellElement = getSpreadsheet()
                 .getCellAt(address);
         new Actions(getDriver()).moveToElement(cellElement).click().build()
                 .perform();
@@ -72,5 +77,9 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
     public void assertNoErrorIndicatorDetected() {
         Assert.assertTrue("Error indicator detected when there should be none.",
                 findElements(By.className("v-errorindicator")).isEmpty());
+    }
+
+    public String getCellColor(String address) {
+        return getSpreadsheet().getCellAt(address).getCssValue(BACKGROUND_COLOR);
     }
 }

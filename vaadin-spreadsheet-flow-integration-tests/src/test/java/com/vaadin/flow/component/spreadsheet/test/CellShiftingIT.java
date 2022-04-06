@@ -60,7 +60,6 @@ public class CellShiftingIT extends AbstractSpreadsheetIT {
         SheetCellElement lastCell = getSpreadsheet().getCellAt(lastAddress);
         firstCell.setValue(value);
         selectCell(firstAddress);
-        firstCell.click();
         WebElement shiftHandle = getSpreadsheet().findElement(By
                 .className("s-corner"));
         new Actions(driver).dragAndDrop(shiftHandle, lastCell).perform();
