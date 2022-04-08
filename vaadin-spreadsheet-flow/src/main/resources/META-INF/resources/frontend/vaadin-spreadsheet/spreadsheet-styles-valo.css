@@ -580,7 +580,7 @@ v-window-closebox
     padding-right: 4px;
     border-radius: 0 4px 0 4px; }
     .spreadsheetport .v-window-closebox:before {
-      content: "\00d7"; }
+      content: "×"; }
   .spreadsheetport .v-panel {
     background: white;
     color: #474747;
@@ -1132,17 +1132,17 @@ v-window-closebox
           text-align: center;
           z-index: inherit;
           color: #464646;
-          font-family: FontAwesome; }
+          }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.scroll-tabs-beginning::before {
-            content: "\f053\f053"; }
+            content: "≪"; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.scroll-tabs-end::before {
-            content: "\f054\f054"; }
+            content: "≫"; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.scroll-tabs-left::before {
-            content: "\f053"; }
+            content: "﹤"; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.scroll-tabs-right::before {
-            content: "\f054"; }
+            content: "﹥"; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.add-new-tab::before {
-            content: "\f067"; }
+            content: "+"; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div:hover {
             color: #197de1; }
           .spreadsheetport .v-spreadsheet .sheet-tabsheet .sheet-tabsheet-options div.hidden {
