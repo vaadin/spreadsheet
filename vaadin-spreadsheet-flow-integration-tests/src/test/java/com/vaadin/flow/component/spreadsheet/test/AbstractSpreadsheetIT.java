@@ -11,6 +11,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.NoSuchElementException;
+
 public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     private SpreadsheetElement spreadsheet;
@@ -20,6 +22,31 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
         // TODO: clean up solution
         new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address)).click().build()
                 .perform();
+    }
+
+    public void selectCell(String address, boolean ctrl, boolean shift) {
+        // TODO: clean up solution
+        if (ctrl) {
+            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
+                    .keyDown(Keys.CONTROL).keyDown(Keys.COMMAND)
+                    .click()
+                    .keyUp(Keys.CONTROL).keyUp(Keys.COMMAND)
+                    .build().perform();
+        } else if (shift) {
+            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
+                    .keyDown(Keys.SHIFT)
+                    .click()
+                    .keyUp(Keys.SHIFT)
+                    .build().perform();
+        } else if (ctrl && shift) {
+            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
+                    .keyDown(Keys.SHIFT).keyDown(Keys.SHIFT).keyDown(Keys.CONTROL).keyDown(Keys.COMMAND)
+                    .click()
+                    .keyUp(Keys.SHIFT).keyUp(Keys.SHIFT).keyUp(Keys.CONTROL).keyUp(Keys.COMMAND)
+                    .build().perform();
+        } else {
+            selectCell(address);
+        }
     }
 
     public void selectSheetAt(int sheetIndex) {
@@ -86,7 +113,43 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
                 findElements(By.className("v-errorindicator")).isEmpty());
     }
 
+    public String getAddressFieldValue() {
+        return getAddressField().getAttribute("value");
+    }
+
+    private WebElement getAddressField() {
+        return findElement(By.cssSelector("input.addressfield"));
+    }
+
+    public boolean isCellSelected(int col, int row) {
+        return getSpreadsheet().getCellAt(row, col)
+                .isCellSelected();
+    }
+
     public String getCellColor(String address) {
         return getSpreadsheet().getCellAt(address).getCssValue(BACKGROUND_COLOR);
+    }
+
+    public void navigateToCell(String cell) {
+        driver.findElement(By.xpath("//*[@class='addressfield']")).clear();
+        driver.findElement(By.xpath("//*[@class='addressfield']")).sendKeys(
+                cell);
+        new Actions(driver).sendKeys(Keys.RETURN).perform();
+    }
+
+    // Context menu helpers
+
+    public void clickItem(String caption) {
+        try {
+            new Actions(getDriver())
+                    .click(getDriver().findElement(By.xpath("//div[@class='popupContent']//*[text()='"+caption+"']")))
+                    .perform();
+        } catch (NoSuchElementException ex) {
+            throw new RuntimeException("Menu item '"+caption+"' not found", ex);
+        }
+    }
+
+    public boolean hasOption (String caption) {
+        return getDriver().findElements(By.xpath("//div[@class='popupContent']//*[text()='"+caption+"']")).size()!=0;
     }
 }
