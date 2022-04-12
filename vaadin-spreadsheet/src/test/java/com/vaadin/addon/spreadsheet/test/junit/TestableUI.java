@@ -34,17 +34,7 @@ public class TestableUI extends UI {
                 TestableUI.class, new Properties());
         try {
             service = new VaadinServletService(servlet,
-                    deploymentConfiguration) {
-                @Override
-                public void init() throws ServiceException {
-                    super.init();
-                    ServiceInitEvent event = new ServiceInitEvent(this);
-                    event.addConnectorIdGenerator(connectorIdGenerationEvent -> {
-                        return ConnectorIdGenerator
-                                .generateDefaultConnectorId(connectorIdGenerationEvent);
-                    });
-                }
-            };
+                    deploymentConfiguration);
         } catch (ServiceException e) {
             throw new RuntimeException("Failed to create service", e);
         }
@@ -61,5 +51,18 @@ public class TestableUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
 
+    }
+
+    class MockServletService extends VaadinServletService {
+        public MockServletService(VaadinServlet servlet,
+                DeploymentConfiguration deploymentConfiguration)
+                throws ServiceException {
+            super(servlet, deploymentConfiguration);
+            ServiceInitEvent event = new ServiceInitEvent(this);
+            event.addConnectorIdGenerator(connectorIdGenerationEvent -> {
+                return ConnectorIdGenerator
+                        .generateDefaultConnectorId(connectorIdGenerationEvent);
+            });
+        }
     }
 }
