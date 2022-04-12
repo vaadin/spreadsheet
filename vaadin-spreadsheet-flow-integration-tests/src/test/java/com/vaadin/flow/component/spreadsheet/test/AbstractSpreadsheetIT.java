@@ -4,6 +4,7 @@ import com.vaadin.flow.component.combobox.testbench.ComboBoxElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
 import com.vaadin.flow.component.spreadsheet.tests.fixtures.TestFixtures;
+import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.tests.AbstractParallelTest;
@@ -102,6 +103,18 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
         setSpreadsheet($(SpreadsheetElement.class).first());
     }
 
+    public void addFreezePane() {
+        $("vaadin-button").id("freezePane").click();
+        $("vaadin-button").id("submitValues").click();
+    }
+
+    public void addFreezePane(int horizontalSplitPosition, int verticalSplitPosition) {
+        $("vaadin-button").id("freezePane").click();
+        $(TextFieldElement.class).id("verticalSplitPosition").setValue(String.valueOf(verticalSplitPosition));
+        $(TextFieldElement.class).id("horizontalSplitPosition").setValue(String.valueOf(horizontalSplitPosition));
+        $("vaadin-button").id("submitValues").click();
+    }
+
     public void setLocale(Locale locale) {
         ComboBoxElement localeSelect = $(ComboBoxElement.class).id("localeSelect");
         localeSelect.selectByText(locale.getDisplayName());
@@ -128,6 +141,30 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     private WebElement getAddressField() {
         return findElement(By.cssSelector("input.addressfield"));
+    }
+
+    private WebElement getFormulaField() {
+        return driver.findElement(By.className("functionfield"));
+    }
+
+    public String getFormulaFieldValue() {
+        return getFormulaField().getAttribute("value");
+    }
+
+    public void insertColumn(String[] values) {
+        for (String value : values) {
+            insertAndRet(value);
+        }
+    }
+
+    private void insertAndRet(CharSequence k) {
+        action(k);
+        action(Keys.RETURN);
+        action(Keys.ENTER);
+    }
+
+    private void action(CharSequence k) {
+        new Actions(driver).sendKeys(k).build().perform();
     }
 
     public boolean isCellSelected(int col, int row) {
