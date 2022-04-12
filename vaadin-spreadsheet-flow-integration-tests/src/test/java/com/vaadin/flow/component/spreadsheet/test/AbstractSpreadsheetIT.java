@@ -14,6 +14,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
@@ -66,7 +67,7 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
     }
 
     public String getCellContent(String address) {
-        return $(SpreadsheetElement.class).first().getCellAt(address).getValue();
+        return getSpreadsheet().getCellAt(address).getValue();
     }
 
     public void setSpreadsheet(SpreadsheetElement spreadsheet) {
@@ -197,5 +198,10 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     public boolean hasOption (String caption) {
         return getDriver().findElements(By.xpath("//div[@class='popupContent']//*[text()='"+caption+"']")).size()!=0;
+    }
+
+    public List<WebElement> getGroupings() {
+        return getSpreadsheet()
+                .findElements(By.cssSelector(".col-group-pane .grouping.plus"));
     }
 }
