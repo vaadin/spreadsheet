@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.NoSuchElementException;
 
-@RunLocally(Browser.CHROME)
 public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     // Should be COMMAND for macOS
