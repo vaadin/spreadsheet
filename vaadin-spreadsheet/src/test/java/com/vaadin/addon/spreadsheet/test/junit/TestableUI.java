@@ -33,7 +33,7 @@ public class TestableUI extends UI {
         deploymentConfiguration = new DefaultDeploymentConfiguration(
                 TestableUI.class, new Properties());
         try {
-            service = new VaadinServletService(servlet,
+            service = new MockServletService(servlet,
                     deploymentConfiguration);
         } catch (ServiceException e) {
             throw new RuntimeException("Failed to create service", e);
