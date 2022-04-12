@@ -4,6 +4,8 @@ import com.vaadin.flow.component.combobox.testbench.ComboBoxElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SheetCellElement;
 import com.vaadin.flow.component.spreadsheet.testbench.SpreadsheetElement;
 import com.vaadin.flow.component.spreadsheet.tests.fixtures.TestFixtures;
+import com.vaadin.testbench.annotations.RunLocally;
+import com.vaadin.testbench.parallel.Browser;
 import com.vaadin.tests.AbstractParallelTest;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -11,8 +13,10 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
+@RunLocally(Browser.CHROME)
 public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
     private SpreadsheetElement spreadsheet;
@@ -96,6 +100,11 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
         updateBtn.click();
 
         setSpreadsheet($(SpreadsheetElement.class).first());
+    }
+
+    public void setLocale(Locale locale) {
+        ComboBoxElement localeSelect = $(ComboBoxElement.class).id("localeSelect");
+        localeSelect.selectByText(locale.getDisplayName());
     }
 
     public void loadTestFixture(TestFixtures fixture) {
