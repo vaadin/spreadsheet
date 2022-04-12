@@ -139,6 +139,9 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>2.9</version>
                 <executions>
+                    <configuration>
+                       <additionalparam>-Xdoclint:none</additionalparam>
+                    </configuration>
                     <execution>
                         <id>attach-javadoc</id>
                         <goals>
