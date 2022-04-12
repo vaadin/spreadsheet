@@ -21,37 +21,62 @@ import java.util.NoSuchElementException;
 @RunLocally(Browser.CHROME)
 public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
 
+    // Should be COMMAND for macOS
+    private Keys metaKey = Keys.CONTROL;
     private SpreadsheetElement spreadsheet;
     private static final String BACKGROUND_COLOR = "background-color";
 
     public void selectCell(String address) {
-        // TODO: clean up solution
-        new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address)).click().build()
-                .perform();
+        selectElement(getSpreadsheet().getCellAt(address), false, false);
     }
 
     public void selectCell(String address, boolean ctrl, boolean shift) {
-        // TODO: clean up solution
+        selectElement(getSpreadsheet().getCellAt(address), ctrl, shift);
+    }
+
+    public void selectRow(int row) {
+        selectElement(getSpreadsheet().getRowHeader(row), false, false);
+    }
+
+    public void selectRow(int row, boolean ctrl, boolean shift) {
+        selectElement(getSpreadsheet().getRowHeader(row), ctrl, shift);
+    }
+
+    public void selectColumn(String column) {
+        selectElement(getSpreadsheet().getColumnHeader(column.charAt(0) - 'A' + 1), false, false);
+    }
+
+    public void selectColumn(String column, boolean ctrl, boolean shift) {
+        selectElement(getSpreadsheet().getColumnHeader(column.charAt(0) - 'A' + 1), ctrl, shift);
+    }
+
+    public void selectRegion(String from, String to) {
+        new Actions(getDriver()).clickAndHold(getSpreadsheet().getCellAt(from))
+                .release(getSpreadsheet().getCellAt(to)).perform();
+    }
+
+    private void selectElement(WebElement element, boolean ctrl, boolean shift) {
         if (ctrl) {
-            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
-                    .keyDown(Keys.CONTROL).keyDown(Keys.COMMAND)
+            new Actions(getDriver()).moveToElement(element)
+                    .keyDown(metaKey)
                     .click()
-                    .keyUp(Keys.CONTROL).keyUp(Keys.COMMAND)
+                    .keyUp(metaKey)
                     .build().perform();
         } else if (shift) {
-            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
+            new Actions(getDriver()).moveToElement(element)
                     .keyDown(Keys.SHIFT)
                     .click()
                     .keyUp(Keys.SHIFT)
                     .build().perform();
         } else if (ctrl && shift) {
-            new Actions(getDriver()).moveToElement(getSpreadsheet().getCellAt(address))
-                    .keyDown(Keys.SHIFT).keyDown(Keys.SHIFT).keyDown(Keys.CONTROL).keyDown(Keys.COMMAND)
+            new Actions(getDriver()).moveToElement(element)
+                    .keyDown(Keys.SHIFT).keyDown(metaKey)
                     .click()
-                    .keyUp(Keys.SHIFT).keyUp(Keys.SHIFT).keyUp(Keys.CONTROL).keyUp(Keys.COMMAND)
+                    .keyUp(Keys.SHIFT).keyUp(metaKey)
                     .build().perform();
         } else {
-            selectCell(address);
+            new Actions(getDriver()).moveToElement(element).click().build()
+                    .perform();
         }
     }
 
@@ -145,7 +170,7 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
     }
 
     private WebElement getFormulaField() {
-        return driver.findElement(By.className("functionfield"));
+        return getDriver().findElement(By.className("functionfield"));
     }
 
     public String getFormulaFieldValue() {
@@ -165,7 +190,7 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
     }
 
     private void action(CharSequence k) {
-        new Actions(driver).sendKeys(k).build().perform();
+        new Actions(getDriver()).sendKeys(k).build().perform();
     }
 
     public boolean isCellSelected(int col, int row) {
@@ -178,10 +203,10 @@ public abstract class AbstractSpreadsheetIT extends AbstractParallelTest {
     }
 
     public void navigateToCell(String cell) {
-        driver.findElement(By.xpath("//*[@class='addressfield']")).clear();
-        driver.findElement(By.xpath("//*[@class='addressfield']")).sendKeys(
+        getDriver().findElement(By.xpath("//*[@class='addressfield']")).clear();
+        getDriver().findElement(By.xpath("//*[@class='addressfield']")).sendKeys(
                 cell);
-        new Actions(driver).sendKeys(Keys.RETURN).perform();
+        new Actions(getDriver()).sendKeys(Keys.RETURN).perform();
     }
 
     // Context menu helpers
