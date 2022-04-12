@@ -63,6 +63,7 @@ public class TestableUI extends UI {
                 return ConnectorIdGenerator
                         .generateDefaultConnectorId(connectorIdGenerationEvent);
             });
+            init();
         }
     }
 }
