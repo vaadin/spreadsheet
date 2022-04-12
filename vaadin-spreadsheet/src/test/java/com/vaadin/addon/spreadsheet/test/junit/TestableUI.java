@@ -1,10 +1,13 @@
 package com.vaadin.addon.spreadsheet.test.junit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import com.vaadin.server.ConnectorIdGenerator;
 import com.vaadin.server.DefaultDeploymentConfiguration;
 import com.vaadin.server.DeploymentConfiguration;
+import com.vaadin.server.RequestHandler;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinRequest;
@@ -64,6 +67,12 @@ public class TestableUI extends UI {
                         .generateDefaultConnectorId(connectorIdGenerationEvent);
             });
             init();
+        }
+        
+        @Override
+        protected List<RequestHandler> createRequestHandlers()
+                throws ServiceException {
+            return new ArrayList<>();
         }
     }
 }
