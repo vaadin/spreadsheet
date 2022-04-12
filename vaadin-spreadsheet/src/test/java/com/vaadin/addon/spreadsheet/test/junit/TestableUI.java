@@ -1,10 +1,15 @@
 package com.vaadin.addon.spreadsheet.test.junit;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
+import com.vaadin.server.ConnectorIdGenerator;
 import com.vaadin.server.DefaultDeploymentConfiguration;
 import com.vaadin.server.DeploymentConfiguration;
+import com.vaadin.server.RequestHandler;
 import com.vaadin.server.ServiceException;
+import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
@@ -31,7 +36,7 @@ public class TestableUI extends UI {
         deploymentConfiguration = new DefaultDeploymentConfiguration(
                 TestableUI.class, new Properties());
         try {
-            service = new VaadinServletService(servlet,
+            service = new MockServletService(servlet,
                     deploymentConfiguration);
         } catch (ServiceException e) {
             throw new RuntimeException("Failed to create service", e);
@@ -49,5 +54,25 @@ public class TestableUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
 
+    }
+
+    class MockServletService extends VaadinServletService {
+        public MockServletService(VaadinServlet servlet,
+                DeploymentConfiguration deploymentConfiguration)
+                throws ServiceException {
+            super(servlet, deploymentConfiguration);
+            ServiceInitEvent event = new ServiceInitEvent(this);
+            event.addConnectorIdGenerator(connectorIdGenerationEvent -> {
+                return ConnectorIdGenerator
+                        .generateDefaultConnectorId(connectorIdGenerationEvent);
+            });
+            init();
+        }
+        
+        @Override
+        protected List<RequestHandler> createRequestHandlers()
+                throws ServiceException {
+            return new ArrayList<>();
+        }
     }
 }
