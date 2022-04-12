@@ -2,9 +2,11 @@ package com.vaadin.addon.spreadsheet.test.junit;
 
 import java.util.Properties;
 
+import com.vaadin.server.ConnectorIdGenerator;
 import com.vaadin.server.DefaultDeploymentConfiguration;
 import com.vaadin.server.DeploymentConfiguration;
 import com.vaadin.server.ServiceException;
+import com.vaadin.server.ServiceInitEvent;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinServlet;
@@ -32,7 +34,17 @@ public class TestableUI extends UI {
                 TestableUI.class, new Properties());
         try {
             service = new VaadinServletService(servlet,
-                    deploymentConfiguration);
+                    deploymentConfiguration) {
+                @Override
+                public void init() throws ServiceException {
+                    super.init();
+                    ServiceInitEvent event = new ServiceInitEvent(this);
+                    event.addConnectorIdGenerator(connectorIdGenerationEvent -> {
+                        return ConnectorIdGenerator
+                                .generateDefaultConnectorId(connectorIdGenerationEvent);
+                    });
+                }
+            };
         } catch (ServiceException e) {
             throw new RuntimeException("Failed to create service", e);
         }
