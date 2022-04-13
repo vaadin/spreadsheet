@@ -15,10 +15,11 @@ public class OptimizedConnectorBundleLoaderFactory extends ConnectorBundleLoader
     private Set<String> eagerConnectors = new HashSet<>();
     {
         eagerConnectors.add(UIConnector.class.getName());
-        eagerConnectors.add(SpreadsheetConnector.class.getName());
-        eagerConnectors.add(JavaScriptManagerConnector.class.getName());
-        eagerConnectors.add(JavaScriptManagerConnector.class.getName());
-        eagerConnectors.add(PopupButtonConnector.class.getName());
+        // These are not needed in spreadsheet flow
+//        eagerConnectors.add(SpreadsheetConnector.class.getName());
+//        eagerConnectors.add(JavaScriptManagerConnector.class.getName());
+//        eagerConnectors.add(JavaScriptManagerConnector.class.getName());
+//        eagerConnectors.add(PopupButtonConnector.class.getName());
     }
 
     @Override

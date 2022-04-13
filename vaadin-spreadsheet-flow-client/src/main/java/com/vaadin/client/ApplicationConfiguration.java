@@ -760,6 +760,11 @@ public class ApplicationConfiguration implements EntryPoint {
     @Override
     public void onModuleLoad() {
 
+        // Spreadsheet does not need anything from bootstrap
+        if (true) {
+            return;
+        }
+
         // Don't run twice if the module has been inherited several times,
         // and don't continue if vaadinBootstrap was not executed.
         if (moduleLoaded || !vaadinBootstrapLoaded()) {
@@ -816,11 +821,6 @@ public class ApplicationConfiguration implements EntryPoint {
         if (isDebugMode()) {
             // Load debug window bundle and continue the bootstrap sequence once
             // it's loaded
-
-
-            //spreadsheet: we must avoid creation of fragments, if we want to use
-            // the sso linker
-            /*
             GWT.runAsync(VDebugWindow.class, new RunAsyncCallback() {
                 @Override
                 public void onSuccess() {
@@ -834,7 +834,6 @@ public class ApplicationConfiguration implements EntryPoint {
                     registerCallback(GWT.getModuleName());
                 }
             });
-             */
             initDebugWindow();
             registerCallback(GWT.getModuleName());
         } else {
