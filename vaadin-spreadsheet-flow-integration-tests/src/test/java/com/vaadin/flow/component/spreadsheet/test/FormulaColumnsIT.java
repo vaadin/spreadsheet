@@ -48,8 +48,7 @@ public class FormulaColumnsIT extends AbstractSpreadsheetIT {
         getSpreadsheet().getCellAt("B2").setValue("=COUNTA(A1:A6)");
         
         // Date strings must be interpreted as numeric
-        // TODO: Check why it was 2
-        Assert.assertEquals("1", getSpreadsheet().getCellAt("B1").getValue());
+        Assert.assertEquals("2", getSpreadsheet().getCellAt("B1").getValue());
         Assert.assertEquals("5", getSpreadsheet().getCellAt("B2").getValue());
     }
 

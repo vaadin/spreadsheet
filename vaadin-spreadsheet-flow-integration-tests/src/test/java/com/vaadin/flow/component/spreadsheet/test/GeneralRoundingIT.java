@@ -42,7 +42,6 @@ public class GeneralRoundingIT extends AbstractSpreadsheetIT {
     }
 
     @Test
-    @Ignore("Rounding is not applied with Finnish Locale")
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_numbersRoundedCorrectly() {
         setLocale(new Locale("fi", "FI"));
         loadFile("general_round.xlsx");
@@ -56,7 +55,6 @@ public class GeneralRoundingIT extends AbstractSpreadsheetIT {
 
         String cellAfterResize = getSpreadsheet().getCellAt("A7").getValue();
 
-        // TODO: fix shortening the number in Finnish locale
         Assert.assertTrue("Number not shortened", cellAfterResize.length() <
                 cellBeforeResize.length());
         Assert.assertFalse(cellAfterResize.contains(","));
@@ -88,6 +86,7 @@ public class GeneralRoundingIT extends AbstractSpreadsheetIT {
     }
 
     @Test
+    @Ignore("Rounding is not applied with Finnish Locale")
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_negativeNumbersRoundedCorrectly() {
         setLocale(new Locale("fi", "FI"));
         loadFile("negative_general_round.xlsx");
@@ -101,6 +100,7 @@ public class GeneralRoundingIT extends AbstractSpreadsheetIT {
 
         String cellAfterResize = getSpreadsheet().getCellAt("A7").getValue();
 
+        // TODO: fix shortening the number in Finnish locale
         Assert.assertTrue("Number not shortened", cellAfterResize.length() <
                 cellBeforeResize.length());
         Assert.assertFalse(cellAfterResize.contains("."));
