@@ -1128,17 +1128,6 @@ public class ConnectorBundleLoaderFactory extends Generator {
         // Eager connectors and all RPC interfaces are loaded by default
         eagerBundle.processTypes(eagerLogger,
                 connectorsByLoadStyle.get(LoadStyle.EAGER));
-        
-        // Spreadsheet does not need other connectors or RPC code
-//        eagerBundle.processType(eagerLogger, typeOracle
-//                .findType(UnknownComponentConnector.class.getCanonicalName()));
-//        eagerBundle.processType(eagerLogger, typeOracle
-//                .findType(UnknownExtensionConnector.class.getCanonicalName()));
-//        eagerBundle.processSubTypes(eagerLogger,
-//                typeOracle.getType(ClientRpc.class.getName()));
-//        eagerBundle.processSubTypes(eagerLogger,
-//                typeOracle.getType(ServerRpc.class.getName()));
-
         bundles.add(eagerBundle);
 
         ConnectorBundle deferredBundle = new ConnectorBundle(
