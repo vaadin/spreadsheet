@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.spreadsheet.client.CellData;
 import com.vaadin.flow.component.spreadsheet.client.MergedRegion;
 import com.vaadin.flow.component.spreadsheet.client.OverlayInfo;
@@ -13,6 +16,12 @@ import com.vaadin.flow.component.spreadsheet.client.SpreadsheetActionDetails;
 import com.vaadin.flow.component.spreadsheet.shared.GroupingData;
 
 public class Serializer {
+    
+    private static ObjectMapper objectMapper;
+    static {
+        objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+    }
 
     public static String serialize(HashMap<?, ?> map) {
         if (map == null || map.size() == 0) {
@@ -27,8 +36,25 @@ public class Serializer {
                                 : e.getValue()))
                 .collect(Collectors.joining(","));
     }
+    
+    
+    public static String toJson(Object value) {
+        try {
+            String val = objectMapper.writeValueAsString(value);
+            System.err.println(">>>> " + (value != null ? value.getClass().getName() : "null") + " " + value + "\n" + val);
+            
+            if (val.contains("formulaValue")) {
+//                Thread.dumpStack();
+            }
+            return val;
+        } catch (JsonProcessingException e) {
+            System.err.println(">>>> EXCEPTION " + value + " " + e.getMessage());
+            return null;
+        }        
+    }
 
     public static String serialize(Object value) {
+
         StringBuffer rs = new StringBuffer();
         if (value == null) {
             rs.append("null");

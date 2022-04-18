@@ -379,20 +379,20 @@ export class VaadinSpreadsheet extends LitElement {
   CLIENT SIDE RPC METHODS
    */
 
-  updateBottomRightCellValues(cellData) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomRightCellValues(cellData);
+  updateBottomRightCellValues(cellData, c) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomRightCellValues(cellData, c);
   }
 
-  updateTopLeftCellValues(cellData) { //ArrayList<CellData> cellData) {
-    this.api.updateTopLeftCellValues(cellData);
+  updateTopLeftCellValues(cellData, c) { //ArrayList<CellData> cellData) {
+    this.api.updateTopLeftCellValues(cellData, c);
   }
 
-  updateTopRightCellValues(cellData) { //ArrayList<CellData> cellData) {
-    this.api.updateTopRightCellValues(cellData);
+  updateTopRightCellValues(cellData, c) { //ArrayList<CellData> cellData) {
+    this.api.updateTopRightCellValues(cellData, c);
   }
 
-  updateBottomLeftCellValues(cellData) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomLeftCellValues(cellData);
+  updateBottomLeftCellValues(cellData, c) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomLeftCellValues(cellData, c);
   }
 
   updateFormulaBar(possibleName, col, row) { //String possibleName, int col, int row) {
@@ -415,8 +415,8 @@ export class VaadinSpreadsheet extends LitElement {
     this.api.setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
   }
 
-  cellsUpdated(updatedCellData) { //ArrayList<CellData> updatedCellData) {
-    if (this.api) this.api.cellsUpdated(updatedCellData);
+  cellsUpdated(updatedCellData, c) { //ArrayList<CellData> updatedCellData) {
+    if (this.api) this.api.cellsUpdated(updatedCellData, c);
   }
 
   refreshCellStyles() {

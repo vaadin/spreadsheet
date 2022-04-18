@@ -628,7 +628,7 @@ public class SelectionWidget extends Composite {
         bottomRight.setSheetElement(bottomRightPane);
         paintBottomRight.setSheetElement(bottomRightPane);
     }
-
+    
     public void setHorizontalSplitPosition(int horizontalSplitPosition) {
         this.horizontalSplitPosition = horizontalSplitPosition;
         if (horizontalSplitPosition > 0 && bottomLeft == null) {

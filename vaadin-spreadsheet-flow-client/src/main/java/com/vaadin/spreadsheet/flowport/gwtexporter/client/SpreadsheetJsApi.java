@@ -12,6 +12,8 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.vaadin.addon.spreadsheet.client.CellData;
+import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.PopupButtonConnector;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
 import com.vaadin.addon.spreadsheet.client.PopupButtonWidget;
@@ -563,20 +565,20 @@ public class SpreadsheetJsApi {
     CLIENT RPC METHODS
      */
 
-    public void updateBottomRightCellValues(String cellData) {
-        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellData(cellData));
+    public void updateBottomRightCellValues(String cellData, String json) {
+        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellDataJs(json));
     }
 
-    public void updateTopLeftCellValues(String cellData) {
-        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellData(cellData));
+    public void updateTopLeftCellValues(String cellData, String json) {
+        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellDataJs(json));
     }
 
-    public void updateTopRightCellValues(String cellData) {
-        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellData(cellData));
+    public void updateTopRightCellValues(String cellData, String json) {
+        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellDataJs(json));
     }
 
-    public void updateBottomLeftCellValues(String cellData) {
-        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellData(cellData));
+    public void updateBottomLeftCellValues(String cellData, String json) {
+        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellDataJs(json));
     }
 
     public void updateFormulaBar(String possibleName, int col, int row) {
@@ -599,8 +601,8 @@ public class SpreadsheetJsApi {
         getClientRpcInstance().setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
     }
 
-    public void cellsUpdated(String updatedCellData) {
-        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellData(updatedCellData));
+    public void cellsUpdated(String updatedCellData, String json) {
+        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellDataJs(json));
     }
 
     public void refreshCellStyles() {
@@ -858,7 +860,7 @@ for(;;);[{"syncId": 2, "clientId": 2, "changes" : [], "state":{"1":{"reload":fal
         setCellCommentAuthors("");
         setInvalidFormulaCells("");
 
-        updateBottomRightCellValues("1#1#\"Hola!\"#null#\"Hola!\"#\"cs0\"#false#false#false");
+        updateBottomRightCellValues("1#1#\"Hola!\"#null#\"Hola!\"#\"cs0\"#false#false#false", null);
         showSelectedCell(null, 1, 1, "Hola!", false, false, true);
     }
 

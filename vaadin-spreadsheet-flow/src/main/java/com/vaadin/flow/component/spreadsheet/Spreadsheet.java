@@ -608,11 +608,13 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setColGroupingData(List<GroupingData> colGroupingData) {
         this.colGroupingData = colGroupingData;
         getElement().setProperty("colGroupingData", Serializer.serialize(colGroupingData));
+        getElement().setProperty("colGroupingDataJs", Serializer.toJson(colGroupingData));
     }
 
     public void setRowGroupingData(List<GroupingData> rowGroupingData) {
         this.rowGroupingData = rowGroupingData;
         getElement().setProperty("rowGroupingData", Serializer.serialize(rowGroupingData));
+        getElement().setProperty("rowGroupingDataJs", Serializer.toJson(rowGroupingData));
     }
 
     public void setColGroupingMax(int colGroupingMax) {
@@ -648,11 +650,13 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setRowH(float[] rowH) {
         this.rowH = rowH;
         getElement().setProperty("rowH", Serializer.serialize(rowH));
+        getElement().setProperty("rowHJs", Serializer.toJson(rowH));
     }
 
     public void setColW(int[] colW) {
         this.colW = colW;
         getElement().setProperty("colW", Serializer.serialize(colW));
+        getElement().setProperty("colWJs", Serializer.toJson(colW));
     }
 
     public void setReload(boolean reload) {
@@ -667,61 +671,73 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setSheetNames(String[] sheetNames) {
         this.sheetNames = sheetNames;
         getElement().setProperty("sheetNames", Serializer.serialize(sheetNames));
+        getElement().setProperty("sheetNamesJs", Serializer.toJson(sheetNames));
     }
 
     public void setCellStyleToCSSStyle(HashMap<Integer, String> cellStyleToCSSStyle) {
         this.cellStyleToCSSStyle = cellStyleToCSSStyle;
         getElement().setProperty("cellStyleToCSSStyle", Serializer.serialize(cellStyleToCSSStyle));
+        getElement().setProperty("cellStyleToCSSStyleJs", Serializer.toJson(cellStyleToCSSStyle));
     }
 
     public void setRowIndexToStyleIndex(HashMap<Integer, Integer> rowIndexToStyleIndex) {
         this.rowIndexToStyleIndex = rowIndexToStyleIndex;
         getElement().setProperty("rowIndexToStyleIndex", Serializer.serialize(rowIndexToStyleIndex));
+        getElement().setProperty("rowIndexToStyleIndexJs", Serializer.toJson(rowIndexToStyleIndex));
     }
 
     public void setColumnIndexToStyleIndex(HashMap<Integer, Integer> columnIndexToStyleIndex) {
         this.columnIndexToStyleIndex = columnIndexToStyleIndex;
         getElement().setProperty("columnIndexToStyleIndex", Serializer.serialize(columnIndexToStyleIndex));
+        getElement().setProperty("columnIndexToStyleIndexJs", Serializer.toJson(columnIndexToStyleIndex));
     }
 
     public void setLockedColumnIndexes(Set<Integer> lockedColumnIndexes) {
         this.lockedColumnIndexes = lockedColumnIndexes;
         getElement().setProperty("lockedColumnIndexes", Serializer.serialize(lockedColumnIndexes));
+        getElement().setProperty("lockedColumnIndexesJs", Serializer.toJson(lockedColumnIndexes));
     }
 
     public void setLockedRowIndexes(Set<Integer> lockedRowIndexes) {
         this.lockedRowIndexes = lockedRowIndexes;
         getElement().setProperty("lockedRowIndexes", Serializer.serialize(lockedRowIndexes));
+        getElement().setProperty("lockedRowIndexesJs", Serializer.toJson(lockedRowIndexes));
     }
 
     public void setShiftedCellBorderStyles(ArrayList<String> shiftedCellBorderStyles) {
         this.shiftedCellBorderStyles = shiftedCellBorderStyles;
         getElement().setProperty("shiftedCellBorderStyles", Serializer.serialize(shiftedCellBorderStyles));
+        getElement().setProperty("shiftedCellBorderStylesJs", Serializer.toJson(shiftedCellBorderStyles));
     }
 
     public void setConditionalFormattingStyles(HashMap<Integer, String> conditionalFormattingStyles) {
         this.conditionalFormattingStyles = conditionalFormattingStyles;
         getElement().setProperty("conditionalFormattingStyles", Serializer.serialize(conditionalFormattingStyles));
+        getElement().setProperty("conditionalFormattingStylesJs", Serializer.toJson(conditionalFormattingStyles));
     }
 
     public void setHiddenColumnIndexes(ArrayList<Integer> hiddenColumnIndexes) {
         this.hiddenColumnIndexes = hiddenColumnIndexes;
         getElement().setProperty("hiddenColumnIndexes", Serializer.serialize(hiddenColumnIndexes));
+        getElement().setProperty("hiddenColumnIndexesJson", Serializer.toJson(hiddenColumnIndexes));
     }
 
     public void setHiddenRowIndexes(ArrayList<Integer> hiddenRowIndexes) {
         this.hiddenRowIndexes = hiddenRowIndexes;
         getElement().setProperty("hiddenRowIndexes", Serializer.serialize(hiddenRowIndexes));
+        getElement().setProperty("hiddenRowIndexesJs", Serializer.toJson(hiddenRowIndexes));
     }
 
     public void setVerticalScrollPositions(int[] verticalScrollPositions) {
         this.verticalScrollPositions = verticalScrollPositions;
         getElement().setProperty("verticalScrollPositions", Serializer.serialize(verticalScrollPositions));
+        getElement().setProperty("verticalScrollPositionsJs", Serializer.toJson(verticalScrollPositions));
     }
 
     public void setHorizontalScrollPositions(int[] horizontalScrollPositions) {
         this.horizontalScrollPositions = horizontalScrollPositions;
         getElement().setProperty("horizontalScrollPositions", Serializer.serialize(horizontalScrollPositions));
+        getElement().setProperty("horizontalScrollPositionsJs", Serializer.toJson(horizontalScrollPositions));
     }
 
     public void setSheetProtected(boolean sheetProtected) {
@@ -737,36 +753,43 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setCellKeysToEditorIdMap(HashMap<String, String> cellKeysToEditorIdMap) {
         this.cellKeysToEditorIdMap = cellKeysToEditorIdMap;
         getElement().setProperty("cellKeysToEditorIdMap", Serializer.serialize(cellKeysToEditorIdMap));
+        getElement().setProperty("cellKeysToEditorIdMapJs", Serializer.toJson(cellKeysToEditorIdMap));
     }
 
     public void setComponentIDtoCellKeysMap(HashMap<String, String> componentIDtoCellKeysMap) {
         this.componentIDtoCellKeysMap = componentIDtoCellKeysMap;
         getElement().setProperty("componentIDtoCellKeysMap", Serializer.serialize(componentIDtoCellKeysMap));
+        getElement().setProperty("componentIDtoCellKeysMapJs", Serializer.toJson(componentIDtoCellKeysMap));
     }
 
     public void setHyperlinksTooltips(HashMap<String, String> hyperlinksTooltips) {
         this.hyperlinksTooltips = hyperlinksTooltips;
         getElement().setProperty("hyperlinksTooltips", Serializer.serialize(hyperlinksTooltips));
+        getElement().setProperty("hyperlinksTooltipsJs", Serializer.toJson(hyperlinksTooltips));
     }
 
     public void setCellComments(HashMap<String, String> cellComments) {
         this.cellComments = cellComments;
         getElement().setProperty("cellComments", Serializer.serialize(cellComments));
+        getElement().setProperty("cellCommentsJs", Serializer.toJson(cellComments));
     }
 
     public void setCellCommentAuthors(HashMap<String, String> cellCommentAuthors) {
         this.cellCommentAuthors = cellCommentAuthors;
         getElement().setProperty("cellCommentAuthors", Serializer.serialize(cellCommentAuthors));
+        getElement().setProperty("cellCommentAuthorsJs", Serializer.toJson(cellCommentAuthors));
     }
 
     public void setVisibleCellComments(ArrayList<String> visibleCellComments) {
         this.visibleCellComments = visibleCellComments;
         getElement().setProperty("visibleCellComments", Serializer.serialize(visibleCellComments));
+        getElement().setProperty("visibleCellCommentsJs", Serializer.toJson(visibleCellComments));
     }
 
     public void setInvalidFormulaCells(Set<String> invalidFormulaCells) {
         this.invalidFormulaCells = invalidFormulaCells;
         getElement().setProperty("invalidFormulaCells", Serializer.serialize(invalidFormulaCells));
+        getElement().setProperty("invalidFormulaCellsJs", Serializer.toJson(invalidFormulaCells));
     }
 
     public void setHasActions(boolean hasActions) {
@@ -777,11 +800,13 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setOverlays(HashMap<String, OverlayInfo> overlays) {
         this.overlays = overlays;
         getElement().setProperty("overlays", Serializer.serialize(overlays));
+        getElement().setProperty("overlaysJs", Serializer.toJson(overlays));
     }
 
     public void setMergedRegions(ArrayList<MergedRegion> mergedRegions) {
         this.mergedRegions = mergedRegions;
         getElement().setProperty("mergedRegions", Serializer.serialize(mergedRegions));
+        getElement().setProperty("mergedRegionsJs", Serializer.toJson(mergedRegions));
     }
 
     public void setDisplayGridlines(boolean displayGridlines) {
@@ -814,11 +839,6 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
         getElement().setProperty("workbookChangeToggle", workbookChangeToggle);
     }
 
-    public void _setInvalidFormulaErrorMessage(String invalidFormulaErrorMessage) {
-        this.invalidFormulaErrorMessage = invalidFormulaErrorMessage;
-        setInvalidFormulaErrorMessage(invalidFormulaErrorMessage);
-    }
-
     public void setLockFormatColumns(boolean lockFormatColumns) {
         this.lockFormatColumns = lockFormatColumns;
         getElement().setProperty("lockFormatColumns", lockFormatColumns);
@@ -832,6 +852,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     public void setNamedRanges(List<String> namedRanges) {
         this.namedRanges = namedRanges;
         getElement().setProperty("namedRanges", Serializer.serialize(namedRanges));
+        getElement().setProperty("namedRangesJs", Serializer.toJson(namedRanges));
     }
 
 
@@ -918,22 +939,22 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     private SpreadsheetClientRpc clientRpc = new SpreadsheetClientRpc() {
         @Override
         public void updateBottomRightCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateBottomRightCellValues", Serializer.serialize(cellData));
+            getElement().callJsFunction("updateBottomRightCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
         }
 
         @Override
         public void updateTopLeftCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateTopLeftCellValues", Serializer.serialize(cellData));
+            getElement().callJsFunction("updateTopLeftCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
         }
 
         @Override
         public void updateTopRightCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateTopRightCellValues", Serializer.serialize(cellData));
+            getElement().callJsFunction("updateTopRightCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
         }
 
         @Override
         public void updateBottomLeftCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateBottomLeftCellValues", Serializer.serialize(cellData));
+            getElement().callJsFunction("updateBottomLeftCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
         }
 
         @Override
@@ -953,7 +974,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
         @Override
         public void showActions(ArrayList<SpreadsheetActionDetails> actionDetails) {
-            getElement().callJsFunction("showActions", Serializer.serialize(actionDetails));
+            getElement().callJsFunction("showActions", Serializer.serialize(actionDetails), Serializer.toJson(actionDetails));
         }
 
         @Override
@@ -963,7 +984,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
         @Override
         public void cellsUpdated(ArrayList<CellData> updatedCellData) {
-            getElement().callJsFunction("cellsUpdated", Serializer.serialize(updatedCellData));
+            getElement().callJsFunction("cellsUpdated", Serializer.serialize(updatedCellData), Serializer.toJson(updatedCellData));
         }
 
         @Override
@@ -3669,16 +3690,17 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
      */
     //@Override
     protected void setResource(String key, StreamResource resource) {
+        System.err.println(">>>>>>>> SET RESOURCE .... " + key);
         //todo: ver que hacemos con esto
         //super.setResource(key, resource);
-        if (resource == null) {
-            resources.remove(key);
-            getElement().removeAttribute("resource-" + key);
-        } else {
-            resources.put(key, resource.toString());
-            getElement().setProperty("resources", Serializer.serialize(new ArrayList<>(resources.keySet())));
-            getElement().setAttribute("resource-" + key, resource);
-        }
+//        if (resource == null) {
+//            resources.remove(key);
+//            getElement().removeAttribute("resource-" + key);
+//        } else {
+//            resources.put(key, resource.toString());
+//            getElement().setProperty("resources", Serializer.serialize(new ArrayList<>(resources.keySet())));
+//            getElement().setAttribute("resource-" + key, resource);
+//        }
     }
 
     protected void setResource(String key, Icon icon) {
@@ -3695,7 +3717,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
         historyManager.clear();
         invalidFormulas.clear();
         sheetPopupButtons.clear();
-        sheetState.clear();
+//        sheetState.clear();
         clearSheetOverlays();
     }
 
@@ -3978,12 +4000,12 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
             setReload(reload);
             reload = false;
             if (initialSheetSelection == null) {
-                if (sheetState.getSelectedCellsOnSheet(getActiveSheet()) == null) {
-                    initialSheetSelection = "A1";
-                } else {
-                    initialSheetSelection = sheetState
-                            .getSelectedCellsOnSheet(getActiveSheet());
-                }
+//                if (sheetState.getSelectedCellsOnSheet(getActiveSheet()) == null) {
+//                    initialSheetSelection = "A1";
+//                } else {
+//                    initialSheetSelection = sheetState
+//                            .getSelectedCellsOnSheet(getActiveSheet());
+//                }
             }
         } else {
             setReload(reload);
@@ -4775,6 +4797,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     private void registerCustomComponent(PopupButton component) {
         getElement().setAttribute("popupbuttons", Serializer.serialize(attachedPopupButtons));
+        getElement().setProperty("popupbuttonsjs", Serializer.toJson(attachedPopupButtons));
     }
 
     private void registerCustomComponent(Component component) {
@@ -4785,7 +4808,8 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     }
 
     private void unRegisterCustomComponent(PopupButton component) {
-        getElement().setAttribute("popupbuttons", Serializer.serialize(attachedPopupButtons));
+        System.err.println(">>>> UNREGISTER");
+        getElement().removeAttribute("popupbuttons");
     }
 
     private void unRegisterCustomComponent(Component component) {
