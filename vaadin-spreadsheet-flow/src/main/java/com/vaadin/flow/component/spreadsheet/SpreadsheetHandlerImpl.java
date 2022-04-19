@@ -8,7 +8,7 @@ package com.vaadin.flow.component.spreadsheet;
  * %%
  * This program is available under Commercial Vaadin Developer License
  * 4.0 (CVDLv4).
- * 
+ *
  * For the full License, see <https://vaadin.com/license/cvdl-4.0>.
  * #L%
  */
@@ -32,10 +32,8 @@ import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellAddress;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 
 import com.vaadin.flow.component.spreadsheet.Spreadsheet.CellValueChangeEvent;
 import com.vaadin.flow.component.spreadsheet.Spreadsheet.ProtectedEditEvent;
@@ -45,7 +43,6 @@ import com.vaadin.flow.component.spreadsheet.rpc.SpreadsheetServerRpc;
 /**
  * Implementation of the Spreadsheet Server RPC interface.
  */
-@SuppressWarnings("serial")
 public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
 
     private Spreadsheet spreadsheet;
@@ -358,7 +355,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
      * E.g.<br/>
      * "1\t2" - {"1","2"}<br/>
      * "\t\t" - {"","",""}<br/>
-     * 
+     *
      * @param line
      *            input
      * @return output string parts split at tabs

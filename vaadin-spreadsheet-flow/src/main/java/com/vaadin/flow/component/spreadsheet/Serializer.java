@@ -16,7 +16,7 @@ import com.vaadin.flow.component.spreadsheet.client.SpreadsheetActionDetails;
 import com.vaadin.flow.component.spreadsheet.shared.GroupingData;
 
 public class Serializer {
-    
+
     private static ObjectMapper objectMapper;
     static {
         objectMapper = new ObjectMapper();
@@ -36,13 +36,13 @@ public class Serializer {
                                 : e.getValue()))
                 .collect(Collectors.joining(","));
     }
-    
-    
+
+
     public static String toJson(Object value) {
         try {
             String val = objectMapper.writeValueAsString(value);
-            System.err.println(">>>> " + (value != null ? value.getClass().getName() : "null") + " " + value + "\n" + val);
-            
+//            System.err.println(">>>> " + (value != null ? value.getClass().getName() : "null") + " " + value + "\n" + val);
+
             if (val.contains("formulaValue")) {
 //                Thread.dumpStack();
             }
@@ -50,7 +50,7 @@ public class Serializer {
         } catch (JsonProcessingException e) {
             System.err.println(">>>> EXCEPTION " + value + " " + e.getMessage());
             return null;
-        }        
+        }
     }
 
     public static String serialize(Object value) {
