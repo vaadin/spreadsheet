@@ -5,8 +5,6 @@ import java.util.HashMap;
 import com.vaadin.flow.component.ComponentEventListener;
 
 import elemental.json.JsonArray;
-import elemental.json.impl.JsonUtil;
-
 
 @SuppressWarnings("serial")
 public class SpreadsheetEventListener implements ComponentEventListener<Spreadsheet.SpreadsheetEvent> {
@@ -43,32 +41,29 @@ public class SpreadsheetEventListener implements ComponentEventListener<Spreadsh
 
     @Override
     public void onComponentEvent(Spreadsheet.SpreadsheetEvent event) {
-        String type = event.getMessage();
-        String json = event.getPayload();
+        String type = event.getType();
+        JsonArray pars = (JsonArray)event.getData();
 
-        System.err.println(type + " " + json);
-
-        JsonArray pars = json == null || json.isEmpty() ? null
-                : JsonUtil.parse(event.getPayload());
+        System.err.println(type + " " + (pars == null ? "null" : pars.toJson()));
 
         if ("onConnectorInit".equals(type)) {
             handler.onConnectorInit();
         } else if ("contextMenuOpenOnSelection".equals(type)) {
             handler.contextMenuOpenOnSelection(toInt(pars, 0), toInt(pars, 1));
         } else if ("actionOnCurrentSelection".equals(type)) {
-            handler.actionOnCurrentSelection(event.getPayload());
+            handler.actionOnCurrentSelection(toStr(pars, 0));
         } else if ("rowHeaderContextMenuOpen".equals(type)) {
             handler.rowHeaderContextMenuOpen(toInt(pars, 0));
         } else if ("actionOnRowHeader".equals(type)) {
-            handler.actionOnRowHeader(event.getPayload());
+            handler.actionOnRowHeader(toStr(pars, 0));
         } else if ("columnHeaderContextMenuOpen".equals(type)) {
             handler.columnHeaderContextMenuOpen(toInt(pars, 0));
         } else if ("actionOnColumnHeader".equals(type)) {
-            handler.actionOnColumnHeader(event.getPayload());
+            handler.actionOnColumnHeader(toStr(pars, 0));
         } else if ("onSheetScroll".equals(type)) {
             handler.onSheetScroll(toInt(pars, 0), toInt(pars, 1), toInt(pars, 2), toInt(pars, 3));
         } else if ("sheetAddressChanged".equals(type)) {
-            handler.sheetAddressChanged(event.getPayload());
+            handler.sheetAddressChanged(toStr(pars, 0));
         } else if ("cellSelected".equals(type)) {
             handler.cellSelected(toInt(pars, 0), toInt(pars, 1), toBool(pars, 2));
         } else if ("cellRangeSelected".equals(type)) {

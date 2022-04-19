@@ -83,7 +83,6 @@ import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.spreadsheet.SheetOverlayWrapper.OverlayChangeListener;
 import com.vaadin.flow.component.spreadsheet.action.SpreadsheetDefaultActionHandler;
 import com.vaadin.flow.component.spreadsheet.client.CellData;
@@ -94,16 +93,16 @@ import com.vaadin.flow.component.spreadsheet.client.SpreadsheetActionDetails;
 import com.vaadin.flow.component.spreadsheet.command.SizeChangeCommand;
 import com.vaadin.flow.component.spreadsheet.command.SizeChangeCommand.Type;
 import com.vaadin.flow.component.spreadsheet.framework.Action;
+import com.vaadin.flow.component.spreadsheet.framework.ReflectTools;
 import com.vaadin.flow.component.spreadsheet.rpc.SpreadsheetClientRpc;
 import com.vaadin.flow.component.spreadsheet.shared.ContentMode;
 import com.vaadin.flow.component.spreadsheet.shared.ErrorLevel;
 import com.vaadin.flow.component.spreadsheet.shared.GroupingData;
-import com.vaadin.flow.component.spreadsheet.shared.SpreadsheetState;
-import com.vaadin.flow.component.spreadsheet.framework.ReflectTools;
-import com.vaadin.flow.component.spreadsheet.shared.URLReference;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinService;
 import com.vaadin.pro.licensechecker.LicenseChecker;
+
+import elemental.json.JsonValue;
 
 /**
  * Vaadin Spreadsheet is a Vaadin Add-On Component which allows displaying and
@@ -855,7 +854,6 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
         getElement().setProperty("namedRangesJs", Serializer.toJson(namedRanges));
     }
 
-
     /*
     CLIENT RPC
      */
@@ -869,24 +867,25 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     @DomEvent("spreadsheet-event")
     public static class SpreadsheetEvent extends ComponentEvent<Spreadsheet> {
 
-        private final String message;
-        private final String payload;
+        private final String type;
+        private final JsonValue data;
 
-        public SpreadsheetEvent(Spreadsheet source, boolean fromClient, @EventData("event.detail.message") String message, @EventData("event.detail.payload") String payload) {
+        public SpreadsheetEvent(Spreadsheet source, boolean fromClient,
+                @EventData("event.detail.type") String type,
+                @EventData("event.detail.data") JsonValue data) {
             super(source, fromClient);
-            this.message = message;
-            this.payload = payload;
+            this.type = type;
+            this.data = data;
         }
 
-        public String getMessage() {
-            return message;
+        public String getType() {
+            return type;
         }
 
-        public String getPayload() {
-            return payload;
+        public JsonValue getData() {
+            return data;
         }
     }
-
 
     /*
     END OF FLOW RELATED STUFF

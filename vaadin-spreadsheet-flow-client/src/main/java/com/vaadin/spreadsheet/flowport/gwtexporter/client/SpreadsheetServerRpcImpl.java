@@ -8,7 +8,6 @@ import com.vaadin.addon.spreadsheet.client.SpreadsheetServerRpc;
 
 import elemental.json.Json;
 import elemental.json.JsonArray;
-import elemental.json.JsonObject;
 import jsinterop.annotations.JsType;
 
 @SuppressWarnings("serial")
@@ -227,7 +226,7 @@ public class SpreadsheetServerRpcImpl implements SpreadsheetServerRpc {
         var value = gwtKey ? param[gwtKey] : param;
         jsArr.push(value)
       }
-      fnc(JSON.stringify(jsArr));
+      fnc(jsArr);
     }-*/;
 
     private static JsonArray toJsFloatArr(Map<Integer, Float> value) {

@@ -596,16 +596,12 @@ SERVER RPC METHOD CALLBACKS
     });
 
     console.log('vaadin-spreadsheet', 'triggering onConnectorInit');
-    this.dispatchEvent(this.createEvent('onConnectorInit', ""));
-
+    this.dispatchEvent(this.createEvent('onConnectorInit'), []);
   }
 
-  createEvent(msg, e) {
+  createEvent(type, data) {
     return new CustomEvent('spreadsheet-event', {
-      detail: {
-        message: msg,
-        payload: '' + e
-      }
+      detail: {type, data}
     });
   }
 
@@ -618,7 +614,6 @@ SERVER RPC METHOD CALLBACKS
     }
     elm.textContent = style;
   }
-
 }
 
 window.customElements.define('vaadin-spreadsheet', VaadinSpreadsheet);

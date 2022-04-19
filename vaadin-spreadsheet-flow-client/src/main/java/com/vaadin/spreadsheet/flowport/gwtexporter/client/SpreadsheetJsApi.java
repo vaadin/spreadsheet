@@ -49,12 +49,11 @@ public class SpreadsheetJsApi {
 
     native void consoleLog(String message) /*-{
       console.log("spreadsheetapi", message );
-  }-*/;
+    }-*/;
 
     native void debugger() /*-{
       debugger;
-  }-*/;
-
+    }-*/;
 
     /**
      * receives the element where the widget mut be embedded into, and publishes
@@ -237,39 +236,6 @@ public class SpreadsheetJsApi {
         });
     }
 
-    private void initState(SpreadsheetState state) {
-        state.rows = 50;
-        state.cols = 30;
-        state.colGroupingData = new ArrayList<>();
-        state.rowGroupingData = new ArrayList<>();
-        state.defRowH = 15;
-        state.defColW = 70;
-        state.rowH = new float[] {15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15};
-        state.colW = new int[] {70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70};
-        state.reload = true;
-        state.sheetNames = new String[] {"Sheet1"};
-        state.cellStyleToCSSStyle = new HashMap<>();
-        state.cellStyleToCSSStyle.put(0, "font-family:Calibri,swiss,Helvetica,arial;font-size:11pt;background-color:rgba(255,255,255,1.0);color:rgba(0, 0, 0, 1.0);");
-        state.cellStyleToCSSStyle.put(1, "background-color:rgba(255, 255, 0, 1.0);justify-content:flex-end;");
-        state.rowIndexToStyleIndex = new HashMap<>();
-        state.columnIndexToStyleIndex = new HashMap<>();
-        for (int pos = 1; pos <= state.cols; pos++) state.columnIndexToStyleIndex.put(pos, 0);
-        state.lockedColumnIndexes = new HashSet<>();
-        for (int pos = 1; pos <= state.cols; pos++) state.lockedColumnIndexes.add(pos);
-        state.lockedRowIndexes = new HashSet<>();
-        state.shiftedCellBorderStyles = new ArrayList<>();
-        state.conditionalFormattingStyles = new HashMap<>();
-        state.hiddenColumnIndexes = new ArrayList<>();
-        state.hiddenRowIndexes = new ArrayList<>();
-        state.verticalScrollPositions = new int[] {0};
-        state.horizontalScrollPositions = new int[] {0};
-        state.hyperlinksTooltips = new HashMap<>();
-        state.hasActions = true;
-        state.workbookChangeToggle = true;
-        state.width = "100%";
-        state.height = "100%";
-    }
-
     private SpreadsheetServerRpcImpl getServerRpcInstance() {
         return (SpreadsheetServerRpcImpl) spreadsheetConnector.getProtectedRpcProxy(SpreadsheetServerRpc.class);
     }
@@ -282,14 +248,9 @@ public class SpreadsheetJsApi {
     /*
     SHARED STATE
      */
-    
     protected SpreadsheetState getState() {
         return spreadsheetConnector.getState();
     }
-
-
-
-
 
     public void setRowBufferSize(int rowBufferSize) {
         getState().rowBufferSize = rowBufferSize;
@@ -781,62 +742,6 @@ public class SpreadsheetJsApi {
     }
 
 
-
-
-
-
-
-
-    /*
-{"v-uiId":0,"uidl":"{\"Vaadin-Security-Key\":\"b484bdff-0ede-463f-92ae-5614fa3243ab\",\"syncId\": 0, \"resynchronize\": true, \"clientId\": 0, \"changes\" : [[\"change\",{\"pid\":\"0\"},[\"0\",{\"id\":\"0\"}]]], \"state\":{\"0\":{\"localeServiceState\":{\"localeData\":[{\"name\":\"es_ES\",\"monthNames\":[\"enero\",\"febrero\",\"marzo\",\"abril\",\"mayo\",\"junio\",\"julio\",\"agosto\",\"septiembre\",\"octubre\",\"noviembre\",\"diciembre\"],\"shortMonthNames\":[\"ene\",\"feb\",\"mar\",\"abr\",\"may\",\"jun\",\"jul\",\"ago\",\"sep\",\"oct\",\"nov\",\"dic\"],\"shortDayNames\":[\"dom\",\"lun\",\"mar\",\"mié\",\"jue\",\"vie\",\"sáb\"],\"dayNames\":[\"domingo\",\"lunes\",\"martes\",\"miércoles\",\"jueves\",\"viernes\",\"sábado\"],\"firstDayOfWeek\":1,\"dateFormat\":\"d/MM/yy\",\"twelveHourClock\":false,\"hourMinuteDelimiter\":\":\",\"am\":null,\"pm\":null}]},\"theme\":\"demo\",\"height\":\"100.0%\",\"width\":\"100.0%\"},\"1\":{\"rows\":200,\"cols\":52,\"colGroupingData\":[],\"rowGroupingData\":[],\"defRowH\":15,\"defColW\":56,\"rowH\":[15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15],\"colW\":[56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56],\"reload\":true,\"sheetNames\":[\"Hoja 1\"],\"cellStyleToCSSStyle\":[[0],[\"font-family:Calibri,swiss,Helvetica,arial;font-size:11pt;background-color:rgba(255,255,255,1.0);color:rgba(0, 0, 0, 1.0);\"]],\"rowIndexToStyleIndex\":[],\"columnIndexToStyleIndex\":[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],\"lockedColumnIndexes\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],\"lockedRowIndexes\":[],\"shiftedCellBorderStyles\":[],\"conditionalFormattingStyles\":[],\"hiddenColumnIndexes\":[],\"hiddenRowIndexes\":[],\"verticalScrollPositions\":[0],\"horizontalScrollPositions\":[0],\"hasActions\":true,\"workbookChangeToggle\":true,\"namedRanges\":[],\"height\":\"100.0%\",\"width\":\"100.0%\"}}, \"types\":{\"0\":\"0\",\"1\":\"1\"}, \"hierarchy\":{\"0\":[\"1\"]}, \"rpc\" : [], \"meta\" : {\"repaintAll\":true}, \"resources\" : {}, \"typeMappings\" : { \"com.vaadin.ui.AbstractComponent\" : 2 , \"com.vaadin.server.AbstractClientConnector\" : 3 , \"com.vaadin.addon.spreadsheet.Spreadsheet\" : 1 , \"com.vaadin.ui.AbstractSingleComponentContainer\" : 4 , \"com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetOnlyUI\" : 0 , \"com.vaadin.ui.UI\" : 5 }, \"typeInheritanceMap\" : { \"2\" : 3 , \"1\" : 2 , \"4\" : 2 , \"0\" : 5 , \"5\" : 4 }, \"timings\":[51, 51]}"}
-
-
-for(;;);[{"syncId": 1, "clientId": 1, "changes" : [], "state":{}, "types":{}, "hierarchy":{}, "rpc" : [], "meta" : {}, "resources" : {}, "timings":[392, 341]}]
-
-
-for(;;);[{"syncId": 2, "clientId": 2, "changes" : [], "state":{"1":{"reload":false,"hyperlinksTooltips":[],"cellComments":[],"cellCommentAuthors":[],"visibleCellComments":[],"invalidFormulaCells":[]}}, "types":{"1":"1"}, "hierarchy":{}, "rpc" : [["1","com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc","updateBottomRightCellValues",[[{"row":1,"col":1,"value":"Hola!","formulaValue":null,"originalValue":"Hola!","cellStyle":"cs0","locked":false,"needsMeasure":false,"isPercentage":false}]]],["1","com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc","showSelectedCell",[null,1,1,"Hola!",false,false,true]]], "meta" : {}, "resources" : {}, "timings":[394, 2]}]
-
-
-  */
-    public void setInitialState() {
-        /*
-        {\"rows\":200,\"cols\":52,\"colGroupingData\":[],\"rowGroupingData\":[],\"defRowH\":15,\"defColW\":56,\"rowH\":[15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15],\"colW\":[56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56,56],\"reload\":true,\"sheetNames\":[\"Hoja 1\"],\"cellStyleToCSSStyle\":[[0],[\"font-family:Calibri,swiss,Helvetica,arial;font-size:11pt;background-color:rgba(255,255,255,1.0);color:rgba(0, 0, 0, 1.0);\"]],\"rowIndexToStyleIndex\":[],\"columnIndexToStyleIndex\":[[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]],\"lockedColumnIndexes\":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52],\"lockedRowIndexes\":[],\"shiftedCellBorderStyles\":[],\"conditionalFormattingStyles\":[],\"hiddenColumnIndexes\":[],\"hiddenRowIndexes\":[],\"verticalScrollPositions\":[0],\"horizontalScrollPositions\":[0],\"hasActions\":true,\"workbookChangeToggle\":true,\"namedRanges\":[],\"height\":\"100.0%\",\"width\":\"100.0%\"}
-         */
-        setCols(52);
-        setRows(200);
-        setColGroupingData("");
-        setRowGroupingData("");
-        setDefRowH(15);
-        setDefColW(56);
-        setRowH("15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15"
-        );
-        setColW("70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70");
-        setReload(true);
-        setSheetNames("Hoja 1");
-        setCellStyleToCSSStyle("0@\"font-family:Calibri,swiss,Helvetica,arial;font-size:11pt;background-color:rgba(255,255,255,1.0);color:rgba(0, 0, 0, 1.0);\"");
-        setRowIndexToStyleIndex("");
-        setColumnIndexToStyleIndex("");
-        setLockedColumnIndexes("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52");
-        setLockedRowIndexes("");
-        setShiftedCellBorderStyles("");
-        setConditionalFormattingStyles("");
-        setHiddenColumnIndexes("");
-        setHiddenRowIndexes("");
-        setVerticalScrollPositions("0");
-        setHorizontalScrollPositions("0");
-        setHasActions(true);
-        setWorkbookChangeToggle(true);
-        setNamedRanges("");
-        setHeight("100.0%");
-        setWidth("100.0%");
-
-        StateChangeEvent event = new StateChangeEvent(spreadsheetConnector, Json.createObject(), true);
-        delegateToWidget(spreadsheetConnector, event);
-
-        spreadsheetConnector.onStateChanged(event);
-
-    }
-
     public void load() {
         spreadsheetWidget.load();
     }
@@ -846,23 +751,6 @@ for(;;);[{"syncId": 2, "clientId": 2, "changes" : [], "state":{"1":{"reload":fal
     }
 
     public void updateCellsAndRefreshCellStyles() {
-
-
     }
-
-    public void updateBottomRightCellValuesAndShowSelectedCell() {
-        /*
-        for(;;);[{"syncId": 2, "clientId": 2, "changes" : [], "state":{"1":{"reload":false,"hyperlinksTooltips":[],"cellComments":[],"cellCommentAuthors":[],"visibleCellComments":[],"invalidFormulaCells":[]}}, "types":{"1":"1"}, "hierarchy":{}, "rpc" : [["1","com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc","updateBottomRightCellValues",[[{"row":1,"col":1,"value":"Hola!","formulaValue":null,"originalValue":"Hola!","cellStyle":"cs0","locked":false,"needsMeasure":false,"isPercentage":false}]]],["1","com.vaadin.addon.spreadsheet.client.SpreadsheetClientRpc","showSelectedCell",[null,1,1,"Hola!",false,false,true]]], "meta" : {}, "resources" : {}, "timings":[394, 2]}]
-         */
-        setReload(false);
-        setHyperlinksTooltips("");
-        setCellComments("");
-        setCellCommentAuthors("");
-        setInvalidFormulaCells("");
-
-        updateBottomRightCellValues("1#1#\"Hola!\"#null#\"Hola!\"#\"cs0\"#false#false#false", null);
-        showSelectedCell(null, 1, 1, "Hola!", false, false, true);
-    }
-
 
 }
