@@ -12,7 +12,7 @@ class Serializer {
         objectMapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
     }
 
-    static String toJson(Object value) {
+    static String serialize(Object value) {
         try {
             return value == null ? "" : objectMapper.writeValueAsString(value);
         } catch (JsonProcessingException e) {

@@ -18,8 +18,8 @@ import java.io.Serializable;
 import jsinterop.annotations.JsIgnore;
 import jsinterop.annotations.JsType;
 
-@JsType
 @SuppressWarnings("serial")
+@JsType
 public class MergedRegion implements Serializable {
     public int id;
     public int col1;

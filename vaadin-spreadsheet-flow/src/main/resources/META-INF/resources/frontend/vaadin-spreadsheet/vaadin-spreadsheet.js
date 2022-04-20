@@ -364,20 +364,20 @@ export class VaadinSpreadsheet extends LitElement {
   }
 
   /* CLIENT SIDE RPC METHODS */
-  updateBottomRightCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomRightCellValues(cellDataJson);
+  updateBottomRightCellValues(cellData) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomRightCellValues(cellData);
   }
 
-  updateTopLeftCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
-    this.api.updateTopLeftCellValues(cellDataJson);
+  updateTopLeftCellValues(cellData) { //ArrayList<CellData> cellData) {
+    this.api.updateTopLeftCellValues(cellData);
   }
 
-  updateTopRightCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
-    this.api.updateTopRightCellValues(cellDataJson);
+  updateTopRightCellValues(cellData) { //ArrayList<CellData> cellData) {
+    this.api.updateTopRightCellValues(cellData);
   }
 
-  updateBottomLeftCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomLeftCellValues(cellDataJson);
+  updateBottomLeftCellValues(cellData) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomLeftCellValues(cellData);
   }
 
   updateFormulaBar(possibleName, col, row) { //String possibleName, int col, int row) {
@@ -392,16 +392,16 @@ export class VaadinSpreadsheet extends LitElement {
     this.api.showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
   }
 
-  showActions(actionDetailsJson) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
-    this.api.showActions(actionDetailsJson);
+  showActions(actionDetails) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
+    this.api.showActions(actionDetails);
   }
 
   setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll) { //String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll
     this.api.setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
   }
 
-  cellsUpdated(updatedCellDataJson) { //ArrayList<CellData> updatedCellData) {
-    if (this.api) this.api.cellsUpdated(updatedCellDataJson);
+  cellsUpdated(updatedCellData) { //ArrayList<CellData> updatedCellData) {
+    if (this.api) this.api.cellsUpdated(updatedCellData);
   }
 
   refreshCellStyles() {
@@ -590,6 +590,7 @@ export class VaadinSpreadsheet extends LitElement {
     }
     elm.textContent = style;
   }
+
 }
 
 window.customElements.define('vaadin-spreadsheet', VaadinSpreadsheet);

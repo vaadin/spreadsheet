@@ -22,40 +22,44 @@ import elemental.json.impl.JsonUtil;
 
 public class Parser {
 
-    public static List<PopupButtonState> parseListOfPopupButtonsJs(String json) {
-        return parseArrayJstype(json, PopupButtonState::new);
+    public static List<PopupButtonState> parseListOfPopupButtons(String raw) {
+        return parseArrayJstype(raw, PopupButtonState::new);
     }
 
-    public static List<GroupingData> parseListOfGroupingDataJs(String json){
-        return parseArrayJstype(json, GroupingData::new);
+    public static List<GroupingData> parseListOfGroupingData(String raw){
+        return parseArrayJstype(raw, GroupingData::new);
     }
 
-    public static String[] parseArrayOfStringsJs(String json) {
-        return parseArray(json, JsonValue::asString).toArray(new String[0]);
+    public static String[] parseArrayOfStrings(String raw) {
+        return parseArray(raw, JsonValue::asString).toArray(new String[0]);
     }
 
-    public static HashMap<Integer, String> parseMapIntegerStringJs(String json) {
-        return parseMap(json, Integer::valueOf, JsonValue::asString);
+    public static HashMap<Integer, String> parseMapIntegerString(String raw) {
+        return parseMap(raw, Integer::valueOf, JsonValue::asString);
     }
 
-    public static HashMap<Integer, Integer> parseMapIntegerIntegerJs(String json) {
-        return parseMap(json, Integer::valueOf, v -> (int)v.asNumber());
+    public static HashMap<Integer, Integer> parseMapIntegerInteger(String raw) {
+        return parseMap(raw, Integer::valueOf, v -> (int)v.asNumber());
     }
 
-    public static Set<Integer> parseSetIntegerJs(String json) {
-        return parseSet(json, v -> (int)v.asNumber());
+    public static Set<Integer> parseSetInteger(String raw) {
+        return parseSet(raw, v -> (int)v.asNumber());
     }
 
-    public static ArrayList<String> parseArraylistStringJs(String json) {
-        return parseArray(json, JsonValue::asString);
+    public static ArrayList<String> parseArraylistString(String raw) {
+        return parseArray(raw, JsonValue::asString);
     }
 
-    public static ArrayList<Integer> parseArraylistIntegerJs(String json) {
-        return parseArray(json, v -> (int) v.asNumber());
+    public static ArrayList<Integer> parseArraylistInteger(String raw) {
+        return parseArray(raw, v -> (int) v.asNumber());
     }
 
-    public static float[] parseArrayFloatJs(String json) {
-        double[] arr = parseArrayDoubleJs(json);
+    public static int[] parseArrayInt(String raw) {
+        return parseArray(raw, JsonValue::asNumber).stream().mapToInt(Double::intValue).toArray();
+    }
+
+    public static float[] parseArrayFloat(String raw) {
+        double[] arr = parseArrayDouble(raw);
         float [] ret = new float[arr.length];
         for (int i = 0; i < arr.length; i++) {
             ret[i] = (float)arr[i];
@@ -63,57 +67,53 @@ public class Parser {
         return ret;
     }
 
-    public static int[] parseArrayIntJs(String json) {
-        return parseArray(json, JsonValue::asNumber).stream().mapToInt(Double::intValue).toArray();
+    private static double[] parseArrayDouble(String raw) {
+        return parseArray(raw, JsonValue::asNumber).stream().mapToDouble(Double::doubleValue).toArray();
     }
 
-    public static double[] parseArrayDoubleJs(String json) {
-        return parseArray(json, JsonValue::asNumber).stream().mapToDouble(Double::doubleValue).toArray();
+    public static HashMap<String, String> parseMapStringString(String raw) {
+        return parseMap(raw, String::valueOf, JsonValue::asString);
     }
 
-    public static HashMap<String, String> parseMapStringStringJs(String json) {
-        return parseMap(json, String::valueOf, JsonValue::asString);
+    public static Set<String> parseSetString(String raw) {
+        return parseSet(raw, JsonValue::asString);
     }
 
-    public static Set<String> parseSetStringJs(String json) {
-        return parseSet(json, JsonValue::asString);
+    public static HashMap<String, OverlayInfo> parseMapStringOverlayInfo(String raw) {
+        return parseMapStringJstype(raw, OverlayInfo::new);
     }
 
-    public static HashMap<String, OverlayInfo> parseMapStringOverlayInfoJs(String json) {
-        return parseMapStringJstype(json, OverlayInfo::new);
+    public static ArrayList<MergedRegion> parseArrayMergedRegion(String raw) {
+        return parseArrayJstype(raw, MergedRegion::new);
     }
 
-    public static ArrayList<MergedRegion> parseArrayMergedRegionJs(String json) {
-        return parseArrayJstype(json, MergedRegion::new);
+    public static ArrayList<CellData> parseArraylistOfCellData(String raw) {
+        return parseArrayJstype(raw, CellData::new);
     }
 
-    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
-        return parseArrayJstype(json, CellData::new);
+    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetails(String raw) {
+        return parseArrayJstype(raw, SpreadsheetActionDetails::new);
     }
 
-    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
-        return parseArrayJstype(json, SpreadsheetActionDetails::new);
-    }
-
-    private static <T> Set<T> parseSet(String json, Function<JsonValue, T> jsToJava) {
-        List<T> ret = parseArray(json, jsToJava);
+    private static <T> Set<T> parseSet(String raw, Function<JsonValue, T> jsToJava) {
+        List<T> ret = parseArray(raw, jsToJava);
         return ret == null ? null : new HashSet<T>(ret);
     }
 
-    private static <T> ArrayList<T> parseArrayJstype(String json, Supplier<T> constructor) {
-        return parseArray(json, jsBean -> {
+    private static <T> ArrayList<T> parseArrayJstype(String raw, Supplier<T> constructor) {
+        return parseArray(raw, jsBean -> {
             T javaBean = constructor.get();
             copyJsToJava(jsBean, javaBean);
             return javaBean;
         });
     }
 
-    private static <T> ArrayList<T> parseArray(String json, Function<JsonValue, T> jsToJava) {
+    private static <T> ArrayList<T> parseArray(String raw, Function<JsonValue, T> jsToJava) {
         ArrayList<T> javaArr = new ArrayList<>();
-        if (json == null || json.isEmpty() || "null".equals(json)) {
+        if (raw == null || raw.isEmpty() || "null".equals(raw)) {
             return javaArr;
         }
-        JsonArray jsArr = JsonUtil.parse(json);
+        JsonArray jsArr = JsonUtil.parse(raw);
         for (int i = 0; i < jsArr.length(); i++) {
             JsonValue val = jsArr.get(i);
             javaArr.add(jsToJava.apply(val));
@@ -121,19 +121,19 @@ public class Parser {
         return javaArr;
     }
 
-    private static <T> HashMap<String, T> parseMapStringJstype(String json, Supplier<T> constructor) {
-        return parseMap(json, String::valueOf, jsBean -> {
+    private static <T> HashMap<String, T> parseMapStringJstype(String raw, Supplier<T> constructor) {
+        return parseMap(raw, String::valueOf, jsBean -> {
             T javaBean = constructor.get();
             copyJsToJava(jsBean, javaBean);
             return javaBean;
         });
     }
 
-    private static <I, T> HashMap<I, T> parseMap(String json, Function<String, I> strToKey, Function<JsonValue, T> jsToJava) {
-        if (json == null || json.isEmpty() || "null".equals(json)) {
+    private static <I, T> HashMap<I, T> parseMap(String raw, Function<String, I> strToKey, Function<JsonValue, T> jsToJava) {
+        if (raw == null || raw.isEmpty() || "null".equals(raw)) {
             return null;
         }
-        JsonObject jsObj = JsonUtil.parse(json);
+        JsonObject jsObj = JsonUtil.parse(raw);
         HashMap<I, T> hash = new HashMap<>();
         for (int i = 0; i < jsObj.keys().length; i++) {
             String key = jsObj.keys()[i];

@@ -10,7 +10,6 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.PopupButtonConnector;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
 import com.vaadin.addon.spreadsheet.client.PopupButtonWidget;
@@ -234,12 +233,12 @@ public class SpreadsheetJsApi {
         getState().cols = cols;
     }
 
-    public void setColGroupingData(String colGroupingDataJson) {
-        getState().colGroupingData = Parser.parseListOfGroupingDataJs(colGroupingDataJson);
+    public void setColGroupingData(String colGroupingData) {
+        getState().colGroupingData = Parser.parseListOfGroupingData(colGroupingData);
     }
 
-    public void setRowGroupingData(String rowGroupingDataJson) {
-        getState().rowGroupingData = Parser.parseListOfGroupingDataJs(rowGroupingDataJson);
+    public void setRowGroupingData(String rowGroupingData) {
+        getState().rowGroupingData = Parser.parseListOfGroupingData(rowGroupingData);
     }
 
     public void setColGroupingMax(int colGroupingMax) {
@@ -266,12 +265,12 @@ public class SpreadsheetJsApi {
         getState().defColW = defColW;
     }
 
-    public void setRowH(String rowHJson) {
-        getState().rowH = Parser.parseArrayFloatJs(rowHJson);
+    public void setRowH(String rowH) {
+        getState().rowH = Parser.parseArrayFloat(rowH);
     }
 
-    public void setColW(String colWJson) {
-        getState().colW = Parser.parseArrayIntJs(colWJson);
+    public void setColW(String colW) {
+        getState().colW = Parser.parseArrayInt(colW);
     }
 
     public void setReload(boolean reload) {
@@ -283,51 +282,51 @@ public class SpreadsheetJsApi {
     }
 
     public void setSheetNames(String sheetNames) {
-        getState().sheetNames = Parser.parseArrayOfStringsJs(sheetNames);
+        getState().sheetNames = Parser.parseArrayOfStrings(sheetNames);
     }
 
-    public void setCellStyleToCSSStyle(String cellStyleToCSSStyleJson) {
-        getState().cellStyleToCSSStyle = Parser.parseMapIntegerStringJs(cellStyleToCSSStyleJson);
+    public void setCellStyleToCSSStyle(String cellStyleToCSSStyle) {
+        getState().cellStyleToCSSStyle = Parser.parseMapIntegerString(cellStyleToCSSStyle);
     }
 
-    public void setRowIndexToStyleIndex(String rowIndexToStyleIndexJson) {
-        getState().rowIndexToStyleIndex = Parser.parseMapIntegerIntegerJs(rowIndexToStyleIndexJson);
+    public void setRowIndexToStyleIndex(String rowIndexToStyleIndex) {
+        getState().rowIndexToStyleIndex = Parser.parseMapIntegerInteger(rowIndexToStyleIndex);
     }
 
     public void setColumnIndexToStyleIndex(String columnIndexToStyleIndex) {
-        getState().columnIndexToStyleIndex = Parser.parseMapIntegerIntegerJs(columnIndexToStyleIndex);
+        getState().columnIndexToStyleIndex = Parser.parseMapIntegerInteger(columnIndexToStyleIndex);
     }
 
-    public void setLockedColumnIndexes(String lockedColumnIndexesJson) {
-        getState().lockedColumnIndexes = Parser.parseSetIntegerJs(lockedColumnIndexesJson);
+    public void setLockedColumnIndexes(String lockedColumnIndexes) {
+        getState().lockedColumnIndexes = Parser.parseSetInteger(lockedColumnIndexes);
     }
 
-    public void setLockedRowIndexes(String lockedRowIndexesJson) {
-        getState().lockedRowIndexes = Parser.parseSetIntegerJs(lockedRowIndexesJson);
+    public void setLockedRowIndexes(String lockedRowIndexes) {
+        getState().lockedRowIndexes = Parser.parseSetInteger(lockedRowIndexes);
     }
 
-    public void setShiftedCellBorderStyles(String shiftedCellBorderStylesJson) {
-        getState().shiftedCellBorderStyles = Parser.parseArraylistStringJs(shiftedCellBorderStylesJson);
+    public void setShiftedCellBorderStyles(String shiftedCellBorderStyles) {
+        getState().shiftedCellBorderStyles = Parser.parseArraylistString(shiftedCellBorderStyles);
     }
 
     public void setConditionalFormattingStyles(String conditionalFormattingStyles) {
-        getState().conditionalFormattingStyles = Parser.parseMapIntegerStringJs(conditionalFormattingStyles);
+        getState().conditionalFormattingStyles = Parser.parseMapIntegerString(conditionalFormattingStyles);
     }
 
-    public void setHiddenColumnIndexes(String hiddenColumnIndexesJson) {
-        getState().hiddenColumnIndexes = Parser.parseArraylistIntegerJs(hiddenColumnIndexesJson);
+    public void setHiddenColumnIndexes(String hiddenColumnIndexes) {
+        getState().hiddenColumnIndexes = Parser.parseArraylistInteger(hiddenColumnIndexes);
     }
 
-    public void setHiddenRowIndexes(String hiddenRowIndexesJson) {
-        getState().hiddenRowIndexes = Parser.parseArraylistIntegerJs(hiddenRowIndexesJson);
+    public void setHiddenRowIndexes(String hiddenRowIndexes) {
+        getState().hiddenRowIndexes = Parser.parseArraylistInteger(hiddenRowIndexes);
     }
 
-    public void setVerticalScrollPositions(String verticalScrollPositionsJson) {
-        getState().verticalScrollPositions = Parser.parseArrayIntJs(verticalScrollPositionsJson);
+    public void setVerticalScrollPositions(String verticalScrollPositions) {
+        getState().verticalScrollPositions = Parser.parseArrayInt(verticalScrollPositions);
     }
 
-    public void setHorizontalScrollPositions(String horizontalScrollPositionsJson) {
-        getState().horizontalScrollPositions = Parser.parseArrayIntJs(horizontalScrollPositionsJson);
+    public void setHorizontalScrollPositions(String horizontalScrollPositions) {
+        getState().horizontalScrollPositions = Parser.parseArrayInt(horizontalScrollPositions);
     }
 
     public void setSheetProtected(boolean sheetProtected) {
@@ -338,44 +337,44 @@ public class SpreadsheetJsApi {
         getState().workbookProtected = workbookProtected;
     }
 
-    public void setCellKeysToEditorIdMap(String cellKeysToEditorIdMapJson) {
-        getState().cellKeysToEditorIdMap = Parser.parseMapStringStringJs(cellKeysToEditorIdMapJson);
+    public void setCellKeysToEditorIdMap(String cellKeysToEditorIdMap) {
+        getState().cellKeysToEditorIdMap = Parser.parseMapStringString(cellKeysToEditorIdMap);
     }
 
-    public void setComponentIDtoCellKeysMap(String componentIDtoCellKeysMapJson) {
-        getState().componentIDtoCellKeysMap = Parser.parseMapStringStringJs(componentIDtoCellKeysMapJson);
+    public void setComponentIDtoCellKeysMap(String componentIDtoCellKeysMap) {
+        getState().componentIDtoCellKeysMap = Parser.parseMapStringString(componentIDtoCellKeysMap);
     }
 
-    public void setHyperlinksTooltips(String hyperlinksTooltipsJson) {
-        getState().hyperlinksTooltips = Parser.parseMapStringStringJs(hyperlinksTooltipsJson);
+    public void setHyperlinksTooltips(String hyperlinksTooltips) {
+        getState().hyperlinksTooltips = Parser.parseMapStringString(hyperlinksTooltips);
     }
 
-    public void setCellComments(String cellCommentsJsonJson) {
-        getState().cellComments = Parser.parseMapStringStringJs(cellCommentsJsonJson);
+    public void setCellComments(String cellCommentsJson) {
+        getState().cellComments = Parser.parseMapStringString(cellCommentsJson);
     }
 
-    public void setCellCommentAuthors(String cellCommentAuthorsJson) {
-        getState().cellCommentAuthors = Parser.parseMapStringStringJs(cellCommentAuthorsJson);
+    public void setCellCommentAuthors(String cellCommentAuthors) {
+        getState().cellCommentAuthors = Parser.parseMapStringString(cellCommentAuthors);
     }
 
-    public void setVisibleCellComments(String visibleCellCommentsJson) {
-        getState().visibleCellComments = Parser.parseArraylistStringJs(visibleCellCommentsJson);
+    public void setVisibleCellComments(String visibleCellComments) {
+        getState().visibleCellComments = Parser.parseArraylistString(visibleCellComments);
     }
 
     public void setInvalidFormulaCells(String invalidFormulaCells) {
-        getState().invalidFormulaCells = Parser.parseSetStringJs(invalidFormulaCells);
+        getState().invalidFormulaCells = Parser.parseSetString(invalidFormulaCells);
     }
 
     public void setHasActions(boolean hasActions) {
         getState().hasActions = hasActions;
     }
 
-    public void setOverlays(String overlaysJson) {
-        getState().overlays = Parser.parseMapStringOverlayInfoJs(overlaysJson);
+    public void setOverlays(String overlays) {
+        getState().overlays = Parser.parseMapStringOverlayInfo(overlays);
     }
 
-    public void setMergedRegions(String mergedRegionsJson) {
-        getState().mergedRegions = Parser.parseArrayMergedRegionJs(mergedRegionsJson);
+    public void setMergedRegions(String mergedRegions) {
+        getState().mergedRegions = Parser.parseArrayMergedRegion(mergedRegions);
     }
 
     public void setDisplayGridlines(boolean displayGridlines) {
@@ -414,8 +413,8 @@ public class SpreadsheetJsApi {
         getState().lockFormatRows = lockFormatRows;
     }
 
-    public void setNamedRanges(String namedRangesJson) {
-        getState().namedRanges = Parser.parseArraylistStringJs(namedRangesJson);
+    public void setNamedRanges(String namedRanges) {
+        getState().namedRanges = Parser.parseArraylistString(namedRanges);
     }
 
     public void setHeight(String height) {
@@ -452,7 +451,7 @@ public class SpreadsheetJsApi {
     }
 
     public void setPopups(String raw) {
-        List<PopupButtonState> l = Parser.parseListOfPopupButtonsJs(raw);
+        List<PopupButtonState> l = Parser.parseListOfPopupButtons(raw);
         l.forEach(state -> {
             String k = state.row + "_" + state.col;
             if (!popupButtonWidgets.containsKey(k)) {
@@ -472,12 +471,11 @@ public class SpreadsheetJsApi {
     }
 
     public void setResources(Element element, String resources) {
-        ArrayList<String> l = Parser.parseArraylistStringJs(resources);
+        ArrayList<String> l = Parser.parseArraylistString(resources);
         l.forEach(k -> spreadsheetConnector.getConnection().setResource(k, element.getAttribute("resource-" + k)));
     }
 
     public void notifyStateChanges(String[] propNames, boolean initial) {
-        MUtil.console("NOTIFY Changes");
         JsonObject stateJson = Json.createObject();
         for (String propName : propNames) stateJson.put(propName, "");
         StateChangeEvent event = new StateChangeEvent(spreadsheetConnector, stateJson, initial);
@@ -487,20 +485,20 @@ public class SpreadsheetJsApi {
 
     /* CLIENT RPC METHODS */
 
-    public void updateBottomRightCellValues(String cellDataJson) {
-        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
+    public void updateBottomRightCellValues(String cellData) {
+        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellData(cellData));
     }
 
-    public void updateTopLeftCellValues(String cellDataJson) {
-        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
+    public void updateTopLeftCellValues(String cellData) {
+        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellData(cellData));
     }
 
-    public void updateTopRightCellValues(String cellDataJson) {
-        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
+    public void updateTopRightCellValues(String cellData) {
+        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellData(cellData));
     }
 
-    public void updateBottomLeftCellValues(String cellDataJson) {
-        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
+    public void updateBottomLeftCellValues(String cellData) {
+        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellData(cellData));
     }
 
     public void updateFormulaBar(String possibleName, int col, int row) {
@@ -515,16 +513,16 @@ public class SpreadsheetJsApi {
         getClientRpcInstance().showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
     }
 
-    public void showActions(String actionDetailsJson) {
-        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetailsJs(actionDetailsJson));
+    public void showActions(String actionDetails) {
+        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetails(actionDetails));
     }
 
     public void setSelectedCellAndRange(String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll) {
         getClientRpcInstance().setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
     }
 
-    public void cellsUpdated(String cellDataJson) {
-        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellDataJs(cellDataJson));
+    public void cellsUpdated(String cellData) {
+        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellData(cellData));
     }
 
     public void refreshCellStyles() {
