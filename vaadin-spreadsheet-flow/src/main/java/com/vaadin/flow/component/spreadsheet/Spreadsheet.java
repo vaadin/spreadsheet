@@ -751,32 +751,27 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setCellKeysToEditorIdMap(HashMap<String, String> cellKeysToEditorIdMap) {
         this.cellKeysToEditorIdMap = cellKeysToEditorIdMap;
-        getElement().setProperty("cellKeysToEditorIdMap", Serializer.serialize(cellKeysToEditorIdMap));
-        getElement().setProperty("cellKeysToEditorIdMapJs", Serializer.toJson(cellKeysToEditorIdMap));
+        getElement().setProperty("cellKeysToEditorIdMap", Serializer.toJson(cellKeysToEditorIdMap));
     }
 
     public void setComponentIDtoCellKeysMap(HashMap<String, String> componentIDtoCellKeysMap) {
         this.componentIDtoCellKeysMap = componentIDtoCellKeysMap;
-        getElement().setProperty("componentIDtoCellKeysMap", Serializer.serialize(componentIDtoCellKeysMap));
-        getElement().setProperty("componentIDtoCellKeysMapJs", Serializer.toJson(componentIDtoCellKeysMap));
+        getElement().setProperty("componentIDtoCellKeysMap", Serializer.toJson(componentIDtoCellKeysMap));
     }
 
     public void setHyperlinksTooltips(HashMap<String, String> hyperlinksTooltips) {
         this.hyperlinksTooltips = hyperlinksTooltips;
-        getElement().setProperty("hyperlinksTooltips", Serializer.serialize(hyperlinksTooltips));
-        getElement().setProperty("hyperlinksTooltipsJs", Serializer.toJson(hyperlinksTooltips));
+        getElement().setProperty("hyperlinksTooltips", Serializer.toJson(hyperlinksTooltips));
     }
 
     public void setCellComments(HashMap<String, String> cellComments) {
         this.cellComments = cellComments;
-        getElement().setProperty("cellComments", Serializer.serialize(cellComments));
-        getElement().setProperty("cellCommentsJs", Serializer.toJson(cellComments));
+        getElement().setProperty("cellComments", Serializer.toJson(cellComments));
     }
 
     public void setCellCommentAuthors(HashMap<String, String> cellCommentAuthors) {
         this.cellCommentAuthors = cellCommentAuthors;
-        getElement().setProperty("cellCommentAuthors", Serializer.serialize(cellCommentAuthors));
-        getElement().setProperty("cellCommentAuthorsJs", Serializer.toJson(cellCommentAuthors));
+        getElement().setProperty("cellCommentAuthors", Serializer.toJson(cellCommentAuthors));
     }
 
     public void setVisibleCellComments(ArrayList<String> visibleCellComments) {

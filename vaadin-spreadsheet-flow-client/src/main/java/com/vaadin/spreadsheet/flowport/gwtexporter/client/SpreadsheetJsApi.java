@@ -337,24 +337,24 @@ public class SpreadsheetJsApi {
         getState().workbookProtected = workbookProtected;
     }
 
-    public void setCellKeysToEditorIdMap(String cellKeysToEditorIdMap) {
-        getState().cellKeysToEditorIdMap = Parser.parseMapStringString(cellKeysToEditorIdMap);
+    public void setCellKeysToEditorIdMap(String cellKeysToEditorIdMapJson) {
+        getState().cellKeysToEditorIdMap = Parser.parseMapStringStringJs(cellKeysToEditorIdMapJson);
     }
 
-    public void setComponentIDtoCellKeysMap(String componentIDtoCellKeysMap) {
-        getState().componentIDtoCellKeysMap = Parser.parseMapStringString(componentIDtoCellKeysMap);
+    public void setComponentIDtoCellKeysMap(String componentIDtoCellKeysMapJson) {
+        getState().componentIDtoCellKeysMap = Parser.parseMapStringStringJs(componentIDtoCellKeysMapJson);
     }
 
-    public void setHyperlinksTooltips(String hyperlinksTooltips) {
-        getState().hyperlinksTooltips = Parser.parseMapStringString(hyperlinksTooltips);
+    public void setHyperlinksTooltips(String hyperlinksTooltipsJson) {
+        getState().hyperlinksTooltips = Parser.parseMapStringStringJs(hyperlinksTooltipsJson);
     }
 
-    public void setCellComments(String cellComments) {
-        getState().cellComments = Parser.parseMapStringString(cellComments);
+    public void setCellComments(String cellCommentsJsonJson) {
+        getState().cellComments = Parser.parseMapStringStringJs(cellCommentsJsonJson);
     }
 
-    public void setCellCommentAuthors(String cellCommentAuthors) {
-        getState().cellCommentAuthors = Parser.parseMapStringString(cellCommentAuthors);
+    public void setCellCommentAuthors(String cellCommentAuthorsJson) {
+        getState().cellCommentAuthors = Parser.parseMapStringStringJs(cellCommentAuthorsJson);
     }
 
     public void setVisibleCellComments(String visibleCellComments) {

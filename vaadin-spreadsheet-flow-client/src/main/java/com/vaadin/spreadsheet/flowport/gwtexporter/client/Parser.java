@@ -142,17 +142,6 @@ public class Parser {
         return l;
     }
 
-    public static HashMap<String, String> parseMapStringString(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        HashMap<String, String> l = new HashMap<>();
-        for (String token : tokens) {
-            List<String> ts = parse(token, '@');
-            l.put(ts.get(0), ts.get(1));
-        }
-        return l;
-    }
-
     public static HashMap<String, String> parseMapStringStringJs(String json) {
         return parseMap(json, JsonValue::asString);
     }
