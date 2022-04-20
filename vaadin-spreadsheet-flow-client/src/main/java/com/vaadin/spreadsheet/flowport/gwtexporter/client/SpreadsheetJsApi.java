@@ -282,19 +282,19 @@ public class SpreadsheetJsApi {
     }
 
     public void setSheetNames(String sheetNames) {
-        getState().sheetNames = Parser.parseArrayOfStrings(sheetNames);
+        getState().sheetNames = Parser.parseArrayOfStringsJs(sheetNames);
     }
 
-    public void setCellStyleToCSSStyle(String cellStyleToCSSStyle) {
-        getState().cellStyleToCSSStyle = Parser.parseMapIntegerString(cellStyleToCSSStyle);
+    public void setCellStyleToCSSStyle(String cellStyleToCSSStyleJson) {
+        getState().cellStyleToCSSStyle = Parser.parseMapIntegerStringJs(cellStyleToCSSStyleJson);
     }
 
-    public void setRowIndexToStyleIndex(String rowIndexToStyleIndex) {
-        getState().rowIndexToStyleIndex = Parser.parseMapIntegerInteger(rowIndexToStyleIndex);
+    public void setRowIndexToStyleIndex(String rowIndexToStyleIndexJson) {
+        getState().rowIndexToStyleIndex = Parser.parseMapIntegerIntegerJs(rowIndexToStyleIndexJson);
     }
 
     public void setColumnIndexToStyleIndex(String columnIndexToStyleIndex) {
-        getState().columnIndexToStyleIndex = Parser.parseMapIntegerInteger(columnIndexToStyleIndex);
+        getState().columnIndexToStyleIndex = Parser.parseMapIntegerIntegerJs(columnIndexToStyleIndex);
     }
 
     public void setLockedColumnIndexes(String lockedColumnIndexesJson) {
@@ -310,7 +310,7 @@ public class SpreadsheetJsApi {
     }
 
     public void setConditionalFormattingStyles(String conditionalFormattingStyles) {
-        getState().conditionalFormattingStyles = Parser.parseMapIntegerString(conditionalFormattingStyles);
+        getState().conditionalFormattingStyles = Parser.parseMapIntegerStringJs(conditionalFormattingStyles);
     }
 
     public void setHiddenColumnIndexes(String hiddenColumnIndexesJson) {

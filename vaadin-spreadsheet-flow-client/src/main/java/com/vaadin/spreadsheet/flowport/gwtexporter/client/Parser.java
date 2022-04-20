@@ -7,13 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.function.IntFunction;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.dev.util.collect.Lists;
 import com.vaadin.addon.spreadsheet.client.CellData;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
@@ -64,45 +59,20 @@ public class Parser {
         return l;
     }
 
-    public static String[] parseArrayOfStrings(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        String[] l = new String[tokens.size()];
-        for (int i = 0; i < tokens.size(); i++) {
-            l[i] = tokens.get(i);
-        }
-        return l;
+    public static String[] parseArrayOfStringsJs(String json) {
+        return parseArray(json, JsonValue::asString).toArray(new String[0]);
     }
 
-    public static HashMap<Integer, String> parseMapIntegerString(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        //consoleLog("received: " + raw);
-        //tokens.forEach(s -> consoleLog("-->" + s));
-        HashMap<Integer, String> l = new HashMap<>();
-        for (String token : tokens) {
-            List<String> ts = parse(token, '@');
-            String v = ts.get(1);
-            if (v == null || "null".equals(v)) v = null;
-            else if (v.startsWith("\"")) v = ts.get(1).substring(1, ts.get(1).length() - 1);
-            l.put(Integer.parseInt(ts.get(0)), v);
-        }
-        return l;
+    public static HashMap<Integer, String> parseMapIntegerStringJs(String json) {
+        return parseMap(json, Integer::valueOf, JsonValue::asString);
     }
 
-    public static HashMap<Integer, Integer> parseMapIntegerInteger(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        HashMap<Integer, Integer> l = new HashMap<>();
-        for (String token : tokens) {
-            String[] ts = token.split("@");
-            l.put(Integer.parseInt(ts[0]), Integer.parseInt(ts[1]));
-        }
-        return l;
+    public static HashMap<Integer, Integer> parseMapIntegerIntegerJs(String json) {
+        return parseMap(json, Integer::valueOf, v -> (int)v.asNumber());
     }
 
     public static Set<Integer> parseSetIntegerJs(String json) {
-        return parseSet(json, val -> (int)val.asNumber());
+        return parseSet(json, v -> (int)v.asNumber());
     }
 
     public static ArrayList<String> parseArraylistStringJs(String json) {
@@ -110,7 +80,7 @@ public class Parser {
     }
 
     public static ArrayList<Integer> parseArraylistIntegerJs(String json) {
-        return parseArray(json, a -> (int) a.asNumber());
+        return parseArray(json, v -> (int) v.asNumber());
     }
 
     public static float[] parseArrayFloatJs(String json) {
@@ -131,7 +101,7 @@ public class Parser {
     }
 
     public static HashMap<String, String> parseMapStringStringJs(String json) {
-        return parseMap(json, JsonValue::asString);
+        return parseMap(json, String::valueOf, JsonValue::asString);
     }
 
     public static Set<String> parseSetStringJs(String json) {
@@ -185,23 +155,23 @@ public class Parser {
     }
 
     private static <T> HashMap<String, T> parseMapStringJstype(String json, Supplier<T> jsTypeNew) {
-        return parseMap(json, jsBean -> {
+        return parseMap(json, String::valueOf, jsBean -> {
             T javaBean = jsTypeNew.get();
             copyJsToJava(jsBean, javaBean);
             return javaBean;
         });
     }
 
-    private static <T> HashMap<String, T> parseMap(String json, Function<JsonValue, T> jsToJava) {
+    private static <I, T> HashMap<I, T> parseMap(String json, Function<String, I> strToKey, Function<JsonValue, T> jsToJava) {
         if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
         JsonObject jsObj = JsonUtil.parse(json);
-        HashMap<String, T> hash = new HashMap<>();
+        HashMap<I, T> hash = new HashMap<>();
         for (int i = 0; i < jsObj.keys().length; i++) {
             String key = jsObj.keys()[i];
             JsonValue val = jsObj.getObject(key);
-            hash.put(key, jsToJava.apply(val));
+            hash.put(strToKey.apply(key), jsToJava.apply(val));
         }
         return hash;
     }

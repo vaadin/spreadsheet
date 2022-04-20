@@ -667,26 +667,22 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setSheetNames(String[] sheetNames) {
         this.sheetNames = sheetNames;
-        getElement().setProperty("sheetNames", Serializer.serialize(sheetNames));
-        getElement().setProperty("sheetNamesJs", Serializer.toJson(sheetNames));
+        getElement().setProperty("sheetNames", Serializer.toJson(sheetNames));
     }
 
     public void setCellStyleToCSSStyle(HashMap<Integer, String> cellStyleToCSSStyle) {
         this.cellStyleToCSSStyle = cellStyleToCSSStyle;
-        getElement().setProperty("cellStyleToCSSStyle", Serializer.serialize(cellStyleToCSSStyle));
-        getElement().setProperty("cellStyleToCSSStyleJs", Serializer.toJson(cellStyleToCSSStyle));
+        getElement().setProperty("cellStyleToCSSStyle", Serializer.toJson(cellStyleToCSSStyle));
     }
 
     public void setRowIndexToStyleIndex(HashMap<Integer, Integer> rowIndexToStyleIndex) {
         this.rowIndexToStyleIndex = rowIndexToStyleIndex;
-        getElement().setProperty("rowIndexToStyleIndex", Serializer.serialize(rowIndexToStyleIndex));
-        getElement().setProperty("rowIndexToStyleIndexJs", Serializer.toJson(rowIndexToStyleIndex));
+        getElement().setProperty("rowIndexToStyleIndex", Serializer.toJson(rowIndexToStyleIndex));
     }
 
     public void setColumnIndexToStyleIndex(HashMap<Integer, Integer> columnIndexToStyleIndex) {
         this.columnIndexToStyleIndex = columnIndexToStyleIndex;
-        getElement().setProperty("columnIndexToStyleIndex", Serializer.serialize(columnIndexToStyleIndex));
-        getElement().setProperty("columnIndexToStyleIndexJs", Serializer.toJson(columnIndexToStyleIndex));
+        getElement().setProperty("columnIndexToStyleIndex", Serializer.toJson(columnIndexToStyleIndex));
     }
 
     public void setLockedColumnIndexes(Set<Integer> lockedColumnIndexes) {
@@ -706,8 +702,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setConditionalFormattingStyles(HashMap<Integer, String> conditionalFormattingStyles) {
         this.conditionalFormattingStyles = conditionalFormattingStyles;
-        getElement().setProperty("conditionalFormattingStyles", Serializer.serialize(conditionalFormattingStyles));
-        getElement().setProperty("conditionalFormattingStylesJs", Serializer.toJson(conditionalFormattingStyles));
+        getElement().setProperty("conditionalFormattingStyles", Serializer.toJson(conditionalFormattingStyles));
     }
 
     public void setHiddenColumnIndexes(ArrayList<Integer> hiddenColumnIndexes) {
