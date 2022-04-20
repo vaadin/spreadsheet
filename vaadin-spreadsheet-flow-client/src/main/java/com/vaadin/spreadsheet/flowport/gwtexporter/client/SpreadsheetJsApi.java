@@ -9,6 +9,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.PopupButtonConnector;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
 import com.vaadin.addon.spreadsheet.client.PopupButtonWidget;
@@ -368,8 +369,8 @@ public class SpreadsheetJsApi {
         getState().hasActions = hasActions;
     }
 
-    public void setOverlays(String overlays) {
-        getState().overlays = Parser.parseMapStringOverlayInfo(overlays);
+    public void setOverlays(String overlaysJson) {
+        getState().overlays = Parser.parseMapStringOverlayInfoJs(overlaysJson);
     }
 
     public void setMergedRegions(String mergedRegionsJson) {
@@ -479,6 +480,7 @@ public class SpreadsheetJsApi {
     }
 
     public void notifyStateChanges(String[] propNames, boolean initial) {
+        MUtil.console("NOTIFY Changes");
         JsonObject stateJson = Json.createObject();
         for (String propName : propNames) stateJson.put(propName, "");
         StateChangeEvent event = new StateChangeEvent(spreadsheetConnector, stateJson, initial);

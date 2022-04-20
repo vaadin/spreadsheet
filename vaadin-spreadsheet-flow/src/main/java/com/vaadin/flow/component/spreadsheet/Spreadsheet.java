@@ -798,8 +798,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setOverlays(HashMap<String, OverlayInfo> overlays) {
         this.overlays = overlays;
-        getElement().setProperty("overlays", Serializer.serialize(overlays));
-        getElement().setProperty("overlaysJs", Serializer.toJson(overlays));
+        getElement().setProperty("overlays", Serializer.toJson(overlays));
     }
 
     public void setMergedRegions(ArrayList<MergedRegion> mergedRegions) {
@@ -3686,19 +3685,16 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
      * 
      * Provides package visibility.
      */
-    //@Override
     protected void setResource(String key, StreamResource resource) {
         System.err.println(">>>>>>>> SET RESOURCE .... " + key);
-        //todo: ver que hacemos con esto
-        //super.setResource(key, resource);
-//        if (resource == null) {
-//            resources.remove(key);
-//            getElement().removeAttribute("resource-" + key);
-//        } else {
-//            resources.put(key, resource.toString());
-//            getElement().setProperty("resources", Serializer.serialize(new ArrayList<>(resources.keySet())));
-//            getElement().setAttribute("resource-" + key, resource);
-//        }
+        if (resource == null) {
+            resources.remove(key);
+            getElement().removeAttribute("resource-" + key);
+        } else {
+            resources.put(key, resource.toString());
+            getElement().setProperty("resources", Serializer.serialize(new ArrayList<>(resources.keySet())));
+            getElement().setAttribute("resource-" + key, resource);
+        }
     }
 
     protected void setResource(String key, Icon icon) {

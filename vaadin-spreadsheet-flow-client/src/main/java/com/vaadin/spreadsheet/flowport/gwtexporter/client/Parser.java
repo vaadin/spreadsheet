@@ -161,24 +161,8 @@ public class Parser {
         return l;
     }
 
-    public static HashMap<String, OverlayInfo> parseMapStringOverlayInfo(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        HashMap<String, OverlayInfo> l = new HashMap<>();
-        for (String token : tokens) {
-            List<String> ts = parse(token, '@');
-            String[] ts2 = ts.get(1).split("#");
-            OverlayInfo info = new OverlayInfo();
-            info.type = OverlayInfo.Type.valueOf(ts2[0]);
-            info.col = Integer.parseInt(ts2[1]);
-            info.row = Integer.parseInt(ts2[2]);
-            info.width = Float.parseFloat(ts2[3]);
-            info.height = Float.parseFloat(ts2[4]);
-            info.dy = Float.parseFloat(ts2[5]);
-            info.dx = Float.parseFloat(ts2[6]);
-            l.put(ts.get(0), info);
-        }
-        return l;
+    public static HashMap<String, OverlayInfo> parseMapStringOverlayInfoJs(String json) {
+        return parseHash(json, OverlayInfo::new);
     }
 
     public static ArrayList<MergedRegion> parseArrayMergedRegionJs(String json) {
@@ -214,6 +198,22 @@ public class Parser {
             javaArr.add(javaObj);
         }
         return javaArr;
+    }
+
+    private static <T> HashMap<String, T> parseHash(String json, Supplier<T> javaSupplier) {
+        if (json == null || json.isEmpty() || "null".equals(json)) {
+            return null;
+        }
+        JsonObject jsObj = JsonUtil.parse(json);
+        HashMap<String, T> hash = new HashMap<>();
+        for (int i = 0; i < jsObj.keys().length; i++) {
+            String key = jsObj.keys()[i];
+            JsonObject jsBean = jsObj.getObject(key);
+            T javaBean = javaSupplier.get();
+            copyJsToJava(jsBean, javaBean);
+            hash.put(key, javaBean);
+        }
+        return hash;
     }
 
     private static ArrayList<String> parse(String payload) {
