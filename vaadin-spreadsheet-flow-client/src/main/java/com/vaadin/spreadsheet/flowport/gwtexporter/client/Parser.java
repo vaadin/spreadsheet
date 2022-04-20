@@ -101,20 +101,12 @@ public class Parser {
         return l;
     }
 
-    public static Set<Integer> parseSetInteger(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        Set<Integer> l = new HashSet<>();
-        for (String token : tokens) {
-            l.add(Integer.parseInt(token));
-        }
-        return l;
+    public static Set<Integer> parseSetIntegerJs(String json) {
+        return parseSet(json, val -> (int)val.asNumber());
     }
 
-    public static ArrayList<String> parseArraylistString(String raw) {
-        if ("null".equals(raw)) return null;
-        ArrayList<String> tokens = parse(raw);
-        return tokens;
+    public static ArrayList<String> parseArraylistStringJs(String json) {
+        return parseArray(json, JsonValue::asString);
     }
 
     public static ArrayList<Integer> parseArraylistIntegerJs(String json) {

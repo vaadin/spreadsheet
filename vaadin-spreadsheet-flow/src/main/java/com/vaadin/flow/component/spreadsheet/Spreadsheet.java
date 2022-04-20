@@ -691,20 +691,17 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setLockedColumnIndexes(Set<Integer> lockedColumnIndexes) {
         this.lockedColumnIndexes = lockedColumnIndexes;
-        getElement().setProperty("lockedColumnIndexes", Serializer.serialize(lockedColumnIndexes));
-        getElement().setProperty("lockedColumnIndexesJs", Serializer.toJson(lockedColumnIndexes));
+        getElement().setProperty("lockedColumnIndexes", Serializer.toJson(lockedColumnIndexes));
     }
 
     public void setLockedRowIndexes(Set<Integer> lockedRowIndexes) {
         this.lockedRowIndexes = lockedRowIndexes;
-        getElement().setProperty("lockedRowIndexes", Serializer.serialize(lockedRowIndexes));
-        getElement().setProperty("lockedRowIndexesJs", Serializer.toJson(lockedRowIndexes));
+        getElement().setProperty("lockedRowIndexes", Serializer.toJson(lockedRowIndexes));
     }
 
     public void setShiftedCellBorderStyles(ArrayList<String> shiftedCellBorderStyles) {
         this.shiftedCellBorderStyles = shiftedCellBorderStyles;
-        getElement().setProperty("shiftedCellBorderStyles", Serializer.serialize(shiftedCellBorderStyles));
-        getElement().setProperty("shiftedCellBorderStylesJs", Serializer.toJson(shiftedCellBorderStyles));
+        getElement().setProperty("shiftedCellBorderStyles", Serializer.toJson(shiftedCellBorderStyles));
     }
 
     public void setConditionalFormattingStyles(HashMap<Integer, String> conditionalFormattingStyles) {
@@ -770,8 +767,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setVisibleCellComments(ArrayList<String> visibleCellComments) {
         this.visibleCellComments = visibleCellComments;
-        getElement().setProperty("visibleCellComments", Serializer.serialize(visibleCellComments));
-        getElement().setProperty("visibleCellCommentsJs", Serializer.toJson(visibleCellComments));
+        getElement().setProperty("visibleCellComments", Serializer.toJson(visibleCellComments));
     }
 
     public void setInvalidFormulaCells(Set<String> invalidFormulaCells) {
@@ -836,8 +832,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setNamedRanges(List<String> namedRanges) {
         this.namedRanges = namedRanges;
-        getElement().setProperty("namedRanges", Serializer.serialize(namedRanges));
-        getElement().setProperty("namedRangesJs", Serializer.toJson(namedRanges));
+        getElement().setProperty("namedRanges", Serializer.toJson(namedRanges));
     }
 
     /*
@@ -3680,7 +3675,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
             getElement().removeAttribute("resource-" + key);
         } else {
             resources.put(key, resource.toString());
-            getElement().setProperty("resources", Serializer.serialize(new ArrayList<>(resources.keySet())));
+            getElement().setProperty("resources", Serializer.toJson(new ArrayList<>(resources.keySet())));
             getElement().setAttribute("resource-" + key, resource);
         }
     }

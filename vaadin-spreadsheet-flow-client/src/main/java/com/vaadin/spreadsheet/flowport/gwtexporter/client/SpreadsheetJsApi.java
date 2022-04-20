@@ -297,16 +297,16 @@ public class SpreadsheetJsApi {
         getState().columnIndexToStyleIndex = Parser.parseMapIntegerInteger(columnIndexToStyleIndex);
     }
 
-    public void setLockedColumnIndexes(String lockedColumnIndexes) {
-        getState().lockedColumnIndexes = Parser.parseSetInteger(lockedColumnIndexes);
+    public void setLockedColumnIndexes(String lockedColumnIndexesJson) {
+        getState().lockedColumnIndexes = Parser.parseSetIntegerJs(lockedColumnIndexesJson);
     }
 
-    public void setLockedRowIndexes(String lockedRowIndexes) {
-        getState().lockedRowIndexes = Parser.parseSetInteger(lockedRowIndexes);
+    public void setLockedRowIndexes(String lockedRowIndexesJson) {
+        getState().lockedRowIndexes = Parser.parseSetIntegerJs(lockedRowIndexesJson);
     }
 
-    public void setShiftedCellBorderStyles(String shiftedCellBorderStyles) {
-        getState().shiftedCellBorderStyles = Parser.parseArraylistString(shiftedCellBorderStyles);
+    public void setShiftedCellBorderStyles(String shiftedCellBorderStylesJson) {
+        getState().shiftedCellBorderStyles = Parser.parseArraylistStringJs(shiftedCellBorderStylesJson);
     }
 
     public void setConditionalFormattingStyles(String conditionalFormattingStyles) {
@@ -357,8 +357,8 @@ public class SpreadsheetJsApi {
         getState().cellCommentAuthors = Parser.parseMapStringStringJs(cellCommentAuthorsJson);
     }
 
-    public void setVisibleCellComments(String visibleCellComments) {
-        getState().visibleCellComments = Parser.parseArraylistString(visibleCellComments);
+    public void setVisibleCellComments(String visibleCellCommentsJson) {
+        getState().visibleCellComments = Parser.parseArraylistStringJs(visibleCellCommentsJson);
     }
 
     public void setInvalidFormulaCells(String invalidFormulaCells) {
@@ -413,8 +413,8 @@ public class SpreadsheetJsApi {
         getState().lockFormatRows = lockFormatRows;
     }
 
-    public void setNamedRanges(String namedRanges) {
-        getState().namedRanges = Parser.parseArraylistString(namedRanges);
+    public void setNamedRanges(String namedRangesJson) {
+        getState().namedRanges = Parser.parseArraylistStringJs(namedRangesJson);
     }
 
     public void setHeight(String height) {
@@ -475,7 +475,7 @@ public class SpreadsheetJsApi {
     }
 
     public void setResources(Element element, String resources) {
-        ArrayList<String> l = Parser.parseArraylistString(resources);
+        ArrayList<String> l = Parser.parseArraylistStringJs(resources);
         l.forEach(k -> spreadsheetConnector.getConnection().setResource(k, element.getAttribute("resource-" + k)));
     }
 
