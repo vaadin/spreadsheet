@@ -938,22 +938,22 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
     private SpreadsheetClientRpc clientRpc = new SpreadsheetClientRpc() {
         @Override
         public void updateBottomRightCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateBottomRightCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
+            getElement().callJsFunction("updateBottomRightCellValues", Serializer.toJson(cellData));
         }
 
         @Override
         public void updateTopLeftCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateTopLeftCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
+            getElement().callJsFunction("updateTopLeftCellValues", Serializer.toJson(cellData));
         }
 
         @Override
         public void updateTopRightCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateTopRightCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
+            getElement().callJsFunction("updateTopRightCellValues", Serializer.toJson(cellData));
         }
 
         @Override
         public void updateBottomLeftCellValues(ArrayList<CellData> cellData) {
-            getElement().callJsFunction("updateBottomLeftCellValues", Serializer.serialize(cellData), Serializer.toJson(cellData));
+            getElement().callJsFunction("updateBottomLeftCellValues", Serializer.toJson(cellData));
         }
 
         @Override
@@ -973,7 +973,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
         @Override
         public void showActions(ArrayList<SpreadsheetActionDetails> actionDetails) {
-            getElement().callJsFunction("showActions", Serializer.serialize(actionDetails), Serializer.toJson(actionDetails));
+            getElement().callJsFunction("showActions", Serializer.toJson(actionDetails));
         }
 
         @Override
@@ -982,8 +982,8 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
         }
 
         @Override
-        public void cellsUpdated(ArrayList<CellData> updatedCellData) {
-            getElement().callJsFunction("cellsUpdated", Serializer.serialize(updatedCellData), Serializer.toJson(updatedCellData));
+        public void cellsUpdated(ArrayList<CellData> cellData) {
+            getElement().callJsFunction("cellsUpdated", Serializer.toJson(cellData));
         }
 
         @Override

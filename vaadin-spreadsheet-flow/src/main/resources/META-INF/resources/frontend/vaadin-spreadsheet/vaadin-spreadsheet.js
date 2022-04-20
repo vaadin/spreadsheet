@@ -27,12 +27,7 @@ export class VaadinSpreadsheet extends LitElement {
 
   static get properties() {
     return {
-
-      //api: {type: Object},
-
-      /*
-      SHARED STATE
-       */
+      /* SHARED STATE */
       dirty: {type: Number},
 
       width: {type: String},
@@ -188,13 +183,6 @@ export class VaadinSpreadsheet extends LitElement {
       }
     `
   };
-
-  /*
-    createRenderRoot() {
-      // Do not use a shadow root
-      return this;
-    }
-  */
 
   render() {
     return html`
@@ -375,24 +363,21 @@ export class VaadinSpreadsheet extends LitElement {
     }
   }
 
-  /*
-  CLIENT SIDE RPC METHODS
-   */
-
-  updateBottomRightCellValues(cellData, c) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomRightCellValues(cellData, c);
+  /* CLIENT SIDE RPC METHODS */
+  updateBottomRightCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomRightCellValues(cellDataJson);
   }
 
-  updateTopLeftCellValues(cellData, c) { //ArrayList<CellData> cellData) {
-    this.api.updateTopLeftCellValues(cellData, c);
+  updateTopLeftCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
+    this.api.updateTopLeftCellValues(cellDataJson);
   }
 
-  updateTopRightCellValues(cellData, c) { //ArrayList<CellData> cellData) {
-    this.api.updateTopRightCellValues(cellData, c);
+  updateTopRightCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
+    this.api.updateTopRightCellValues(cellDataJson);
   }
 
-  updateBottomLeftCellValues(cellData, c) { //ArrayList<CellData> cellData) {
-    this.api.updateBottomLeftCellValues(cellData, c);
+  updateBottomLeftCellValues(cellDataJson) { //ArrayList<CellData> cellData) {
+    this.api.updateBottomLeftCellValues(cellDataJson);
   }
 
   updateFormulaBar(possibleName, col, row) { //String possibleName, int col, int row) {
@@ -407,16 +392,16 @@ export class VaadinSpreadsheet extends LitElement {
     this.api.showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
   }
 
-  showActions(actionDetails, c) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
-    this.api.showActions(actionDetails, c);
+  showActions(actionDetailsJson) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
+    this.api.showActions(actionDetailsJson);
   }
 
   setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll) { //String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll
     this.api.setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
   }
 
-  cellsUpdated(updatedCellData, c) { //ArrayList<CellData> updatedCellData) {
-    if (this.api) this.api.cellsUpdated(updatedCellData, c);
+  cellsUpdated(updatedCellDataJson) { //ArrayList<CellData> updatedCellData) {
+    if (this.api) this.api.cellsUpdated(updatedCellDataJson);
   }
 
   refreshCellStyles() {
@@ -427,16 +412,7 @@ export class VaadinSpreadsheet extends LitElement {
     this.api.editCellComment(col, row);
   }
 
-
-
-
-
-
-
-  /*
-SERVER RPC METHOD CALLBACKS
- */
-
+  /* SERVER RPC METHOD CALLBACKS */
   createCallbacks() {
 
     this.api.setGroupingCollapsedCallback(e => {

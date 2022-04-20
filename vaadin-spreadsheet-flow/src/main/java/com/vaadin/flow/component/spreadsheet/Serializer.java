@@ -40,9 +40,8 @@ public class Serializer {
 
     public static String toJson(Object value) {
         try {
-            String val = objectMapper.writeValueAsString(value);
+            String val = value == null ? "" : objectMapper.writeValueAsString(value);
             System.err.println(">>>> " + (value != null ? value.getClass().getName() : "NULL") + " " + value + "\n" + val);
-
             return val;
         } catch (JsonProcessingException e) {
             System.err.println(">>>> EXCEPTION " + value + " " + e.getMessage());

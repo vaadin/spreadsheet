@@ -491,24 +491,22 @@ public class SpreadsheetJsApi {
         spreadsheetConnector.onStateChanged(event);
     }
 
-    /*
-    CLIENT RPC METHODS
-     */
+    /* CLIENT RPC METHODS */
 
-    public void updateBottomRightCellValues(String cellData, String json) {
-        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellDataJs(json));
+    public void updateBottomRightCellValues(String cellDataJson) {
+        getClientRpcInstance().updateBottomRightCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
     }
 
-    public void updateTopLeftCellValues(String cellData, String json) {
-        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellDataJs(json));
+    public void updateTopLeftCellValues(String cellDataJson) {
+        getClientRpcInstance().updateTopLeftCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
     }
 
-    public void updateTopRightCellValues(String cellData, String json) {
-        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellDataJs(json));
+    public void updateTopRightCellValues(String cellDataJson) {
+        getClientRpcInstance().updateTopRightCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
     }
 
-    public void updateBottomLeftCellValues(String cellData, String json) {
-        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellDataJs(json));
+    public void updateBottomLeftCellValues(String cellDataJson) {
+        getClientRpcInstance().updateBottomLeftCellValues(Parser.parseArraylistOfCellDataJs(cellDataJson));
     }
 
     public void updateFormulaBar(String possibleName, int col, int row) {
@@ -523,16 +521,16 @@ public class SpreadsheetJsApi {
         getClientRpcInstance().showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
     }
 
-    public void showActions(String actionDetails, String json) {
-        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetailsJs(json));
+    public void showActions(String actionDetailsJson) {
+        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetailsJs(actionDetailsJson));
     }
 
     public void setSelectedCellAndRange(String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll) {
         getClientRpcInstance().setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll);
     }
 
-    public void cellsUpdated(String updatedCellData, String json) {
-        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellDataJs(json));
+    public void cellsUpdated(String cellDataJson) {
+        getClientRpcInstance().cellsUpdated(Parser.parseArraylistOfCellDataJs(cellDataJson));
     }
 
     public void refreshCellStyles() {

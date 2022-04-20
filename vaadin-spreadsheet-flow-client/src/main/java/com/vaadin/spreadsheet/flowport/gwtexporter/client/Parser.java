@@ -197,6 +197,14 @@ public class Parser {
         }
         return l;
     }
+    
+    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
+        return parseArray(json, CellData::new);
+    }
+    
+    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
+        return parseArray(json, SpreadsheetActionDetails::new);
+    }    
 
     native static void consoleLog(String message) /*-{
       console.log("parser", message );
@@ -219,14 +227,6 @@ public class Parser {
             javaArr.add(javaObj);
         }
         return javaArr;
-    }
-
-    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
-        return parseArray(json, CellData::new);
-    }
-    
-    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
-        return parseArray(json, SpreadsheetActionDetails::new);
     }
 
     private static ArrayList<String> parse(String payload) {
