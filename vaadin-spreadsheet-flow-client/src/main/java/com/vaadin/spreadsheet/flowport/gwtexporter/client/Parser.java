@@ -7,9 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.function.IntFunction;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dev.util.collect.Lists;
 import com.vaadin.addon.spreadsheet.client.CellData;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
@@ -116,29 +120,22 @@ public class Parser {
     public static ArrayList<Integer> parseArraylistIntegerJs(String json) {
         return parseArray(json, a -> (int) a.asNumber());
     }
-    
+
     public static float[] parseArrayFloatJs(String json) {
-        ArrayList<Double> arr = parseArray(json, JsonValue::asNumber);
-        if (arr == null) {
-            return new float[0];
+        double[] arr = parseArrayDoubleJs(json);
+        float [] ret = new float[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            ret[i] = (float)arr[i];
         }
-        float f[] = new float[arr.size()];
-        for (int i = 0; i < arr.size(); i++) {
-            f[i] = arr.get(i).floatValue();
-        }
-        return f;
+        return ret;
     }
-    
+
     public static int[] parseArrayIntJs(String json) {
-        ArrayList<Double> arr = parseArray(json, JsonValue::asNumber);
-        if (arr == null) {
-            return new int[0];
-        }
-        int f[] = new int[arr.size()];
-        for (int i = 0; i < arr.size(); i++) {
-            f[i] = arr.get(i).intValue();
-        }
-        return f;
+        return parseArray(json, JsonValue::asNumber).stream().mapToInt(Double::intValue).toArray();
+    }
+
+    public static double[] parseArrayDoubleJs(String json) {
+        return parseArray(json, JsonValue::asNumber).stream().mapToDouble(Double::doubleValue).toArray();
     }
 
     public static HashMap<String, String> parseMapStringStringJs(String json) {
@@ -183,11 +180,11 @@ public class Parser {
     }
 
     private static <T> ArrayList<T> parseArray(String json, Function<JsonValue, T> jsToJava) {
+        ArrayList<T> javaArr = new ArrayList<>();
         if (json == null || json.isEmpty() || "null".equals(json)) {
-            return null;
+            return javaArr;
         }
         JsonArray jsArr = JsonUtil.parse(json);
-        ArrayList<T> javaArr = new ArrayList<>();
         for (int i = 0; i < jsArr.length(); i++) {
             JsonValue val = jsArr.getObject(i);
             javaArr.add(jsToJava.apply(val));
