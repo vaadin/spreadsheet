@@ -45,6 +45,7 @@ public class Serializer {
             return val;
         } catch (JsonProcessingException e) {
             System.err.println(">>>> EXCEPTION " + value + " " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }

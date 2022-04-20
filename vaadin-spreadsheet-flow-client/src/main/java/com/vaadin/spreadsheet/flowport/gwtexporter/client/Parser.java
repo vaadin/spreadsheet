@@ -23,40 +23,13 @@ import elemental.json.impl.JsonUtil;
 
 public class Parser {
 
-    public static Map<String, PopupButtonState> parseListOfPopupButtons(String raw) {
-        if ("null".equals(raw)) return null;
-        Map<String, PopupButtonState> l = new HashMap<>();
-        List<String> tokens = parse(raw);
-        for (String token : tokens) {
-            String[] ts = token.split("#");
-            PopupButtonState s;
-            l.put(ts[0], s = new PopupButtonState());
-            s.active = Boolean.parseBoolean(ts[1]);
-            s.col = Integer.parseInt(ts[2]);
-            s.row = Integer.parseInt(ts[3]);
-            s.active = Boolean.parseBoolean(ts[4]);
-            s.sheet = ts[5];
-            s.popupWidth = ts[6];
-            s.popupHeight = ts[7];
-        }
-        return l;
+
+    public static List<PopupButtonState> parseListOfPopupButtonsJs(String json) {
+        return parseArrayJstype(json, PopupButtonState::new);
     }
 
-    public static List<GroupingData> parseListOfGroupingData(String raw) {
-        if ("null".equals(raw)) return null;
-        List<GroupingData> l = new ArrayList<>();
-        List<String> tokens = parse(raw);
-        for (String token : tokens) {
-            String[] ts = token.split("#");
-            l.add(new GroupingData(
-                    Integer.parseInt(ts[0])
-                    , Integer.parseInt(ts[1])
-                    , Integer.parseInt(ts[2])
-                    , Integer.parseInt(ts[3])
-                    , Boolean.parseBoolean(ts[4])
-            ));
-        }
-        return l;
+    public static List<GroupingData> parseListOfGroupingDataJs(String json){
+        return parseArrayJstype(json, GroupingData::new);
     }
 
     public static String[] parseArrayOfStringsJs(String json) {

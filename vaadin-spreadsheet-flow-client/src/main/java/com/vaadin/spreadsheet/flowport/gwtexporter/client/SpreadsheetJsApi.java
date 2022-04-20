@@ -2,6 +2,7 @@ package com.vaadin.spreadsheet.flowport.gwtexporter.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -233,12 +234,12 @@ public class SpreadsheetJsApi {
         getState().cols = cols;
     }
 
-    public void setColGroupingData(String colGroupingData) {
-        getState().colGroupingData = Parser.parseListOfGroupingData(colGroupingData);
+    public void setColGroupingData(String colGroupingDataJson) {
+        getState().colGroupingData = Parser.parseListOfGroupingDataJs(colGroupingDataJson);
     }
 
-    public void setRowGroupingData(String rowGroupingData) {
-        getState().rowGroupingData = Parser.parseListOfGroupingData(rowGroupingData);
+    public void setRowGroupingData(String rowGroupingDataJson) {
+        getState().rowGroupingData = Parser.parseListOfGroupingDataJs(rowGroupingDataJson);
     }
 
     public void setColGroupingMax(int colGroupingMax) {
@@ -451,25 +452,21 @@ public class SpreadsheetJsApi {
     }
 
     public void setPopups(String raw) {
-        Map<String, PopupButtonState> l = Parser.parseListOfPopupButtons(raw);
-        l.keySet().forEach(k -> {
-            if (popupButtonWidgets.containsKey(k)) {
-                consoleLog("popup already exists");
-            } else {
-                consoleLog("adding popup widget");
-                PopupButtonWidget w;
-                popupButtonWidgets.put(k, w = new PopupButtonWidget());
-                PopupButtonConnector c;
-                popupButtonConnectors.put(k, c = new PopupButtonConnector());
-                PopupButtonState s;
-                popupButtonStates.put(k, s = l.get(k));
-                w.setCol(s.col);
-                w.setRow(s.row);
-                w.setPopupHeaderHidden(s.headerHidden);
-                w.setSheetWidget(spreadsheetWidget.getSheetWidget(), DivElement.as(spreadsheetWidget.getSheetWidget().getElement()));
-                w.setPopupWidth(s.popupWidth);
-                w.setPopupHeight(s.popupHeight);
-                spreadsheetWidget.addPopupButton(w);
+        List<PopupButtonState> l = Parser.parseListOfPopupButtonsJs(raw);
+        l.forEach(state -> {
+            String k = state.row + "_" + state.col;
+            if (!popupButtonWidgets.containsKey(k)) {
+                PopupButtonWidget widget;
+                popupButtonWidgets.put(k, widget = new PopupButtonWidget());
+                popupButtonConnectors.put(k, new PopupButtonConnector());
+                popupButtonStates.put(k, state);
+                widget.setCol(state.col);
+                widget.setRow(state.row);
+                widget.setPopupHeaderHidden(state.headerHidden);
+                widget.setSheetWidget(spreadsheetWidget.getSheetWidget(), DivElement.as(spreadsheetWidget.getSheetWidget().getElement()));
+                widget.setPopupWidth(state.popupWidth);
+                widget.setPopupHeight(state.popupHeight);
+                spreadsheetWidget.addPopupButton(widget);
             }
         });
     }

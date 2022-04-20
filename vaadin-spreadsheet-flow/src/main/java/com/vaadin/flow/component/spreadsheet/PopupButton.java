@@ -8,7 +8,7 @@ package com.vaadin.flow.component.spreadsheet;
  * %%
  * This program is available under Commercial Vaadin Developer License
  * 4.0 (CVDLv4).
- * 
+ *
  * For the full License, see <https://vaadin.com/license/cvdl-4.0>.
  * #L%
  */
@@ -48,7 +48,7 @@ import com.vaadin.flow.component.spreadsheet.shared.PopupButtonState;
  * {@link Spreadsheet#setPopup(int, int, PopupButton)}. The button can be
  * removed from the target cell by giving <code>null</code> as the PopupButton
  * parameter to one of the previously mentioned methods.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
@@ -89,7 +89,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Constructs a new PopupButton with the given content.
-     * 
+     *
      * @param content
      *            Content of the pop-up
      */
@@ -100,7 +100,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Gets the cell reference for the cell that contains this pop-up button.
-     * 
+     *
      * @return Target cell reference
      */
     public CellReference getCellReference() {
@@ -116,7 +116,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Gets the column for this pop-up button.
-     * 
+     *
      * @return Column index, 0-based
      */
     public int getColumn() {
@@ -125,7 +125,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Gets the row for this pop-up button.
-     * 
+     *
      * @return Row index, 0-based
      */
     public int getRow() {
@@ -156,7 +156,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Tells if the pop-up header is currently hidden.
-     * 
+     *
      * @return true if header is hidden, false otherwise
      */
     public boolean isHeaderHidden() {
@@ -165,7 +165,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Sets the pop-up header visible or hidden.
-     * 
+     *
      * @param headerHidden
      *            <code>true</code> for hidden, <code>false</code> for visible.
      */
@@ -176,7 +176,7 @@ public class PopupButton extends Component implements HasComponents {
     /**
      * Set the width for this pop-up button's pop-up. Can be null or empty for
      * undefined width.
-     * 
+     *
      * @param width
      *            New width for the pop-up
      */
@@ -186,7 +186,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Gets the width for this pop-up button's pop-up. Can be null or empty.
-     * 
+     *
      * @return Width of the pop-up
      */
     public String getPopupWidth() {
@@ -196,7 +196,7 @@ public class PopupButton extends Component implements HasComponents {
     /**
      * Set the height for this pop-up button's pop-up. Can be null or empty for
      * undefined height.
-     * 
+     *
      * @param height
      *            New height for the pop-up
      */
@@ -206,7 +206,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Gets the height for this pop-up button's pop-up. Can be null or empty.
-     * 
+     *
      * @return Height of the pop-up
      */
     public String getPopupHeight() {
@@ -251,21 +251,21 @@ public class PopupButton extends Component implements HasComponents {
     /**
      * Mark the button with "active" - style. See PopupButtonWidget for
      * the CSS class name.
-     * 
+     *
      * @param active
      *            true to add "active" style, false to remove it
      */
     public void markActive(boolean active) {
         getState().active = active;
     }
-    
+
     public boolean isActive() {
         return getState().active;
     }
 
     /**
      * Adds a {@link PopupOpenListener} to this pop-up button.
-     * 
+     *
      * @param listener
      *            The listener to add
      */
@@ -275,7 +275,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Removes the given {@link PopupOpenListener} from this pop-up button.
-     * 
+     *
      * @param listener
      *            The listener to remove
      */
@@ -290,7 +290,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Adds a {@link PopupCloseListener} to this pop-up button.
-     * 
+     *
      * @param listener
      */
     public void addPopupCloseListener(PopupCloseListener listener) {
@@ -299,7 +299,7 @@ public class PopupButton extends Component implements HasComponents {
 
     /**
      * Removes the given {@link PopupCloseListener} from this pop-up button.
-     * 
+     *
      * @param listener
      */
     public void removePopupCloseListener(PopupCloseListener listener) {
@@ -338,7 +338,7 @@ public class PopupButton extends Component implements HasComponents {
 
         /**
          * Constructs a new open event for the given PopupButton.
-         * 
+         *
          * @param source
          *            PopupButton component that has been opened.
          */
@@ -348,7 +348,7 @@ public class PopupButton extends Component implements HasComponents {
 
         /**
          * Gets the {@link PopupButton} where the event occurred.
-         * 
+         *
          * @return PopupButton component that has been opened.
          */
         public PopupButton getPopupButton() {
@@ -369,7 +369,7 @@ public class PopupButton extends Component implements HasComponents {
          * Called when a {@link PopupButton} has been clicked and the pop-up has
          * been opened. A reference to the pop-up button is given by
          * {@link PopupOpenEvent#getPopupButton()}.
-         * 
+         *
          * @param event
          *            An event containing the opened pop-up button
          */
@@ -383,7 +383,7 @@ public class PopupButton extends Component implements HasComponents {
     public static class PopupCloseEvent extends ComponentEvent<Component> {
         /**
          * Constructs a new close event for the given PopupButton.
-         * 
+         *
          * @param source
          *            PopupButton component that has been closed.
          */
@@ -393,7 +393,7 @@ public class PopupButton extends Component implements HasComponents {
 
         /**
          * Gets the {@link PopupButton} where the event occurred.
-         * 
+         *
          * @return PopupButton component that has been closed.
          */
         public PopupButton getPopupButton() {
@@ -413,7 +413,7 @@ public class PopupButton extends Component implements HasComponents {
         /**
          * Called when the pop-up for the {@link PopupButton} returned by
          * {@link PopupCloseEvent#getPopupButton()} has been closed.
-         * 
+         *
          * @param event
          *            An event containing the closed pop-up button
          */
