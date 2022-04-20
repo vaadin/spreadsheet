@@ -115,7 +115,7 @@ public class Parser {
         }
         JsonArray jsArr = JsonUtil.parse(json);
         for (int i = 0; i < jsArr.length(); i++) {
-            JsonValue val = jsArr.getObject(i);
+            JsonValue val = jsArr.get(i);
             javaArr.add(jsToJava.apply(val));
         }
         return javaArr;
@@ -137,7 +137,7 @@ public class Parser {
         HashMap<I, T> hash = new HashMap<>();
         for (int i = 0; i < jsObj.keys().length; i++) {
             String key = jsObj.keys()[i];
-            JsonValue val = jsObj.getObject(key);
+            JsonValue val = jsObj.get(key);
             hash.put(strToKey.apply(key), jsToJava.apply(val));
         }
         return hash;
