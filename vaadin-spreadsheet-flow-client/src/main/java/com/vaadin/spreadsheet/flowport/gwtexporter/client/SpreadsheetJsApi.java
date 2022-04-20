@@ -67,16 +67,6 @@ public class SpreadsheetJsApi {
         }
     }
 
-    /*
-     * Takes in a JSON String and evals it.
-     * @param JSON String that you trust
-     * @return JavaScriptObject that you can cast to an Overlay Type
-     */
-    public static <T extends JavaScriptObject> T parseJson(String jsonStr)
-    {
-        return JsonUtils.safeEval(jsonStr);
-    }
-
     private void init(Element element) {
         // Only support eager connectors for now
         ConnectorBundleLoader.get()
@@ -86,27 +76,6 @@ public class SpreadsheetJsApi {
         spreadsheetConnector = new SpreadsheetConnector();
         spreadsheetConnector.doInit("1", new ApplicationConnection());
         spreadsheetWidget = spreadsheetConnector.getWidget();
-
-        //initState(spreadsheetConnector.getState());
-        /*
-        ApplicationConfiguration conf = ApplicationConfiguration.getConfigFromJson("1", json0, element);
-        // must be initialized after conf
-        Profiler.initialize();
-        applicationConnection.init(new WidgetSet(), conf);
-
-        RootPanel.getForElement(element).add(applicationConnection.getUIConnector().getWidget());
-        consoleLog("widget appended !");
-
-        Scheduler.get().scheduleDeferred(() -> {
-            String[] jsons = {json1, json2};
-            for (String json : jsons) {
-                applicationConnection.getMessageHandler().handleMessage(MessageHandler.parseWrappedJson(json));
-            }
-            //spreadsheetConnector = (SpreadsheetConnector) ConnectorMap.get(applicationConnection).getConnector("0");
-            //spreadsheetWidget = spreadsheetConnector.getWidget();
-            //spreadsheetWidget.setHeight("100%");
-        });
-*/
 
         // esto es para evitar el bundle
         TypeDataStore.get().setClass(spreadsheetConnector.getClass().getName(), SpreadsheetConnector.class);
@@ -550,12 +519,12 @@ public class SpreadsheetJsApi {
         getClientRpcInstance().invalidCellAddress();
     }
 
-    public void showSelectedCell(String name, int col, int row, String cellValue, boolean function, boolean locked, boolean initialSelection) {
-        getClientRpcInstance().showSelectedCell(name, col, row, cellValue, function, locked, initialSelection);
+    public void showSelectedCell(String name, int col, int row, String cellValue, boolean formula, boolean locked, boolean initialSelection) {
+        getClientRpcInstance().showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
     }
 
-    public void showActions(String actionDetails) {
-        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetails(actionDetails));
+    public void showActions(String actionDetails, String json) {
+        getClientRpcInstance().showActions(Parser.parseArraylistSpreadsheetActionDetailsJs(json));
     }
 
     public void setSelectedCellAndRange(String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll) {

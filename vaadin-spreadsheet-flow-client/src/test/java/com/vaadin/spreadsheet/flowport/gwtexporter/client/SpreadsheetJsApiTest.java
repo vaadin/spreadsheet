@@ -460,12 +460,12 @@ public class SpreadsheetJsApiTest {
         verify(clientRpc, times(1)).showSelectedCell("a", 1, 2, "b", true, true, true);
     }
 
-    @Test
-    public void should_callClientRpc_when_showActions_isCalled() {
-        ArrayList<SpreadsheetActionDetails> value = new ArrayList<>();
-        api.showActions("");
-        verify(clientRpc, times(1)).showActions(value);
-    }
+//    @Test
+//    public void should_callClientRpc_when_showActions_isCalled() {
+//        ArrayList<SpreadsheetActionDetails> value = new ArrayList<>();
+//        api.showActions("");
+//        verify(clientRpc, times(1)).showActions(value);
+//    }
 
     @Test
     public void should_callClientRpc_when_setSelectedCellAndRange_isCalled() {

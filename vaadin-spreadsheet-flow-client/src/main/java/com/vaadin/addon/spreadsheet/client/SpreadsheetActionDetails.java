@@ -15,6 +15,9 @@ package com.vaadin.addon.spreadsheet.client;
 
 import java.io.Serializable;
 
+import jsinterop.annotations.JsType;
+
+@JsType
 @SuppressWarnings("serial")
 public class SpreadsheetActionDetails implements Serializable {
     public String caption;

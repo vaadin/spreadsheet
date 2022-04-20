@@ -200,17 +200,13 @@ public class Parser {
 
     native static void consoleLog(String message) /*-{
       console.log("parser", message );
-  }-*/;
+    }-*/;
     
     private native static void copyJsToJava(JsonObject j, Object o) /*-{
       Object.assign(o, j);
     }-*/;
     
-    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
-        return parseArray(json, CellData::new);
-    }
-    
-    public static <T> ArrayList<T> parseArray(String json, Supplier<T> javaSupplier) {
+    private static <T> ArrayList<T> parseArray(String json, Supplier<T> javaSupplier) {
         if (json == null || json.isEmpty()) {
             return null;
         }
@@ -225,19 +221,12 @@ public class Parser {
         return javaArr;
     }
 
-    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetails(String raw) {
-        if ("null".equals(raw)) return null;
-        ArrayList<SpreadsheetActionDetails> l = new ArrayList<>();
-        List<String> tokens = parse(raw);
-        for (String token : tokens) {
-            String[] ts = token.split("#");
-            SpreadsheetActionDetails details = new SpreadsheetActionDetails();
-            details.caption = ts[0] != null && "null".equals(ts[0])?null:ts[0];
-            details.key = ts[1] != null && "null".equals(ts[1])?null:ts[1];
-            details.type = Integer.parseInt(ts[2]);
-            l.add(details);
-        }
-        return l;
+    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
+        return parseArray(json, CellData::new);
+    }
+    
+    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
+        return parseArray(json, SpreadsheetActionDetails::new);
     }
 
     private static ArrayList<String> parse(String payload) {

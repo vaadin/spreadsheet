@@ -41,11 +41,8 @@ public class Serializer {
     public static String toJson(Object value) {
         try {
             String val = objectMapper.writeValueAsString(value);
-//            System.err.println(">>>> " + (value != null ? value.getClass().getName() : "null") + " " + value + "\n" + val);
+            System.err.println(">>>> " + (value != null ? value.getClass().getName() : "NULL") + " " + value + "\n" + val);
 
-            if (val.contains("formulaValue")) {
-//                Thread.dumpStack();
-            }
             return val;
         } catch (JsonProcessingException e) {
             System.err.println(">>>> EXCEPTION " + value + " " + e.getMessage());

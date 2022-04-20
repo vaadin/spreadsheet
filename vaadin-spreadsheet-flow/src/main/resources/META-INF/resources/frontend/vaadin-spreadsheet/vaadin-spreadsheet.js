@@ -403,12 +403,12 @@ export class VaadinSpreadsheet extends LitElement {
     this.api.invalidCellAddress();
   }
 
-  showSelectedCell(name, col, row, cellValue, _function, locked, initialSelection) { // String name, int col, int row, String cellValue, boolean function, boolean locked, boolean initialSelection
-    this.api.showSelectedCell(name, col, row, cellValue, _function, locked, initialSelection);
+  showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection) { // String name, int col, int row, String cellValue, boolean function, boolean locked, boolean initialSelection
+    this.api.showSelectedCell(name, col, row, cellValue, formula, locked, initialSelection);
   }
 
-  showActions(actionDetails) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
-    this.api.showActions(actionDetails);
+  showActions(actionDetails, c) { //ArrayList<SpreadsheetActionDetails> actionDetails) {
+    this.api.showActions(actionDetails, c);
   }
 
   setSelectedCellAndRange(name, col, row, c1, c2, r1, r2, scroll) { //String name, int col, int row, int c1, int c2, int r1, int r2, boolean scroll
