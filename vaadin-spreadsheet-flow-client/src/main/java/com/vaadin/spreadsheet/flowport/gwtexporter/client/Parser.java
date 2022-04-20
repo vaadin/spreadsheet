@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -22,7 +21,6 @@ import elemental.json.JsonValue;
 import elemental.json.impl.JsonUtil;
 
 public class Parser {
-
 
     public static List<PopupButtonState> parseListOfPopupButtonsJs(String json) {
         return parseArrayJstype(json, PopupButtonState::new);
@@ -97,21 +95,17 @@ public class Parser {
         return parseArrayJstype(json, SpreadsheetActionDetails::new);
     }
 
-    private native static void copyJsToJava(JsonValue j, Object o) /*-{
-      Object.assign(o, j);
-    }-*/;
-
-    private static <T> ArrayList<T> parseArrayJstype(String json, Supplier<T> jsTypeNew) {
-        return parseArray(json, jsBean -> {
-            T javaBean = jsTypeNew.get();
-            copyJsToJava(jsBean, javaBean);
-            return javaBean;
-        });
-    }
-
     private static <T> Set<T> parseSet(String json, Function<JsonValue, T> jsToJava) {
         List<T> ret = parseArray(json, jsToJava);
         return ret == null ? null : new HashSet<T>(ret);
+    }
+
+    private static <T> ArrayList<T> parseArrayJstype(String json, Supplier<T> constructor) {
+        return parseArray(json, jsBean -> {
+            T javaBean = constructor.get();
+            copyJsToJava(jsBean, javaBean);
+            return javaBean;
+        });
     }
 
     private static <T> ArrayList<T> parseArray(String json, Function<JsonValue, T> jsToJava) {
@@ -127,9 +121,9 @@ public class Parser {
         return javaArr;
     }
 
-    private static <T> HashMap<String, T> parseMapStringJstype(String json, Supplier<T> jsTypeNew) {
+    private static <T> HashMap<String, T> parseMapStringJstype(String json, Supplier<T> constructor) {
         return parseMap(json, String::valueOf, jsBean -> {
-            T javaBean = jsTypeNew.get();
+            T javaBean = constructor.get();
             copyJsToJava(jsBean, javaBean);
             return javaBean;
         });
@@ -149,45 +143,7 @@ public class Parser {
         return hash;
     }
 
-    private static ArrayList<String> parse(String payload) {
-        return parse(payload, ',');
-    }
-
-    private static ArrayList<String> parse(String payload, char separator) {
-        ArrayList<String> tokens = new ArrayList<>();
-        if (payload != null) {
-            int pos = 0;
-            int start = 0;
-            boolean hasNonString = false;
-            boolean insideString = false;
-            boolean escaped = false;
-            while (pos < payload.length()) {
-                if (!escaped && separator == payload.charAt(pos) && !insideString) {
-                    if (pos > start) tokens.add(payload.substring(hasNonString?start:start + 1, hasNonString?pos:pos - 1).replaceAll("\\\\", ""));
-                    else tokens.add("");
-                    start = pos + 1;
-                    hasNonString = false;
-                } else if ('"' == payload.charAt(pos)) {
-                    if (!escaped) {
-                        if (insideString) { // end of string
-                            insideString = false;
-                        } else { // start of string
-                            insideString = true;
-                        }
-                    } else {
-                        escaped = false;
-                    }
-                } else if ('\\' == payload.charAt(pos)) {
-                    escaped = true;
-                } else {
-                    if (escaped) escaped = false;
-                    if (!insideString) hasNonString = true;
-                }
-                pos++;
-            }
-            if (pos > start) tokens.add(payload.substring(hasNonString?start:start + 1, hasNonString?pos:pos - 1).replaceAll("\\\\", ""));
-        }
-        return tokens;
-    }
-
+    private native static void copyJsToJava(JsonValue j, Object o) /*-{
+      Object.assign(o, j);
+    }-*/;
 }
