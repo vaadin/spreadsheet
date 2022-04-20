@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.vaadin.addon.spreadsheet.client.CellData;
@@ -150,7 +151,7 @@ public class Parser {
         }
         return l;
     }
-
+    
     public static Set<String> parseSetString(String raw) {
         if ("null".equals(raw)) return null;
         List<String> tokens = parse(raw);
@@ -160,21 +161,25 @@ public class Parser {
         }
         return l;
     }
+    
+    public static Set<String> parseSetStringJs(String json) {
+        return parseSet(json, String::new);
+    }
 
     public static HashMap<String, OverlayInfo> parseMapStringOverlayInfoJs(String json) {
-        return parseHash(json, OverlayInfo::new);
+        return parseBeanMap(json, OverlayInfo::new);
     }
 
     public static ArrayList<MergedRegion> parseArrayMergedRegionJs(String json) {
-        return parseArray(json, MergedRegion::new);
+        return parseBeanArray(json, MergedRegion::new);
     }
     
     public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
-        return parseArray(json, CellData::new);
+        return parseBeanArray(json, CellData::new);
     }
     
     public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
-        return parseArray(json, SpreadsheetActionDetails::new);
+        return parseBeanArray(json, SpreadsheetActionDetails::new);
     }    
 
     native static void consoleLog(String message) /*-{
@@ -185,7 +190,25 @@ public class Parser {
       Object.assign(o, j);
     }-*/;
     
-    private static <T> ArrayList<T> parseArray(String json, Supplier<T> javaSupplier) {
+    private static <T> Set<T> parseSet(String json, Function<String, T> function) {
+        return new HashSet<T>(parseArray(json, function));
+    }
+        
+    private static <T> List<T> parseArray(String json, Function<String, T> function) {
+        ArrayList<T> javaArr = new ArrayList<>();
+        if (json == null || json.isEmpty() || "null".equals(json)) {
+            return javaArr;
+        }        
+        JsonArray jsArr = JsonUtil.parse(json);
+        for (int i = 0; i < jsArr.length(); i++) {
+            String val = jsArr.getObject(i).asString();
+            T javaObj = function.apply(val);
+            javaArr.add(javaObj);
+        }
+        return javaArr;
+    }
+    
+    private static <T> ArrayList<T> parseBeanArray(String json, Supplier<T> javaSupplier) {
         if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
@@ -200,7 +223,7 @@ public class Parser {
         return javaArr;
     }
 
-    private static <T> HashMap<String, T> parseHash(String json, Supplier<T> javaSupplier) {
+    private static <T> HashMap<String, T> parseBeanMap(String json, Supplier<T> javaSupplier) {
         if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
