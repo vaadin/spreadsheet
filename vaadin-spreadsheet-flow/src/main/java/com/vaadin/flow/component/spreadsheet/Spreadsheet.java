@@ -648,14 +648,12 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setRowH(float[] rowH) {
         this.rowH = rowH;
-        getElement().setProperty("rowH", Serializer.serialize(rowH));
-        getElement().setProperty("rowHJs", Serializer.toJson(rowH));
+        getElement().setProperty("rowH", Serializer.toJson(rowH));
     }
 
     public void setColW(int[] colW) {
         this.colW = colW;
-        getElement().setProperty("colW", Serializer.serialize(colW));
-        getElement().setProperty("colWJs", Serializer.toJson(colW));
+        getElement().setProperty("colW", Serializer.toJson(colW));
     }
 
     public void setReload(boolean reload) {
@@ -717,26 +715,22 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setHiddenColumnIndexes(ArrayList<Integer> hiddenColumnIndexes) {
         this.hiddenColumnIndexes = hiddenColumnIndexes;
-        getElement().setProperty("hiddenColumnIndexes", Serializer.serialize(hiddenColumnIndexes));
-        getElement().setProperty("hiddenColumnIndexesJson", Serializer.toJson(hiddenColumnIndexes));
+        getElement().setProperty("hiddenColumnIndexes", Serializer.toJson(hiddenColumnIndexes));
     }
 
     public void setHiddenRowIndexes(ArrayList<Integer> hiddenRowIndexes) {
         this.hiddenRowIndexes = hiddenRowIndexes;
-        getElement().setProperty("hiddenRowIndexes", Serializer.serialize(hiddenRowIndexes));
-        getElement().setProperty("hiddenRowIndexesJs", Serializer.toJson(hiddenRowIndexes));
+        getElement().setProperty("hiddenRowIndexes", Serializer.toJson(hiddenRowIndexes));
     }
 
     public void setVerticalScrollPositions(int[] verticalScrollPositions) {
         this.verticalScrollPositions = verticalScrollPositions;
-        getElement().setProperty("verticalScrollPositions", Serializer.serialize(verticalScrollPositions));
-        getElement().setProperty("verticalScrollPositionsJs", Serializer.toJson(verticalScrollPositions));
+        getElement().setProperty("verticalScrollPositions", Serializer.toJson(verticalScrollPositions));
     }
 
     public void setHorizontalScrollPositions(int[] horizontalScrollPositions) {
         this.horizontalScrollPositions = horizontalScrollPositions;
-        getElement().setProperty("horizontalScrollPositions", Serializer.serialize(horizontalScrollPositions));
-        getElement().setProperty("horizontalScrollPositionsJs", Serializer.toJson(horizontalScrollPositions));
+        getElement().setProperty("horizontalScrollPositions", Serializer.toJson(horizontalScrollPositions));
     }
 
     public void setSheetProtected(boolean sheetProtected) {

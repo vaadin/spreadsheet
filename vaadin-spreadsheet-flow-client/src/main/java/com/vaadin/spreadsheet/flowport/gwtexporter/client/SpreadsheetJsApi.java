@@ -265,12 +265,12 @@ public class SpreadsheetJsApi {
         getState().defColW = defColW;
     }
 
-    public void setRowH(String rowH) {
-        getState().rowH = Parser.parseArrayFloat(rowH);
+    public void setRowH(String rowHJson) {
+        getState().rowH = Parser.parseArrayFloatJs(rowHJson);
     }
 
-    public void setColW(String colW) {
-        getState().colW = Parser.parseArrayInt(colW);
+    public void setColW(String colWJson) {
+        getState().colW = Parser.parseArrayIntJs(colWJson);
     }
 
     public void setReload(boolean reload) {
@@ -313,20 +313,20 @@ public class SpreadsheetJsApi {
         getState().conditionalFormattingStyles = Parser.parseMapIntegerString(conditionalFormattingStyles);
     }
 
-    public void setHiddenColumnIndexes(String hiddenColumnIndexes) {
-        getState().hiddenColumnIndexes = Parser.parseArraylistInteger(hiddenColumnIndexes);
+    public void setHiddenColumnIndexes(String hiddenColumnIndexesJson) {
+        getState().hiddenColumnIndexes = Parser.parseArraylistIntegerJs(hiddenColumnIndexesJson);
     }
 
-    public void setHiddenRowIndexes(String hiddenRowIndexes) {
-        getState().hiddenRowIndexes = Parser.parseArraylistInteger(hiddenRowIndexes);
+    public void setHiddenRowIndexes(String hiddenRowIndexesJson) {
+        getState().hiddenRowIndexes = Parser.parseArraylistIntegerJs(hiddenRowIndexesJson);
     }
 
-    public void setVerticalScrollPositions(String verticalScrollPositions) {
-        getState().verticalScrollPositions = Parser.parseArrayInt(verticalScrollPositions);
+    public void setVerticalScrollPositions(String verticalScrollPositionsJson) {
+        getState().verticalScrollPositions = Parser.parseArrayIntJs(verticalScrollPositionsJson);
     }
 
-    public void setHorizontalScrollPositions(String horizontalScrollPositions) {
-        getState().horizontalScrollPositions = Parser.parseArrayInt(horizontalScrollPositions);
+    public void setHorizontalScrollPositions(String horizontalScrollPositionsJson) {
+        getState().horizontalScrollPositions = Parser.parseArrayIntJs(horizontalScrollPositionsJson);
     }
 
     public void setSheetProtected(boolean sheetProtected) {

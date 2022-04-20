@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.vaadin.addon.spreadsheet.client.CellData;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
@@ -112,34 +113,32 @@ public class Parser {
         return tokens;
     }
 
-    public static ArrayList<Integer> parseArraylistInteger(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        ArrayList<Integer> l = new ArrayList<>();
-        for (String token : tokens) {
-            l.add(Integer.parseInt(token));
-        }
-        return l;
+    public static ArrayList<Integer> parseArraylistIntegerJs(String json) {
+        return parseArray(json, a -> (int) a.asNumber());
     }
-
-    public static int[] parseArrayInt(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        int[] l = new int[tokens.size()];
-        for (int i = 0; i < tokens.size(); i++) {
-            l[i] = Integer.parseInt(tokens.get(i));
+    
+    public static float[] parseArrayFloatJs(String json) {
+        ArrayList<Double> arr = parseArray(json, JsonValue::asNumber);
+        if (arr == null) {
+            return new float[0];
         }
-        return l;
+        float f[] = new float[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            f[i] = arr.get(i).floatValue();
+        }
+        return f;
     }
-
-    public static float[] parseArrayFloat(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        float[] l = new float[tokens.size()];
-        for (int i = 0; i < tokens.size(); i++) {
-            l[i] = Float.parseFloat(tokens.get(i));
+    
+    public static int[] parseArrayIntJs(String json) {
+        ArrayList<Double> arr = parseArray(json, JsonValue::asNumber);
+        if (arr == null) {
+            return new int[0];
         }
-        return l;
+        int f[] = new int[arr.size()];
+        for (int i = 0; i < arr.size(); i++) {
+            f[i] = arr.get(i).intValue();
+        }
+        return f;
     }
 
     public static HashMap<String, String> parseMapStringStringJs(String json) {
