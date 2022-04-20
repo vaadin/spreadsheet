@@ -787,8 +787,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setInvalidFormulaCells(Set<String> invalidFormulaCells) {
         this.invalidFormulaCells = invalidFormulaCells;
-        getElement().setProperty("invalidFormulaCells", Serializer.serialize(invalidFormulaCells));
-        getElement().setProperty("invalidFormulaCellsJs", Serializer.toJson(invalidFormulaCells));
+        getElement().setProperty("invalidFormulaCells", Serializer.toJson(invalidFormulaCells));
     }
 
     public void setHasActions(boolean hasActions) {

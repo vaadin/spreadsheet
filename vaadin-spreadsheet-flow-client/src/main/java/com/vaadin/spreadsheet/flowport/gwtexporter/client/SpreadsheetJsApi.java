@@ -362,7 +362,7 @@ public class SpreadsheetJsApi {
     }
 
     public void setInvalidFormulaCells(String invalidFormulaCells) {
-        getState().invalidFormulaCells = Parser.parseSetString(invalidFormulaCells);
+        getState().invalidFormulaCells = Parser.parseSetStringJs(invalidFormulaCells);
     }
 
     public void setHasActions(boolean hasActions) {

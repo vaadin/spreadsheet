@@ -10,6 +10,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.vaadin.addon.spreadsheet.client.CellData;
+import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
@@ -152,16 +153,6 @@ public class Parser {
         return l;
     }
     
-    public static Set<String> parseSetString(String raw) {
-        if ("null".equals(raw)) return null;
-        List<String> tokens = parse(raw);
-        Set<String> l = new HashSet<>();
-        for (String token : tokens) {
-            l.add(token);
-        }
-        return l;
-    }
-    
     public static Set<String> parseSetStringJs(String json) {
         return parseSet(json, String::new);
     }
@@ -201,7 +192,7 @@ public class Parser {
         }        
         JsonArray jsArr = JsonUtil.parse(json);
         for (int i = 0; i < jsArr.length(); i++) {
-            String val = jsArr.getObject(i).asString();
+            String val = jsArr.get(i) == null ? "" : jsArr.get(i).asString();
             T javaObj = function.apply(val);
             javaArr.add(javaObj);
         }
