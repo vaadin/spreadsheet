@@ -181,21 +181,8 @@ public class Parser {
         return l;
     }
 
-    public static ArrayList<MergedRegion> parseArrayMergedRegion(String raw) {
-        if ("null".equals(raw)) return null;
-        ArrayList<MergedRegion> l = new ArrayList<>();
-        List<String> tokens = parse(raw);
-        for (String token : tokens) {
-            String[] ts = token.split("#");
-            MergedRegion data = new MergedRegion();
-            data.id = Integer.parseInt(ts[0]);
-            data.col1 = Integer.parseInt(ts[1]);
-            data.col2 = Integer.parseInt(ts[2]);
-            data.row1 = Integer.parseInt(ts[3]);
-            data.row2 = Integer.parseInt(ts[4]);
-            l.add(data);
-        }
-        return l;
+    public static ArrayList<MergedRegion> parseArrayMergedRegionJs(String json) {
+        return parseArray(json, MergedRegion::new);
     }
     
     public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
@@ -215,7 +202,7 @@ public class Parser {
     }-*/;
     
     private static <T> ArrayList<T> parseArray(String json, Supplier<T> javaSupplier) {
-        if (json == null || json.isEmpty()) {
+        if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
         JsonArray jsArr = JsonUtil.parse(json);

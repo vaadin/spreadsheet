@@ -2,18 +2,13 @@ package com.vaadin.spreadsheet.flowport.gwtexporter.client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.vaadin.addon.spreadsheet.client.CellData;
-import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.PopupButtonConnector;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
 import com.vaadin.addon.spreadsheet.client.PopupButtonWidget;
@@ -377,8 +372,8 @@ public class SpreadsheetJsApi {
         getState().overlays = Parser.parseMapStringOverlayInfo(overlays);
     }
 
-    public void setMergedRegions(String mergedRegions) {
-        getState().mergedRegions = Parser.parseArrayMergedRegion(mergedRegions);
+    public void setMergedRegions(String mergedRegionsJson) {
+        getState().mergedRegions = Parser.parseArrayMergedRegionJs(mergedRegionsJson);
     }
 
     public void setDisplayGridlines(boolean displayGridlines) {

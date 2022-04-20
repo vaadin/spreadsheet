@@ -804,8 +804,7 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
 
     public void setMergedRegions(ArrayList<MergedRegion> mergedRegions) {
         this.mergedRegions = mergedRegions;
-        getElement().setProperty("mergedRegions", Serializer.serialize(mergedRegions));
-        getElement().setProperty("mergedRegionsJs", Serializer.toJson(mergedRegions));
+        getElement().setProperty("mergedRegions", Serializer.toJson(mergedRegions));
     }
 
     public void setDisplayGridlines(boolean displayGridlines) {
