@@ -10,7 +10,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.vaadin.addon.spreadsheet.client.CellData;
-import com.vaadin.addon.spreadsheet.client.MUtil;
 import com.vaadin.addon.spreadsheet.client.MergedRegion;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
@@ -19,6 +18,7 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 
 import elemental.json.JsonArray;
 import elemental.json.JsonObject;
+import elemental.json.JsonValue;
 import elemental.json.impl.JsonUtil;
 
 public class Parser {
@@ -152,69 +152,70 @@ public class Parser {
         }
         return l;
     }
-    
+
+    public static HashMap<String, String> parseMapStringStringJs(String json) {
+        return parseMap(json, JsonValue::asString);
+    }
+
     public static Set<String> parseSetStringJs(String json) {
-        return parseSet(json, String::new);
+        return parseSet(json, JsonValue::asString);
     }
 
     public static HashMap<String, OverlayInfo> parseMapStringOverlayInfoJs(String json) {
-        return parseBeanMap(json, OverlayInfo::new);
+        return parseMapStringJstype(json, OverlayInfo::new);
     }
 
     public static ArrayList<MergedRegion> parseArrayMergedRegionJs(String json) {
-        return parseBeanArray(json, MergedRegion::new);
+        return parseArrayJstype(json, MergedRegion::new);
     }
-    
-    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
-        return parseBeanArray(json, CellData::new);
-    }
-    
-    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
-        return parseBeanArray(json, SpreadsheetActionDetails::new);
-    }    
 
-    native static void consoleLog(String message) /*-{
-      console.log("parser", message );
-    }-*/;
-    
-    private native static void copyJsToJava(JsonObject j, Object o) /*-{
+    public static ArrayList<CellData> parseArraylistOfCellDataJs(String json) {
+        return parseArrayJstype(json, CellData::new);
+    }
+
+    public static ArrayList<SpreadsheetActionDetails> parseArraylistSpreadsheetActionDetailsJs(String json) {
+        return parseArrayJstype(json, SpreadsheetActionDetails::new);
+    }
+
+    private native static void copyJsToJava(JsonValue j, Object o) /*-{
       Object.assign(o, j);
     }-*/;
-    
-    private static <T> Set<T> parseSet(String json, Function<String, T> function) {
-        return new HashSet<T>(parseArray(json, function));
+
+    private static <T> ArrayList<T> parseArrayJstype(String json, Supplier<T> jsTypeNew) {
+        return parseArray(json, jsBean -> {
+            T javaBean = jsTypeNew.get();
+            copyJsToJava(jsBean, javaBean);
+            return javaBean;
+        });
     }
-        
-    private static <T> List<T> parseArray(String json, Function<String, T> function) {
-        ArrayList<T> javaArr = new ArrayList<>();
-        if (json == null || json.isEmpty() || "null".equals(json)) {
-            return javaArr;
-        }        
-        JsonArray jsArr = JsonUtil.parse(json);
-        for (int i = 0; i < jsArr.length(); i++) {
-            String val = jsArr.get(i) == null ? "" : jsArr.get(i).asString();
-            T javaObj = function.apply(val);
-            javaArr.add(javaObj);
-        }
-        return javaArr;
+
+    private static <T> Set<T> parseSet(String json, Function<JsonValue, T> jsToJava) {
+        List<T> ret = parseArray(json, jsToJava);
+        return ret == null ? null : new HashSet<T>(ret);
     }
-    
-    private static <T> ArrayList<T> parseBeanArray(String json, Supplier<T> javaSupplier) {
+
+    private static <T> ArrayList<T> parseArray(String json, Function<JsonValue, T> jsToJava) {
         if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
         JsonArray jsArr = JsonUtil.parse(json);
         ArrayList<T> javaArr = new ArrayList<>();
         for (int i = 0; i < jsArr.length(); i++) {
-            JsonObject jsObj = jsArr.getObject(i);
-            T javaObj = javaSupplier.get();
-            copyJsToJava(jsObj, javaObj);
-            javaArr.add(javaObj);
+            JsonValue val = jsArr.getObject(i);
+            javaArr.add(jsToJava.apply(val));
         }
         return javaArr;
     }
 
-    private static <T> HashMap<String, T> parseBeanMap(String json, Supplier<T> javaSupplier) {
+    private static <T> HashMap<String, T> parseMapStringJstype(String json, Supplier<T> jsTypeNew) {
+        return parseMap(json, jsBean -> {
+            T javaBean = jsTypeNew.get();
+            copyJsToJava(jsBean, javaBean);
+            return javaBean;
+        });
+    }
+
+    private static <T> HashMap<String, T> parseMap(String json, Function<JsonValue, T> jsToJava) {
         if (json == null || json.isEmpty() || "null".equals(json)) {
             return null;
         }
@@ -222,10 +223,8 @@ public class Parser {
         HashMap<String, T> hash = new HashMap<>();
         for (int i = 0; i < jsObj.keys().length; i++) {
             String key = jsObj.keys()[i];
-            JsonObject jsBean = jsObj.getObject(key);
-            T javaBean = javaSupplier.get();
-            copyJsToJava(jsBean, javaBean);
-            hash.put(key, javaBean);
+            JsonValue val = jsObj.getObject(key);
+            hash.put(key, jsToJava.apply(val));
         }
         return hash;
     }
