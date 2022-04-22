@@ -85,9 +85,9 @@ v-slot-clear-filters-button
 v-slot-spreadsheet-item-filter-layout
 v-spacing
 v-spreadsheet
-#spreadsheet-overlaysmment-overlay
-#spreadsheet-overlaysmment-overlay-animate-out
-#spreadsheet-overlaysmment-overlay-shadow
+v-spreadsheet-comment-overlay
+v-spreadsheet-comment-overlay-animate-out
+v-spreadsheet-comment-overlay-shadow
 v-spreadsheet-popupbutton-overlay-header
 vspreadsheetdsheet-resize-tooltip-label#vaadin-overlayse
 v-tooltip
