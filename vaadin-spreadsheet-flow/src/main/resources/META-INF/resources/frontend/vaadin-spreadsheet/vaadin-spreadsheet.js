@@ -26,11 +26,8 @@ export class VaadinSpreadsheet extends LitElement {
 
   static get properties() {
     return {
-<<<<<<< HEAD
-=======
       api: {type: Object},
 
->>>>>>> 04875d1 (chore: clean WC code)
       /* SHARED STATE */
       dirty: {type: Number},
 
@@ -215,14 +212,14 @@ export class VaadinSpreadsheet extends LitElement {
     if (!this.api) {
       this.injectStyle('css_valo', css_valo);
 
-      this.classList.add('spreadsheetport');      
+      this.classList.add('spreadsheetport');
 
       let overlays = document.getElementById('spreadsheet-overlays');
       if (!overlays) {
         overlays = document.createElement('div');
         overlays.id = 'spreadsheet-overlays';
         overlays.classList.add('spreadsheetport');
-        document.body.appendChild(overlays);        
+        document.body.appendChild(overlays);
       }
 
       this.api = new Spreadsheet(this);
