@@ -133,31 +133,19 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml-lite</artifactId>
-                <version>${poi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml-full</artifactId>
                 <version>${poi.version}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
-            </dependency> 
 
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-client</artifactId>
                 <version>${framework.version}</version>
-                <!-- <scope>provided</scope> -->
             </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-client-compiler</artifactId>
                 <version>${framework.version}</version>
-                <!-- <scope>provided</scope> -->
             </dependency>
                 <dependency>
                 <groupId>com.google.gwt</groupId>
