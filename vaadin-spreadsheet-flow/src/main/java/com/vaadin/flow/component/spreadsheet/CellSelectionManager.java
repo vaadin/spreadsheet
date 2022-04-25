@@ -79,7 +79,9 @@ public class CellSelectionManager implements Serializable {
      * @return CellReference to selection
      */
     public CellReference getSelectedCellReference() {
-        return selectedCellReference;
+        return selectedCellReference == null
+                ? (selectedCellReference = new CellReference(0, 0))
+                : selectedCellReference;
     }
 
     /**
