@@ -2571,7 +2571,6 @@ public class Spreadsheet extends Component implements HasComponents, HasSize, Ha
         } else {
             final String key = SpreadsheetUtil.toKey(col + 1, row + 1);
             valueManager.clearCellCache(key);
-            cell.setCellType(CellType.FORMULA);
         }
         cell.setCellFormula(formula);
         valueManager.cellUpdated(cell);
