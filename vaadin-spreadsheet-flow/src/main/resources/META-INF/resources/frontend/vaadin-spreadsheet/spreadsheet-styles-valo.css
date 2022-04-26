@@ -51,52 +51,6 @@
     transform: translatey(-4px);
     opacity: 0; } }
 
-
-/** list of vaadin components used in demo.vaadin.com/spreadsheet
-v-button
-v-button-caption
-v-button-clear-filters-button
-v-button-link
-v-button-minimize-button
-v-butto#spreadsheet-overlays 
-v-contextmenu
-v-csslayout
-v-disabled
-v-has-height
-v-has-width
-v-icon
-v-layout
-v-loading-indicator
-v-panel
-v-panel-captionwrap
-v-panel-content
-v-panel-content-spreadsheet-item-filter-layout
-v-panel-deco
-v-panel-deco-spreadsheet-item-filter-layout
-v-panel-nocaption
-v-panel-nocaption-spreadsheet-item-filter-layout
-v-panel-spreadsheet-item-filter-layout
-v-scrollable
-v-select-option
-v-select-option-selected
-v-select-optiongroup
-v-slot
-v-slot-clear-filters-button
-v-slot-spreadsheet-item-filter-layout
-v-spacing
-v-spreadsheet
-v-spreadsheet-comment-overlay
-v-spreadsheet-comment-overlay-animate-out
-v-spreadsheet-comment-overlay-shadow
-v-spreadsheet-popupbutton-overlay-header
-vspreadsheetdsheet-resize-tooltip-label#vaadin-overlayse
-v-tooltip
-v-vertical
-v-verticallayout
-v-widget
-v-window-closebox
-*/
-
   vaadin-spreadsheet .v-disabled {
     cursor: default !important; }
   #spreadsheet-overlays .v-tooltip {
