@@ -50,7 +50,6 @@ import org.apache.poi.ss.usermodel.ComparisonOperator;
 import org.apache.poi.ss.usermodel.ConditionType;
 import org.apache.poi.ss.usermodel.ConditionalFormatting;
 import org.apache.poi.ss.usermodel.ConditionalFormattingRule;
-import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.FontFormatting;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.PatternFormatting;
@@ -208,7 +207,7 @@ public class ConditionalFormatter implements Serializable {
                     // DIV element, so use the first one that matches.
 
                     // HSSF might return 255 for 'none'...
-                    if (fontFormatting.getUnderlineType() != Font.U_NONE
+                    if (fontFormatting.getUnderlineType() != FontFormatting.U_NONE
                             && fontFormatting.getUnderlineType() != 255) {
                         css.append("text-decoration: underline;");
                     }
@@ -332,13 +331,13 @@ public class ConditionalFormatter implements Serializable {
         if (borderFormatting != null) {
 
             BorderStyle borderLeft = SpreadsheetStyleFactory.BORDER
-                    .get(borderFormatting.getBorderLeft());
+                    .get(borderFormatting.getBorderLeftEnum());
             BorderStyle borderRight = SpreadsheetStyleFactory.BORDER
-                    .get(borderFormatting.getBorderRight());
+                    .get(borderFormatting.getBorderRightEnum());
             BorderStyle borderTop = SpreadsheetStyleFactory.BORDER
-                    .get(borderFormatting.getBorderTop());
+                    .get(borderFormatting.getBorderTopEnum());
             BorderStyle borderBottom = SpreadsheetStyleFactory.BORDER
-                    .get(borderFormatting.getBorderBottom());
+                    .get(borderFormatting.getBorderBottomEnum());
 
             // In Excel, we can set a border to 'none', which overrides previous
             // rules. Default is 'not set', in which case we add no CSS.
@@ -491,14 +490,6 @@ public class ConditionalFormatter implements Serializable {
             return ctBorder.isSetRight();
         case BOTTOM:
             return ctBorder.isSetBottom();
-		case DIAGONAL:
-			return ctBorder.isSetDiagonal();
-		case HORIZONTAL:
-			return ctBorder.isSetHorizontal();
-		case VERTICAL:
-			return ctBorder.isSetVertical();
-		default:
-			break;
         }
 
         return false;

@@ -17,6 +17,7 @@ package com.vaadin.addon.spreadsheet.command;
  * #L%
  */
 
+import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
@@ -132,7 +133,8 @@ public class SizeChangeCommand extends SpreadsheetCommand {
             if (getSheet().isColumnHidden(index)) {
                 return 0;
             } else {
-				return getSheet().getColumnWidthInPixels(index);
+                return ExcelToHtmlUtils.getColumnWidthInPx(getSheet()
+                        .getColumnWidth(index));
             }
         } else if (type == Type.ROW) {
             Row row = getSheet().getRow(index);

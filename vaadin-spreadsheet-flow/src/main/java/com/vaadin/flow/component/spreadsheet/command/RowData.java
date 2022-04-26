@@ -219,7 +219,6 @@ class RowData implements Serializable {
                 case _NONE:
                 case BLANK:
                     cell.setBlank();
-                    cell.setCellValue(stringCellValue);
                     break;
                 case BOOLEAN:
                     cell.setCellValue(booleanCellValue);

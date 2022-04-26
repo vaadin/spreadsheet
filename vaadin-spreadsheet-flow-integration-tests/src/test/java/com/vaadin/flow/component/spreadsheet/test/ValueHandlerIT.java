@@ -29,12 +29,6 @@ public class ValueHandlerIT extends AbstractSpreadsheetIT {
 
         Assert.assertEquals("6", getCellContent("B2"));
         Assert.assertEquals("7", getCellContent("B3"));
-        
-//        try {
-//            Thread.sleep(300000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
 
         getSpreadsheet().getCellAt("B2").setValue("314");
 

@@ -2,6 +2,7 @@ package com.vaadin.addon.spreadsheet;
 
 import java.io.Serializable;
 
+import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -95,7 +96,8 @@ public abstract class SheetOverlayWrapper implements Serializable {
         if (anchor instanceof XSSFClientAnchor) {
             return anchor.getDx1() / Units.EMU_PER_PIXEL;
         } else {
-			return sheet.getColumnWidthInPixels(anchor.getCol1()) * anchor.getDx1() / 1023;
+            return ExcelToHtmlUtils.getColumnWidthInPx(sheet
+                    .getColumnWidth(anchor.getCol1())) * anchor.getDx1() / 1023;
         }
     }
 
@@ -111,7 +113,8 @@ public abstract class SheetOverlayWrapper implements Serializable {
         if (anchor instanceof XSSFClientAnchor) {
             return anchor.getDx2() / Units.EMU_PER_PIXEL;
         } else {
-			return sheet.getColumnWidthInPixels(anchor.getCol2()) * anchor.getDx2() / 1023;
+            return ExcelToHtmlUtils.getColumnWidthInPx(sheet
+                    .getColumnWidth(anchor.getCol2())) * anchor.getDx2() / 1023;
         }
     }
 
