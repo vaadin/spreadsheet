@@ -6,9 +6,11 @@ import java.util.regex.Pattern;
 
 import org.apache.poi.ss.format.CellFormat;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
+import org.apache.poi.ss.formula.EvaluationConditionalFormatRule;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.ExcelNumberFormat;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 
 /**
@@ -80,13 +82,24 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
             return super.formatCellValue(cell, evaluator, cfEvaluator);
         }
 
-        final String[] parts = dataFormatString.split(";", -1);
+        ExcelNumberFormat numberFormat = null;
+        for (EvaluationConditionalFormatRule rule : cfEvaluator.getConditionalFormattingForCell(cell)) {
+            numberFormat = rule.getNumberFormat();
+            if (numberFormat != null) {
+                break;
+            }
+        }
+        
+        String[] parts = dataFormatString.split(";", -1);
 
         final CellType cellType = getCellType(cell, evaluator);
 
         if (cellType == CellType.NUMERIC) {
             final double value = cell.getNumericCellValue();
 
+            if (numberFormat != null) {
+                parts = numberFormat.getFormat().split(";", -1);
+            }
             return formatNumericValueUsingFormatPart(cell, value, parts);
         } else if (cellType == CellType.STRING && parts.length == 4) {
 
