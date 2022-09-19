@@ -19,10 +19,14 @@ package com.vaadin.addon.spreadsheet.elements;
 
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.vaadin.testbench.By;
+import com.vaadin.testbench.TestBenchDriverProxy;
 import com.vaadin.testbench.elementsbase.AbstractElement;
 
 /**
@@ -147,4 +151,18 @@ public class SheetCellElement extends AbstractElement {
         return !indicators.isEmpty();
     }
 
+    /**
+     * Override to allow cell context menu tests to pass for PhantomJS.
+     * See the linked issue below for code.  PhantomJS doesn't support context
+     * menu directly with Selenium.
+     * 
+     * @see com.vaadin.testbench.TestBenchElement#contextClick()
+     * @see "https://github.com/ariya/phantomjs/issues/14005"
+     */
+    @Override
+    public void contextClick() {
+        // for PhantomJS, this won't open the context menu
+        super.contextClick();
+        ElementUtil.phantomJSContextClick(getDriver(), getWrappedElement());
+    }
 }

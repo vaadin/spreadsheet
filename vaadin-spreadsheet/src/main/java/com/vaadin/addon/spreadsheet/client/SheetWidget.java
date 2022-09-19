@@ -1036,13 +1036,18 @@ public class SheetWidget extends Panel {
     }
 
     protected boolean isEventInCustomEditorCell(Event event) {
+        final Element target = event.getEventTarget().cast();
+        return isEventInCustomEditorCell(target);
+    }
+    protected boolean isEventInCustomEditorCell(Element target) {
         if (customEditorWidget != null) {
-            final Element target = event.getEventTarget().cast();
             final Element customWidgetElement = customEditorWidget.getElement();
-            return (customWidgetElement.isOrHasChild(target) || customWidgetElement
-                    .getParentElement() != null
-                    && customWidgetElement.getParentElement().isOrHasChild(
-                            target));
+            final Element customEditorParent = customWidgetElement.getParentElement();
+            boolean isEventInCustomEditorCell = customWidgetElement.isOrHasChild(target)
+                    || (customEditorParent != null
+                    && customEditorParent.isOrHasChild(
+                            target) );
+            return isEventInCustomEditorCell;
         }
         return false;
     }
@@ -1186,7 +1191,7 @@ public class SheetWidget extends Panel {
             event.preventDefault();
             if (event.getButton() == NativeEvent.BUTTON_RIGHT) {
                 Event.releaseCapture(sheet);
-                actionHandler.onCellRightClick(event, targetCol, targetRow);
+                // handled by ContextMenuEvent or iOS touch event with timer (SheetInputEventListener)
             } else {
                 sheet.focus();
                 // quit input if active
@@ -1761,30 +1766,6 @@ public class SheetWidget extends Panel {
                         }
                     }
                 });
-        addDomHandler(new ContextMenuHandler() {
-
-            @Override
-            public void onContextMenu(ContextMenuEvent event) {
-                if (actionHandler.hasCustomContextMenu()) {
-                    Element target = event.getNativeEvent().getEventTarget()
-                            .cast();
-                    String className = target.getAttribute("class");
-                    int i = jsniUtil.isHeader(className);
-                    if (i == 1 || i == 2) {
-                        int index = jsniUtil.parseHeaderIndex(className);
-                        if (i == 1) {
-                            actionHandler.onRowHeaderRightClick(
-                                    event.getNativeEvent(), index);
-                        } else {
-                            actionHandler.onColumnHeaderRightClick(
-                                    event.getNativeEvent(), index);
-                        }
-                    }
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            }
-        }, ContextMenuEvent.getType());
     }
 
     protected boolean isEditingCell() {
@@ -2928,6 +2909,7 @@ public class SheetWidget extends Panel {
      * handler (if needed).
      */
     private void onSheetScroll() {
+        actionHandler.cancelContextClickTimer();
         int scrollTop = sheet.getScrollTop();
         int scrollLeft = sheet.getScrollLeft();
         int vScrollDiff = scrollTop - previousScrollTop;
