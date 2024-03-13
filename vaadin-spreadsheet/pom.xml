@@ -18,6 +18,12 @@
         <tag>Spreadsheet add-on for Vaadin</tag> </scm> -->
 
     <properties>
+        <!-- These lines are required for Java 9+ compilation -->
+        <!-- Comment out the following line when building with Java 8 -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <!-- Use Java 8 locale formats -->
+        <argLine>-Djava.locale.providers=COMPAT</argLine>
+        
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jetty.version>9.4.54.v20240208</jetty.version>
         <vaadin.version>8.14.3</vaadin.version>
@@ -68,6 +74,7 @@
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <release>8</release>
                 </configuration>
             </plugin>
 
@@ -126,7 +133,7 @@
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>2.5.4</version>
+                <version>5.1.9</version>
                 <executions>
                     <execution>
                         <id>bundle-manifest</id>
@@ -153,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.6.3</version>
                 <configuration>
                     <source>8</source>
                     <additionalparam>-Xdoclint:none</additionalparam>
@@ -171,7 +178,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -185,6 +192,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -203,6 +211,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <finalName>directorystuff</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
@@ -230,7 +239,7 @@
                         </goals>
                         <configuration>
                             <webappDirectory>${project.build.directory}/testwebapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx1g -Xms1g -XX:MaxPermSize=512m</extraJvmArgs>
+                            <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                             <noServer>true</noServer>
                             <runTarget>http://localhost:9998/</runTarget>
@@ -245,7 +254,7 @@
             <!-- Testing -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.17</version>
+                <version>3.2.5</version>
                 <configuration>
                     <includes>
                         <include>**/junit/*</include>
@@ -255,7 +264,7 @@
 
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.17</version>
+                <version>3.2.5</version>
                 <configuration>
                     <excludes>
                         <!-- Files here might match to naming convetions,
@@ -268,12 +277,12 @@
                     <includes>
                         <include>**/*Test*.java</include>
                     </includes>
-                    <systemProperties>
+                    <systemPropertyVariables>
                         <property>
                             <name>tb.hub</name>
                             <value>${tb.hub}</value>
                         </property>
-                    </systemProperties>
+                    </systemPropertyVariables>
                 </configuration>
                 <executions>
                     <execution>
@@ -332,7 +341,7 @@
                     <version>${vaadin.version}</version>
                     <configuration>
                         <webappDirectory>${project.build.directory}/testwebapp/VAADIN/widgetsets</webappDirectory>
-                        <extraJvmArgs>-Xmx1g -Xms1g -XX:MaxPermSize=512m</extraJvmArgs>
+                        <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                         <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                         <noServer>true</noServer>
                         <runTarget>http://localhost:9998/</runTarget>
@@ -577,6 +586,20 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>ooxml-schemas</artifactId>
             <version>1.4</version>
+        </dependency>
+
+        <!-- Required for some reflection issues -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.30.2-GA</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

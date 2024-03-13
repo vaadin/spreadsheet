@@ -428,7 +428,8 @@ public class CellValueManager implements Serializable {
     }
 
     private boolean valueContainsOnlyNumbers(String value) {
-        return value.matches("^-?\\d+("
+        return value.matches("^" + localeDecimalSymbols.getMinusSign()
+                + "?\\d+("
                 + localeDecimalSymbols.getDecimalSeparator() + "\\d+)?$");
     }
 

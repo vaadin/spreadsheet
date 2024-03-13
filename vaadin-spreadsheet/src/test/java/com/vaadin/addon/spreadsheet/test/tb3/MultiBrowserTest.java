@@ -52,7 +52,8 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     public TestName testName = new TestName();
 
     @Override
-    public void setDesiredCapabilities(DesiredCapabilities desiredCapabilities) {
+    public void setDesiredCapabilities(
+            DesiredCapabilities desiredCapabilities) {
         if (BrowserUtil.isIE(desiredCapabilities)) {
             desiredCapabilities.setCapability(
                     InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
@@ -63,10 +64,9 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
         desiredCapabilities.setCapability("project", "Vaadin Spreadsheet");
         desiredCapabilities.setCapability("build", String.format("%s / %s",
                 getDeploymentHostname(), Calendar.getInstance().getTime()));
-        desiredCapabilities.setCapability(
-                "name",
-                String.format("%s.%s", getClass().getCanonicalName(),
-                        testName.getMethodName()));
+        String name = String.format("%s.%s", getClass().getCanonicalName(),
+                testName.getMethodName());
+        desiredCapabilities.setCapability("name", name);
 
         super.setDesiredCapabilities(desiredCapabilities);
     }

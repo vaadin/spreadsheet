@@ -256,6 +256,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         localeSelect = new NativeSelect<>();
         localeSelect.setWidth("200px");
         localeSelect.setId("localeSelect");
+        localeSelect.getDataCommunicator().setMaximumAllowedRows(1000);
 
         final List<Locale> locales = Arrays
                 .asList(Locale.getAvailableLocales());

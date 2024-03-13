@@ -2,12 +2,19 @@ package com.vaadin.addon.spreadsheet.test;
 
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
 public class ImageTests extends AbstractSpreadsheetTestCase {
+
+    private SpreadsheetElement spreadsheet;
 
     @Test
     public void testFromUpload() {
         headerPage.loadFile("picture_sheet.xlsx", this);
+        testBench(driver).waitForVaadin();
+        spreadsheet = $(SpreadsheetElement.class).first();
 
         assertInRange(200, imageWidth("C2"), 260);
 
@@ -19,8 +26,8 @@ public class ImageTests extends AbstractSpreadsheetTestCase {
     }
 
     public double imageWidth(String cell) {
-        testBench(driver).waitForVaadin();
-        return driver.findElement(
-                By.xpath(sheetController.cellToXPath(cell) + "/img")).getSize().width;
+        WebElement image = spreadsheet.findElement(
+                By.xpath(sheetController.cellToXPath(cell) + "/img"));
+        return image.getSize().width;
     }
 }

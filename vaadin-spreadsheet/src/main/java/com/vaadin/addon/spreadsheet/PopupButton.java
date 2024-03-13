@@ -17,7 +17,6 @@ package com.vaadin.addon.spreadsheet;
  * #L%
  */
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Iterator;
@@ -28,6 +27,8 @@ import com.vaadin.addon.spreadsheet.client.PopupButtonClientRpc;
 import com.vaadin.addon.spreadsheet.client.PopupButtonServerRpc;
 import com.vaadin.addon.spreadsheet.client.PopupButtonState;
 import com.vaadin.addon.spreadsheet.client.PopupButtonWidget;
+import com.vaadin.event.SerializableEventListener;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractSingleComponentContainer;
 import com.vaadin.ui.Component;
@@ -255,21 +256,26 @@ public class PopupButton extends AbstractComponent implements HasComponents {
 
     /**
      * Adds a {@link PopupOpenListener} to this pop-up button.
-     * 
+     *
      * @param listener
      *            The listener to add
+     * @return a registration object for removing the listener
      */
-    public void addPopupOpenListener(PopupOpenListener listener) {
-        addListener(PopupOpenEvent.class, listener,
+    public Registration addPopupOpenListener(PopupOpenListener listener) {
+        return addListener(PopupOpenEvent.class, listener,
                 PopupOpenListener.POPUP_OPEN_METHOD);
     }
 
     /**
      * Removes the given {@link PopupOpenListener} from this pop-up button.
-     * 
+     *
      * @param listener
      *            The listener to remove
+     * @deprecated use a {@link Registration} from
+     *             {@link #removePopupOpenListener(PopupOpenListener)} to remove
+     *             a listener
      */
+    @Deprecated
     public void removePopupOpenListener(PopupOpenListener listener) {
         removeListener(PopupOpenEvent.class, listener,
                 PopupOpenListener.POPUP_OPEN_METHOD);
@@ -277,19 +283,26 @@ public class PopupButton extends AbstractComponent implements HasComponents {
 
     /**
      * Adds a {@link PopupCloseListener} to this pop-up button.
-     * 
+     *
      * @param listener
+     *            the listener to add
+     * @return a registration object for removing the listener
      */
-    public void addPopupCloseListener(PopupCloseListener listener) {
-        addListener(PopupCloseEvent.class, listener,
+    public Registration addPopupCloseListener(PopupCloseListener listener) {
+        return addListener(PopupCloseEvent.class, listener,
                 PopupCloseListener.POPUP_CLOSE_METHOD);
     }
 
     /**
      * Removes the given {@link PopupCloseListener} from this pop-up button.
-     * 
+     *
      * @param listener
+     *            the listener to remove
+     * @deprecated use a {@link Registration} from
+     *             {@link #removePopupCloseListener(PopupCloseListener)} to
+     *             remove a listener
      */
+    @Deprecated
     public void removePopupCloseListener(PopupCloseListener listener) {
         removeListener(PopupCloseEvent.class, listener,
                 PopupCloseListener.POPUP_CLOSE_METHOD);
@@ -345,7 +358,7 @@ public class PopupButton extends AbstractComponent implements HasComponents {
      * Interface for listening for a {@link PopupOpenEvent} fired by a
      * {@link PopupButton}.
      */
-    public interface PopupOpenListener extends Serializable {
+    public interface PopupOpenListener extends SerializableEventListener {
         public static final Method POPUP_OPEN_METHOD = ReflectTools.findMethod(
                 PopupOpenListener.class, "onPopupOpen", PopupOpenEvent.class);
 
@@ -389,7 +402,7 @@ public class PopupButton extends AbstractComponent implements HasComponents {
      * Interface for listening for a {@link PopupCloseEvent} fired by a
      * {@link PopupButton}.
      */
-    public interface PopupCloseListener extends Serializable {
+    public interface PopupCloseListener extends SerializableEventListener {
         public static final Method POPUP_CLOSE_METHOD = ReflectTools
                 .findMethod(PopupCloseListener.class, "onPopupClose",
                         PopupCloseEvent.class);

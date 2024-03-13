@@ -4,9 +4,13 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+
 import java.util.Locale;
 
 import org.junit.Test;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
@@ -66,25 +70,38 @@ public class GeneralSmallRoundingTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void generalFormat_spreadsheetWithGeneralFormatAndLocaleFI_negativeNumbersRoundedCorrectly() {
-        //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
-        //When https://github.com/vaadin/framework8-issues/issues/477 is fixed
         setLocale(new Locale("fi", "FI"));
         headerPage.loadFile("negative_general_round.xlsx", this);
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
 
         String cellBeforeResize = spreadsheet.getCellAt(TARGET_CELL).getValue();
         assertThat(cellBeforeResize, not(containsString(".")));
-        assertThat(cellBeforeResize, containsString("-"));
+        assertThat(cellBeforeResize, containsString("−"));
         assertThat(cellBeforeResize, not(containsString("#")));
 
         headerPage.loadTestFixture(TestFixtures.FirstColumnWidth);
 
-        String cellAfterResize = spreadsheet.getCellAt(TARGET_CELL).getValue();
+        String cellAfterResize;
+        try {
+            cellAfterResize = waitUntil(new ExpectedCondition<String>() {
+                @Override
+                public String apply(WebDriver input) {
+                    String newContent = spreadsheet.getCellAt(TARGET_CELL)
+                            .getValue();
+                    if (newContent.length() < cellBeforeResize.length()) {
+                        return newContent;
+                    }
+                    return null;
+                }
+            });
+        } catch (TimeoutException e) {
+            cellAfterResize = spreadsheet.getCellAt(TARGET_CELL).getValue();
+            assertThat("Number not shortened", cellAfterResize.length(),
+                    lessThan(cellBeforeResize.length()));
+        }
 
-        assertThat("Number not shortened", cellAfterResize.length(),
-                lessThan(cellBeforeResize.length()));
         assertThat(cellAfterResize, not(containsString(".")));
-        assertThat(cellAfterResize, containsString("-"));
+        assertThat(cellAfterResize, containsString("−"));
         assertThat(cellAfterResize, not(containsString("#")));
     }
 }

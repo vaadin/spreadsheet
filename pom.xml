@@ -33,6 +33,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <finalName>vaadin-spreadsheet-${project.version}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>

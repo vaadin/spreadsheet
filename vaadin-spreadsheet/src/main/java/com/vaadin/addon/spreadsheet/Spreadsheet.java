@@ -88,7 +88,9 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.event.SerializableEventListener;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
@@ -1945,11 +1947,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * adds a {@link RowHeaderDoubleClickListener} to the Spreadsheet
      *
      * @param listener
-     *     The listener to add
+     *            The listener to add
+     * @return a registration object for removing the listener
      **/
-    public void addRowHeaderDoubleClickListener(
+    public Registration addRowHeaderDoubleClickListener(
         RowHeaderDoubleClickListener listener) {
-        addListener(RowHeaderDoubleClickEvent.class, listener,
+        return addListener(RowHeaderDoubleClickEvent.class, listener,
             RowHeaderDoubleClickListener.ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK);
     }
 
@@ -4352,7 +4355,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Used for knowing when a user has changed the cell selection in any way.
      */
-    public interface SelectionChangeListener extends Serializable {
+    public interface SelectionChangeListener extends SerializableEventListener {
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(SelectionChangeListener.class, "onSelectionChange",
                         SelectionChangeEvent.class);
@@ -4370,7 +4373,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Used for knowing when a user has changed the cell value in Spreadsheet
      * UI.
      */
-    public interface CellValueChangeListener extends Serializable {
+    public interface CellValueChangeListener extends SerializableEventListener {
         public static final Method CELL_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(CellValueChangeListener.class, "onCellValueChange",
                         CellValueChangeEvent.class);
@@ -4388,7 +4391,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Used for knowing when a cell referenced by a formula cell has changed in
      * the Spreadsheet UI making the formula value change
      */
-    public interface FormulaValueChangeListener extends Serializable {
+    public interface FormulaValueChangeListener
+            extends SerializableEventListener {
         public static final Method FORMULA_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(FormulaValueChangeListener.class,
                         "onFormulaValueChange", FormulaValueChangeEvent.class);
@@ -4404,44 +4408,53 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given SelectionChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
+     * @return a registration object for removing the listener
      */
-    public void addSelectionChangeListener(SelectionChangeListener listener) {
-        addListener(SelectionChangeEvent.class, listener,
+    public Registration addSelectionChangeListener(
+            SelectionChangeListener listener) {
+        return addListener(SelectionChangeEvent.class, listener,
                 SelectionChangeListener.SELECTION_CHANGE_METHOD);
     }
 
     /**
      * Adds the given CellValueChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
+     * @return a registration object for removing the listener
      */
-    public void addCellValueChangeListener(CellValueChangeListener listener) {
-        addListener(CellValueChangeEvent.class, listener,
+    public Registration addCellValueChangeListener(
+            CellValueChangeListener listener) {
+        return addListener(CellValueChangeEvent.class, listener,
                 CellValueChangeListener.CELL_VALUE_CHANGE_METHOD);
     }
 
     /**
      * Adds the given FormulaValueChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
+     * @return a registration object for removing the listener
      */
-    public void addFormulaValueChangeListener(
+    public Registration addFormulaValueChangeListener(
             FormulaValueChangeListener listener) {
-        addListener(FormulaValueChangeEvent.class, listener,
+        return addListener(FormulaValueChangeEvent.class, listener,
                 FormulaValueChangeListener.FORMULA_VALUE_CHANGE_METHOD);
     }
 
     /**
      * Removes the given SelectionChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove.
+     * @deprecated use a {@link Registration} from
+     *             {@link #addSelectionChangeListener(SelectionChangeListener)}
+     *             to remove a listener
      */
+    @Deprecated
     public void removeSelectionChangeListener(SelectionChangeListener listener) {
         removeListener(SelectionChangeEvent.class, listener,
                 SelectionChangeListener.SELECTION_CHANGE_METHOD);
@@ -4449,10 +4462,14 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Removes the given CellValueChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove.
+     * @deprecated use a {@link Registration} from
+     *             {@link #addCellValueChangeListener(CellValueChangeListener)}
+     *             to remove a listener
      */
+    @Deprecated
     public void removeCellValueChangeListener(CellValueChangeListener listener) {
         removeListener(CellValueChangeEvent.class, listener,
                 CellValueChangeListener.CELL_VALUE_CHANGE_METHOD);
@@ -4472,7 +4489,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * A listener for when an attempt to modify a locked cell has been made.
      */
-    public interface ProtectedEditListener extends Serializable {
+    public interface ProtectedEditListener extends SerializableEventListener {
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(ProtectedEditListener.class, "writeAttempted",
                         ProtectedEditEvent.class);
@@ -4492,21 +4509,27 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Add listener for when an attempt to modify a locked cell has been made.
-     * 
+     *
      * @param listener
      *            The listener to add.
+     * @return a registration object for removing the listener
      */
-    public void addProtectedEditListener(ProtectedEditListener listener) {
-        addListener(ProtectedEditEvent.class, listener,
+    public Registration addProtectedEditListener(
+            ProtectedEditListener listener) {
+        return addListener(ProtectedEditEvent.class, listener,
                 ProtectedEditListener.SELECTION_CHANGE_METHOD);
     }
 
     /**
      * Removes the given ProtectedEditListener.
-     * 
+     *
      * @param listener
      *            The listener to remove.
+     * @deprecated use a {@link Registration} from
+     *             {@link #addProtectedEditListener(ProtectedEditListener)} to
+     *             remove a listener
      */
+    @Deprecated
     public void removeProtectedEditListener(ProtectedEditListener listener) {
         removeListener(ProtectedEditEvent.class, listener,
                 ProtectedEditListener.SELECTION_CHANGE_METHOD);
@@ -4645,7 +4668,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * A listener for when a sheet is selected.
      */
-    public interface SheetChangeListener extends Serializable {
+    public interface SheetChangeListener extends SerializableEventListener {
         public static final Method SHEET_CHANGE_METHOD = ReflectTools
                 .findMethod(SheetChangeListener.class, "onSheetChange",
                         SheetChangeEvent.class);
@@ -4662,21 +4685,26 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given SheetChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add
+     * @return a registration object for removing the listener
      */
-    public void addSheetChangeListener(SheetChangeListener listener) {
-        addListener(SheetChangeEvent.class, listener,
+    public Registration addSheetChangeListener(SheetChangeListener listener) {
+        return addListener(SheetChangeEvent.class, listener,
                 SheetChangeListener.SHEET_CHANGE_METHOD);
     }
 
     /**
      * Removes the given SheetChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove
+     * @deprecated use a {@link Registration} from
+     *             {@link #addSheetChangeListener(SheetChangeListener)} to
+     *             remove a listener
      */
+    @Deprecated
     public void removeSheetChangeListener(SheetChangeListener listener) {
         removeListener(SheetChangeEvent.class, listener,
                 SheetChangeListener.SHEET_CHANGE_METHOD);
@@ -5368,7 +5396,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Interface for listening a {@link RowHeaderDoubleClickEvent} event
      **/
-    public interface RowHeaderDoubleClickListener extends Serializable {
+    public interface RowHeaderDoubleClickListener
+            extends SerializableEventListener {
         Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
             .findMethod(RowHeaderDoubleClickListener.class,
                 "onRowHeaderDoubleClick", RowHeaderDoubleClickEvent.class);

@@ -3,8 +3,10 @@ package com.vaadin.addon.spreadsheet.test.pageobjects;
 import static org.junit.Assert.assertEquals;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
+import com.vaadin.testbench.By;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
@@ -24,7 +26,10 @@ public class HeaderPage extends Page {
 
     public SpreadsheetPage loadFile(String testSheetFilename,
             TestBenchTestCase tbtc) {
-        ComboBoxElement testSheetSelect = $(ComboBoxElement.class).id("testSheetSelect");
+        waitUntil(ExpectedConditions
+                .presenceOfElementLocated(By.id("testSheetSelect")));
+        ComboBoxElement testSheetSelect = $(ComboBoxElement.class)
+                .id("testSheetSelect");
         testSheetSelect.selectByText(testSheetFilename);
         testSheetSelect.waitForVaadin();
         $(ButtonElement.class).id("update").click();
