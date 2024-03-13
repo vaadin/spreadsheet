@@ -10,7 +10,7 @@
         <vaadin.version>8.14.3</vaadin.version>
         <charts.version>4.3.4</charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <testbench.version>5.2.0</testbench.version>
+        <testbench.version>5.3.0</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <jetty.plugin.version>9.4.54.v20240208</jetty.plugin.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>

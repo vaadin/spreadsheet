@@ -21,7 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jetty.version>9.4.54.v20240208</jetty.version>
         <vaadin.version>8.14.3</vaadin.version>
-        <testbench.version>5.2.0</testbench.version>
+        <testbench.version>5.3.0</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <poi.version>4.0.1</poi.version>
