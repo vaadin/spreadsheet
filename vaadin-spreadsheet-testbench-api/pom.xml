@@ -11,6 +11,10 @@
     <inceptionYear>2013</inceptionYear>
     
     <properties>
+        <!-- This line is required for Java 9+ compilation -->
+        <!-- Comment out the following line when building with Java 8 -->
+        <maven.compiler.release>8</maven.compiler.release>
+        
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,7 +77,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.6.3</version>
                 <configuration>
                     <source>8</source>
                     <failOnError>false</failOnError>
@@ -95,12 +99,13 @@
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <release>8</release>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>

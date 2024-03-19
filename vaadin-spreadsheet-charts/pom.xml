@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <properties>
+        <!-- These lines are required for Java 9+ compilation -->
+        <!-- Comment out the following line when building with Java 8 -->
+        <maven.compiler.release>8</maven.compiler.release>
+        <!-- Use Java 8 locale formats -->
+        <argLine>-Djava.locale.providers=COMPAT</argLine>
+        
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -12,7 +18,7 @@
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <testbench.version>5.3.0</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
-        <jetty.plugin.version>9.4.54.v20240208</jetty.plugin.version>
+        <jetty.plugin.version>9.3.30.v20211001</jetty.plugin.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
     </properties>
 
@@ -151,6 +157,7 @@
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <release>8</release>
                 </configuration>
                 <executions>
                     <execution>
@@ -168,7 +175,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.6.3</version>
                 <configuration>
                     <source>8</source>
                     <failOnError>false</failOnError>
@@ -186,7 +193,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
+                <version>3.3.0</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -262,7 +269,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>3.2.5</version>
                 <configuration>
                     <excludes>
                         <exclude>
@@ -276,7 +283,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.19.1</version>
+                <version>3.2.5</version>
                 <configuration>
                     <includes>
                         <include>**/*TBTest.java</include>
@@ -403,11 +410,9 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>3.12.1</version>
                         <configuration>
-                            <excludes>
-                                <exclude>module-info.java</exclude>
-                            </excludes>
                             <source>1.8</source>
                             <target>1.8</target>
+                            <release>8</release>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
@@ -499,6 +504,7 @@
                         <configuration>
                             <source>1.8</source>
                             <target>1.8</target>
+                            <release>8</release>
                             <encoding>UTF-8</encoding>
                         </configuration>
                         <executions>
