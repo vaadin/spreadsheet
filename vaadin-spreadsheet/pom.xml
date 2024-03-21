@@ -19,13 +19,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jetty.version>9.3.9.v20160517</jetty.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <vaadin.version>8.14.3</vaadin.version>
-        <testbench.version>5.1.0</testbench.version>
+        <testbench.version>5.1.2</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <poi.version>4.0.1</poi.version>
-        <jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
     </properties>
 
@@ -42,6 +41,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
+                <version>2.4.0</version>
                 <configuration>
                     <licenseName>cval3</licenseName>
                     <licenseResolver>file://${basedir}/src/license</licenseResolver>
@@ -54,6 +54,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                 </configuration>
@@ -61,7 +62,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.12.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
@@ -72,39 +73,53 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>2.3.1</version>
-                <configuration>
-                    <archive>
-                        <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
-                        <index>true</index>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <!-- Implementation-Title and Implementation-Version
-                                come from the POM by default -->
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <!-- Package format version - do not change -->
-                            <Vaadin-Package-Version>1</Vaadin-Package-Version>
-
-                            <!-- Add-on specific fields to update -->
-                            <AdVaaLicen>cval</AdVaaLicen>
-                            <AdVaaName>vaadin-spreadsheet</AdVaaName>
-                            <AdVaaPkg>com.vaadin.addon.spreadsheet.client</AdVaaPkg>
-
-                            <!-- Implementation-Title and Implementation-Version
-                                come from the POM by default -->
-                            <Implementation-Title>${project.name}</Implementation-Title>
-
-                            <!-- Comma-separated list of widgetsets in the
-                                package -->
-                            <Vaadin-Widgetsets>com.vaadin.addon.spreadsheet.Widgetset</Vaadin-Widgetsets>
-
-                            <!-- Stylesheet -->
-                            <Vaadin-Stylesheets>VAADIN/addons/spreadsheet/spreadsheet.scss</Vaadin-Stylesheets>
-                        </manifestEntries>
-                    </archive>
-                </configuration>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <archive>
+                                <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
+                                <index>true</index>
+                                <manifest>
+                                    <addClasspath>true</addClasspath>
+                                    <!-- Implementation-Title and Implementation-Version
+                                        come from the POM by default -->
+                                    <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                </manifest>
+                                <manifestEntries>
+                                    <!-- Package format version - do not change -->
+                                    <Vaadin-Package-Version>1</Vaadin-Package-Version>
+        
+                                    <!-- Add-on specific fields to update -->
+                                    <AdVaaLicen>cval</AdVaaLicen>
+                                    <AdVaaName>vaadin-spreadsheet</AdVaaName>
+                                    <AdVaaPkg>com.vaadin.addon.spreadsheet.client</AdVaaPkg>
+        
+                                    <!-- Implementation-Title and Implementation-Version
+                                        come from the POM by default -->
+                                    <Implementation-Title>${project.name}</Implementation-Title>
+        
+                                    <!-- Comma-separated list of widgetsets in the
+                                        package -->
+                                    <Vaadin-Widgetsets>com.vaadin.addon.spreadsheet.Widgetset</Vaadin-Widgetsets>
+        
+                                    <!-- Stylesheet -->
+                                    <Vaadin-Stylesheets>VAADIN/addons/spreadsheet/spreadsheet.scss</Vaadin-Stylesheets>
+                                </manifestEntries>
+                            </archive>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -137,9 +152,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.6.3</version>
                 <configuration>
-                    <additionalparam>-Xdoclint:none</additionalparam>
+					<doclint>none</doclint>
                 </configuration>
                 <executions>
                     <execution>
@@ -186,6 +201,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
                     <finalName>directorystuff</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
@@ -213,7 +229,7 @@
                         </goals>
                         <configuration>
                             <webappDirectory>${project.build.directory}/testwebapp/VAADIN/widgetsets</webappDirectory>
-                            <extraJvmArgs>-Xmx1g -Xms1g -XX:MaxPermSize=512m</extraJvmArgs>
+                            <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                             <noServer>true</noServer>
                             <runTarget>http://localhost:9998/</runTarget>
@@ -288,6 +304,8 @@
                         <port>9998</port>
                     </httpConnector>
                     <useTestClasspath>true</useTestClasspath>
+                    <useTestScope>true</useTestScope>
+                    <supportedPackagings>jar</supportedPackagings>
                     <stopKey>STOP</stopKey>
                     <stopPort>8005</stopPort>
                     <webAppConfig>
@@ -303,19 +321,6 @@
                     </webAppConfig>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -327,7 +332,7 @@
                     <version>${vaadin.version}</version>
                     <configuration>
                         <webappDirectory>${project.build.directory}/testwebapp/VAADIN/widgetsets</webappDirectory>
-                        <extraJvmArgs>-Xmx1g -Xms1g -XX:MaxPermSize=512m</extraJvmArgs>
+                        <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                         <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                         <noServer>true</noServer>
                         <runTarget>http://localhost:9998/</runTarget>
@@ -572,6 +577,20 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>ooxml-schemas</artifactId>
             <version>1.4</version>
+        </dependency>
+
+        <!-- Required for some reflection issues -->
+        <dependency>
+            <groupId>org.javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.30.2-GA</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.6.1</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

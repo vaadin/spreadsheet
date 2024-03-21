@@ -5,12 +5,12 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>8.0.0</vaadin.version>
-        <charts.version>4.0.0</charts.version>
+        <vaadin.version>8.14.3</vaadin.version>
+        <charts.version>4.0.5</charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <testbench.version>5.1.0</testbench.version>
+        <testbench.version>5.1.2</testbench.version>
         <testbench.api.version>${vaadin.version}</testbench.api.version>
-        <jetty.plugin.version>9.3.9.v20160517</jetty.plugin.version>
+        <jetty.version>9.4.54.v20240208</jetty.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
     </properties>
 
@@ -132,6 +132,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>license-maven-plugin</artifactId>
+                <version>2.4.0</version>
                 <configuration>
                     <licenseName>cval3</licenseName>
                     <licenseResolver>file://${basedir}/src/license</licenseResolver>
@@ -143,7 +144,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.12.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
                     <source>1.8</source>
@@ -163,21 +164,9 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>1.8</version>
-                <configuration>
-                    <licenseName>cval3</licenseName>
-                    <licenseResolver>file://${basedir}/src/license</licenseResolver>
-                    <includes>
-                        <include>**/main/**/*.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.6.3</version>
                 <configuration>
                     <failOnError>false</failOnError>
                 </configuration>
@@ -322,12 +311,14 @@
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.plugin.version}</version>
+                <version>${jetty.version}</version>
                 <configuration>
                     <httpConnector>
                         <port>9998</port>
                     </httpConnector>
                     <useTestClasspath>true</useTestClasspath>
+                    <useTestScope>true</useTestScope>
+                    <supportedPackagings>jar</supportedPackagings>
                     <stopKey>STOP</stopKey>
                     <stopPort>8005</stopPort>
                     <webAppConfig>
@@ -480,6 +471,10 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.12.1</version>
+                        <configuration>
+                            <encoding>UTF-8</encoding>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>default-testCompile</id>
