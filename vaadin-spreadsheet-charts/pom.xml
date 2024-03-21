@@ -5,7 +5,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vaadin.version>8.0.0</vaadin.version>
+        <vaadin.version>8.12.4</vaadin.version>
         <charts.version>4.0.0</charts.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <testbench.version>5.1.0</testbench.version>
