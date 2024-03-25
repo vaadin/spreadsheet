@@ -12,6 +12,7 @@
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <jetty.version>9.4.54.v20240208</jetty.version>
         <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
+        <currentYear>2024</currentYear>
     </properties>
 
 
@@ -129,18 +130,6 @@
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.4.0</version>
-                <configuration>
-                    <licenseName>cval3</licenseName>
-                    <licenseResolver>file://${basedir}/src/license</licenseResolver>
-                    <includes>
-                        <include>**/main/**/*.java</include>
-                    </includes>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -485,6 +474,43 @@
                                 <configuration>
                                     <skip>false</skip>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!-- Profile for updating license headers. -->
+            <id>license</id>
+            
+            <build>
+                <plugins>
+                    <plugin> 
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>4.3</version>
+                        <configuration>
+                            <header>src/license/header.txt</header>
+                            <quiet>false</quiet>
+                            <failIfMissing>true</failIfMissing>
+                            <aggregate>false</aggregate>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <useDefaultMapping>true</useDefaultMapping>
+                            <encoding>UTF-8</encoding>
+                            <properties>
+                                <year>${currentYear}</year>
+                            </properties>
+                            <includes>
+                                <include>/**/*.java</include>
+                                <include>*.java</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>format</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

@@ -142,14 +142,12 @@ Vaadin Spreadsheet 2.0 has the following limitations:
 [[spreadsheet.overview.license]]
 == Licensing
 
-Vaadin Spreadsheet is a commercial product licensed under the CVAL license (
-link:https://vaadin.com/license/cval-3[Commercial Vaadin Add-On License]).
+Vaadin Spreadsheet is a commercial product licensed under the VCL License (Vaadin
+Commercial License and Service Terms).
 Development licenses need to be purchased for each developer working with Vaadin
 Spreadsheet, regardless of whether the resulting applications using it are
 deployed publicly or privately in an intranet.
+See link:https://vaadin.com/pricing[pricing] for details.
 
-A link:https://vaadin.com/pro/[Vaadin Pro Tools] subscription includes a
-subscription license for Vaadin Spreadsheet. Perpetual licenses can be purchased
-from the link:https://vaadin.com/spreadsheet[Vaadin Spreadsheet product page],
-where you can also find the licensing details. For evaluation purposes, a free
-trial key allows using Vaadin Spreadsheet for a 14-day evaluation period.
+The installation instructions can be found in
+link:https://vaadin.com/directory/component/vaadin-spreadsheet[Vaadin Directory].

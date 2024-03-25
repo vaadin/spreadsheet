@@ -12,10 +12,9 @@ installation!
 
 !!!!! NOTE !!!!!
 Widget set compilation will fail unless you have a license for Vaadin
-Spreadsheet. A free trial key can be obtained by clicking the big orange "Free
-trial key" button on the right hand side of http://vaadin.com/addon/vaadin-spreadsheet
+Spreadsheet. See https://vaadin.com/pricing for details.
 Please find instructions for how to install the license at
-https://vaadin.com/directory/help/installing-cval-license
+https://vaadin.com/docs/v8/framework/addons
 
 Maven
 -----
@@ -28,11 +27,11 @@ Dependency snippet for Maven users:
 <version>${project.version}</version>
 </dependency>
 
-The add-on is available in Vaadin Add-Ons repository:
+Prereleases are available in Vaadin Prereleases repository:
 
 <repository>
-<id>vaadin-addons</id>
-<url>https://maven.vaadin.com/vaadin-addons</url>
+<id>vaadin-prereleases</id>
+<url>https://maven.vaadin.com/vaadin-prereleases</url>
 </repository>
 
 Ivy
@@ -51,18 +50,15 @@ add all libraries from the lib folder to your classpath also.
 Licensing
 =========
 
-Vaadin Spreadsheet is a commercial product. After 30 days of evaluation use,
-you must either acquire a license or stop using it. More information about
-Commercial Vaadin Add-on License is available in LICENSE file or at
-https://vaadin.com/license/cval-3.
+Vaadin Spreadsheet is a commercial product. You must either acquire a license or
+stop using it. More information about Vaadin Commercial License and Service 
+Terms is available at https://vaadin.com/commercial-license-and-service-terms.
 
-You may obtain a valid license by subscribing to Vaadin Pro Account at
-https://vaadin.com/pro or by purchasing a perpetual license at
-https://vaadin.com/directory.
+You may obtain a valid license by subscribing to Vaadin Pro.
+See https://vaadin.com/pricing for details.
 
-A valid license key is your perpetual license key purchased from Vaadin
-Directory or alternatively the email address you use to login to an active
-Vaadin Pro Account.
+Once you have the subscription, the license key can be found in
+https://vaadin.com/myaccount/licenses#classic
 
 Register your copy of Vaadin Spreadsheet by creating a file named
 .vaadin.spreadsheet.developer.license containing the license key in your home
@@ -72,8 +68,8 @@ system property to disable the license warning message.
 Vaadin Spreadsheet (version 1.2.0 or later) supports Vaadin Charts, making it
 possible to open Excel files with charts in it. To enable this feature, you
 need to add a vaadin-spreadsheet-charts dependency to your project. Vaadin
-Charts is distributed under the terms of Commercial Vaadin Add-On License
-version 3.0("CVALv3"), see https://vaadin.com/license/cval-3 for details. To
+Charts is distributed under Vaadin Commercial License and Service Terms, 
+see https://vaadin.com/commercial-license-and-service-terms for details. To
 use the vaadin-spreadsheet-charts package, you need to have valid Vaadin
 Spreadsheet and Vaadin Charts licenses.
 
@@ -88,7 +84,7 @@ Links
 =====
 
 Homepage:
-https://vaadin.com/add-ons/spreadsheet
+https://vaadin.com/directory/component/vaadin-spreadsheet
 
 Apache POI Homepage:
 http://poi.apache.org/
@@ -97,10 +93,10 @@ Code and usage examples:
 http://demo.vaadin.com/spreadsheet/
 
 Issue tracker:
-http://dev.vaadin.com/
+https://github.com/vaadin/spreadsheet/issues
 
 Documentation:
-https://vaadin.com/book/vaadin7/-/page/spreadsheet.html
+https://vaadin.com/docs/v8/spreadsheet/spreadsheet-overview
 
 SCM (Git):
 https://github.com/vaadin/spreadsheet
