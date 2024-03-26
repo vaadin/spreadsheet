@@ -21,12 +21,15 @@ import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetChartsDemoUI;
 public class ScrollTBTest extends AbstractSpreadsheetTestCase {
 
     @Test
-    public void overlayScroll_haveBigOverlay_overlayStaysOnPageWhenScroll() throws IOException {
-        headerPage.loadFile("Tagetik11.xlsx",this);
-        SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class).first();
+    public void overlayScroll_haveBigOverlay_overlayStaysOnPageWhenScroll()
+            throws IOException {
+        headerPage.loadFile("Tagetik11.xlsx", this);
+        SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class)
+                .first();
         spreadsheetElement.scroll(850);
         compareScreen("overlayScroll");
     }
+
     @Override
     public Class<?> getUIClass() {
         return SpreadsheetChartsDemoUI.class;

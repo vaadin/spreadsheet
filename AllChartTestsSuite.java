@@ -20,7 +20,7 @@ import com.vaadin.spreadsheet.charts.typetests.PieAndDonutTests;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ LineAreaScatterTests.class, ChartFeatureTests.class,
-        ColumnAndBarTests.class, //InteractionTests.class,
+        ColumnAndBarTests.class, // InteractionTests.class,
         PieAndDonutTests.class, StyleTests.class })
 public class AllChartTestsSuite {
 

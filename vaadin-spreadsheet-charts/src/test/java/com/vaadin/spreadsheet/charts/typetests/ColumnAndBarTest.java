@@ -11,10 +11,11 @@
 package com.vaadin.spreadsheet.charts.typetests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.charts.model.ChartType;
@@ -168,7 +169,7 @@ public class ColumnAndBarTest extends ChartTestBase {
     private void testColumnChart(String cell) throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "TypeSample - Pyramid, cylinder, cone.xlsx", cell)
-                .getConfiguration();
+                        .getConfiguration();
 
         assertSeriesType(conf.getSeries(), ChartType.COLUMN);
         assertData(conf.getSeries(), columnAndBarData);
@@ -176,47 +177,49 @@ public class ColumnAndBarTest extends ChartTestBase {
 
     @Test
     public void columnNotColorByPoint() throws Exception {
-        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx",
-                "K2").getConfiguration();
+        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx", "K2")
+                .getConfiguration();
         assertSeriesType(conf.getSeries(), ChartType.COLUMN);
-        Assert.assertNull(((PlotOptionsColumn) conf.getSeries().get(0)
-                .getPlotOptions()).getColorByPoint());
+        assertNull(
+                ((PlotOptionsColumn) conf.getSeries().get(0).getPlotOptions())
+                        .getColorByPoint());
     }
 
     @Test
     public void columnColorByPoint() throws Exception {
-        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx",
-                "D2").getConfiguration();
+        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx", "D2")
+                .getConfiguration();
         assertSeriesType(conf.getSeries(), ChartType.COLUMN);
-        Assert.assertTrue(((PlotOptionsColumn) conf.getSeries().get(0)
-                .getPlotOptions()).getColorByPoint());
+        assertTrue(
+                ((PlotOptionsColumn) conf.getSeries().get(0).getPlotOptions())
+                        .getColorByPoint());
     }
 
     @Test
     public void barNotColorByPoint() throws Exception {
-        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx",
-                "K18").getConfiguration();
+        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx", "K18")
+                .getConfiguration();
         assertSeriesType(conf.getSeries(), ChartType.BAR);
-        Assert.assertNull(((PlotOptionsBar) conf.getSeries().get(0)
-                .getPlotOptions()).getColorByPoint());
+        assertNull(((PlotOptionsBar) conf.getSeries().get(0).getPlotOptions())
+                .getColorByPoint());
     }
 
     @Test
     public void barColorByPoint() throws Exception {
-        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx",
-                "D18").getConfiguration();
+        Configuration conf = getChartFromSampleFile("ColorByPoint.xlsx", "D18")
+                .getConfiguration();
         assertSeriesType(conf.getSeries(), ChartType.BAR);
-        Assert.assertTrue(((PlotOptionsBar) conf.getSeries().get(0)
-                .getPlotOptions()).getColorByPoint());
+        assertTrue(((PlotOptionsBar) conf.getSeries().get(0).getPlotOptions())
+                .getColorByPoint());
     }
 
     @Test
     public void barWithHiddenCol() throws Exception {
         Configuration conf = getChartFromSampleFile(
-            "HiddenColumnChartTest.xlsx", "D10").getConfiguration();
+                "HiddenColumnChartTest.xlsx", "D10").getConfiguration();
         assertSeriesType(conf.getSeries(), ChartType.COLUMN);
         List<DataSeriesItem> data = ((DataSeries) conf.getSeries().get(0))
-            .getData();
+                .getData();
         assertEquals(5, data.size());
         assertEquals("c", data.get(2).getName());
 
