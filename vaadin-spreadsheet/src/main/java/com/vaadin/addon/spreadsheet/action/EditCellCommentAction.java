@@ -20,7 +20,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 
 /**
  * Spreadsheet action for inserting or deleting a comment to a cell.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -39,7 +39,8 @@ public class EditCellCommentAction extends SpreadsheetAction {
                     && event.getIndividualSelectedCells().size() == 0) {
                 CellReference cr = event.getSelectedCellReference();
                 Comment cellComment = spreadsheet.getActiveSheet()
-                        .getCellComment(new CellAddress(cr.getRow(), cr.getCol()));
+                        .getCellComment(
+                                new CellAddress(cr.getRow(), cr.getCol()));
                 if (cellComment != null) {
                     return true;
                 }

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFChart;
-import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 
 import com.vaadin.addon.spreadsheet.client.OverlayInfo;
 import com.vaadin.addon.spreadsheet.client.OverlayInfo.Type;
@@ -30,12 +29,12 @@ import com.vaadin.ui.Panel;
  * SheetChartWrapper is an utility class of the Spreadsheet component. In
  * addition to the chart resource, this wrapper contains the chart's visibility
  * state, position and size.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
-public class SheetChartWrapper extends SheetOverlayWrapper implements
-        Serializable {
+public class SheetChartWrapper extends SheetOverlayWrapper
+        implements Serializable {
 
     private static final Logger LOGGER = Logger
             .getLogger(SheetChartWrapper.class.getName());
@@ -71,16 +70,14 @@ public class SheetChartWrapper extends SheetOverlayWrapper implements
                     setChartCreator((ChartCreator) clazz.newInstance());
                 }
             } catch (Exception e) {
-                LOGGER.log(
-                        Level.WARNING,
+                LOGGER.log(Level.WARNING,
                         "Vaadin Spreadsheet: To display charts you need to add the chart integration package and Vaadin Charts to the project");
                 LOGGER.log(Level.WARNING, e.getMessage(), e);
             }
         }
     }
 
-    public SheetChartWrapper(XSSFChart chartXml,
-            Spreadsheet spreadsheet) {
+    public SheetChartWrapper(XSSFChart chartXml, Spreadsheet spreadsheet) {
         super(chartXml.getGraphicFrame().getAnchor());
 
         this.chartXml = chartXml;

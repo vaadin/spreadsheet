@@ -95,12 +95,12 @@ import com.vaadin.util.ReflectTools;
  * interacting with the contents of an Excel file. The Spreadsheet can be used
  * in any Vaadin application for enabling users to view and manipulate Excel
  * files in their web browsers.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
-public class Spreadsheet extends AbstractComponent implements HasComponents,
-        Action.Container, Focusable {
+public class Spreadsheet extends AbstractComponent
+        implements HasComponents, Action.Container, Focusable {
 
     /**
      * This is a style which hides the top (address and formula) bar.
@@ -112,8 +112,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public static final String HIDE_TABSHEET_STYLE = "hidetabsheet";
 
-    private static final Logger LOGGER = Logger.getLogger(Spreadsheet.class
-            .getName());
+    private static final Logger LOGGER = Logger
+            .getLogger(Spreadsheet.class.getName());
 
     /**
      * A common formula evaluator for this Spreadsheet
@@ -132,8 +132,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     private static final int FILTER_BUTTON_PIXEL_WIDTH = 14;
 
     /**
-     * Extra padding (in pixels) to add between the filter popup button and cell text
-     * when autofitting a column.
+     * Extra padding (in pixels) to add between the filter popup button and cell
+     * text when autofitting a column.
      */
     private static final int FILTER_BUTTON_PIXEL_PADDING = 2;
 
@@ -274,10 +274,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Called when a hyperlink cell has been clicked.
-         * 
+         *
          * Assumes the implementation knows which spreadsheet is in use if
          * needed, and how to navigate or perform some other action.
-         * 
+         *
          * @param cell
          *            The cell that contains the hyperlink
          * @param hyperlink
@@ -381,7 +381,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.vaadin.addon.spreadsheet.client.MergedRegionUtil.
          * MergedRegionContainer#getMergedRegionStartingFrom(int, int)
          */
@@ -400,7 +400,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.vaadin.addon.spreadsheet.client.MergedRegionUtil.
          * MergedRegionContainer#getMergedRegion(int, int)
          */
@@ -442,7 +442,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * {@link XSSFWorkbook}. Also creates one sheet using the given row and
      * column counts. These counts will also be set as default for any new
      * sheets created later.
-     * 
+     *
      * @param defaultRowCount
      *            Default row count for new sheets
      * @param defaultColumnCount
@@ -452,13 +452,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         init();
         setDefaultRowCount(defaultRowCount);
         setDefaultColumnCount(defaultColumnCount);
-        SpreadsheetFactory.loadSpreadsheetWith(this, null,
-                getDefaultRowCount(), getDefaultColumnCount());
+        SpreadsheetFactory.loadSpreadsheetWith(this, null, getDefaultRowCount(),
+                getDefaultColumnCount());
     }
 
     /**
      * Creates a new Spreadsheet component and loads the given Workbook.
-     * 
+     *
      * @param workbook
      *            Workbook to load
      */
@@ -470,7 +470,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Creates a new Spreadsheet component and loads the given Excel file.
-     * 
+     *
      * @param file
      *            Excel file
      * @throws IOException
@@ -485,7 +485,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Creates a new Spreadsheet component based on the given input stream. The
      * expected format is that of an Excel file.
-     * 
+     *
      * @param inputStream
      *            Stream that provides Excel-formatted data.
      * @throws IOException
@@ -512,7 +512,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Override if there are desired changes or temporary bug fixes, but be
      * careful - this class should cache values for performance.
-     * 
+     *
      * @return CellValueManager
      */
     protected CellValueManager createCellValueManager() {
@@ -568,7 +568,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.vaadin.event.Action.Container#removeActionHandler(com.vaadin.event
      * .Action.Handler)
@@ -583,7 +583,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Sets the {@link CellValueHandler} for this component (not workbook/sheet
      * specific). It is called when a cell's value has been updated by the user
      * by using the spreadsheet component's default editor (text input).
-     * 
+     *
      * @param customCellValueHandler
      *            New handler or <code>null</code> if none should be used
      */
@@ -593,7 +593,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * See {@link CellValueHandler}.
-     * 
+     *
      * @return the current {@link CellValueHandler} for this component or
      *         <code>null</code> if none has been set
      */
@@ -605,19 +605,19 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Sets the {@link CellDeletionHandler} for this component (not
      * workbook/sheet specific). It is called when a cell has been deleted by
      * the user.
-     * 
+     *
      * @param customCellDeletionHandler
      *            New handler or <code>null</code> if none should be used
      */
     public void setCellDeletionHandler(
             CellDeletionHandler customCellDeletionHandler) {
-        getCellValueManager().setCustomCellDeletionHandler(
-                customCellDeletionHandler);
+        getCellValueManager()
+                .setCustomCellDeletionHandler(customCellDeletionHandler);
     }
 
     /**
      * See {@link CellDeletionHandler}.
-     * 
+     *
      * @return the current {@link CellDeletionHandler} for this component or
      *         <code>null</code> if none has been set
      */
@@ -627,19 +627,22 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the {@link HyperlinkCellClickHandler} for this component (not
-     * workbook/sheet specific). Called when the user clicks a cell that is
-     * a hyperlink or uses the hyperlink function.
-     * @param handler new handler or <code>null</code> if none should be used
+     * workbook/sheet specific). Called when the user clicks a cell that is a
+     * hyperlink or uses the hyperlink function.
+     *
+     * @param handler
+     *            new handler or <code>null</code> if none should be used
      * @see HyperlinkCellClickHandler
      * @see DefaultHyperlinkCellClickHandler
      */
-    public void setHyperlinkCellClickHandler(HyperlinkCellClickHandler handler) {
+    public void setHyperlinkCellClickHandler(
+            HyperlinkCellClickHandler handler) {
         hyperlinkCellClickHandler = handler;
     }
 
     /**
      * See {@link HyperlinkCellClickHandler}.
-     * 
+     *
      * @return the current {@link HyperlinkCellClickHandler} for this component
      *         or <code>null</code> if none has been set
      */
@@ -650,7 +653,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the ContextMenuManager for this Spreadsheet. This is component (not
      * workbook/sheet) specific.
-     * 
+     *
      * @return The ContextMenuManager
      */
     public ContextMenuManager getContextMenuManager() {
@@ -660,7 +663,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the CellSelectionManager for this Spreadsheet. This is component
      * (not workbook/sheet) specific.
-     * 
+     *
      * @return The CellSelectionManager
      */
     public CellSelectionManager getCellSelectionManager() {
@@ -670,7 +673,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the CellValueManager for this Spreadsheet. This is component (not
      * workbook/sheet) specific.
-     * 
+     *
      * @return The CellValueManager
      */
     public CellValueManager getCellValueManager() {
@@ -680,7 +683,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the CellShifter for this Spreadsheet. This is component (not
      * workbook/sheet) specific.
-     * 
+     *
      * @return The CellShifter
      */
     protected CellSelectionShifter getCellShifter() {
@@ -690,7 +693,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the SpreadsheetHistoryManager for this Spreadsheet. This is
      * component (not workbook/sheet) specific.
-     * 
+     *
      * @return The SpreadsheetHistoryManager
      */
     public SpreadsheetHistoryManager getSpreadsheetHistoryManager() {
@@ -700,7 +703,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the MergedRegionContainer for this Spreadsheet. This is component
      * (not workbook/sheet) specific.
-     * 
+     *
      * @return The MergedRegionContainer
      */
     protected MergedRegionContainer getMergedRegionContainer() {
@@ -710,7 +713,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the first visible column in the main scroll area (NOT freeze
      * pane)
-     * 
+     *
      * @return Index of first visible column, 1-based
      */
     public int getFirstColumn() {
@@ -719,7 +722,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns the last visible column in the main scroll area (NOT freeze pane)
-     * 
+     *
      * @return Index of last visible column, 1-based
      */
     public int getLastColumn() {
@@ -728,7 +731,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns the first visible row in the scroll area (not freeze pane)
-     * 
+     *
      * @return Index of first visible row, 1-based
      */
     public int getFirstRow() {
@@ -737,7 +740,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns the last visible row in the main scroll area (NOT freeze pane)
-     * 
+     *
      * @return Index of last visible row, 1-based
      */
     public int getLastRow() {
@@ -746,7 +749,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns the index the last frozen row (last row in top freeze pane).
-     * 
+     *
      * @return Last frozen row or 0 if none
      */
     public int getLastFrozenRow() {
@@ -756,7 +759,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the index the last frozen column (last column in left freeze
      * pane).
-     * 
+     *
      * @return Last frozen column or 0 if none
      */
     public int getLastFrozenColumn() {
@@ -765,7 +768,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns true if embedded charts are displayed
-     * 
+     *
      * @see #setChartsEnabled(boolean)
      * @return
      */
@@ -776,7 +779,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Use this method to define whether embedded charts should be displayed in
      * the spreadsheet or not.
-     * 
+     *
      * @param chartsEnabled
      */
     public void setChartsEnabled(boolean chartsEnabled) {
@@ -788,7 +791,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns true if the component is being fully re-rendered after this
      * round-trip (sheet change etc.)
-     * 
+     *
      * @return true if re-render will happen, false otherwise
      */
     public boolean isRerenderPending() {
@@ -797,7 +800,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.vaadin.server.AbstractClientConnector#fireEvent(java.util.EventObject
      * )
@@ -810,7 +813,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * This method is called when the sheet is scrolled. It takes care of
      * sending newly revealed data to the client side.
-     * 
+     *
      * @param firstRow
      *            Index of first visible row after the scroll, 1-based
      * @param firstColumn
@@ -842,7 +845,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Tells whether the given cell range is editable or not.
-     * 
+     *
      * @param cellRangeAddress
      *            Cell range to test
      * @return True if range is editable, false otherwise.
@@ -850,12 +853,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     protected boolean isRangeEditable(CellRangeAddress cellRangeAddress) {
         return isRangeEditable(cellRangeAddress.getFirstRow(),
                 cellRangeAddress.getFirstColumn(),
-                cellRangeAddress.getLastRow(), cellRangeAddress.getLastColumn());
+                cellRangeAddress.getLastRow(),
+                cellRangeAddress.getLastColumn());
     }
 
     /**
      * Determines if the given cell range is editable or not.
-     * 
+     *
      * @param row1
      *            Index of starting row, 0-based
      * @param col1
@@ -864,7 +868,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *            Index of ending row, 0-based
      * @param col2
      *            Index of ending column, 0-based
-     * 
+     *
      * @return True if the whole range is editable, false otherwise.
      */
     protected boolean isRangeEditable(int row1, int col1, int row2, int col2) {
@@ -890,7 +894,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Creates a CellRangeAddress from the given cell address string. Also
      * checks that the range is valid within the currently active sheet. If it
      * is not, the resulting range will be truncated to fit the active sheet.
-     * 
+     *
      * @param addressString
      *            Cell address string, e.g. "B3:C5"
      * @return A CellRangeAddress based on the given coordinates.
@@ -923,7 +927,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Creates a CellRangeAddress from the given start and end coordinates. Also
      * checks that the range is valid within the currently active sheet. If it
      * is not, the resulting range will be truncated to fit the active sheet.
-     * 
+     *
      * @param row1
      *            Index of the starting row, 1-based
      * @param col1
@@ -932,11 +936,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *            Index of the ending row, 1-based
      * @param col2
      *            Index of the ending column, 1-based
-     * 
+     *
      * @return A CellRangeAddress based on the given coordinates.
      */
-    protected CellRangeAddress createCorrectCellRangeAddress(int row1,
-            int col1, int row2, int col2) {
+    protected CellRangeAddress createCorrectCellRangeAddress(int row1, int col1,
+            int row2, int col2) {
         int r1 = row1 > row2 ? row2 : row1;
         int r2 = row1 > row2 ? row1 : row2;
         int c1 = col1 > col2 ? col2 : col1;
@@ -958,7 +962,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#getState()
      */
     @Override
@@ -968,7 +972,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#getState(boolean)
      */
     @Override
@@ -978,7 +982,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#setLocale(java.util.Locale)
      */
     @Override
@@ -999,10 +1003,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
      * status on currently visible/hidden/very hidden sheets.
-     * 
+     *
      * If the currently active sheet is set hidden, another sheet is set as
      * active sheet automatically. At least one sheet should be always visible.
-     * 
+     *
      * @param sheetPOIIndex
      *            Index of the target sheet within the POI model, 0-based
      * @param visibility
@@ -1011,12 +1015,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *             If the index or state is invalid, or if trying to hide the
      *             only visible sheet.
      */
-    public void setSheetHidden(int sheetPOIIndex, SheetVisibility visibility) 
+    public void setSheetHidden(int sheetPOIIndex, SheetVisibility visibility)
             throws IllegalArgumentException {
         // POI allows user to hide all sheets ...
         if (visibility != SheetVisibility.VISIBLE
                 && SpreadsheetUtil.getNumberOfVisibleSheets(workbook) == 1
-                && ! (workbook.isSheetHidden(sheetPOIIndex)
+                && !(workbook.isSheetHidden(sheetPOIIndex)
                         || workbook.isSheetVeryHidden(sheetPOIIndex))) {
             throw new IllegalArgumentException(
                     "At least one sheet should be always visible.");
@@ -1028,24 +1032,28 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         workbook.setSheetVisibility(sheetPOIIndex, visibility);
 
         // skip component reload if "nothing changed"
-        if ( (visibility == SheetVisibility.VISIBLE && (isHidden || isVeryHidden))
+        if ((visibility == SheetVisibility.VISIBLE
+                && (isHidden || isVeryHidden))
                 || (visibility != SheetVisibility.VISIBLE
-                    && !(isHidden || isVeryHidden)) ) {
+                        && !(isHidden || isVeryHidden))) {
             if (sheetPOIIndex != activeSheetIndex) {
                 reloadSheetNames();
-                getState().sheetIndex = getSpreadsheetSheetIndex(activeSheetIndex) + 1;
+                getState().sheetIndex = getSpreadsheetSheetIndex(
+                        activeSheetIndex) + 1;
             } else { // the active sheet can be only set as hidden
                 int oldVisibleSheetIndex = getState().sheetIndex - 1;
                 if (visibility != SheetVisibility.VISIBLE
-                        && activeSheetIndex == (workbook.getNumberOfSheets() - 1)) {
+                        && activeSheetIndex == (workbook.getNumberOfSheets()
+                                - 1)) {
                     // hiding the active sheet, and it was the last sheet
                     oldVisibleSheetIndex--;
                 }
-                int newActiveSheetIndex = getVisibleSheetPOIIndex(oldVisibleSheetIndex);
+                int newActiveSheetIndex = getVisibleSheetPOIIndex(
+                        oldVisibleSheetIndex);
                 workbook.setActiveSheet(newActiveSheetIndex);
                 reloadActiveSheetData();
-                SpreadsheetFactory
-                        .reloadSpreadsheetData(this, getActiveSheet());
+                SpreadsheetFactory.reloadSpreadsheetData(this,
+                        getActiveSheet());
             }
         }
     }
@@ -1055,10 +1063,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * Gets the Workbook with {@link #getWorkbook()} and uses its API to access
      * status on currently visible/hidden/very hidden sheets.
-     * 
+     *
      * If the currently active sheet is set hidden, another sheet is set as
      * active sheet automatically. At least one sheet should be always visible.
-     * 
+     *
      * @param hidden
      *            Visibility state to set: 0-visible, 1-hidden, 2-very hidden.
      * @param sheetPOIIndex
@@ -1080,7 +1088,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * To get all of the current {@link Workbook}'s sheet names, you should
      * access the POI API with {@link #getWorkbook()}.
-     * 
+     *
      * @return Names of the currently visible sheets.
      */
     public String[] getVisibleSheetNames() {
@@ -1090,7 +1098,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets a name for the sheet at the given visible sheet index.
-     * 
+     *
      * @param sheetIndex
      *            Index of the target sheet among the visible sheets, 0-based
      * @param sheetName
@@ -1111,7 +1119,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets a name for the sheet at the given POI model index.
-     * 
+     *
      * @param sheetIndex
      *            Index of the target sheet within the POI model, 0-based
      * @param sheetName
@@ -1120,12 +1128,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @throws IllegalArgumentException
      *             If the index is invalid, or if the sheet name is invalid. See
      *             {@link WorkbookUtil#validateSheetName(String)}.
-     * 
+     *
      */
     public void setSheetNameWithPOIIndex(int sheetIndex, String sheetName)
             throws IllegalArgumentException {
         if (sheetIndex < 0 || sheetIndex >= workbook.getNumberOfSheets()) {
-            throw new IllegalArgumentException("Invalid POI Sheet index given.");
+            throw new IllegalArgumentException(
+                    "Invalid POI Sheet index given.");
         }
         if (sheetName == null || sheetName.isEmpty()) {
             throw new IllegalArgumentException(
@@ -1146,7 +1155,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the protection enabled with the given password for the sheet at the
      * given index. <code>null</code> password removes the protection.
-     * 
+     *
      * @param sheetPOIIndex
      *            Index of the target sheet within the POI model, 0-based
      * @param password
@@ -1154,8 +1163,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *            to remove the protection.
      */
     public void setSheetProtected(int sheetPOIIndex, String password) {
-        if (sheetPOIIndex < 0 || sheetPOIIndex >= workbook.getNumberOfSheets()) {
-            throw new IllegalArgumentException("Invalid POI Sheet index given.");
+        if (sheetPOIIndex < 0
+                || sheetPOIIndex >= workbook.getNumberOfSheets()) {
+            throw new IllegalArgumentException(
+                    "Invalid POI Sheet index given.");
         }
         workbook.getSheetAt(sheetPOIIndex).protectSheet(password);
         getState().sheetProtected = getActiveSheet().getProtect();
@@ -1170,7 +1181,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the protection enabled with the given password for the currently
      * active sheet. <code>null</code> password removes the protection.
-     * 
+     *
      * @param password
      *            The password to set for the protection. Pass <code>null</code>
      *            to remove the protection.
@@ -1181,10 +1192,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Creates a new sheet as the last sheet and sets it as the active sheet.
-     * 
+     *
      * If the sheetName given is null, then the sheet name is automatically
      * generated by Apache POI in {@link Workbook#createSheet()}.
-     * 
+     *
      * @param sheetName
      *            Can be null, but not empty nor longer than 31 characters. Must
      *            be unique within the Workbook.
@@ -1211,16 +1222,16 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                     "Sheet name must be unique within the workbook.");
         }
         final Sheet previousSheet = getActiveSheet();
-        SpreadsheetFactory
-                .addNewSheet(this, workbook, sheetName, rows, columns);
+        SpreadsheetFactory.addNewSheet(this, workbook, sheetName, rows,
+                columns);
         fireSheetChangeEvent(previousSheet, getActiveSheet());
     }
 
     /**
      * Deletes the sheet with the given POI model index.
-     * 
+     *
      * Note: A workbook must contain at least one visible sheet.
-     * 
+     *
      * @param poiSheetIndex
      *            POI model index of the sheet to delete, 0-based, max value
      *            {@link Workbook#getNumberOfSheets()} -1.
@@ -1255,9 +1266,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Deletes the sheet at the given index.
-     * 
+     *
      * Note: A workbook must contain at least one visible sheet.
-     * 
+     *
      * @param sheetIndex
      *            Index of the sheet to delete among the visible sheets,
      *            0-based, maximum value {@link #getNumberOfVisibleSheets()} -1.
@@ -1276,7 +1287,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the number of currently visible sheets in the component. Doesn't
      * include the hidden or very hidden sheets in the POI model.
-     * 
+     *
      * @return Number of visible sheets.
      */
     public int getNumberOfVisibleSheets() {
@@ -1290,7 +1301,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the total number of sheets in the workbook (includes hidden and
      * very hidden sheets).
-     * 
+     *
      * @return Total number of sheets in the workbook
      */
     public int getNumberOfSheets() {
@@ -1309,7 +1320,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the index of the currently active sheet among the visible sheets
      * ( hidden or very hidden sheets not included).
-     * 
+     *
      * @return Index of the active sheet, 0-based
      */
     public int getActiveSheetIndex() {
@@ -1319,7 +1330,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the POI model index of the currently active sheet (index among
      * all sheets including hidden and very hidden sheets).
-     * 
+     *
      * @return POI model index of the active sheet, 0-based
      */
     public int getActiveSheetPOIIndex() {
@@ -1328,7 +1339,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the currently active sheet within the sheets that are visible.
-     * 
+     *
      * @param sheetIndex
      *            Index of the target sheet (among the visible sheets), 0-based
      * @throws IllegalArgumentException
@@ -1346,7 +1357,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the currently active sheet. The sheet at the given index should be
      * visible (not hidden or very hidden).
-     * 
+     *
      * @param sheetIndex
      *            Index of sheet in the POI model (contains all sheets), 0-based
      * @throws IllegalArgumentException
@@ -1356,7 +1367,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     public void setActiveSheetWithPOIIndex(int sheetIndex)
             throws IllegalArgumentException {
         if (sheetIndex < 0 || sheetIndex >= workbook.getNumberOfSheets()) {
-            throw new IllegalArgumentException("Invalid POI Sheet index given.");
+            throw new IllegalArgumentException(
+                    "Invalid POI Sheet index given.");
         }
         if (workbook.isSheetHidden(sheetIndex)
                 || workbook.isSheetVeryHidden(sheetIndex)) {
@@ -1365,7 +1377,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                             + sheetIndex);
         }
         workbook.setActiveSheet(sheetIndex);
-        // assume since the UI doesn't allow multiple sheet selections 
+        // assume since the UI doesn't allow multiple sheet selections
         // active sheet == selected tab
         workbook.setSelectedTab(sheetIndex);
 
@@ -1381,7 +1393,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * This method will be called when a selected sheet change is requested.
-     * 
+     *
      * @param tabIndex
      *            Index of the sheet to select.
      * @param scrollLeft
@@ -1389,7 +1401,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @param scrollTop
      *            Current vertical scroll position
      */
-    protected void onSheetSelected(int tabIndex, int scrollLeft, int scrollTop) {
+    protected void onSheetSelected(int tabIndex, int scrollLeft,
+            int scrollTop) {
         // this is for the very rare occasion when the sheet has been
         // selected and the selected sheet value is still negative
         int oldIndex = Math.abs(getState().sheetIndex) - 1;
@@ -1404,21 +1417,23 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * This method is called when the creation of a new sheet has been
      * requested.
-     * 
+     *
      * @param scrollLeft
      *            Current horizontal scroll position
      * @param scrollTop
      *            Current vertical scroll position
      */
     protected void onNewSheetCreated(int scrollLeft, int scrollTop) {
-        getState().verticalScrollPositions[getState().sheetIndex - 1] = scrollTop;
-        getState().horizontalScrollPositions[getState().sheetIndex - 1] = scrollLeft;
+        getState().verticalScrollPositions[getState().sheetIndex
+                - 1] = scrollTop;
+        getState().horizontalScrollPositions[getState().sheetIndex
+                - 1] = scrollLeft;
         createNewSheet(null, defaultNewSheetRows, defaultNewSheetColumns);
     }
 
     /**
      * This method is called when a request to rename a sheet has been made.
-     * 
+     *
      * @param sheetIndex
      *            Index of the sheet to rename (among visible sheets).
      * @param sheetName
@@ -1426,7 +1441,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     protected void onSheetRename(int sheetIndex, String sheetName) {
         // if excel doesn't keep these in history, neither will we
-        setSheetNameWithPOIIndex(getVisibleSheetPOIIndex(sheetIndex), sheetName);
+        setSheetNameWithPOIIndex(getVisibleSheetPOIIndex(sheetIndex),
+                sheetName);
     }
 
     /**
@@ -1434,7 +1450,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * {@link #setMaxColumns(int)} has been used, the current number of columns
      * the component shows (not the amount of columns in the actual sheet in the
      * POI model).
-     * 
+     *
      * @return Number of visible columns.
      */
     public int getColumns() {
@@ -1446,7 +1462,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * {@link #setMaxRows(int)} has been used, the current number of rows the
      * component shows (not the amount of rows in the actual sheet in the POI
      * model).
-     * 
+     *
      * @return Number of visible rows.
      */
     public int getRows() {
@@ -1455,7 +1471,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the current DataFormatter.
-     * 
+     *
      * @return The data formatter for this Spreadsheet.
      */
     public DataFormatter getDataFormatter() {
@@ -1466,15 +1482,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Returns the Cell at the given address. If the cell is updated in outside
      * code, call {@link #refreshCells(Cell...)} AFTER ALL UPDATES (value, type,
      * formatting or style) to mark the cell as "dirty".
-     * 
+     *
      * @param cellAddress
      *            Address of the Cell to return, e.g. "A3"
      * @return The cell at the given address, or null if not defined
      */
     public Cell getCell(String cellAddress) {
         CellReference ref = new CellReference(cellAddress);
-        Row r = workbook.getSheetAt(workbook.getActiveSheetIndex()).getRow(
-                ref.getRow());
+        Row r = workbook.getSheetAt(workbook.getActiveSheetIndex())
+                .getRow(ref.getRow());
         if (r != null) {
             return r.getCell(ref.getCol());
         } else {
@@ -1486,7 +1502,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Returns the Cell at the given coordinates. If the cell is updated in
      * outside code, call {@link #refreshCells(Cell...)} AFTER ALL UPDATES
      * (value, type, formatting or style) to mark the cell as "dirty".
-     * 
+     *
      * @param row
      *            Row index of the cell to return, 0-based
      * @param col
@@ -1524,7 +1540,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Returns the Cell corresponding to the given reference. If the cell is
      * updated in outside code, call {@link #refreshCells(Cell...)} AFTER ALL
      * UPDATES (value, type, formatting or style) to mark the cell as "dirty".
-     * 
+     *
      * @param cellReference
      *            Reference to the cell to return
      * @return The cell corresponding to the given reference, or null if not
@@ -1540,7 +1556,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Returns the Cell at the given coordinates. If the cell is updated in
      * outside code, call {@link #refreshCells(Cell...)} AFTER ALL UPDATES
      * (value, type, formatting or style) to mark the cell as "dirty".
-     * 
+     *
      * @param sheetName
      *            Name of the sheet the cell is on, or current sheet if null
      * @param row
@@ -1550,8 +1566,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @return The cell at the given coordinates, or null if not defined
      */
     public Cell getCell(String sheetName, int row, int column) {
-        if (sheetName == null)
+        if (sheetName == null) {
             return getCell(row, column);
+        }
         return getCell(row, column, workbook.getSheet(sheetName));
     }
 
@@ -1568,22 +1585,23 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      *         defined
      */
     public Cell getCell(CellReference cellReference, Sheet sheet) {
-        return cellReference == null ? null : getCell(cellReference.getRow(),
-                cellReference.getCol(), sheet);
+        return cellReference == null ? null
+                : getCell(cellReference.getRow(), cellReference.getCol(),
+                        sheet);
     }
 
     /**
      * Deletes the cell from the sheet and the underlying POI model as well.
      * This really deletes the cell, instead of just making it's value blank.
-     * 
+     *
      * @param row
      *            Row index of the cell to delete, 0-based
      * @param col
      *            Column index of the cell to delete, 0-based
      */
     public void deleteCell(int row, int col) {
-        final Sheet activeSheet = workbook.getSheetAt(workbook
-                .getActiveSheetIndex());
+        final Sheet activeSheet = workbook
+                .getSheetAt(workbook.getActiveSheetIndex());
         final Cell cell = activeSheet.getRow(row).getCell(col);
         if (cell != null) {
             // cell.setCellStyle(null); // TODO NPE on HSSF
@@ -1597,11 +1615,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Refreshes the given cell(s). Should be called when the cell
      * value/formatting/style/etc. updating is done.
-     * 
+     *
      * NOTE: For optimal performance temporarily collect your updated cells and
      * call this method only once per update cycle. Calling this method
      * repeatedly for individual cells is not a good idea.
-     * 
+     *
      * @param cells
      *            Cell(s) to update
      */
@@ -1617,11 +1635,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Refreshes the given cell(s). Should be called when the cell
      * value/formatting/style/etc. updating is done.
-     * 
+     *
      * NOTE: For optimal performance temporarily collect your updated cells and
      * call this method only once per update cycle. Calling this method
      * repeatedly for individual cells is not a good idea.
-     * 
+     *
      * @param cells
      *            A Collection of Cells to update
      */
@@ -1637,10 +1655,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Marks the cell as updated. Should be called when the cell
      * value/formatting/style/etc. updating is done.
-     * 
+     *
      * @param cellStyleUpdated
      *            True if the cell style has changed
-     * 
+     *
      * @param cell
      *            The updated cell
      */
@@ -1654,7 +1672,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Marks the cell as deleted. This method should be called after removing a
      * cell from the {@link Workbook} using POI API.
-     * 
+     *
      * @param cellStyleUpdated
      *            True if the cell style has changed
      * @param cell
@@ -1695,10 +1713,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Creates a new Formula type cell with the given formula.
-     * 
+     *
      * After all editing is done, call {@link #refreshCells(Cell...)} or
      * {@link #refreshAllCellValues()} to make sure client side is updated.
-     * 
+     *
      * @param row
      *            Row index of the new cell, 0-based
      * @param col
@@ -1713,8 +1731,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public Cell createFormulaCell(int row, int col, String formula)
             throws IllegalArgumentException {
-        final Sheet activeSheet = workbook.getSheetAt(workbook
-                .getActiveSheetIndex());
+        final Sheet activeSheet = workbook
+                .getSheetAt(workbook.getActiveSheetIndex());
         Row r = activeSheet.getRow(row);
         if (r == null) {
             r = activeSheet.createRow(row);
@@ -1738,12 +1756,12 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * the following types: Boolean, Calendar, Date, Double or String. The
      * default type will be String, value of ({@link #toString()} will be given
      * as the cell value.
-     * 
+     *
      * For formula cells, use {@link #createFormulaCell(int, int, String)}.
-     * 
+     *
      * After all editing is done, call {@link #refreshCells(Cell...)} or
      * {@link #refreshAllCellValues()} to make sure the client side is updated.
-     * 
+     *
      * @param row
      *            Row index of the new cell, 0-based
      * @param col
@@ -1757,8 +1775,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public Cell createCell(int row, int col, Object value)
             throws IllegalArgumentException {
-        final Sheet activeSheet = workbook.getSheetAt(workbook
-                .getActiveSheetIndex());
+        final Sheet activeSheet = workbook
+                .getSheetAt(workbook.getActiveSheetIndex());
         Row r = activeSheet.getRow(row);
         if (r == null) {
             r = activeSheet.createRow(row);
@@ -1792,7 +1810,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Forces recalculation and update to the client side for values of all of
      * the sheet's cells.
-     * 
+     *
      * Note: DOES NOT UPDATE STYLES; use {@link #refreshCells(Cell...)} when
      * cell styles change.
      */
@@ -1817,10 +1835,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Set the number of columns shown for the current sheet. Any null cells are
      * left empty. Any cells outside the given columns are hidden. Does not
      * update the actual POI-based model!
-     * 
+     *
      * The default value will be the actual size of the sheet from the POI
      * model.
-     * 
+     *
      * @param cols
      *            New maximum column count.
      */
@@ -1834,10 +1852,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Set the number of rows shown for the current sheet. Any null cells are
      * left empty. Any cells outside the given rows are hidden. Does not update
      * the actual POI-based model!
-     * 
+     *
      * The default value will be the actual size of the sheet from the POI
      * model.
-     * 
+     *
      * @param rows
      *            New maximum row count.
      */
@@ -1850,7 +1868,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Does {@link #setMaxColumns(int)} and {@link #setMaxRows(int)} in one
      * method.
-     * 
+     *
      * @param rows
      *            Maximum row count
      * @param cols
@@ -1865,7 +1883,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Gets the default column width for the currently active sheet. This is
      * derived from the active sheet's ({@link #getActiveSheet()}) default
      * column width (Sheet {@link #getDefaultColumnWidth()}).
-     * 
+     *
      * @return The default column width in PX
      */
     public int getDefaultColumnWidth() {
@@ -1876,7 +1894,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Sets the default column width in pixels that the component uses, this
      * doesn't change the default column width of the underlying sheet, returned
      * by {@link #getActiveSheet()} and {@link Sheet#getDefaultColumnWidth()}.
-     * 
+     *
      * @param widthPX
      *            The default column width in pixels
      */
@@ -1894,7 +1912,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Gets the default row height in points. By default it should be the same
      * as {@link Sheet#getDefaultRowHeightInPoints()} for the currently active
      * sheet {@link #getActiveSheet()}.
-     * 
+     *
      * @return Default row height for the currently active sheet, in points.
      */
     public float getDefaultRowHeight() {
@@ -1904,7 +1922,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the default row height in points for this Spreadsheet and the
      * currently active sheet, returned by {@link #getActiveSheet()}.
-     * 
+     *
      * @param heightPT
      *            New default row height in points.
      */
@@ -1924,7 +1942,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * browser by double-clicking the border of the target rowIndex header.
      *
      * @param rowIndex
-     *     Index of the target rowIndex, 0-based
+     *            Index of the target rowIndex, 0-based
      */
     protected void onRowHeaderDoubleClick(int rowIndex) {
         fireRowHeaderDoubleClick(rowIndex);
@@ -1938,18 +1956,18 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * adds a {@link RowHeaderDoubleClickListener} to the Spreadsheet
      *
      * @param listener
-     *     The listener to add
+     *            The listener to add
      **/
     public void addRowHeaderDoubleClickListener(
-        RowHeaderDoubleClickListener listener) {
+            RowHeaderDoubleClickListener listener) {
         addListener(RowHeaderDoubleClickEvent.class, listener,
-            RowHeaderDoubleClickListener.ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK);
+                RowHeaderDoubleClickListener.ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK);
     }
 
     /**
      * This method is called when column auto-fit has been initiated from the
      * browser by double-clicking the border of the target column header.
-     * 
+     *
      * @param columnIndex
      *            Index of the target column, 0-based
      */
@@ -1968,7 +1986,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * This does not take into account cells that have custom Vaadin components
      * inside them.
-     * 
+     *
      * @param columnIndex
      *            Index of the target column, 0-based
      */
@@ -1976,13 +1994,17 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         final Sheet activeSheet = getActiveSheet();
         try {
             activeSheet.autoSizeColumn(columnIndex);
-        }catch(NullPointerException e) {
-            // NullPointerException is being thrown in POI. Catch to prevent breaking the UI.
-            LOGGER.log(Level.FINEST, "Poi threw NullPointerException when trying to autofit column", e);
+        } catch (NullPointerException e) {
+            // NullPointerException is being thrown in POI. Catch to prevent
+            // breaking the UI.
+            LOGGER.log(Level.FINEST,
+                    "Poi threw NullPointerException when trying to autofit column",
+                    e);
             return;
         }
-        int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex, AbstractExcelUtils
-            .getColumnWidthInPx(activeSheet.getColumnWidth(columnIndex)));
+        int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex,
+                AbstractExcelUtils.getColumnWidthInPx(
+                        activeSheet.getColumnWidth(columnIndex)));
 
         getState().colW[columnIndex] = columnPixelWidth;
         getCellValueManager().clearCacheForColumn(columnIndex + 1);
@@ -2004,7 +2026,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * visible rows rendered {@link #getRows()} with {@link #setMaxRows(int)}.
      * <p>
      * See {@link Sheet#shiftRows(int, int, int)}.
-     * 
+     *
      * @param startRow
      *            The first row to shift, 0-based
      * @param endRow
@@ -2026,7 +2048,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * visible rows rendered {@link #getRows()} with {@link #setMaxRows(int)}.
      * <p>
      * See {@link Sheet#shiftRows(int, int, int, boolean, boolean)}.
-     * 
+     *
      * @param startRow
      *            The first row to shift, 0-based
      * @param endRow
@@ -2098,7 +2120,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             } else {
                 if (row.getZeroHeight()) {
                     getState().hiddenRowIndexes.add(rowIndex);
-                } else if (getState(false).hiddenRowIndexes.contains(rowIndex)) {
+                } else if (getState(false).hiddenRowIndexes
+                        .contains(rowIndex)) {
                     getState().hiddenRowIndexes.remove(rowIndex);
                 }
                 for (int c = 0; c < getState().cols; c++) {
@@ -2149,15 +2172,16 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Checks if the current column has a filter popup button and calculates
      * extra width to accommodate when to include it in autofit.
      *
-     * @param columnIndex Index of the target column, 0 based
-     * @param autofitWidth The autofit width without the button, in pixels
+     * @param columnIndex
+     *            Index of the target column, 0 based
+     * @param autofitWidth
+     *            The autofit width without the button, in pixels
      * @return Pixel width of the column
      */
     private int getColumnAutofitPixelWidth(int columnIndex, int autofitWidth) {
         List<SpreadsheetTable> tablesForActiveSheet = getTablesForActiveSheet();
-        CellReference cr = new CellReference(getActiveSheet()
-            .getSheetName(), 0, columnIndex,
-            true, true);
+        CellReference cr = new CellReference(getActiveSheet().getSheetName(), 0,
+                columnIndex, true, true);
         autofittedColumnWidths.put(cr, autofitWidth);
         for (SpreadsheetTable st : tablesForActiveSheet) {
             if (!(st instanceof SpreadsheetFilterTable)) {
@@ -2166,7 +2190,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             SpreadsheetFilterTable ft = (SpreadsheetFilterTable) st;
             PopupButton popupButton = ft.getPopupButton(cr);
             if (popupButton != null) {
-                return autofitWidth + FILTER_BUTTON_PIXEL_WIDTH + FILTER_BUTTON_PIXEL_PADDING;
+                return autofitWidth + FILTER_BUTTON_PIXEL_WIDTH
+                        + FILTER_BUTTON_PIXEL_PADDING;
             }
         }
         return autofitWidth;
@@ -2265,7 +2290,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * POI, as of 4.0.0, now accepts this as an argument to formula evaluation.
      * Some conditional formats can modify the display text of a cell.
-     * 
+     *
      * @return the common {@link ConditionalFormattingEvaluator} instance.
      */
     public ConditionalFormattingEvaluator getConditionalFormattingEvaluator() {
@@ -2276,10 +2301,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         for (int r = sheet.getLastRowNum(); r >= 0; r--) {
             Row row = sheet.getRow(r);
             if (row != null) {
-                for (short c = row.getFirstCellNum(); c < row.getLastCellNum(); c++) {
+                for (short c = row.getFirstCellNum(); c < row
+                        .getLastCellNum(); c++) {
                     Cell cell = row.getCell(c);
-                    if (cell != null
-                            && cell.getCellType() != CellType.BLANK) {
+                    if (cell != null && cell.getCellType() != CellType.BLANK) {
                         return r;
                     }
                 }
@@ -2308,8 +2333,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 }
             }
             while (regions < getState(false).mergedRegions.size()) {
-                getState().mergedRegions.remove(getState(false).mergedRegions
-                        .size() - 1);
+                getState().mergedRegions
+                        .remove(getState(false).mergedRegions.size() - 1);
             }
         } else {
             getState().mergedRegions = null;
@@ -2319,10 +2344,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Deletes rows. See {@link Sheet#removeRow(Row)}. Removes all row content,
      * deletes cells and resets the sheet size.
-     * 
+     *
      * Does not shift rows up (!) - use
      * {@link #shiftRows(int, int, int, boolean, boolean)} for that.
-     * 
+     *
      * @param startRow
      *            Index of the starting row, 0-based
      * @param endRow
@@ -2356,7 +2381,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Merges cells. See {@link Sheet#addMergedRegion(CellRangeAddress)}.
-     * 
+     *
      * @param selectionRange
      *            The cell range to merge, e.g. "B3:C5"
      */
@@ -2366,7 +2391,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Merge cells. See {@link Sheet#addMergedRegion(CellRangeAddress)}.
-     * 
+     *
      * @param row1
      *            Index of the starting row of the merged region, 0-based
      * @param col1
@@ -2396,7 +2421,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * If the added region affects the currently selected cell, a new
      * {@link SelectionChangeEvent} is fired.
-     * 
+     *
      * @param region
      *            The range of cells to merge
      * @throws IllegalArgumentException
@@ -2417,10 +2442,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             } else if (intersect == CellRangeUtil.OVERLAP
                     || intersect == CellRangeUtil.ENCLOSES) {
                 throw new IllegalArgumentException("An existing region "
-                        + existingRegion
-                        + " "
+                        + existingRegion + " "
                         + (intersect == CellRangeUtil.OVERLAP ? "overlaps "
-                                : "encloses ") + "the given region " + region);
+                                : "encloses ")
+                        + "the given region " + region);
             } else {
                 index++;
             }
@@ -2477,7 +2502,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * If the removed region affects the currently selected cell, a new
      * {@link SelectionChangeEvent} is fired.
-     * 
+     *
      * @param index
      *            Position of the target merged region in the POI merged region
      *            array, 0-based
@@ -2499,7 +2524,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         for (int r = mergedRegion.row1; r <= (mergedRegion.row2 + 1); r++) {
             Row row = sheet.getRow(r - 1);
             if (row != null) {
-                for (int c = mergedRegion.col1; c <= (mergedRegion.col2 + 1); c++) {
+                for (int c = mergedRegion.col1; c <= (mergedRegion.col2
+                        + 1); c++) {
                     Cell cell = row.getCell(c - 1);
                     if (cell != null) {
                         styler.cellStyleUpdated(cell, false);
@@ -2519,7 +2545,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * This can be used if you want to add / remove multiple merged regions
      * directly from the POI model and need to update the component.
-     * 
+     *
      * Note that you must also make sure that possible styles for the merged
      * regions are updated, if those were modified, by calling
      * {@link #reloadActiveSheetStyles()}.
@@ -2538,7 +2564,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Hides or shows the given column, see
      * {@link Sheet#setColumnHidden(int, boolean)}.
-     * 
+     *
      * @param columnIndex
      *            Index of the target column, 0-based
      * @param hidden
@@ -2546,17 +2572,17 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      */
     public void setColumnHidden(int columnIndex, boolean hidden) {
         getActiveSheet().setColumnHidden(columnIndex, hidden);
-        if (hidden && !getState().hiddenColumnIndexes.contains(columnIndex + 1)) {
+        if (hidden
+                && !getState().hiddenColumnIndexes.contains(columnIndex + 1)) {
             getState().hiddenColumnIndexes.add(columnIndex + 1);
             getState().colW[columnIndex] = 0;
         } else if (!hidden
                 && getState().hiddenColumnIndexes.contains(columnIndex + 1)) {
-            getState().hiddenColumnIndexes
-                    .remove(getState().hiddenColumnIndexes
-                            .indexOf(columnIndex + 1));
+            getState().hiddenColumnIndexes.remove(
+                    getState().hiddenColumnIndexes.indexOf(columnIndex + 1));
             getState().colW[columnIndex] = AbstractExcelUtils
-                    .getColumnWidthInPx(getActiveSheet().getColumnWidth(
-                            columnIndex));
+                    .getColumnWidthInPx(
+                            getActiveSheet().getColumnWidth(columnIndex));
             getCellValueManager().clearCacheForColumn(columnIndex + 1);
             getCellValueManager().loadCellData(firstRow, columnIndex + 1,
                     lastRow, columnIndex + 1);
@@ -2573,7 +2599,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the visibility state of the given column. See
      * {@link Sheet#isColumnHidden(int)}.
-     * 
+     *
      * @param columnIndex
      *            Index of the target column, 0-based
      * @return true if the target column is hidden, false if it is visible.
@@ -2584,7 +2610,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Hides or shows the given row, see {@link Row#setZeroHeight(boolean)}.
-     * 
+     *
      * @param rowIndex
      *            Index of the target row, 0-based
      * @param hidden
@@ -2598,10 +2624,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
         row.setZeroHeight(hidden);
 
-        // can't assume the state already had room for the row in its 
-        // arrays, it may have been created above.  This avoids 
+        // can't assume the state already had room for the row in its
+        // arrays, it may have been created above. This avoids
         // ArrayIndexOutOfBoundsException
-        SpreadsheetFactory.calculateSheetSizes(this,  getActiveSheet());
+        SpreadsheetFactory.calculateSheetSizes(this, getActiveSheet());
 
         if (hasSheetOverlays()) {
             reloadImageSizesFromPOI = true;
@@ -2614,7 +2640,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the visibility state of the given row. A row is hidden when it has
      * zero height, see {@link Row#getZeroHeight()}.
-     * 
+     *
      * @param rowIndex
      *            Index of the target row, 0-based
      * @return true if the target row is hidden, false if it is visible.
@@ -2626,7 +2652,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Reinitializes the component from the given Excel file.
-     * 
+     *
      * @param file
      *            Data source file. Excel format is expected.
      * @throws IOException
@@ -2641,7 +2667,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Reinitializes the component from the given input stream. The expected
      * format is that of an Excel file.
-     * 
+     *
      * @param inputStream
      *            Data source input stream. Excel format is expected.
      * @throws IOException
@@ -2655,7 +2681,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Exports current spreadsheet into a File with the given name.
-     * 
+     *
      * @param fileName
      *            The full name of the file. If the name doesn't end with '.xls'
      *            or '.xlsx', the approriate one will be appended.
@@ -2666,14 +2692,14 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * @throws IOException
      *             If the file can't be written to for any reason
      */
-    public File write(String fileName) throws FileNotFoundException,
-            IOException {
+    public File write(String fileName)
+            throws FileNotFoundException, IOException {
         return SpreadsheetFactory.write(this, fileName);
     }
 
     /**
      * Exports current spreadsheet as an output stream.
-     * 
+     *
      * @param outputStream
      *            The target stream
      * @throws IOException
@@ -2688,7 +2714,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * top and bottom edges of the visible cell area, for smoother scrolling.
      * <p>
      * Size is in pixels, the default is 200.
-     * 
+     *
      * @return The current row buffer size
      */
     public int getRowBufferSize() {
@@ -2701,7 +2727,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * The row buffer size determines the amount of content rendered outside the
      * top and bottom edges of the visible cell area, for smoother scrolling.
-     * 
+     *
      * @param rowBufferInPixels
      *            The amount of extra content rendered outside the top and
      *            bottom edges of the visible area.
@@ -2716,7 +2742,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * scrolling.
      * <p>
      * Size is in pixels, the default is 200.
-     * 
+     *
      * @return The current column buffer size
      */
     public int getColBufferSize() {
@@ -2730,7 +2756,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * The column buffer size determines the amount of content rendered outside
      * the left and right edges of the visible cell area, for smoother
      * scrolling.
-     * 
+     *
      * @param colBufferInPixels
      *            The amount of extra content rendered outside the left and
      *            right edges of the visible area.
@@ -2741,7 +2767,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the default row count for new sheets.
-     * 
+     *
      * @return The default row count for new sheets.
      */
     public int getDefaultRowCount() {
@@ -2750,7 +2776,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the default row count for new sheets.
-     * 
+     *
      * @param defaultRowCount
      *            The number of rows to give sheets that are created with the
      *            '+' button on the client side.
@@ -2761,7 +2787,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the default column count for new sheets.
-     * 
+     *
      * @return The default column count for new sheets.
      */
     public int getDefaultColumnCount() {
@@ -2770,7 +2796,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the default column count for new sheets.
-     * 
+     *
      * @param defaultColumnCount
      *            The number of columns to give sheets that are created with the
      *            '+' button on the client side.
@@ -2793,11 +2819,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.vaadin.server.AbstractClientConnector#setResource(java.lang.String,
      * com.vaadin.server.Resource)
-     * 
+     *
      * Provides package visibility.
      */
     @Override
@@ -2857,7 +2883,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Override this method to provide your own {@link ConditionalFormatter}
      * implementation. This method is called each time we open a workbook.
-     * 
+     *
      * @return A {@link ConditionalFormatter} that is tied to this spreadsheet.
      */
     protected ConditionalFormatter createConditionalFormatter() {
@@ -2867,7 +2893,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Override this method to provide your own {@link SpreadsheetStyleFactory}
      * implementation. This method is called each time we open a workbook.
-     * 
+     *
      * @return A {@link SpreadsheetStyleFactory} that is tied to this
      *         Spreadsheet.
      */
@@ -2887,8 +2913,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         topLeftCellCommentsLoaded = false;
 
         reload = true;
-        getState().sheetIndex = getSpreadsheetSheetIndex(workbook
-                .getActiveSheetIndex()) + 1;
+        getState().sheetIndex = getSpreadsheetSheetIndex(
+                workbook.getActiveSheetIndex()) + 1;
         getState().sheetProtected = getActiveSheet().getProtect();
         getState().cellKeysToEditorIdMap = null;
         getState().hyperlinksTooltips = null;
@@ -2939,7 +2965,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             final short col = selectedCellReference.getCol();
             final int row = selectedCellReference.getRow();
             final String key = SpreadsheetUtil.toKey(col + 1, row + 1);
-            Map<String, String> cellKeysToEditorIdMap = getState(false).cellKeysToEditorIdMap;
+            Map<String, String> cellKeysToEditorIdMap = getState(
+                    false).cellKeysToEditorIdMap;
             if (cellKeysToEditorIdMap != null
                     && cellKeysToEditorIdMap.containsKey(key)
                     && customComponents != null) {
@@ -2971,7 +2998,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Returns POI model based index for the given Spreadsheet sheet index.
-     * 
+     *
      * @param visibleSheetIndex
      *            Index of the sheet within this Spreadsheet, 0-based
      * @return Index of the sheet within the POI model, or -1 if something went
@@ -2994,7 +3021,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the Spreadsheet sheet-index for the sheet at the given POI index.
      * Index will be returned for a visible sheet only.
-     * 
+     *
      * @param poiSheetIndex
      *            Index of the target sheet within the POI model, 0-based
      * @return Index of the target sheet in the Spreadsheet, 0-based
@@ -3011,7 +3038,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the protection state of the sheet at the given POI index.
-     * 
+     *
      * @param poiSheetIndex
      *            Index of the target sheet within the POI model, 0-based
      * @return true if the target {@link Sheet} is protected, false otherwise.
@@ -3022,7 +3049,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the protection state of the current sheet.
-     * 
+     *
      * @return true if the current {@link Sheet} is protected, false otherwise.
      */
     public boolean isActiveSheetProtected() {
@@ -3031,7 +3058,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the visibility state of the given cell.
-     * 
+     *
      * @param cell
      *            The cell to check
      * @return true if the cell is hidden, false otherwise
@@ -3042,7 +3069,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the locked state of the given cell.
-     * 
+     *
      * @param cell
      *            The cell to check
      * @return true if the cell is locked, false otherwise
@@ -3053,10 +3080,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 if (cell.getCellStyle().getIndex() != 0) {
                     return cell.getCellStyle().getLocked();
                 } else {
-                    return getState(false).lockedColumnIndexes.contains(cell
-                            .getColumnIndex() + 1)
-                            && getState(false).lockedRowIndexes.contains(cell
-                                    .getRowIndex() + 1);
+                    return getState(false).lockedColumnIndexes
+                            .contains(cell.getColumnIndex() + 1)
+                            && getState(false).lockedRowIndexes
+                                    .contains(cell.getRowIndex() + 1);
                 }
             } else {
                 return true;
@@ -3068,7 +3095,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the RPC proxy for communication to the client side.
-     * 
+     *
      * @return Client RPC proxy instance
      */
     protected SpreadsheetClientRpc getRpcProxy() {
@@ -3077,7 +3104,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#beforeClientResponse(boolean)
      */
     @Override
@@ -3087,7 +3114,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             reload = false;
             getState().reload = true;
             if (initialSheetSelection == null) {
-                if (sheetState.getSelectedCellsOnSheet(getActiveSheet()) == null) {
+                if (sheetState
+                        .getSelectedCellsOnSheet(getActiveSheet()) == null) {
                     initialSheetSelection = "A1";
                 } else {
                     initialSheetSelection = sheetState
@@ -3101,7 +3129,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the currently used style factory for this Spreadsheet.
-     * 
+     *
      * @return The current style factory.
      */
     public SpreadsheetStyleFactory getSpreadsheetStyleFactory() {
@@ -3115,7 +3143,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Use {@link #markCellAsDeleted(Cell, boolean)},
      * {@link #markCellAsUpdated(Cell, boolean)}, or
      * {@link #reloadVisibleCellContents()} to update content.
-     * 
+     *
      * @return The currently presented workbook
      */
     public Workbook getWorkbook() {
@@ -3124,7 +3152,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Reloads the component with the given Workbook.
-     * 
+     *
      * @param workbook
      *            New workbook to load
      */
@@ -3143,7 +3171,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Use {@link #markCellAsDeleted(Cell, boolean)},
      * {@link #markCellAsUpdated(Cell, boolean)}, or
      * {@link #reloadVisibleCellContents()} to update content.
-     * 
+     *
      * @return The currently active (= visible) sheet
      */
     public Sheet getActiveSheet() {
@@ -3152,10 +3180,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Updates the given range of cells. Takes frozen panes in to account.
-     * 
+     *
      * NOTE: Does not run style updates!
      */
-    private void updateRowAndColumnRangeCellData(int r1, int c1, int r2, int c2) {
+    private void updateRowAndColumnRangeCellData(int r1, int c1, int r2,
+            int c2) {
         // FIXME should be optimized, should not go through all links, comments
         // etc. always
         loadHyperLinks();
@@ -3170,7 +3199,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sends data of the given cell area to client side. Data is only sent once,
      * unless there are changes. Cells with custom components are skipped.
-     * 
+     *
      * @param firstRow
      *            Index of the starting row, 1-based
      * @param firstColumn
@@ -3204,8 +3233,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     void onRowResized(Map<Integer, Float> newRowSizes, int row1, int col1,
             int row2, int col2) {
         SizeChangeCommand command = new SizeChangeCommand(this, Type.ROW);
-        command.captureValues(newRowSizes.keySet().toArray(
-                new Integer[newRowSizes.size()]));
+        command.captureValues(
+                newRowSizes.keySet().toArray(new Integer[newRowSizes.size()]));
         historyManager.addCommand(command);
         for (Entry<Integer, Float> entry : newRowSizes.entrySet()) {
             int index = entry.getKey();
@@ -3222,7 +3251,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the row height for currently active sheet. Updates both POI model
      * and the visible sheet.
-     * 
+     *
      * @param index
      *            Index of target row, 0-based
      * @param height
@@ -3244,18 +3273,18 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 row = getActiveSheet().createRow(index);
             }
             row.setHeightInPoints(height);
-            // can't assume the state already had room for the row in its 
-            // arrays, it may have been created above.  This avoids 
+            // can't assume the state already had room for the row in its
+            // arrays, it may have been created above. This avoids
             // ArrayIndexOutOfBoundsException
-            SpreadsheetFactory.calculateSheetSizes(this,  getActiveSheet());
+            SpreadsheetFactory.calculateSheetSizes(this, getActiveSheet());
         }
     }
 
     void onColumnResized(Map<Integer, Integer> newColumnSizes, int row1,
             int col1, int row2, int col2) {
         SizeChangeCommand command = new SizeChangeCommand(this, Type.COLUMN);
-        command.captureValues(newColumnSizes.keySet().toArray(
-                new Integer[newColumnSizes.size()]));
+        command.captureValues(newColumnSizes.keySet()
+                .toArray(new Integer[newColumnSizes.size()]));
         historyManager.addCommand(command);
         for (Entry<Integer, Integer> entry : newColumnSizes.entrySet()) {
             int index = entry.getKey();
@@ -3272,7 +3301,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the column width in pixels (using conversion) for the currently
      * active sheet. Updates both POI model and the visible sheet.
-     * 
+     *
      * @param index
      *            Index of target column, 0-based
      * @param width
@@ -3282,10 +3311,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         if (width == 0) {
             setColumnHidden(index, true);
         } else {
-            if (getState().hiddenColumnIndexes.contains(Integer
-                    .valueOf(index + 1))) {
-                getState().hiddenColumnIndexes.remove(Integer
-                        .valueOf(index + 1));
+            if (getState().hiddenColumnIndexes
+                    .contains(Integer.valueOf(index + 1))) {
+                getState().hiddenColumnIndexes
+                        .remove(Integer.valueOf(index + 1));
             }
             if (getActiveSheet().isColumnHidden(index)) {
                 getActiveSheet().setColumnHidden(index, false);
@@ -3342,24 +3371,24 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                                     if (tooltip == null) {
                                         tooltip = link.getAddress();
                                     }
-                                    getState().hyperlinksTooltips
-                                            .put(SpreadsheetUtil.toKey(c + 1,
-                                                    r + 1), tooltip);
+                                    getState().hyperlinksTooltips.put(
+                                            SpreadsheetUtil.toKey(c + 1, r + 1),
+                                            tooltip);
                                 } else {
-                                    getState().hyperlinksTooltips
-                                            .put(SpreadsheetUtil.toKey(c + 1,
-                                                    r + 1), link.getAddress());
+                                    getState().hyperlinksTooltips.put(
+                                            SpreadsheetUtil.toKey(c + 1, r + 1),
+                                            link.getAddress());
                                 }
                             } else {
                                 // Check if the cell has HYPERLINK function
                                 if (DefaultHyperlinkCellClickHandler
                                         .isHyperlinkFormulaCell(cell)
                                         && hyperlinkCellClickHandler != null) {
-                                    getState().hyperlinksTooltips
-                                            .put(SpreadsheetUtil.toKey(c + 1,
-                                                    r + 1),
-                                                    hyperlinkCellClickHandler
-                                                            .getHyperlinkFunctionTarget(cell));
+                                    getState().hyperlinksTooltips.put(
+                                            SpreadsheetUtil.toKey(c + 1, r + 1),
+                                            hyperlinkCellClickHandler
+                                                    .getHyperlinkFunctionTarget(
+                                                            cell));
                                 }
                             }
                         } catch (XmlValueDisconnectedException exc) {
@@ -3422,8 +3451,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 getState().overlays = new HashMap<String, OverlayInfo>();
             }
 
-            getState().overlays
-                    .put(overlay.getId(), createOverlayInfo(overlay));
+            getState().overlays.put(overlay.getId(),
+                    createOverlayInfo(overlay));
 
             overlay.setOverlayChangeListener(new OverlayChangeListener() {
                 @Override
@@ -3465,7 +3494,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         if (!isType2) {
             // to ensure compatibility with grouping/hidden columns
-            if (isColumnRangeHidden(col1, col2) || isRowRangeHidden(row1, row2)) {
+            if (isColumnRangeHidden(col1, col2)
+                    || isRowRangeHidden(row1, row2)) {
                 return false;
             }
         }
@@ -3476,17 +3506,14 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         // the sheet is divided into four areas by vertical and horizontal split
 
         boolean visibleInArea1 = horizontalSplitPosition > 0
-                && verticalSplitPosition > 0
-                && overlay.isVisible(1, 1, verticalSplitPosition,
-                        horizontalSplitPosition);
+                && verticalSplitPosition > 0 && overlay.isVisible(1, 1,
+                        verticalSplitPosition, horizontalSplitPosition);
 
-        boolean visibleInArea2 = horizontalSplitPosition > 0
-                && overlay.isVisible(firstRow, 1, lastRow,
-                        horizontalSplitPosition);
+        boolean visibleInArea2 = horizontalSplitPosition > 0 && overlay
+                .isVisible(firstRow, 1, lastRow, horizontalSplitPosition);
 
-        boolean visibleInArea3 = verticalSplitPosition > 0
-                && overlay.isVisible(1, firstColumn, verticalSplitPosition,
-                        lastColumn);
+        boolean visibleInArea3 = verticalSplitPosition > 0 && overlay
+                .isVisible(1, firstColumn, verticalSplitPosition, lastColumn);
 
         boolean visibleInArea4 = overlay.isVisible(firstRow, firstColumn,
                 lastRow, lastColumn);
@@ -3613,14 +3640,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 int c_one_based = c + 1;
                 int row_one_based = r + 1;
 
-                MergedRegion region = mergedRegionContainer.getMergedRegion(
-                        c_one_based, row_one_based);
+                MergedRegion region = mergedRegionContainer
+                        .getMergedRegion(c_one_based, row_one_based);
                 // do not add comments that are "below" merged regions.
                 // client side handles cases where comment "moves" (because
                 // shifting etc.) from merged cell into basic or vice versa.
                 if (region == null || region.col1 == c_one_based
                         && region.row1 == row_one_based) {
-                    Comment comment = sheet.getCellComment(new CellAddress(r, c));
+                    Comment comment = sheet
+                            .getCellComment(new CellAddress(r, c));
                     String key = SpreadsheetUtil.toKey(c_one_based,
                             row_one_based);
                     if (comment != null) {
@@ -3629,8 +3657,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                         // triangle on the cell's top right corner. the comment
                         // position is calculated so that it is completely
                         // visible.
-                        getState().cellComments.put(key, comment.getString()
-                                .getString());
+                        getState().cellComments.put(key,
+                                comment.getString().getString());
                         getState().cellCommentAuthors.put(key,
                                 comment.getAuthor());
                         if (comment.isVisible()) {
@@ -3724,8 +3752,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             final Row row = getActiveSheet().getRow(r);
             for (int c = col1 - 1; c < col2; c++) {
                 // Cells that are inside a merged region are skipped:
-                MergedRegion region = mergedRegionContainer.getMergedRegion(
-                        c + 1, r + 1);
+                MergedRegion region = mergedRegionContainer
+                        .getMergedRegion(c + 1, r + 1);
                 if (region == null
                         || (region.col1 == (c + 1) && region.row1 == (r + 1))) {
                     Cell cell = null;
@@ -3741,8 +3769,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                         if (!customComponents.contains(customComponent)) {
                             registerCustomComponent(customComponent);
                         }
-                        getState().componentIDtoCellKeysMap.put(
-                                customComponent.getConnectorId(), key);
+                        getState().componentIDtoCellKeysMap
+                                .put(customComponent.getConnectorId(), key);
                         newCustomComponents.add(customComponent);
                         rowsWithComponents.add(r);
                     } else if (!isCellLocked(cell)) {
@@ -3755,7 +3783,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                             final String key = SpreadsheetUtil.toKey(c + 1,
                                     r + 1);
                             if (!newCustomComponents.contains(customEditor)
-                                    && !customComponents.contains(customEditor)) {
+                                    && !customComponents
+                                            .contains(customEditor)) {
                                 registerCustomComponent(customEditor);
                             }
                             getState().cellKeysToEditorIdMap.put(key,
@@ -3809,20 +3838,23 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Determines if the cell at the given coordinates is currently visible
      * (rendered) in the browser.
-     * 
+     *
      * @param row
      *            Row index, 1-based
      * @param col
      *            Column index, 1-based
-     * 
+     *
      * @return True if the cell is visible, false otherwise
      */
     private boolean isCellVisible(int row, int col) {
         int verticalSplitPosition = getLastFrozenRow();
         int horizontalSplitPosition = getLastFrozenColumn();
-        return (col >= firstColumn && col <= lastColumn && row >= firstRow && row <= lastRow)
-                || (col >= 1 && col <= horizontalSplitPosition && row >= 1 && row <= verticalSplitPosition)
-                || (col >= firstColumn && col <= lastColumn && row >= 1 && row <= verticalSplitPosition)
+        return (col >= firstColumn && col <= lastColumn && row >= firstRow
+                && row <= lastRow)
+                || (col >= 1 && col <= horizontalSplitPosition && row >= 1
+                        && row <= verticalSplitPosition)
+                || (col >= firstColumn && col <= lastColumn && row >= 1
+                        && row <= verticalSplitPosition)
                 || (col >= 1 && col <= horizontalSplitPosition
                         && row >= firstRow && row <= lastRow);
     }
@@ -3850,7 +3882,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Set a new component factory for this Spreadsheet. If a {@link Workbook}
      * has been set, all components will be reloaded.
-     * 
+     *
      * @param customComponentFactory
      *            The new component factory to use.
      */
@@ -3873,7 +3905,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the current SpreadsheetComponentFactory.
-     * 
+     *
      * @return The currently used component factory.
      */
     public SpreadsheetComponentFactory getSpreadsheetComponentFactory() {
@@ -3886,7 +3918,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * Note that if the active sheet is changed, all pop-up buttons are removed
      * from the spreadsheet.
-     * 
+     *
      * @param cellAddress
      *            address to the target cell, e.g. "C3"
      * @param popupButton
@@ -3903,7 +3935,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * Note that if the active sheet is changed, all pop-up buttons are removed
      * from the spreadsheet.
-     * 
+     *
      * @param row
      *            Row index of target cell, 0-based
      * @param col
@@ -3922,7 +3954,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * Note that if the active sheet is changed, all pop-up buttons are removed
      * from the spreadsheet.
-     * 
+     *
      * @param cellReference
      *            Reference to the target cell
      * @param popupButton
@@ -3992,7 +4024,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * <p>
      * The pop-up buttons are always removed by the spreadsheet when the sheet
      * changes.
-     * 
+     *
      * @param table
      *            The table to register
      */
@@ -4004,8 +4036,9 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     }
 
     /**
-     * When adding a filter table, re-run autofit for columns that
-     * haven't been resized since the last autofit
+     * When adding a filter table, re-run autofit for columns that haven't been
+     * resized since the last autofit
+     *
      * @param table
      *            The SpreadsheetFilterTable that was added
      */
@@ -4016,13 +4049,13 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         int lastColumn = fullTableRegion.getLastColumn();
         for (int i = firstColumn; i <= lastColumn; i++) {
             CellReference cr = new CellReference(filteredSheet.getSheetName(),
-                0, i, true, true);
+                    0, i, true, true);
             if (!autofittedColumnWidths.containsKey(cr)) {
                 continue;
             }
             Integer autofittedWidth = autofittedColumnWidths.get(cr);
-            int currentWidth = AbstractExcelUtils.getColumnWidthInPx(filteredSheet
-                .getColumnWidth(cr.getCol()));
+            int currentWidth = AbstractExcelUtils.getColumnWidthInPx(
+                    filteredSheet.getColumnWidth(cr.getCol()));
             // only update columns that haven't changed size since the last
             // autofit
             if (currentWidth == autofittedWidth) {
@@ -4038,7 +4071,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * {@link #deleteTable(SpreadsheetTable)} to completely remove the table.
      * <p>
      * See {@link #registerTable(SpreadsheetTable)}.
-     * 
+     *
      * @param table
      *            The table to unregister
      */
@@ -4051,7 +4084,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * {@link #registerTable(SpreadsheetTable)}), clears and removes all
      * possible filters (if table is a {@link SpreadsheetFilterTable}), and
      * clears all table pop-up buttons and content.
-     * 
+     *
      * @param table
      *            The table to delete
      */
@@ -4071,7 +4104,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets all the tables that have been registered to this Spreadsheet. See
      * {@link #registerTable(SpreadsheetTable)}.
-     * 
+     *
      * @return All tables for this spreadsheet
      */
     public HashSet<SpreadsheetTable> getTables() {
@@ -4081,7 +4114,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the tables that belong to the currently active sheet (
      * {@link #getActiveSheet()}). See {@link #registerTable(SpreadsheetTable)}.
-     * 
+     *
      * @return All tables for the currently active sheet
      */
     public List<SpreadsheetTable> getTablesForActiveSheet() {
@@ -4111,9 +4144,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Returns the formatted value for the given cell, using the
      * {@link DataFormatter} with the current locale.
-     * 
-     * See {@link DataFormatter#formatCellValue(Cell, FormulaEvaluator, ConditionalFormattingEvaluator)}.
-     * 
+     *
+     * See
+     * {@link DataFormatter#formatCellValue(Cell, FormulaEvaluator, ConditionalFormattingEvaluator)}.
+     *
      * @param cell
      *            Cell to get the value from
      * @return Formatted value
@@ -4126,7 +4160,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets grid line visibility for the currently active sheet.
-     * 
+     *
      * @return True if grid lines are visible, false if they are hidden
      */
     public boolean isGridlinesVisible() {
@@ -4138,7 +4172,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets grid line visibility for the currently active sheet.
-     * 
+     *
      * @param visible
      *            True to show grid lines, false to hide them
      */
@@ -4152,7 +4186,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets row and column heading visibility for the currently active sheet.
-     * 
+     *
      * @return true if headings are visible, false if they are hidden
      */
     public boolean isRowColHeadingsVisible() {
@@ -4164,7 +4198,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets row and column heading visibility for the currently active sheet.
-     * 
+     *
      * @param visible
      *            true to show headings, false to hide them
      */
@@ -4229,7 +4263,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Creates a new selection change event.
-         * 
+         *
          * @param source
          *            Source Spreadsheet
          * @param selectedCellReference
@@ -4255,7 +4289,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets the Spreadsheet where this event happened.
-         * 
+         *
          * @return Source Spreadsheet
          */
         public Spreadsheet getSpreadsheet() {
@@ -4266,7 +4300,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
          * Returns reference to the currently selected single cell OR in case of
          * multiple selections the last cell clicked OR in case of area select
          * the cell from which the area selection was started.
-         * 
+         *
          * @return CellReference to the single selected cell, or the last cell
          *         selected manually (e.g. with ctrl+mouseclick)
          */
@@ -4277,7 +4311,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         /**
          * Gets all the individually selected single cells in the current
          * selection.
-         * 
+         *
          * @return All non-contiguously selected cells (e.g. with
          *         ctrl+mouseclick)
          */
@@ -4288,7 +4322,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         /**
          * Gets the merged region the single selected cell is a part of, if
          * applicable.
-         * 
+         *
          * @return The {@link CellRangeAddress} described the merged region the
          *         single selected cell is part of, if any.
          */
@@ -4298,7 +4332,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets all separately selected cell ranges.
-         * 
+         *
          * @return All separately selected cell ranges (e.g. with
          *         ctrl+shift+mouseclick)
          */
@@ -4308,7 +4342,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets a combination of all selected cells.
-         * 
+         *
          * @return A combination of all selected cells, regardless of selection
          *         mode. Doesn't contain duplicates.
          */
@@ -4352,7 +4386,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * This is called when user changes cell selection.
-         * 
+         *
          * @param event
          *            SelectionChangeEvent that happened
          */
@@ -4370,7 +4404,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * This is called when user changes the cell value in Spreadsheet.
-         * 
+         *
          * @param event
          *            CellValueChangeEvent that happened
          */
@@ -4388,7 +4422,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * This is called when user changes the cell value in Spreadsheet.
-         * 
+         *
          * @param event
          *            FormulaValueChangeEvent that happened
          */
@@ -4397,7 +4431,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given SelectionChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
      */
@@ -4408,7 +4442,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given CellValueChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
      */
@@ -4419,7 +4453,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given FormulaValueChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add.
      */
@@ -4431,22 +4465,24 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Removes the given SelectionChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove.
      */
-    public void removeSelectionChangeListener(SelectionChangeListener listener) {
+    public void removeSelectionChangeListener(
+            SelectionChangeListener listener) {
         removeListener(SelectionChangeEvent.class, listener,
                 SelectionChangeListener.SELECTION_CHANGE_METHOD);
     }
 
     /**
      * Removes the given CellValueChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove.
      */
-    public void removeCellValueChangeListener(CellValueChangeListener listener) {
+    public void removeCellValueChangeListener(
+            CellValueChangeListener listener) {
         removeListener(CellValueChangeEvent.class, listener,
                 CellValueChangeListener.CELL_VALUE_CHANGE_METHOD);
     }
@@ -4476,7 +4512,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
          * each such event; instead, the SpreadSheet waits a second before
          * sending a new event. This is done to give the user time to react to
          * the results of this call (e.g. showing a notification).
-         * 
+         *
          * @param event
          *            ProtectedEditEvent that happened
          */
@@ -4485,7 +4521,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Add listener for when an attempt to modify a locked cell has been made.
-     * 
+     *
      * @param listener
      *            The listener to add.
      */
@@ -4496,7 +4532,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Removes the given ProtectedEditListener.
-     * 
+     *
      * @param listener
      *            The listener to remove.
      */
@@ -4507,10 +4543,10 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Creates or removes a freeze pane from the currently active sheet.
-     * 
+     *
      * If both colSplit and rowSplit are zero then the existing freeze pane is
      * removed.
-     * 
+     *
      * @param rowSplit
      *            Vertical position of the split, 1-based row index
      * @param colSplit
@@ -4537,7 +4573,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets a reference to the current single selected cell.
-     * 
+     *
      * @return Reference to the currently selected single cell.
      *         <p>
      *         <em>NOTE:</em> other cells might also be selected: use
@@ -4551,7 +4587,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets all the currently selected cells.
-     * 
+     *
      * @return References to all currently selected cells.
      */
     public Set<CellReference> getSelectedCellReferences() {
@@ -4576,7 +4612,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Creates a new SheetChangeEvent.
-         * 
+         *
          * @param source
          *            Spreadsheet that triggered the event
          * @param newSheet
@@ -4600,7 +4636,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets the newly selected sheet.
-         * 
+         *
          * @return The new selection
          */
         public Sheet getNewSheet() {
@@ -4609,7 +4645,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets the sheet that was previously selected.
-         * 
+         *
          * @return The previous selection
          */
         public Sheet getPreviousSheet() {
@@ -4618,7 +4654,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets the index of the newly selected sheet among all visible sheets.
-         * 
+         *
          * @return Index of new selection among visible sheets
          */
         public int getNewSheetVisibleIndex() {
@@ -4627,7 +4663,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
         /**
          * Gets the POI index of the newly selected sheet.
-         * 
+         *
          * @return POI index of new selection
          */
         public int getNewSheetPOIIndex() {
@@ -4646,7 +4682,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         /**
          * This method is called an all registered listeners when the selected
          * sheet has changed.
-         * 
+         *
          * @param event
          *            Sheet selection event
          */
@@ -4655,7 +4691,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Adds the given SheetChangeListener to this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to add
      */
@@ -4666,7 +4702,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Removes the given SheetChangeListener from this Spreadsheet.
-     * 
+     *
      * @param listener
      *            Listener to remove
      */
@@ -4684,7 +4720,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.HasComponents#iterator()
      */
     @Override
@@ -4715,7 +4751,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the content of the status label.
-     * 
+     *
      * @param value
      *            The new content. Can not be HTML.
      */
@@ -4725,7 +4761,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the content of the status label
-     * 
+     *
      * @return Current content of the status label.
      */
     public String getStatusLabelValue() {
@@ -4734,7 +4770,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Selects the cell at the given coordinates
-     * 
+     *
      * @param row
      *            Row index, 0-based
      * @param col
@@ -4746,7 +4782,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Selects the given range, using the cell at row1 and col1 as an anchor.
-     * 
+     *
      * @param row1
      *            Index of the first row of the area, 0-based
      * @param col1
@@ -4763,11 +4799,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Selects the cell(s) at the given coordinates
-     * 
-     * Coordinates can be simple "A1" style addresses or ranges,
-     * named ranges, or a formula.  Note that scatter charts, if present,
-     * use formulas that may contain named ranges.
-     * 
+     *
+     * Coordinates can be simple "A1" style addresses or ranges, named ranges,
+     * or a formula. Note that scatter charts, if present, use formulas that may
+     * contain named ranges.
+     *
      * @param selectionRange
      *            The wanted range, e.g. "A3" or "B3:C5"
      */
@@ -4778,7 +4814,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the ConditionalFormatter
-     * 
+     *
      * @return the {@link ConditionalFormatter} used by this {@link Spreadsheet}
      */
     public ConditionalFormatter getConditionalFormatter() {
@@ -4788,7 +4824,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Disposes the current {@link Workbook}, if any, and loads a new empty XSLX
      * Workbook.
-     * 
+     *
      * Note: Discards all data. Be sure to write out the old Workbook if needed.
      */
     public void reset() {
@@ -4811,7 +4847,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#readDesign(org.jsoup.nodes.Element,
      * com.vaadin.ui.declarative.DesignContext)
      */
@@ -4829,50 +4865,51 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 read(url.openStream());
                 srcUri = src;
             } catch (MalformedURLException e) {
-                LOGGER.log(Level.SEVERE, "Failed to parse the provided URI.", e);
+                LOGGER.log(Level.SEVERE, "Failed to parse the provided URI.",
+                        e);
             } catch (IOException e) {
                 LOGGER.log(Level.SEVERE,
                         "Failed to read Excel file from provided URI.", e);
             }
         }
         if (attr.hasKey(ATTR_DEFAULT_COL_COUNT)) {
-            Integer colCount = DesignAttributeHandler.readAttribute(
-                    ATTR_DEFAULT_COL_COUNT, attr, Integer.class);
+            Integer colCount = DesignAttributeHandler
+                    .readAttribute(ATTR_DEFAULT_COL_COUNT, attr, Integer.class);
             setDefaultColumnCount(colCount);
         }
         if (attr.hasKey(ATTR_DEFAULT_COL_WIDTH)) {
-            Integer colWidth = DesignAttributeHandler.readAttribute(
-                    ATTR_DEFAULT_COL_WIDTH, attr, Integer.class);
+            Integer colWidth = DesignAttributeHandler
+                    .readAttribute(ATTR_DEFAULT_COL_WIDTH, attr, Integer.class);
             setDefaultColumnWidth(colWidth);
         }
         if (attr.hasKey(ATTR_DEFAULT_ROW_COUNT)) {
-            Integer rowCount = DesignAttributeHandler.readAttribute(
-                    ATTR_DEFAULT_ROW_COUNT, attr, Integer.class);
+            Integer rowCount = DesignAttributeHandler
+                    .readAttribute(ATTR_DEFAULT_ROW_COUNT, attr, Integer.class);
             setDefaultRowCount(rowCount);
         }
         if (attr.hasKey(ATTR_DEFAULT_ROW_HEIGHT)) {
-            Float rowHeight = DesignAttributeHandler.readAttribute(
-                    ATTR_DEFAULT_ROW_HEIGHT, attr, Float.class);
+            Float rowHeight = DesignAttributeHandler
+                    .readAttribute(ATTR_DEFAULT_ROW_HEIGHT, attr, Float.class);
             setDefaultRowHeight(rowHeight);
         }
         if (attr.hasKey(ATTR_ACTIVE_SHEET)) {
-            Integer activeSheet = DesignAttributeHandler.readAttribute(
-                    ATTR_ACTIVE_SHEET, attr, Integer.class);
+            Integer activeSheet = DesignAttributeHandler
+                    .readAttribute(ATTR_ACTIVE_SHEET, attr, Integer.class);
             setActiveSheetIndex(activeSheet);
         }
         if (attr.hasKey(ATTR_NO_GRIDLINES)) {
-            Boolean noGridlines = DesignAttributeHandler.readAttribute(
-                    ATTR_NO_GRIDLINES, attr, Boolean.class);
+            Boolean noGridlines = DesignAttributeHandler
+                    .readAttribute(ATTR_NO_GRIDLINES, attr, Boolean.class);
             setGridlinesVisible(!noGridlines);
         }
         if (attr.hasKey(ATTR_NO_HEADINGS)) {
-            Boolean noHeadings = DesignAttributeHandler.readAttribute(
-                    ATTR_NO_HEADINGS, attr, Boolean.class);
+            Boolean noHeadings = DesignAttributeHandler
+                    .readAttribute(ATTR_NO_HEADINGS, attr, Boolean.class);
             setRowColHeadingsVisible(!noHeadings);
         }
         if (attr.hasKey(ATTR_NO_FUNCTION_BAR)) {
-            Boolean hidden = DesignAttributeHandler.readAttribute(
-                    ATTR_NO_FUNCTION_BAR, attr, Boolean.class);
+            Boolean hidden = DesignAttributeHandler
+                    .readAttribute(ATTR_NO_FUNCTION_BAR, attr, Boolean.class);
             setFunctionBarVisible(!hidden);
         }
         if (attr.hasKey(ATTR_NO_SHEET_SELECTION_BAR)) {
@@ -4884,7 +4921,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#getCustomAttributes()
      */
     @Override
@@ -4905,7 +4942,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#writeDesign(org.jsoup.nodes.Element,
      * com.vaadin.ui.declarative.DesignContext)
      */
@@ -4919,13 +4956,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
                 !isGridlinesVisible(), false, Boolean.class, designContext);
 
         DesignAttributeHandler.writeAttribute(ATTR_NO_HEADINGS, attr,
-                !isRowColHeadingsVisible(), false, Boolean.class, designContext);
+                !isRowColHeadingsVisible(), false, Boolean.class,
+                designContext);
 
         DesignAttributeHandler.writeAttribute(ATTR_NO_FUNCTION_BAR, attr,
                 !isFunctionBarVisible(), false, Boolean.class, designContext);
 
-        DesignAttributeHandler.writeAttribute(ATTR_NO_SHEET_SELECTION_BAR,
-                attr, !isSheetSelectionBarVisible(), false, Boolean.class, designContext);
+        DesignAttributeHandler.writeAttribute(ATTR_NO_SHEET_SELECTION_BAR, attr,
+                !isSheetSelectionBarVisible(), false, Boolean.class,
+                designContext);
 
         DesignAttributeHandler.writeAttribute(ATTR_ACTIVE_SHEET, attr,
                 getActiveSheetIndex(), 0, Integer.class, designContext);
@@ -4941,13 +4980,15 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         if (defaultColWidthSet) {
             DesignAttributeHandler.writeAttribute(ATTR_DEFAULT_COL_WIDTH, attr,
                     getDefaultColumnWidth(),
-                    SpreadsheetUtil.getDefaultColumnWidthInPx(), Integer.class, designContext);
+                    SpreadsheetUtil.getDefaultColumnWidthInPx(), Integer.class,
+                    designContext);
         }
 
         if (defaultRowHeightSet) {
-            DesignAttributeHandler.writeAttribute(ATTR_DEFAULT_ROW_HEIGHT,
-                    attr, getDefaultRowHeight(),
-                    SpreadsheetFactory.DEFAULT_ROW_HEIGHT_POINTS, Float.class, designContext);
+            DesignAttributeHandler.writeAttribute(ATTR_DEFAULT_ROW_HEIGHT, attr,
+                    getDefaultRowHeight(),
+                    SpreadsheetFactory.DEFAULT_ROW_HEIGHT_POINTS, Float.class,
+                    designContext);
         }
 
         if (srcUri != null) {
@@ -4961,7 +5002,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * into the Spreadsheet.
      * <p>
      * Default is "0.00%".
-     * 
+     *
      * @return The formatting applied to percentage values when entered by the
      *         user
      */
@@ -4988,7 +5029,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         /**
          * Gets the author name for a new comment about to be added to the cell
          * at the given cell reference.
-         * 
+         *
          * @param targetCell
          *            Reference to the target cell
          * @return Comment author name
@@ -4998,7 +5039,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Sets the given CommentAuthorProvider to this Spreadsheet.
-     * 
+     *
      * @param commentAuthorProvider
      *            New provider
      */
@@ -5009,7 +5050,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the CommentAuthorProvider currently set to this Spreadsheet.
-     * 
+     *
      * @return Current provider or null if not set.
      */
     public CommentAuthorProvider getCommentAuthorProvider() {
@@ -5020,7 +5061,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Triggers editing of the cell comment in the given cell reference. Note
      * that the cell must have a previously set cell comment in order to be able
      * to edit it.
-     * 
+     *
      * @param cr
      *            Reference to the cell containing the comment to edit
      */
@@ -5031,7 +5072,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the visibility of the top function bar. By default the bar is
      * visible.
-     * 
+     *
      * @param functionBarVisible
      *            True to show the top bar, false to hide it.
      */
@@ -5046,7 +5087,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the visibility of the top function bar. By default the bar is
      * visible.
-     * 
+     *
      * @return True if the function bar is visible, false otherwise.
      */
     public boolean isFunctionBarVisible() {
@@ -5056,7 +5097,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Sets the visibility of the bottom sheet selection bar. By default the bar
      * is visible.
-     * 
+     *
      * @param sheetSelectionBarVisible
      *            True to show the sheet selection bar, false to hide it.
      */
@@ -5071,7 +5112,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Gets the visibility of the bottom sheet selection bar. By default the bar
      * is visible.
-     * 
+     *
      * @return True if the sheet selection bar is visible, false otherwise.
      */
     public boolean isSheetSelectionBarVisible() {
@@ -5081,7 +5122,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Enables or disables the report style. When enabled, the top and bottom
      * bars of Spreadsheet will be hidden.
-     * 
+     *
      * @param reportStyle
      *            True to hide both toolbars, false to show them.
      */
@@ -5092,20 +5133,21 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Gets the state of the report style.
-     * 
+     *
      * @return True if report style is enabled, false otherwise.
      */
     public boolean isReportStyle() {
         return !isSheetSelectionBarVisible() && !isFunctionBarVisible();
     }
 
-    public void setInvalidFormulaErrorMessage(String invalidFormulaErrorMessage) {
+    public void setInvalidFormulaErrorMessage(
+            String invalidFormulaErrorMessage) {
         getState().invalidFormulaErrorMessage = invalidFormulaErrorMessage;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.Component.Focusable#getTabIndex()
      */
     @Override
@@ -5115,7 +5157,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.Component.Focusable#setTabIndex(int)
      */
     @Override
@@ -5125,7 +5167,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.ui.AbstractComponent#focus()
      */
     @Override
@@ -5135,7 +5177,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Controls if a column group is collapsed or not.
-     * 
+     *
      * @param isCols
      *            <code>true</code> when collapsing columns, <code>false</code>
      *            when collapsing rows
@@ -5152,7 +5194,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
             if (collapsed) {
                 GroupingUtil.collapseColumn(activeSheet, index);
             } else {
-                short expandLevel = GroupingUtil.expandColumn(activeSheet, index);
+                short expandLevel = GroupingUtil.expandColumn(activeSheet,
+                        index);
                 updateExpandedRegion(activeSheet, index, expandLevel);
             }
         } else {
@@ -5179,7 +5222,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         }
         int endIndex = -1;
         for (GroupingData data : getState().colGroupingData) {
-            if (data.level == expandLevel && data.startIndex <= columnIndex && columnIndex <= data.endIndex) {
+            if (data.level == expandLevel && data.startIndex <= columnIndex
+                    && columnIndex <= data.endIndex) {
                 endIndex = data.endIndex;
                 break;
             }
@@ -5205,7 +5249,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /**
      * Called when a grouping level header is clicked
-     * 
+     *
      * @param isCols
      *            true if the user clicked on cols, false for row level headers
      * @param level
@@ -5267,8 +5311,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
                     // group starts here
 
-                    int end = (int) GroupingUtil.findEndOfRowGroup(this, i,
-                            row, l);
+                    int end = (int) GroupingUtil.findEndOfRowGroup(this, i, row,
+                            l);
                     long uniqueIndex = GroupingUtil.findUniqueRowIndex(this, i,
                             end, l);
 
@@ -5296,16 +5340,16 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
         if (!invalidFormulas.containsKey(activeSheetIndex)) {
             invalidFormulas.put(activeSheetIndex, new HashSet<String>());
         }
-        invalidFormulas.get(activeSheetIndex).add(
-                SpreadsheetUtil.toKey(col, row));
+        invalidFormulas.get(activeSheetIndex)
+                .add(SpreadsheetUtil.toKey(col, row));
 
     }
 
     boolean isMarkedAsInvalidFormula(int col, int row) {
         int activeSheetIndex = workbook.getActiveSheetIndex();
         if (invalidFormulas.containsKey(activeSheetIndex)) {
-            return invalidFormulas.get(activeSheetIndex).contains(
-                    SpreadsheetUtil.toKey(col, row));
+            return invalidFormulas.get(activeSheetIndex)
+                    .contains(SpreadsheetUtil.toKey(col, row));
         }
         return false;
     }
@@ -5313,8 +5357,8 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     void removeInvalidFormulaMark(int col, int row) {
         int activeSheetIndex = workbook.getActiveSheetIndex();
         if (invalidFormulas.containsKey(activeSheetIndex)) {
-            invalidFormulas.get(activeSheetIndex).remove(
-                    SpreadsheetUtil.toKey(col, row));
+            invalidFormulas.get(activeSheetIndex)
+                    .remove(SpreadsheetUtil.toKey(col, row));
         }
     }
 
@@ -5325,6 +5369,7 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
     /**
      * Get the minimum row heigth in points for the rows that contain custom
      * components
+     *
      * @return the minimum row heigths in points
      */
     public int getMinimumRowHeightForComponents() {
@@ -5333,9 +5378,11 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
 
     /***
      * Set the minimum row heigth in points for the rows that contain custom
-     * components. If set to a small value, it might cause some components
-     * like checkboxes to be cut off
-     * @param minimumRowHeightForComponents the minimum row height in points
+     * components. If set to a small value, it might cause some components like
+     * checkboxes to be cut off
+     *
+     * @param minimumRowHeightForComponents
+     *            the minimum row height in points
      */
     public void setMinimumRowHeightForComponents(
             final int minimumRowHeightForComponents) {
@@ -5362,15 +5409,16 @@ public class Spreadsheet extends AbstractComponent implements HasComponents,
      * Interface for listening a {@link RowHeaderDoubleClickEvent} event
      **/
     public interface RowHeaderDoubleClickListener extends Serializable {
-        Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools
-            .findMethod(RowHeaderDoubleClickListener.class,
-                "onRowHeaderDoubleClick", RowHeaderDoubleClickEvent.class);
+        Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools.findMethod(
+                RowHeaderDoubleClickListener.class, "onRowHeaderDoubleClick",
+                RowHeaderDoubleClickEvent.class);
 
         /**
-         * This method is called when the user doubleclicks on the border of a row header
+         * This method is called when the user doubleclicks on the border of a
+         * row header
          *
          * @param event
-         *     The RowHeaderDoubleClilckEvent that happened
+         *            The RowHeaderDoubleClilckEvent that happened
          **/
         void onRowHeaderDoubleClick(RowHeaderDoubleClickEvent event);
     }

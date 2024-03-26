@@ -10,15 +10,15 @@
  */
 package com.vaadin.addon.spreadsheet.action;
 
-import com.vaadin.addon.spreadsheet.command.RowInsertOrDeleteCommand;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
+import com.vaadin.addon.spreadsheet.command.RowInsertOrDeleteCommand;
 
 /**
  * Spreadsheet action for inserting a new row to the sheet.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -57,7 +57,8 @@ public class InsertNewRowAction extends SpreadsheetAction {
     @Override
     public void executeActionOnHeader(Spreadsheet spreadsheet,
             CellRangeAddress headerRange) {
-        RowInsertOrDeleteCommand command = new RowInsertOrDeleteCommand(spreadsheet, headerRange);
+        RowInsertOrDeleteCommand command = new RowInsertOrDeleteCommand(
+                spreadsheet, headerRange);
         command.insertNewRow();
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
     }

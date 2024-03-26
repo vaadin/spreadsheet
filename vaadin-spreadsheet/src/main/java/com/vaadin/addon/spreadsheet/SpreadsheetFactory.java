@@ -138,8 +138,8 @@ public class SpreadsheetFactory implements Serializable {
             int activeSheetIndex = workbook.getActiveSheetIndex();
             if (workbook.isSheetHidden(activeSheetIndex)
                     || workbook.isSheetVeryHidden(activeSheetIndex)) {
-                workbook.setActiveSheet(SpreadsheetUtil
-                        .getFirstVisibleSheetPOIIndex(workbook));
+                workbook.setActiveSheet(
+                        SpreadsheetUtil.getFirstVisibleSheetPOIIndex(workbook));
             }
             sheet = workbook.getSheetAt(activeSheetIndex);
             spreadsheet.setInternalWorkbook(workbook);
@@ -198,8 +198,8 @@ public class SpreadsheetFactory implements Serializable {
         spreadsheet.reloadActiveSheetData();
         spreadsheet.reloadActiveSheetStyles();
         final SpreadsheetState state = spreadsheet.getState();
-        int[] verticalScrollPositions = Arrays.copyOf(
-                state.verticalScrollPositions, state.sheetNames.length);
+        int[] verticalScrollPositions = Arrays
+                .copyOf(state.verticalScrollPositions, state.sheetNames.length);
         int[] horizontalScrollPositions = Arrays.copyOf(
                 state.horizontalScrollPositions, state.sheetNames.length);
         state.verticalScrollPositions = verticalScrollPositions;
@@ -239,8 +239,8 @@ public class SpreadsheetFactory implements Serializable {
      */
     static void reloadSpreadsheetComponent(Spreadsheet spreadsheet,
             final InputStream inputStream) throws IOException {
-            reloadSpreadsheetComponent(spreadsheet,
-                    WorkbookFactory.create(inputStream));
+        reloadSpreadsheetComponent(spreadsheet,
+                WorkbookFactory.create(inputStream));
     }
 
     /**
@@ -302,8 +302,7 @@ public class SpreadsheetFactory implements Serializable {
             }
         } catch (Exception e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
-        }
-        finally {
+        } finally {
             if (fos != null) {
                 fos.close();
             }
@@ -403,8 +402,8 @@ public class SpreadsheetFactory implements Serializable {
 
     static void loadNamedRanges(Spreadsheet spreadsheet) {
         final List<? extends Name> namedRanges = spreadsheet.getWorkbook()
-            .getAllNames();
-        
+                .getAllNames();
+
         final List<String> names = new ArrayList<String>();
 
         for (Name name : namedRanges) {
@@ -414,8 +413,8 @@ public class SpreadsheetFactory implements Serializable {
 
             final int nameLocalTo = name.getSheetIndex();
             final int activeSheet = spreadsheet.getWorkbook()
-                .getActiveSheetIndex();
-            
+                    .getActiveSheetIndex();
+
             if (nameLocalTo == -1 || nameLocalTo == activeSheet) {
                 names.add(name.getNameName());
             }
@@ -449,35 +448,36 @@ public class SpreadsheetFactory implements Serializable {
      *            Target Spreadsheet
      */
     private static void loadSheetTables(Spreadsheet spreadsheet) {
-         if (spreadsheet.getActiveSheet() instanceof HSSFSheet)
-             return;
+        if (spreadsheet.getActiveSheet() instanceof HSSFSheet) {
+            return;
+        }
 
-         XSSFSheet sheet = (XSSFSheet) spreadsheet.getActiveSheet();
-         CTAutoFilter autoFilter = sheet.getCTWorksheet().getAutoFilter();
+        XSSFSheet sheet = (XSSFSheet) spreadsheet.getActiveSheet();
+        CTAutoFilter autoFilter = sheet.getCTWorksheet().getAutoFilter();
 
-         if (autoFilter != null) {
-             SpreadsheetTable sheetFilterTable = new SpreadsheetFilterTable(
-                 spreadsheet, CellRangeAddress.valueOf(autoFilter.getRef()));
-             
-             spreadsheet.registerTable(sheetFilterTable);
+        if (autoFilter != null) {
+            SpreadsheetTable sheetFilterTable = new SpreadsheetFilterTable(
+                    spreadsheet, CellRangeAddress.valueOf(autoFilter.getRef()));
 
-             markActiveButtons(sheetFilterTable, autoFilter);             
-         }
+            spreadsheet.registerTable(sheetFilterTable);
 
-         for (XSSFTable table : sheet.getTables()) {
-             SpreadsheetTable spreadsheetTable = new SpreadsheetFilterTable(
-                 spreadsheet,
-                 CellRangeAddress.valueOf(table.getCTTable().getRef()));
+            markActiveButtons(sheetFilterTable, autoFilter);
+        }
 
-             spreadsheet.registerTable(spreadsheetTable);
-         }
+        for (XSSFTable table : sheet.getTables()) {
+            SpreadsheetTable spreadsheetTable = new SpreadsheetFilterTable(
+                    spreadsheet,
+                    CellRangeAddress.valueOf(table.getCTTable().getRef()));
+
+            spreadsheet.registerTable(spreadsheetTable);
+        }
     }
 
     private static void markActiveButtons(SpreadsheetTable sheetFilterTable,
-        CTAutoFilter autoFilter) {
+            CTAutoFilter autoFilter) {
 
         final int offset = sheetFilterTable.getFullTableRegion()
-            .getFirstColumn();
+                .getFirstColumn();
 
         for (CTFilterColumn column : autoFilter.getFilterColumnList()) {
             final int colId = offset + (int) column.getColId();
@@ -489,7 +489,7 @@ public class SpreadsheetFactory implements Serializable {
      * Calculate size-related values for the sheet. Includes row and column
      * counts, actual row heights and column widths, and hidden row and column
      * indexes.
-     * 
+     *
      * @param spreadsheet
      * @param sheet
      */
@@ -555,8 +555,8 @@ public class SpreadsheetFactory implements Serializable {
                 colWidths[i] = 0;
                 hiddenColumnIndexes.add(i + 1);
             } else {
-                colWidths[i] = ExcelToHtmlUtils.getColumnWidthInPx(sheet
-                        .getColumnWidth(i));
+                colWidths[i] = ExcelToHtmlUtils
+                        .getColumnWidthInPx(sheet.getColumnWidth(i));
             }
         }
         spreadsheet.getState().hiddenColumnIndexes = hiddenColumnIndexes;
@@ -606,7 +606,7 @@ public class SpreadsheetFactory implements Serializable {
         /*
          * Columns are grouped so that columns that are beside each other and
          * share properties have a single CTCol with a min and max index.
-         * 
+         *
          * A column that is part of a group has an outline level. Each col also
          * has a property called 'collapsed', which doesn't appear to be used
          * for anything. If a group is collapsed, each col in the group has its
@@ -633,7 +633,8 @@ public class SpreadsheetFactory implements Serializable {
                 while (lastlevel != col.getOutlineLevel()) {
 
                     lastlevel++;
-                    if (spreadsheet.getState(false).colGroupingMax < lastlevel) {
+                    if (spreadsheet
+                            .getState(false).colGroupingMax < lastlevel) {
                         spreadsheet.getState().colGroupingMax = lastlevel;
                     }
 
@@ -708,7 +709,7 @@ public class SpreadsheetFactory implements Serializable {
         /*
          * Each row that has data (or grouping props) exists separately, they
          * are not grouped like columns.
-         * 
+         *
          * Each row that is part of a group has a set outline level. Unlike
          * cols, the 'collapse' property is actually used for rows, in
          * conjuction with the 'hidden' prop. If a group is collapsed, each row
@@ -781,8 +782,8 @@ public class SpreadsheetFactory implements Serializable {
 
                     int end = (int) GroupingUtil.findEndOfRowGroup(spreadsheet,
                             i, row, lastlevel);
-                    long uniqueIndex = GroupingUtil.findUniqueRowIndex(
-                            spreadsheet, i, end, lastlevel);
+                    long uniqueIndex = GroupingUtil
+                            .findUniqueRowIndex(spreadsheet, i, end, lastlevel);
 
                     GroupingData d = new GroupingData(i, end, lastlevel,
                             uniqueIndex, false);
@@ -842,8 +843,8 @@ public class SpreadsheetFactory implements Serializable {
 
                 if (spreadsheet.isChartsEnabled()
                         && shape instanceof XSSFGraphicFrame) {
-                        overlayWrapper = tryLoadChart(spreadsheet, drawing,
-                                (XSSFGraphicFrame) shape);
+                    overlayWrapper = tryLoadChart(spreadsheet, drawing,
+                            (XSSFGraphicFrame) shape);
                 }
                 if (shape instanceof XSSFPicture) {
                     overlayWrapper = loadXSSFPicture((XSSFPicture) shape);
@@ -853,8 +854,8 @@ public class SpreadsheetFactory implements Serializable {
                     if (overlayWrapper.getAnchor() != null) {
                         spreadsheet.addSheetOverlay(overlayWrapper);
                     } else {
-                        LOGGER.log(Level.FINE, "IMAGE WITHOUT ANCHOR: "
-                                + overlayWrapper);
+                        LOGGER.log(Level.FINE,
+                                "IMAGE WITHOUT ANCHOR: " + overlayWrapper);
 
                         // FIXME seems like there is a POI bug, images that have
                         // in Excel (XLSX) been se as a certain type (type==3)
@@ -880,7 +881,8 @@ public class SpreadsheetFactory implements Serializable {
         }
     }
 
-    private static void loadHSSFPicture(Spreadsheet spreadsheet, HSSFShape shape) {
+    private static void loadHSSFPicture(Spreadsheet spreadsheet,
+            HSSFShape shape) {
         HSSFClientAnchor anchor = (HSSFClientAnchor) shape.getAnchor();
         HSSFPictureData pictureData = ((HSSFPicture) shape).getPictureData();
         if (anchor != null) {
@@ -909,15 +911,14 @@ public class SpreadsheetFactory implements Serializable {
     /**
      * Returns a chart wrapper if this drawing has a chart, otherwise null.
      */
-    private static SheetChartWrapper tryLoadChart(
-            final Spreadsheet spreadsheet, final Drawing<?> drawing,
-            final XSSFGraphicFrame frame) {
+    private static SheetChartWrapper tryLoadChart(final Spreadsheet spreadsheet,
+            final Drawing<?> drawing, final XSSFGraphicFrame frame) {
         try {
             XSSFChart chartXml = getChartForFrame((XSSFDrawing) drawing, frame);
 
             if (chartXml != null) {
-                // removed old anchor lookup, as it was wrong for some Excel files.
-                // anchor can be referenced directly from XSSFChart.
+                // removed old anchor lookup, as it was wrong for some Excel
+                // files; anchor can be referenced directly from XSSFChart.
                 return new SheetChartWrapper(chartXml, spreadsheet);
             }
         } catch (NullPointerException e) {
@@ -946,15 +947,16 @@ public class SpreadsheetFactory implements Serializable {
             if (parentXbean instanceof CTTwoCellAnchor) {
                 CTTwoCellAnchor ct = (CTTwoCellAnchor) parentXbean;
                 anchor = new XSSFClientAnchor((int) ct.getFrom().getColOff(),
-                        (int) ct.getFrom().getRowOff(), (int) ct.getTo()
-                                .getColOff(), (int) ct.getTo().getRowOff(), ct
-                                .getFrom().getCol(), ct.getFrom().getRow(), ct
-                                .getTo().getCol(), ct.getTo().getRow());
+                        (int) ct.getFrom().getRowOff(),
+                        (int) ct.getTo().getColOff(),
+                        (int) ct.getTo().getRowOff(), ct.getFrom().getCol(),
+                        ct.getFrom().getRow(), ct.getTo().getCol(),
+                        ct.getTo().getRow());
             } else if (parentXbean instanceof CTOneCellAnchor) {
                 CTOneCellAnchor ct = (CTOneCellAnchor) parentXbean;
                 anchor = new XSSFClientAnchor((int) ct.getFrom().getColOff(),
-                        (int) ct.getFrom().getRowOff(), 0, 0, ct.getFrom()
-                                .getCol(), ct.getFrom().getRow(), 0, 0);
+                        (int) ct.getFrom().getRowOff(), 0, 0,
+                        ct.getFrom().getCol(), ct.getFrom().getRow(), 0, 0);
             }
         }
         return anchor;
@@ -1032,15 +1034,16 @@ public class SpreadsheetFactory implements Serializable {
         if (paneInformation != null && paneInformation.isFreezePane()) {
 
             /*
-             * In POI, HorizontalSplit means rows and VerticalSplit means columns.
+             * In POI, HorizontalSplit means rows and VerticalSplit means
+             * columns.
              *
              * In Spreadsheet the meaning is the opposite.
              */
             spreadsheet.getState().horizontalSplitPosition = paneInformation
-                .getVerticalSplitPosition() + sheet.getLeftCol();
+                    .getVerticalSplitPosition() + sheet.getLeftCol();
 
             spreadsheet.getState().verticalSplitPosition = paneInformation
-                .getHorizontalSplitPosition() + sheet.getTopRow();
+                    .getHorizontalSplitPosition() + sheet.getTopRow();
 
             /*
              * If the view was scrolled down / right when panes were frozen, the
@@ -1082,8 +1085,8 @@ public class SpreadsheetFactory implements Serializable {
 
     private static void setDefaultColumnWidth(Spreadsheet spreadsheet,
             final Sheet sheet) {
-        int charactersToPixels = ExcelToHtmlUtils.getColumnWidthInPx(sheet
-                .getDefaultColumnWidth() * 256);
+        int charactersToPixels = ExcelToHtmlUtils
+                .getColumnWidthInPx(sheet.getDefaultColumnWidth() * 256);
         if (charactersToPixels > 0) {
             spreadsheet.getState().defColW = charactersToPixels;
         } else {
@@ -1104,8 +1107,8 @@ public class SpreadsheetFactory implements Serializable {
             runtime.gc();
             long tot = runtime.totalMemory();
             long free = runtime.freeMemory();
-            LOGGER.log(Level.INFO, "Total: " + tot / 1000000 + " Free: " + free
-                    / 1000000 + " Usage: " + (tot - free) / 1000000);
+            LOGGER.log(Level.INFO, "Total: " + tot / 1000000 + " Free: "
+                    + free / 1000000 + " Usage: " + (tot - free) / 1000000);
         }
     }
 }

@@ -23,10 +23,10 @@ import com.vaadin.event.Action.Handler;
 /**
  * Default action handler for Spreadsheet actions. By default this handler adds
  * all available actions to the Spreadsheet.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class SpreadsheetDefaultActionHandler implements Handler {
@@ -50,7 +50,7 @@ public class SpreadsheetDefaultActionHandler implements Handler {
 
     /**
      * Adds the given SpreadsheetAction to this handler.
-     * 
+     *
      * @param action
      *            SpreadsheetAction to add
      */
@@ -60,7 +60,7 @@ public class SpreadsheetDefaultActionHandler implements Handler {
 
     /**
      * Removes the given SpreadsheetAction from this handler.
-     * 
+     *
      * @param action
      *            SpreadsheetAction to remove
      * @return true if the action was present in this handler, false otherwise

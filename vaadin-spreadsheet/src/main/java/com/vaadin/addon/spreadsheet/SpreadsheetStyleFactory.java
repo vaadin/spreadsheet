@@ -44,7 +44,7 @@ import com.vaadin.addon.spreadsheet.client.MergedRegion;
 /**
  * SpreadsheetStyleFactory is an utility class for the Spreadsheet component.
  * This class handles converting Apache POI CellStyles to CSS styles.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
@@ -55,14 +55,14 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     /**
      * Styling for cell borders
-     * 
+     *
      * @author Vaadin Ltd.
      */
     public enum BorderStyle {
         SOLID_THIN("solid", 1, 1), DOTTED_THIN("dotted", 1, 1), DASHED_THIN(
                 "dashed", 1, 1), SOLID_MEDIUM("solid", 2, 2), DASHED_MEDIUM(
-                "dashed", 2, 2), SOLID_THICK("solid", 3, 4), DOUBLE("double",
-                3, 4), NONE("none", 0, 0);
+                        "dashed", 2, 2), SOLID_THICK("solid", 3,
+                                4), DOUBLE("double", 3, 4), NONE("none", 0, 0);
 
         private final int size;
         private final String borderStyle;
@@ -74,7 +74,7 @@ public class SpreadsheetStyleFactory implements Serializable {
 
         /**
          * Returns the CSS name of this border style
-         * 
+         *
          * @return CSS name of border style
          */
         public String getValue() {
@@ -83,7 +83,7 @@ public class SpreadsheetStyleFactory implements Serializable {
 
         /**
          * Returns the thickness of this border
-         * 
+         *
          * @return Border thickness in PT
          */
         public int getSize() {
@@ -92,7 +92,7 @@ public class SpreadsheetStyleFactory implements Serializable {
 
         /**
          * Returns the complete border attribute value for CSS
-         * 
+         *
          * @return Complete border attribute value
          */
         public String getBorderAttributeValue() {
@@ -112,21 +112,33 @@ public class SpreadsheetStyleFactory implements Serializable {
             "center", VerticalAlignment.TOP, "flex-start");
 
     static final Map<org.apache.poi.ss.usermodel.BorderStyle, BorderStyle> BORDER = mapFor(
-            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT, BorderStyle.DASHED_THIN,
-            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT_DOT, BorderStyle.DASHED_THIN,
-            org.apache.poi.ss.usermodel.BorderStyle.DASHED, BorderStyle.DASHED_THIN,
-            org.apache.poi.ss.usermodel.BorderStyle.DOTTED, BorderStyle.DOTTED_THIN, 
-            org.apache.poi.ss.usermodel.BorderStyle.DOUBLE, BorderStyle.DOUBLE, 
-            org.apache.poi.ss.usermodel.BorderStyle.HAIR, BorderStyle.SOLID_THIN,
-            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM, BorderStyle.SOLID_MEDIUM, 
-            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASH_DOT, BorderStyle.DASHED_MEDIUM, 
-            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASH_DOT_DOT, BorderStyle.DASHED_MEDIUM, 
-            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASHED, BorderStyle.DASHED_MEDIUM, 
+            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT,
+            BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DASH_DOT_DOT,
+            BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DASHED,
+            BorderStyle.DASHED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DOTTED,
+            BorderStyle.DOTTED_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.DOUBLE, BorderStyle.DOUBLE,
+            org.apache.poi.ss.usermodel.BorderStyle.HAIR,
+            BorderStyle.SOLID_THIN,
+            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM,
+            BorderStyle.SOLID_MEDIUM,
+            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASH_DOT,
+            BorderStyle.DASHED_MEDIUM,
+            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASH_DOT_DOT,
+            BorderStyle.DASHED_MEDIUM,
+            org.apache.poi.ss.usermodel.BorderStyle.MEDIUM_DASHED,
+            BorderStyle.DASHED_MEDIUM,
             org.apache.poi.ss.usermodel.BorderStyle.NONE, BorderStyle.NONE,
             null, BorderStyle.NONE,
-            org.apache.poi.ss.usermodel.BorderStyle.SLANTED_DASH_DOT, BorderStyle.DASHED_MEDIUM, 
-            org.apache.poi.ss.usermodel.BorderStyle.THICK, BorderStyle.SOLID_THICK, 
-            org.apache.poi.ss.usermodel.BorderStyle.THIN, BorderStyle.SOLID_THIN);
+            org.apache.poi.ss.usermodel.BorderStyle.SLANTED_DASH_DOT,
+            BorderStyle.DASHED_MEDIUM,
+            org.apache.poi.ss.usermodel.BorderStyle.THICK,
+            BorderStyle.SOLID_THICK,
+            org.apache.poi.ss.usermodel.BorderStyle.THIN,
+            BorderStyle.SOLID_THIN);
 
     /** CellStyle index to selector + style map */
     private final HashMap<Integer, String> shiftedBorderTopStyles = new HashMap<Integer, String>();
@@ -161,7 +173,7 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     /**
      * Constructs a new SpreadsheetStyleFactory for the given Spreadsheet
-     * 
+     *
      * @param spreadsheet
      *            Target Spreadsheet
      */
@@ -176,8 +188,9 @@ public class SpreadsheetStyleFactory implements Serializable {
     public void reloadWorkbookStyles() {
         final Workbook workbook = spreadsheet.getWorkbook();
         if (spreadsheet.getState().cellStyleToCSSStyle == null) {
-            spreadsheet.getState().cellStyleToCSSStyle = new HashMap<Integer, String>(
-                    workbook.getNumCellStyles());
+            spreadsheet
+                    .getState().cellStyleToCSSStyle = new HashMap<Integer, String>(
+                            workbook.getNumCellStyles());
         } else {
             spreadsheet.getState().cellStyleToCSSStyle.clear();
         }
@@ -195,8 +208,8 @@ public class SpreadsheetStyleFactory implements Serializable {
         borderStyles(sb, cellStyle);
         defaultFontStyle(cellStyle, sb);
         colorConverter.defaultColorStyles(cellStyle, sb);
-        spreadsheet.getState().cellStyleToCSSStyle.put(
-                (int) cellStyle.getIndex(), sb.toString());
+        spreadsheet.getState().cellStyleToCSSStyle
+                .put((int) cellStyle.getIndex(), sb.toString());
 
         // 0 is default style, create all styles indexed from 1 and upwards
         for (short i = 1; i < workbook.getNumCellStyles(); i++) {
@@ -210,14 +223,16 @@ public class SpreadsheetStyleFactory implements Serializable {
         final Workbook workbook = spreadsheet.getWorkbook();
 
         if (spreadsheet.getState().rowIndexToStyleIndex == null) {
-            spreadsheet.getState().rowIndexToStyleIndex = new HashMap<Integer, Integer>(
-                    workbook.getNumCellStyles());
+            spreadsheet
+                    .getState().rowIndexToStyleIndex = new HashMap<Integer, Integer>(
+                            workbook.getNumCellStyles());
         } else {
             spreadsheet.getState().rowIndexToStyleIndex.clear();
         }
         if (spreadsheet.getState().columnIndexToStyleIndex == null) {
-            spreadsheet.getState().columnIndexToStyleIndex = new HashMap<Integer, Integer>(
-                    workbook.getNumCellStyles());
+            spreadsheet
+                    .getState().columnIndexToStyleIndex = new HashMap<Integer, Integer>(
+                            workbook.getNumCellStyles());
         } else {
             spreadsheet.getState().columnIndexToStyleIndex.clear();
         }
@@ -263,7 +278,7 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     /**
      * Creates a CellStyle to be used with hyperlinks
-     * 
+     *
      * @return A new hyperlink CellStyle
      */
     public CellStyle createHyperlinkCellStyle() {
@@ -281,7 +296,7 @@ public class SpreadsheetStyleFactory implements Serializable {
     /**
      * Clears all styles for the given cell. Should be used when i.e. a cell has
      * been shifted (the old location is cleared of all styles).
-     * 
+     *
      * @param oldRowIndex
      *            0-based
      * @param oldColumnIndex
@@ -293,8 +308,8 @@ public class SpreadsheetStyleFactory implements Serializable {
         // remove/modify all possible old custom styles that the cell had (can
         // be found from state)
         ArrayList<String> add = new ArrayList<String>();
-        Iterator<String> iterator = spreadsheet.getState().shiftedCellBorderStyles
-                .iterator();
+        Iterator<String> iterator = spreadsheet
+                .getState().shiftedCellBorderStyles.iterator();
         while (iterator.hasNext()) {
             String style = iterator.next();
             // only cell with this style -> remove
@@ -377,21 +392,21 @@ public class SpreadsheetStyleFactory implements Serializable {
     /**
      * This should be called when a Cell's styling has been changed. This will
      * tell the Spreadsheet to send the change to the client side.
-     * 
+     *
      * @param cell
      *            Target cell
      * @param updateCustomBorders
      *            true to also update custom borders
      */
     public void cellStyleUpdated(Cell cell, boolean updateCustomBorders) {
-        final String cssSelector = ".col" + (cell.getColumnIndex() + 1)
-                + ".row" + (cell.getRowIndex() + 1);
+        final String cssSelector = ".col" + (cell.getColumnIndex() + 1) + ".row"
+                + (cell.getRowIndex() + 1);
         final Integer key = (int) cell.getCellStyle().getIndex();
         // remove/modify all possible old custom styles that the cell had (can
         // be found from state)
         ArrayList<String> add = new ArrayList<String>();
-        Iterator<String> iterator = spreadsheet.getState().shiftedCellBorderStyles
-                .iterator();
+        Iterator<String> iterator = spreadsheet
+                .getState().shiftedCellBorderStyles.iterator();
         while (iterator.hasNext()) {
             String style = iterator.next();
             // only cell with this style -> remove
@@ -469,7 +484,8 @@ public class SpreadsheetStyleFactory implements Serializable {
         if (spreadsheet.getState().shiftedCellBorderStyles != null) {
             spreadsheet.getState().shiftedCellBorderStyles.clear();
         } else {
-            spreadsheet.getState().shiftedCellBorderStyles = new ArrayList<String>();
+            spreadsheet
+                    .getState().shiftedCellBorderStyles = new ArrayList<String>();
         }
         for (String value : shiftedBorderLeftStyles.values()) {
             if (value.startsWith(".col")) {
@@ -482,9 +498,8 @@ public class SpreadsheetStyleFactory implements Serializable {
             }
         }
         for (Entry<String, String> entry : mergedCellBorders.entrySet()) {
-            spreadsheet.getState().shiftedCellBorderStyles
-                    .add(buildMergedCellBorderCSS(entry.getKey(),
-                            entry.getValue()));
+            spreadsheet.getState().shiftedCellBorderStyles.add(
+                    buildMergedCellBorderCSS(entry.getKey(), entry.getValue()));
 
         }
     }
@@ -495,7 +510,8 @@ public class SpreadsheetStyleFactory implements Serializable {
     public void reloadActiveSheetCellStyles() {
         // need to remove the cell identifiers (css selectors from the shifted
         // border style rules
-        for (Entry<Integer, String> entry : shiftedBorderLeftStyles.entrySet()) {
+        for (Entry<Integer, String> entry : shiftedBorderLeftStyles
+                .entrySet()) {
             String value = entry.getValue();
             if (value.startsWith(".col")) {
                 shiftedBorderLeftStyles.put(entry.getKey(),
@@ -512,7 +528,8 @@ public class SpreadsheetStyleFactory implements Serializable {
         mergedCellBorders.clear();
 
         if (spreadsheet.getState().shiftedCellBorderStyles == null) {
-            spreadsheet.getState().shiftedCellBorderStyles = new ArrayList<String>();
+            spreadsheet
+                    .getState().shiftedCellBorderStyles = new ArrayList<String>();
         } else {
             spreadsheet.getState().shiftedCellBorderStyles.clear();
         }
@@ -539,9 +556,8 @@ public class SpreadsheetStyleFactory implements Serializable {
             }
         }
         for (Entry<String, String> entry : mergedCellBorders.entrySet()) {
-            spreadsheet.getState().shiftedCellBorderStyles
-                    .add(buildMergedCellBorderCSS(entry.getKey(),
-                            entry.getValue()));
+            spreadsheet.getState().shiftedCellBorderStyles.add(
+                    buildMergedCellBorderCSS(entry.getKey(), entry.getValue()));
 
         }
 
@@ -586,15 +602,16 @@ public class SpreadsheetStyleFactory implements Serializable {
                 VERTICAL_ALIGN);
 
         if (cellStyle.getWrapText()) { // default is to overflow
-            sb.append("overflow:hidden;white-space:normal;word-wrap:break-word;");
+            sb.append(
+                    "overflow:hidden;white-space:normal;word-wrap:break-word;");
         }
 
         if (cellStyle.getIndention() > 0) {
             sb.append("padding-left: " + cellStyle.getIndention() + "em;");
         }
 
-        spreadsheet.getState().cellStyleToCSSStyle.put(
-                (int) cellStyle.getIndex(), sb.toString());
+        spreadsheet.getState().cellStyleToCSSStyle
+                .put((int) cellStyle.getIndex(), sb.toString());
     }
 
     private String buildMergedCellBorderCSS(String selector, String rules) {
@@ -624,8 +641,8 @@ public class SpreadsheetStyleFactory implements Serializable {
         final int columnIndex = cell.getColumnIndex();
         final int rowIndex = cell.getRowIndex();
 
-        if (spreadsheet.isColumnHidden(columnIndex) || spreadsheet
-            .isRowHidden(rowIndex)) {
+        if (spreadsheet.isColumnHidden(columnIndex)
+                || spreadsheet.isRowHidden(rowIndex)) {
             return;
         }
 
@@ -648,16 +665,14 @@ public class SpreadsheetStyleFactory implements Serializable {
                 } else {
                     style = new StringBuilder();
                 }
-                if (borderRight != null
-                        && !borderRight.isEmpty()
-                        && (currentBorders == null || !currentBorders
-                                .contains("border-right"))) {
+                if (borderRight != null && !borderRight.isEmpty()
+                        && (currentBorders == null
+                                || !currentBorders.contains("border-right"))) {
                     style.append(borderRight);
                 }
-                if (borderBottom != null
-                        && !borderBottom.isEmpty()
-                        && (currentBorders == null || !currentBorders
-                                .contains("border-bottom"))) {
+                if (borderBottom != null && !borderBottom.isEmpty()
+                        && (currentBorders == null
+                                || !currentBorders.contains("border-bottom"))) {
                     style.append(borderBottom);
                 }
                 final String newBorders = style.toString();
@@ -682,12 +697,14 @@ public class SpreadsheetStyleFactory implements Serializable {
                     int row, col;
 
                     int upperVisibleColumnIndex = columnIndex;
-                    while (spreadsheet.isColumnHidden(upperVisibleColumnIndex - 1)) {
+                    while (spreadsheet
+                            .isColumnHidden(upperVisibleColumnIndex - 1)) {
                         upperVisibleColumnIndex--;
                     }
 
                     MergedRegion previousRegion = spreadsheet.mergedRegionContainer
-                            .getMergedRegion(upperVisibleColumnIndex, rowIndex + 1);
+                            .getMergedRegion(upperVisibleColumnIndex,
+                                    rowIndex + 1);
 
                     if (previousRegion != null) {
                         col = previousRegion.col1;
@@ -696,8 +713,8 @@ public class SpreadsheetStyleFactory implements Serializable {
                         col = upperVisibleColumnIndex;
                         row = rowIndex + 1;
                     }
-                    insertMapEntryIfNeeded(shiftedBorderLeftStylesMap, key,
-                            row, col);
+                    insertMapEntryIfNeeded(shiftedBorderLeftStylesMap, key, row,
+                            col);
                 }
             }
             if (shiftedBorderTopStyles.containsKey(key)) {
@@ -712,7 +729,8 @@ public class SpreadsheetStyleFactory implements Serializable {
                     }
 
                     MergedRegion previousRegion = spreadsheet.mergedRegionContainer
-                            .getMergedRegion(columnIndex + 1, prevVisibleRowIndex);
+                            .getMergedRegion(columnIndex + 1,
+                                    prevVisibleRowIndex);
 
                     if (previousRegion != null) {
                         col = previousRegion.col1;
@@ -783,8 +801,8 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     private void defaultFontStyle(CellStyle cellStyle, StringBuilder sb) {
         if (cellStyle.getIndex() == 0) {
-            defaultFont = spreadsheet.getWorkbook().getFontAt(
-                    cellStyle.getFontIndexAsInt());
+            defaultFont = spreadsheet.getWorkbook()
+                    .getFontAt(cellStyle.getFontIndexAsInt());
             defaultFontFamily = styleFontFamily(defaultFont);
             sb.append(defaultFontFamily);
             if (defaultFont.getBold()) {
@@ -807,8 +825,8 @@ public class SpreadsheetStyleFactory implements Serializable {
 
     private void fontStyle(StringBuilder sb, CellStyle cellStyle) {
         try {
-            Font font = spreadsheet.getWorkbook().getFontAt(
-                    cellStyle.getFontIndexAsInt());
+            Font font = spreadsheet.getWorkbook()
+                    .getFontAt(cellStyle.getFontIndexAsInt());
             if (font.getIndexAsInt() == defaultFont.getIndexAsInt()) {
                 // uses default font, no need to add styles
                 return;
@@ -856,8 +874,8 @@ public class SpreadsheetStyleFactory implements Serializable {
             sb.append(",");
         }
         if (font instanceof XSSFFont) {
-            FontFamily family = FontFamily.valueOf(((XSSFFont) font)
-                    .getFamily());
+            FontFamily family = FontFamily
+                    .valueOf(((XSSFFont) font).getFamily());
             switch (family) {
             case ROMAN:
                 sb.append("roman,");
@@ -895,11 +913,14 @@ public class SpreadsheetStyleFactory implements Serializable {
             CTBorder ct = ((XSSFWorkbook) spreadsheet.getWorkbook())
                     .getStylesSource().getBorderAt(idx).getCTBorder();
             if (borderRight == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetRight() ? ct.getRight()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetRight()
+                        ? ct.getRight().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderRight = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderRight = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
             }
         }
@@ -923,11 +944,14 @@ public class SpreadsheetStyleFactory implements Serializable {
             CTBorder ct = ((XSSFWorkbook) spreadsheet.getWorkbook())
                     .getStylesSource().getBorderAt(idx).getCTBorder();
             if (borderBottom == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetBottom() ? ct.getBottom()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetBottom()
+                        ? ct.getBottom().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderBottom = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderBottom = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
             }
         }
@@ -956,35 +980,46 @@ public class SpreadsheetStyleFactory implements Serializable {
                     .getStylesSource().getBorderAt(idx).getCTBorder();
 
             if (borderLeft == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetLeft() ? ct.getLeft()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetLeft()
+                        ? ct.getLeft().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderLeft = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderLeft = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
             }
             if (borderRight == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetRight() ? ct.getRight()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetRight()
+                        ? ct.getRight().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderRight = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderRight = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
             }
             if (borderBottom == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetBottom() ? ct.getBottom()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetBottom()
+                        ? ct.getBottom().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderBottom = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderBottom = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
             }
             if (borderTop == BorderStyle.NONE) {
-                STBorderStyle.Enum ptrn = ct.isSetTop() ? ct.getTop()
-                        .getStyle() : null;
+                STBorderStyle.Enum ptrn = ct.isSetTop() ? ct.getTop().getStyle()
+                        : null;
                 if (ptrn != null) {
                     Short key = (short) (ptrn.intValue() - 1);
-                    borderTop = BORDER.get(org.apache.poi.ss.usermodel.BorderStyle.valueOf(key));
+                    borderTop = BORDER
+                            .get(org.apache.poi.ss.usermodel.BorderStyle
+                                    .valueOf(key));
                 }
 
             }
