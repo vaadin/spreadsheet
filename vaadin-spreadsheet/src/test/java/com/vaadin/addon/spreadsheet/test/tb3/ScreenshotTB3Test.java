@@ -37,16 +37,17 @@ import com.vaadin.testbench.parallel.BrowserUtil;
 /**
  * Base class which provides functionality for tests which use the automatic
  * screenshot comparison function.
- * 
+ *
  * @author Vaadin Ltd
  */
 public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /**
-     * This amount of first lines will be made transparent in an error screenshot.
+     * This amount of first lines will be made transparent in an error
+     * screenshot.
      */
     protected int defaultHeaderHeight = 172;
-    
+
     private String screenshotBaseName;
 
     @Rule
@@ -88,8 +89,8 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
     @Before
     public void setupScreenComparisonParameters() {
         Parameters.setScreenshotErrorDirectory(getScreenshotErrorDirectory());
-        Parameters
-                .setScreenshotReferenceDirectory(getScreenshotReferenceDirectory());
+        Parameters.setScreenshotReferenceDirectory(
+                getScreenshotReferenceDirectory());
         testBench(getDriver()).resizeViewPortTo(SCREENSHOT_WIDTH,
                 SCREENSHOT_HEIGHT);
     }
@@ -98,13 +99,13 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
      * Grabs a screenshot and compares with the reference image with the given
      * identifier. Supports alternative references and will succeed if the
      * screenshot matches at least one of the references.
-     * 
+     *
      * In case of a failed comparison this method stores the grabbed screenshots
      * in the error directory as defined by
      * {@link #getScreenshotErrorDirectory()}. It will also generate a html file
      * in the same directory, comparing the screenshot with the first found
      * reference.
-     * 
+     *
      * @param identifier
      *            The identifier of the image
      * @throws IOException
@@ -115,16 +116,18 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /**
      * @param identifier
-     *     The identifier of the image
+     *            The identifier of the image
      * @param headerHeight
-     *     The height of the header that will be made transparent 
-     *     in the error screenshot.
+     *            The height of the header that will be made transparent in the
+     *            error screenshot.
      *
      * @throws IOException
      */
-    protected void compareScreen(String identifier, int headerHeight) throws IOException {
+    protected void compareScreen(String identifier, int headerHeight)
+            throws IOException {
         if (identifier == null || identifier.isEmpty()) {
-            throw new IllegalArgumentException("Empty identifier not supported");
+            throw new IllegalArgumentException(
+                    "Empty identifier not supported");
         }
 
         File mainReference = getScreenshotReferenceFile(identifier);
@@ -156,10 +159,10 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
             File failurePng = getErrorFileFromReference(failedAlternative);
             if (failedAlternative != referenceToKeep) {
                 // Delete png + HTML
-                String htmlFileName = failurePng.getName()
-                    .replace(".png", ".html");
+                String htmlFileName = failurePng.getName().replace(".png",
+                        ".html");
                 File failureHtml = new File(failurePng.getParentFile(),
-                    htmlFileName);
+                        htmlFileName);
 
                 failurePng.delete();
                 failureHtml.delete();
@@ -167,11 +170,11 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
         }
 
         ImageUtils.makeHeaderTransparent(
-            getErrorFileFromReference(mainReference), headerHeight);
+                getErrorFileFromReference(mainReference), headerHeight);
     }
 
     /**
-     * 
+     *
      * @param referenceFile
      *            The reference image file (in the directory defined by
      *            {@link #getScreenshotReferenceDirectory()})
@@ -187,7 +190,7 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /**
      * Finds alternative references for the given files
-     * 
+     *
      * @param reference
      *            The reference file
      * @return all references which should be considered when comparing with the
@@ -258,7 +261,7 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
     /**
      * Checks if any screenshot comparisons failures occurred during the test
      * and combines all comparison errors into one exception
-     * 
+     *
      * @throws IOException
      *             If there were failures during the test
      */
@@ -274,10 +277,9 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * com.vaadin.tests.tb3.AbstractTB3Test#onUncaughtException(java.lang.Throwable
-     * )
+     *
+     * @see com.vaadin.tests.tb3.AbstractTB3Test#onUncaughtException(java.lang.
+     * Throwable )
      */
     @Override
     public void onUncaughtException(Throwable cause) {
@@ -294,12 +296,11 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
         }
         try {
             if (driver != null) {
-                BufferedImage screenshotImage = ImageIO
-                        .read(new ByteArrayInputStream(
-                                ((TakesScreenshot) driver)
-                                        .getScreenshotAs(OutputType.BYTES)));
-                ImageIO.write(screenshotImage, "png", new File(
-                        getScreenshotFailureName()));
+                BufferedImage screenshotImage = ImageIO.read(
+                        new ByteArrayInputStream(((TakesScreenshot) driver)
+                                .getScreenshotAs(OutputType.BYTES)));
+                ImageIO.write(screenshotImage, "png",
+                        new File(getScreenshotFailureName()));
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -326,7 +327,7 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /**
      * Returns the name of the reference file based on the given parameters.
-     * 
+     *
      * @param identifier
      *            The identifier of the reference image
      * @return the full path of the reference
@@ -353,7 +354,7 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
 
     /**
      * Returns the name of the reference file based on the given parameters.
-     * 
+     *
      * @param identifier
      *            The identifier of the reference image
      * @param browserIdentifier
@@ -363,9 +364,8 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
     private String getScreenshotReferenceName(String identifier,
             String browserIdentifier) {
         // WindowMaximizeRestoreTest_Windows_InternetExplorer_8_window-1-moved-maximized-restored.png
-        return getScreenshotReferenceDirectory() + "/"
-                + getScreenshotBaseName() + "_" + browserIdentifier + "_"
-                + identifier + ".png";
+        return getScreenshotReferenceDirectory() + "/" + getScreenshotBaseName()
+                + "_" + browserIdentifier + "_" + identifier + ".png";
     }
 
     /**
@@ -376,9 +376,10 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
      * running this test.
      */
     private String getScreenshotErrorBaseName() {
-        return getScreenshotReferenceName("dummy").replace(
-                getScreenshotReferenceDirectory(),
-                getScreenshotErrorDirectory()).replace("_dummy.png", "");
+        return getScreenshotReferenceName("dummy")
+                .replace(getScreenshotReferenceDirectory(),
+                        getScreenshotErrorDirectory())
+                .replace("_dummy.png", "");
     }
 
     /**
@@ -396,8 +397,8 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
             errorDirectory.mkdirs();
         }
 
-        final String errorBase = getScreenshotErrorBaseName()
-                .replace("\\", "/");
+        final String errorBase = getScreenshotErrorBaseName().replace("\\",
+                "/");
         File[] files = errorDirectory.listFiles(new FileFilter() {
 
             @Override

@@ -10,11 +10,9 @@
  */
 package com.vaadin.addon.spreadsheet.test.junit;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
-import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
-import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -25,8 +23,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
+import com.vaadin.addon.spreadsheet.SpreadsheetComponentFactory;
+import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 
 public class MinimumRowHeightCustomComponentsTest {
 
@@ -40,7 +41,7 @@ public class MinimumRowHeightCustomComponentsTest {
 
         @Override
         public void onSheetScroll(int firstRow, int firstColumn, int lastRow,
-                                  int lastColumn) {
+                int lastColumn) {
             super.onSheetScroll(firstRow, firstColumn, lastRow, lastColumn);
         }
 
@@ -61,30 +62,28 @@ public class MinimumRowHeightCustomComponentsTest {
 
         SpreadsheetComponentFactory factory = new SpreadsheetComponentFactory() {
             @Override
-            public Component getCustomComponentForCell(
-                    final Cell cell, final int rowIndex, final int columnIndex,
-                    final Spreadsheet spreadsheet,
-                    final Sheet sheet) {
-                if (cell != null &&
-                        cell.getRowIndex() == onlyCell.getRowIndex() && cell.getColumnIndex() == onlyCell.getColumnIndex()) {
+            public Component getCustomComponentForCell(final Cell cell,
+                    final int rowIndex, final int columnIndex,
+                    final Spreadsheet spreadsheet, final Sheet sheet) {
+                if (cell != null && cell.getRowIndex() == onlyCell.getRowIndex()
+                        && cell.getColumnIndex() == onlyCell.getColumnIndex()) {
                     return component;
                 }
                 return null;
             }
 
             @Override
-            public Component getCustomEditorForCell(
-                    final Cell cell, final int rowIndex, final int columnIndex,
-                    final Spreadsheet spreadsheet,
-                    final Sheet sheet) {
+            public Component getCustomEditorForCell(final Cell cell,
+                    final int rowIndex, final int columnIndex,
+                    final Spreadsheet spreadsheet, final Sheet sheet) {
                 return null;
             }
 
             @Override
-            public void onCustomEditorDisplayed(
-                    final Cell cell, final int rowIndex, final int columnIndex,
-                    final Spreadsheet spreadsheet,
-                    final Sheet sheet, final Component customEditor) {
+            public void onCustomEditorDisplayed(final Cell cell,
+                    final int rowIndex, final int columnIndex,
+                    final Spreadsheet spreadsheet, final Sheet sheet,
+                    final Component customEditor) {
             }
         };
         spreadsheet = new PublicSpreadsheet(workbook);

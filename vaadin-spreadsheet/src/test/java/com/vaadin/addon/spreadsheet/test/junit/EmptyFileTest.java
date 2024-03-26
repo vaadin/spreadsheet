@@ -10,12 +10,15 @@
  */
 package com.vaadin.addon.spreadsheet.test.junit;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
@@ -31,10 +34,10 @@ public class EmptyFileTest {
 
         SpreadsheetState state = getSpreadsheetState(s);
 
-        Assert.assertTrue("Row heights not sent to client", state.rowH != null);
+        assertTrue("Row heights not sent to client", state.rowH != null);
 
         for (int i = 0; i < state.rowH.length; i++) {
-            Assert.assertTrue("Row is zero height, should be default",
+            assertTrue("Row is zero height, should be default",
                     state.rowH[i] > 0);
         }
 
@@ -63,7 +66,7 @@ public class EmptyFileTest {
             }
 
         }
-        Assert.fail("Could not get state with reflection");
+        fail("Could not get state with reflection");
         return null;
     }
 
@@ -71,16 +74,15 @@ public class EmptyFileTest {
         File file = null;
 
         try {
-            file = new File(EmptyFileTest.class
-                    .getClassLoader()
+            file = new File(EmptyFileTest.class.getClassLoader()
                     .getResource(
                             "test_sheets" + File.separator + testSheetFileName)
                     .toURI());
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-        Assert.assertNotNull("Spreadsheet file null", file);
-        Assert.assertTrue("Spreadsheet file does not exist", file.exists());
+        assertNotNull("Spreadsheet file null", file);
+        assertTrue("Spreadsheet file does not exist", file.exists());
         return file;
     }
 

@@ -26,18 +26,16 @@ public class OverlayHelper extends SeleniumHelper {
     public WebElement getOverlayElement(String cell) {
         int[] coordinates = numericCoordinates(cell);
 
-        WebElement element = driver.findElement(By
-                .cssSelector(".sheet-image.col" + coordinates[0] + ".row"
-                        + coordinates[1]));
+        WebElement element = driver.findElement(By.cssSelector(
+                ".sheet-image.col" + coordinates[0] + ".row" + coordinates[1]));
         return element;
     }
 
     public boolean isOverlayPresent(String cell) {
         int[] coordinates = numericCoordinates(cell);
 
-        List<WebElement> elements = driver.findElements(By
-                .cssSelector(".sheet-image.col" + coordinates[0] + ".row"
-                        + coordinates[1]));
+        List<WebElement> elements = driver.findElements(By.cssSelector(
+                ".sheet-image.col" + coordinates[0] + ".row" + coordinates[1]));
         return elements.size() > 0;
     }
 

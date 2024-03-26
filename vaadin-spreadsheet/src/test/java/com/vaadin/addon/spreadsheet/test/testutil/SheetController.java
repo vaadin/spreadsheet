@@ -71,8 +71,7 @@ public class SheetController implements SheetClicker {
         // to sheet's XPath
         return "//*["
                 + "contains(concat(' ', normalize-space(@class), ' '), ' col"
-                + coordinates[0]
-                + " ')"
+                + coordinates[0] + " ')"
                 + "and contains(concat(' ', normalize-space(@class), ' '), ' row"
                 + coordinates[1] + " ')" + "]";
     }
@@ -106,8 +105,8 @@ public class SheetController implements SheetClicker {
     }
 
     public By columnToXPath(String column) {
-        return By.xpath("//*[@class='ch col" + (column.charAt(0) - 'A' + 1)
-                + "']");
+        return By.xpath(
+                "//*[@class='ch col" + (column.charAt(0) - 'A' + 1) + "']");
     }
 
     public By rowToXPath(String row) {
@@ -144,7 +143,7 @@ public class SheetController implements SheetClicker {
                 .getCellAt(cell);
         new Actions(getDriver()).doubleClick(cellElement).build().perform();
     }
-    
+
     public WebElement getInlineEditor(String cell) {
         openInlineEditor(cell);
         waitForVaadin();
@@ -218,16 +217,17 @@ public class SheetController implements SheetClicker {
 
     public void navigateToCell(String cell) {
         driver.findElement(By.xpath("//*[@class='addressfield']")).clear();
-        driver.findElement(By.xpath("//*[@class='addressfield']")).sendKeys(
-                cell);
+        driver.findElement(By.xpath("//*[@class='addressfield']"))
+                .sendKeys(cell);
         sleeper.waitForVaadin();
         new Actions(driver).sendKeys(Keys.RETURN).perform();
         sleeper.waitForVaadin();
     }
 
     public String getSelectedCell() {
-        String elemClass = driver.findElement(
-                By.cssSelector(".sheet-selection")).getAttribute("class");
+        String elemClass = driver
+                .findElement(By.cssSelector(".sheet-selection"))
+                .getAttribute("class");
 
         int rowStart = elemClass.indexOf("row");
         if (rowStart == -1) {
