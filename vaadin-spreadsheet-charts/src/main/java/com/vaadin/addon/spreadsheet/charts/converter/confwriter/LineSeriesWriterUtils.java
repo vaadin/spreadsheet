@@ -17,8 +17,9 @@ import com.vaadin.addon.spreadsheet.charts.converter.Utils;
 
 public class LineSeriesWriterUtils {
     public static Marker getMarker(String markerSymbol) {
-        if (markerSymbol.isEmpty())
+        if (markerSymbol.isEmpty()) {
             return new Marker(false);
+        }
 
         Marker marker = new Marker();
         marker.setSymbol(Utils.getEnumValueOrDefault(MarkerSymbolEnum.class,

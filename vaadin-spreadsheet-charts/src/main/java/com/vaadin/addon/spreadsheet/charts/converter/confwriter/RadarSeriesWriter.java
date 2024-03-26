@@ -36,7 +36,7 @@ public class RadarSeriesWriter extends AreaSeriesDataWriter {
         YAxis yaxs = new YAxis();
         conf.addyAxis(yaxs);
         yaxs.setGridLineInterpolation("polygon");
-        
+
         Style style = new Style();
         style.setFontSize("75%");
         conf.getxAxis().getLabels().setStyle(style);
@@ -45,12 +45,19 @@ public class RadarSeriesWriter extends AreaSeriesDataWriter {
     @Override
     protected void configureDataSeries(DataSeries dataSeriesForWriting) {
         super.configureDataSeries(dataSeriesForWriting);
-        if(!getSeriesData().filled){
-            getPlotOptions().setFillColor(new SolidColor(0,0,0,0));
-            /*The code line:
-            *   getPlotOptions().setFillColor(new SolidColor(0,0,0,0));
-            * is because of bug HighChart bug #4888 and it is fixed in 4.2.2 version and can be replaced by the following line of code when migrate to new HighChart version:
-            *   getPlotOptions().setFillOpacity(0);*/
+        if (!getSeriesData().filled) {
+            getPlotOptions().setFillColor(new SolidColor(0, 0, 0, 0));
+            /*
+             * The code line:
+             *
+             * getPlotOptions().setFillColor(new SolidColor(0,0,0,0));
+             *
+             * is because of bug HighChart bug #4888 and it is fixed in 4.2.2
+             * version and can be replaced by the following line of code when
+             * migrate to new HighChart version:
+             *
+             * getPlotOptions().setFillOpacity(0);
+             */
         }
 
         getPlotOptions().setDashStyle(

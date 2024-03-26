@@ -19,7 +19,6 @@ import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AbstractSeriesData;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AbstractSeriesData.DataUpdateListener;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AbstractSeriesData.SeriesPoint;
-import com.vaadin.addon.spreadsheet.charts.converter.confwriter.SelectListeningDataSeries.SelectListener;
 
 public abstract class AbstractSeriesDataWriter {
     private final AbstractSeriesData series;
@@ -75,7 +74,7 @@ public abstract class AbstractSeriesDataWriter {
                 } else {
                     item.setY(cellValue);
                 }
-                
+
                 dataSeries.update(item);
             }
 
@@ -128,8 +127,8 @@ public abstract class AbstractSeriesDataWriter {
         }
 
         if (getSeriesData().categories.size() > point.xValue.intValue()) {
-            result.setName(getSeriesData().categories.get(point.xValue
-                    .intValue()));
+            result.setName(
+                    getSeriesData().categories.get(point.xValue.intValue()));
         }
         return result;
     }

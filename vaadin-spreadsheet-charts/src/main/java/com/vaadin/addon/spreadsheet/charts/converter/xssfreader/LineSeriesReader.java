@@ -17,8 +17,8 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.LineSeriesData;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.SplineSeriesData;
 
-public class LineSeriesReader extends
-        AbstractSeriesReader<CTLineSer, LineSeriesData> {
+public class LineSeriesReader
+        extends AbstractSeriesReader<CTLineSer, LineSeriesData> {
 
     public LineSeriesReader(CTLineChart ctChart, Spreadsheet spreadsheet,
             boolean showDataInHiddenCells) {
@@ -27,22 +27,25 @@ public class LineSeriesReader extends
 
     @Override
     protected LineSeriesData createSeriesDataObject(CTLineSer serie) {
-        if (serie.getSmooth().getVal())
+        if (serie.getSmooth().getVal()) {
             return new SplineSeriesData();
-        else
+        } else {
             return new LineSeriesData();
+        }
     }
 
     @Override
     protected void fillSeriesData(LineSeriesData seriesData, CTLineSer serie) {
         super.fillSeriesData(seriesData, serie);
 
-        if (serie.getMarker() != null)
+        if (serie.getMarker() != null) {
             LineSeriesReaderUtils.setMarkerForData(seriesData,
                     serie.getMarker());
+        }
 
-        if (serie.getSpPr() != null)
+        if (serie.getSpPr() != null) {
             LineSeriesReaderUtils.setDashStyleForData(seriesData,
                     serie.getSpPr());
+        }
     }
 }

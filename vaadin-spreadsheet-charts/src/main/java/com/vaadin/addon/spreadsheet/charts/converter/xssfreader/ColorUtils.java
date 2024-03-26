@@ -10,6 +10,11 @@
  */
 package com.vaadin.addon.spreadsheet.charts.converter.xssfreader;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import org.openxmlformats.schemas.drawingml.x2006.main.CTColorScheme;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGradientFillProperties;
 import org.openxmlformats.schemas.drawingml.x2006.main.CTGradientStop;
@@ -21,11 +26,6 @@ import org.openxmlformats.schemas.drawingml.x2006.main.CTSolidColorFillPropertie
 
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.ChartData.ColorProperties;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.ChartData.GradientProperties;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 class ColorUtils {
 
@@ -79,8 +79,9 @@ class ColorUtils {
                     stop.getPos() / (double) PERCENTAGE_FACTOR, stopClrProp);
         }
 
-        if (gradFill.isSetLin() && gradFill.getLin().isSetAng())
+        if (gradFill.isSetLin() && gradFill.getLin().isSetAng()) {
             gradientProp.angle = gradFill.getLin().getAng() / ANGLE_FACTOR;
+        }
 
         return gradientProp;
     }
@@ -88,8 +89,9 @@ class ColorUtils {
     public static ColorProperties createColorPropertiesFromFill(
             CTSolidColorFillProperties solidFill,
             Map<String, byte[]> colorMap) {
-        if (solidFill == null)
+        if (solidFill == null) {
             return null;
+        }
 
         ColorParameters clr = null;
 
@@ -127,8 +129,9 @@ class ColorUtils {
 
     private static ColorProperties createColorPropertiesFromGradientStop(
             CTGradientStop gradientStop, Map<String, byte[]> colorMap) {
-        if (gradientStop == null)
+        if (gradientStop == null) {
             return null;
+        }
 
         ColorParameters clr = null;
 
@@ -158,23 +161,26 @@ class ColorUtils {
     }
 
     private static float getLum(List<CTPercentage> list) {
-        if (list.size() > 0)
+        if (list.size() > 0) {
             return list.get(0).getVal() / PERCENTAGE_FACTOR;
-        else
+        } else {
             return 0;
+        }
     }
 
     private static float getAlpha(List<CTPositiveFixedPercentage> alphaList) {
-        if (alphaList.size() > 0)
+        if (alphaList.size() > 0) {
             return alphaList.get(0).getVal() / PERCENTAGE_FACTOR;
-        else
+        } else {
             return 1;
+        }
     }
 
     private static ColorProperties createColorPropertiesFromParameters(
             ColorParameters par) {
-        if (par == null)
+        if (par == null) {
             return null;
+        }
 
         byte[] rgbWithLum = ColorUtils.applyLum(par.rgb, par.lumMod,
                 par.lumOff);
@@ -198,8 +204,9 @@ class ColorUtils {
      * en-us/library/office/dd560821(v=office.12).aspx
      */
     private static byte[] applyLum(byte[] rgb, float lumMod, float lumOff) {
-        if (lumMod == 0)
+        if (lumMod == 0) {
             return rgb;
+        }
 
         float[] hsl = toHSL(rgb);
 
@@ -228,14 +235,15 @@ class ColorUtils {
 
         float h = 0;
 
-        if (max == min)
+        if (max == min) {
             h = 0;
-        else if (max == r)
+        } else if (max == r) {
             h = ((60 * (g - b) / (max - min)) + 360) % 360;
-        else if (max == g)
+        } else if (max == g) {
             h = (60 * (b - r) / (max - min)) + 120;
-        else if (max == b)
+        } else if (max == b) {
             h = (60 * (r - g) / (max - min)) + 240;
+        }
 
         // Calculate the Luminance
 
@@ -245,12 +253,13 @@ class ColorUtils {
 
         float s = 0;
 
-        if (max == min)
+        if (max == min) {
             s = 0;
-        else if (l <= .5f)
+        } else if (l <= .5f) {
             s = (max - min) / (max + min);
-        else
+        } else {
             s = (max - min) / (2 - max - min);
+        }
 
         return new float[] { h, s * 100, l * 100 };
     }
@@ -265,10 +274,11 @@ class ColorUtils {
 
         float q = 0;
 
-        if (l < 0.5)
+        if (l < 0.5) {
             q = l * (1 + s);
-        else
+        } else {
             q = (l + s) - (s * l);
+        }
 
         float p = 2 * l - q;
 
@@ -289,11 +299,13 @@ class ColorUtils {
 
     private static float HueToRGB(float p, float q, float hue) {
         float h = hue;
-        if (h < 0)
+        if (h < 0) {
             h += 1;
+        }
 
-        if (h > 1)
+        if (h > 1) {
             h -= 1;
+        }
 
         if (6 * h < 1) {
             return p + ((q - p) * 6 * h);

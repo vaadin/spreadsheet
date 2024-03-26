@@ -43,13 +43,12 @@ public class BarSeriesDataWriter extends AbstractSeriesDataWriter {
         super.configureDataSeries(dataSeries);
 
         String stacking = getSeriesData().stacking.toString();
-        if(getSeriesData().isColorByPoint){
+        if (getSeriesData().isColorByPoint) {
             getPlotOptions().setColorByPoint(true);
         }
 
-        getPlotOptions().setStacking(
-                Utils.getEnumValueOrDefault(Stacking.class, stacking,
-                        Stacking.NONE));
+        getPlotOptions().setStacking(Utils.getEnumValueOrDefault(Stacking.class,
+                stacking, Stacking.NONE));
 
         if (getSeriesData().is3d) {
             getPlotOptions().setPointPadding(0.2);

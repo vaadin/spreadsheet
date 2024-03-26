@@ -18,8 +18,8 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AreaSeriesData;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.Stacking;
 
-public class AreaSeriesReader extends
-        AbstractSeriesReader<CTAreaSer, AreaSeriesData> {
+public class AreaSeriesReader
+        extends AbstractSeriesReader<CTAreaSer, AreaSeriesData> {
 
     public AreaSeriesReader(CTAreaChart ctChart, Spreadsheet spreadsheet,
             boolean showDataInHiddenCells) {

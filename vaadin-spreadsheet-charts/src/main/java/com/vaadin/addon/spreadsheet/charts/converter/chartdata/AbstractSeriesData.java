@@ -32,7 +32,7 @@ public abstract class AbstractSeriesData {
         public Number yValue = 0;
         public Number zValue = 0;
     }
-    
+
     public String name = "";
     public List<SeriesPoint> seriesData = Collections.emptyList();
     public List<String> categories = Collections.emptyList();

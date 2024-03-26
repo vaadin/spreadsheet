@@ -18,8 +18,8 @@ import org.openxmlformats.schemas.drawingml.x2006.chart.CTPieSer;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.PieSeriesData;
 
-public class PieSeriesReader extends
-        AbstractSeriesReader<CTPieSer, PieSeriesData> {
+public class PieSeriesReader
+        extends AbstractSeriesReader<CTPieSer, PieSeriesData> {
 
     private boolean isDoughnut = false;
 

@@ -27,7 +27,7 @@ public class PieSeriesDataWriter extends AbstractSeriesDataWriter {
     protected PieSeriesData getSeriesData() {
         return (PieSeriesData) super.getSeriesData();
     }
-    
+
     @Override
     public Series convertSeries(boolean blanksAsZeros) {
         // Highcharts does not accept pie charts with nulls

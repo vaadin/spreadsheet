@@ -25,8 +25,8 @@ import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AbstractSeriesDat
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.AbstractSeriesData.SeriesPoint;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.ScatterSeriesData;
 
-public class ScatterSeriesReader extends
-        AbstractSeriesReader<CTScatterSer, ScatterSeriesData> {
+public class ScatterSeriesReader
+        extends AbstractSeriesReader<CTScatterSer, ScatterSeriesData> {
 
     public ScatterSeriesReader(CTScatterChart ctChart, Spreadsheet spreadsheet,
             boolean showDataInHiddenCells) {
@@ -68,8 +68,9 @@ public class ScatterSeriesReader extends
      */
     protected void createSeriesDataPointsForScatter(CTAxDataSource xVal,
             CTNumDataSource yVal, ScatterSeriesData seriesData) {
-        final List<CellReference> ptListX = Utils.getAllReferencedCells(xVal
-                .getNumRef().getF(), getSpreadsheet(), showDataInHiddenCells);
+        final List<CellReference> ptListX = Utils.getAllReferencedCells(
+                xVal.getNumRef().getF(), getSpreadsheet(),
+                showDataInHiddenCells);
 
         final String formulaY = yVal.getNumRef().getF();
         final List<CellReference> ptListY = Utils.getAllReferencedCells(
@@ -78,8 +79,7 @@ public class ScatterSeriesReader extends
         final List<SeriesPoint> list = new ArrayList<SeriesPoint>();
 
         for (int i = 0; i < ptListY.size(); i++) {
-            list.add(new SeriesPoint(
-                    getNumericValueFromCellRef(ptListX.get(i)),
+            list.add(new SeriesPoint(getNumericValueFromCellRef(ptListX.get(i)),
                     getNumericValueFromCellRef(ptListY.get(i))));
         }
 

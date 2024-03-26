@@ -21,13 +21,15 @@ public class PieToDonutConverter {
 
     private static final double DONUT_GAP_BETWEEN_RINGS = 0.02;
 
-    public static void convertIfNeeded(ChartData definition, Configuration conf) {
+    public static void convertIfNeeded(ChartData definition,
+            Configuration conf) {
         if (definition.plotData.size() > 0
                 && definition.plotData.get(0) instanceof PieSeriesData) {
             PieSeriesData pieSeriesData = (PieSeriesData) definition.plotData
                     .get(0);
-            if (pieSeriesData.isDonut)
+            if (pieSeriesData.isDonut) {
                 convertPieToDonut(conf, pieSeriesData.donutHoleSizePercent);
+            }
         }
     }
 
@@ -47,11 +49,11 @@ public class PieToDonutConverter {
                 double innerSize = (currentShare - onePieShare + gap)
                         / currentShare;
 
-                ((PlotOptionsPie) ser.getPlotOptions()).setInnerSize(Math
-                        .round(innerSize * 100) + "%");
+                ((PlotOptionsPie) ser.getPlotOptions())
+                        .setInnerSize(Math.round(innerSize * 100) + "%");
 
-                ((PlotOptionsPie) ser.getPlotOptions()).setSize(Math
-                        .round(currentShare * 100) + "%");
+                ((PlotOptionsPie) ser.getPlotOptions())
+                        .setSize(Math.round(currentShare * 100) + "%");
 
                 currentPieSeries++;
             }
@@ -61,8 +63,9 @@ public class PieToDonutConverter {
     private static int countPieSeries(Configuration conf) {
         int count = 0;
         for (Series ser : conf.getSeries()) {
-            if (ser.getPlotOptions().getChartType() == ChartType.PIE)
+            if (ser.getPlotOptions().getChartType() == ChartType.PIE) {
                 count++;
+            }
         }
         return count;
     }
