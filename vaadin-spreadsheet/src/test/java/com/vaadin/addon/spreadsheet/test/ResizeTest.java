@@ -24,16 +24,18 @@ import com.vaadin.testbench.parallel.Browser;
 
 public class ResizeTest extends AbstractSpreadsheetTestCase {
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
         headerPage.createNewSpreadsheet();
     }
+
     @Test
     public void testColumnResize() {
 
-        double originalWidth = getSize(sheetController.getCellStyle("C1",
-                "width"));
+        double originalWidth = getSize(
+                sheetController.getCellStyle("C1", "width"));
 
         TestBenchElement resizeHandle = $(SpreadsheetElement.class).first()
                 .getColumnHeader(3).getResizeHandle();
@@ -52,15 +54,18 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
         sheetController.selectCell("A2");
         sheetController.selectCell("A1");
 
-        double originalHeight = getSize(sheetController.getCellStyle("A3",
-                "height"));
+        double originalHeight = getSize(
+                sheetController.getCellStyle("A3", "height"));
 
-        new Actions(driver).dragAndDrop(
-                $(SpreadsheetElement.class).first().getRowHeader(3)
-                        .getResizeHandle(),
-                $(SpreadsheetElement.class).first().getRowHeader(5)).perform();
+        new Actions(driver)
+                .dragAndDrop(
+                        $(SpreadsheetElement.class).first().getRowHeader(3)
+                                .getResizeHandle(),
+                        $(SpreadsheetElement.class).first().getRowHeader(5))
+                .perform();
 
-        double newHeight = getSize(sheetController.getCellStyle("A3", "height"));
+        double newHeight = getSize(
+                sheetController.getCellStyle("A3", "height"));
 
         assertInRange(2.3 * originalHeight, newHeight, 3.5 * originalHeight);
     }
@@ -69,19 +74,19 @@ public class ResizeTest extends AbstractSpreadsheetTestCase {
     public void testColumnAutoResize() {
         sheetController.putCellContent("B2", "text");
 
-        $(SpreadsheetElement.class).first().getColumnHeader(2)
-                .getResizeHandle().doubleClick();
+        $(SpreadsheetElement.class).first().getColumnHeader(2).getResizeHandle()
+                .doubleClick();
         sheetController.waitForVaadin();
         assertInRange(25, getSize(sheetController.getCellStyle("B2", "width")),
                 35);
 
         sheetController.putCellContent("D2", "very long text inserted in D2.");
 
-        $(SpreadsheetElement.class).first().getColumnHeader(4)
-                .getResizeHandle().doubleClick();
+        $(SpreadsheetElement.class).first().getColumnHeader(4).getResizeHandle()
+                .doubleClick();
 
-        assertInRange(100,
-                getSize(sheetController.getCellStyle("D2", "width")), 200);
+        assertInRange(100, getSize(sheetController.getCellStyle("D2", "width")),
+                200);
     }
 
     @Override

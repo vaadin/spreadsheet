@@ -40,7 +40,7 @@ public class StyleTest extends AbstractSpreadsheetTestCase {
     public void testCssFromUpload() {
         skipBrowser("Fails in Phantom", Browser.PHANTOMJS);
         headerPage.createNewSpreadsheet();
-        headerPage.loadFile("spreadsheet_styles.xlsx",this);
+        headerPage.loadFile("spreadsheet_styles.xlsx", this);
         assertCorrectCss(sheetController); // TODO - Fails with rev 18
         testBench(driver).waitForVaadin();
     }

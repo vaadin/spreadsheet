@@ -10,13 +10,14 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import com.vaadin.addon.spreadsheet.SpreadsheetUtil;
-import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Locale;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.Test;
+
+import com.vaadin.addon.spreadsheet.SpreadsheetUtil;
 
 public class ParseNumberTest {
 

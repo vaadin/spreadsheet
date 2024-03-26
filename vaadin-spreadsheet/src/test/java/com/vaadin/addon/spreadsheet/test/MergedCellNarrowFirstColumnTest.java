@@ -27,11 +27,11 @@ import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
-public class MergedCellNarrowFirstColumnTest extends AbstractSpreadsheetTestCase {
+public class MergedCellNarrowFirstColumnTest
+        extends AbstractSpreadsheetTestCase {
 
     @Test
-    public void overflowBasedOnFullMergedWidth()
-            throws IOException {
+    public void overflowBasedOnFullMergedWidth() throws IOException {
 
         headerPage.loadFile("merged_narrow_column.xlsx", this);
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();

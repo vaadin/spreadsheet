@@ -20,6 +20,7 @@ import java.util.Locale;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
+import com.vaadin.addon.spreadsheet.test.NumberFormatTest.Expected;
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
 /**
@@ -67,8 +68,6 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
     @Test
     public void numberFormat_sheetWithNumberFormatRuleForNumericCells_formulaFieldHasLocalizedDecimalSeparatorForDoubles() {
         Locale locale = new Locale("fi", "FI");
-        //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
-        //When https://github.com/vaadin/framework8-issues/issues/477 is fixed
         setLocale(locale);
         spreadsheetPage.clickOnCell(Expected.INTEGER_DECIMAL_FORMAT1.getCell());
         assertEquals("Unexpected formula field value for Finnish locale,",
@@ -127,8 +126,6 @@ public class NumberFormatTest extends AbstractSpreadsheetTestCase {
     }
 
     private void setDefaultLocale() {
-        //TODO Vaadin8 use setLocale instead of setLocaleForNativeSElect
-        //When https://github.com/vaadin/framework8-issues/issues/477 is fixed
         setLocale(Locale.US);
     }
 

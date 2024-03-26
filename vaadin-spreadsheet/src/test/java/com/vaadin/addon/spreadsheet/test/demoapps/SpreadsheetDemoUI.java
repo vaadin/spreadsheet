@@ -143,10 +143,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         options = new HorizontalLayout();
         options.setSpacing(true);
-        rowColHeadings=createRowHeadings();
+        rowColHeadings = createRowHeadings();
 
         Button newSpreadsheetButton = createNewButton();
-
 
         ClassLoader classLoader = SpreadsheetDemoUI.class.getClassLoader();
         URL resource = classLoader.getResource("test_sheets" + File.separator);
@@ -168,7 +167,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         download = new Button("Download");
         download.setEnabled(false);
 
-        gridlines =createCBNewLines();
+        gridlines = createCBNewLines();
         Button customComponentTest = new Button(
                 "Create Custom Editor Test sheet", new Button.ClickListener() {
 
@@ -179,20 +178,20 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     ((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
                                             .getTestWorkbook());
                             updateLocale();
-                            spreadsheet
-                                    .setSpreadsheetComponentFactory(spreadsheetFieldFactory);
+                            spreadsheet.setSpreadsheetComponentFactory(
+                                    spreadsheetFieldFactory);
                             layout.addComponent(spreadsheet);
                             layout.setExpandRatio(spreadsheet, 1.0F);
                         } else {
-                            spreadsheet
-                                    .setWorkbook(((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
+                            spreadsheet.setWorkbook(
+                                    ((SpreadsheetEditorComponentFactoryTest) spreadsheetFieldFactory)
                                             .getTestWorkbook());
-                            spreadsheet
-                                    .setSpreadsheetComponentFactory(spreadsheetFieldFactory);
+                            spreadsheet.setSpreadsheetComponentFactory(
+                                    spreadsheetFieldFactory);
                         }
                         gridlines.setValue(spreadsheet.isGridlinesVisible());
-                        rowColHeadings.setValue(spreadsheet
-                                .isRowColHeadingsVisible());
+                        rowColHeadings.setValue(
+                                spreadsheet.isRowColHeadingsVisible());
                     }
                 });
 
@@ -209,7 +208,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         checkBoxLayout.setSpacing(false);
 
         Button freezePanesButton = new Button("Freeze Pane",
-                e->addWindow(new FreezePaneWindow()));
+                e -> addWindow(new FreezePaneWindow()));
 
         hideTop = new CheckBox("toggle top bar visibility");
         hideBottom = new CheckBox("toggle bottom bar visibility");
@@ -219,15 +218,15 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             spreadsheet.setFunctionBarVisible(!hideTop.getValue());
             hideBoth.setValue(spreadsheet.isReportStyle());
         });
-        hideBottom.addValueChangeListener(event1 ->  {
-                spreadsheet.setSheetSelectionBarVisible(!hideBottom.getValue());
-                hideBoth.setValue(spreadsheet.isReportStyle());
+        hideBottom.addValueChangeListener(event1 -> {
+            spreadsheet.setSheetSelectionBarVisible(!hideBottom.getValue());
+            hideBoth.setValue(spreadsheet.isReportStyle());
         });
 
         hideBoth.addValueChangeListener(event1 -> {
-                spreadsheet.setReportStyle(hideBoth.getValue());
-                hideTop.setValue(!spreadsheet.isFunctionBarVisible());
-                hideBottom.setValue(!spreadsheet.isFunctionBarVisible());
+            spreadsheet.setReportStyle(hideBoth.getValue());
+            hideTop.setValue(!spreadsheet.isFunctionBarVisible());
+            hideBottom.setValue(!spreadsheet.isFunctionBarVisible());
         });
 
         checkBoxLayout.addComponents(gridlines, rowColHeadings, hideTop,
@@ -277,7 +276,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         });
         localeSelect.setItems(locales);
         localeSelect.setItemCaptionGenerator(Locale::getDisplayName);
-        localeSelect.addValueChangeListener(e-> updateLocale());
+        localeSelect.addValueChangeListener(e -> updateLocale());
 
         HorizontalLayout sheetOptions = new HorizontalLayout();
         sheetOptions.setSpacing(true);
@@ -320,8 +319,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         VerticalLayout createAndFreeze = new VerticalLayout();
         createAndFreeze.setSpacing(true);
         createAndFreeze.setMargin(false);
-        createAndFreeze.addComponents(newSpreadsheetButton,
-                customComponentTest, freezePanesButton);
+        createAndFreeze.addComponents(newSpreadsheetButton, customComponentTest,
+                freezePanesButton);
 
         HorizontalLayout updateLayout = new HorizontalLayout();
         updateLayout.setSpacing(false);
@@ -346,7 +345,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         options.addComponent(closeDownload);
 
         getPage().addUriFragmentChangedListener(e -> {
-                updateFromFragment();
+            updateFromFragment();
         });
 
         updateFromFragment();
@@ -362,9 +361,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     try {
                         if (previousFile != null) {
                             int i = previousFile.getName().lastIndexOf(".xls");
-                            String fileName = previousFile.getName().substring(
-                                    0, i)
-                                    + ("(1)")
+                            String fileName = previousFile.getName()
+                                    .substring(0, i) + ("(1)")
                                     + previousFile.getName().substring(i);
                             previousFile = spreadsheet.write(fileName);
                         } else {
@@ -394,9 +392,10 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         Button updateButton = new Button("Update");
         updateButton.addClickListener(e -> {
             File file = openTestSheetSelect.getValue();
-            if (file != null ) {
+            if (file != null) {
                 loadFile(file);
-                Page.getCurrent().setUriFragment("file/" + file.getName(), false);
+                Page.getCurrent().setUriFragment("file/" + file.getName(),
+                        false);
             }
         });
         updateButton.setId("update");
@@ -415,40 +414,39 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
     }
 
     private Button createNewButton() {
-        return new Button("Create new",
-                new Button.ClickListener() {
+        return new Button("Create new", new Button.ClickListener() {
 
-                    @Override
-                    public void buttonClick(ClickEvent event) {
-                        if (spreadsheet == null) {
-                            spreadsheet = new Spreadsheet();
-                            updateLocale();
-                            spreadsheet
-                                    .addSheetChangeListener(selectedSheetChangeListener);
-                            layout.addComponent(spreadsheet);
-                            layout.setExpandRatio(spreadsheet, 1.0f);
-                        } else {
-                            spreadsheet.reset();
-                        }
-                        spreadsheet.setSpreadsheetComponentFactory(null);
-                        save.setEnabled(true);
-                        previousFile = null;
-                        openTestSheetSelect.setValue(null);
-                        gridlines.setValue(spreadsheet.isGridlinesVisible());
-                        rowColHeadings.setValue(spreadsheet
-                                .isRowColHeadingsVisible());
+            @Override
+            public void buttonClick(ClickEvent event) {
+                if (spreadsheet == null) {
+                    spreadsheet = new Spreadsheet();
+                    updateLocale();
+                    spreadsheet.addSheetChangeListener(
+                            selectedSheetChangeListener);
+                    layout.addComponent(spreadsheet);
+                    layout.setExpandRatio(spreadsheet, 1.0f);
+                } else {
+                    spreadsheet.reset();
+                }
+                spreadsheet.setSpreadsheetComponentFactory(null);
+                save.setEnabled(true);
+                previousFile = null;
+                openTestSheetSelect.setValue(null);
+                gridlines.setValue(spreadsheet.isGridlinesVisible());
+                rowColHeadings.setValue(spreadsheet.isRowColHeadingsVisible());
 
-                        Page.getCurrent().setUriFragment(null, false);
-                    }
-                });
+                Page.getCurrent().setUriFragment(null, false);
+            }
+        });
     }
 
     private CheckBox createRowHeadings() {
-        CheckBox rowColHeadings = new CheckBox("display row and column headers");
-        rowColHeadings.addValueChangeListener(event ->{
-                if (spreadsheet != null) {
-                    spreadsheet.setRowColHeadingsVisible(event.getValue());
-                }
+        CheckBox rowColHeadings = new CheckBox(
+                "display row and column headers");
+        rowColHeadings.addValueChangeListener(event -> {
+            if (spreadsheet != null) {
+                spreadsheet.setRowColHeadingsVisible(event.getValue());
+            }
         });
         return rowColHeadings;
     }
@@ -488,7 +486,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     System.out.println("Opening fixture " + fixture);
                 }
             }
-            open(filename,fixture,sheetIndex);
+            open(filename, fixture, sheetIndex);
         }
     }
 
@@ -523,9 +521,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 layout.addComponent(spreadsheet);
                 layout.setExpandRatio(spreadsheet, 1.0f);
             } else {
-                if (previousFile == null
-                        || !previousFile.getAbsolutePath().equals(
-                                file.getAbsolutePath())) {
+                if (previousFile == null || !previousFile.getAbsolutePath()
+                        .equals(file.getAbsolutePath())) {
                     spreadsheet.read(file);
                 }
             }
@@ -551,8 +548,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         }
     }
 
-    class SpreadsheetEditorComponentFactoryTest implements
-            SpreadsheetComponentFactory {
+    class SpreadsheetEditorComponentFactoryTest
+            implements SpreadsheetComponentFactory {
 
         private int counter = 0;
 
@@ -573,9 +570,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 { "", true, new Date(), 5, "here is a button",
                         comboBoxValues[0], "some value", "" },
                 { "", true, Calendar.getInstance(), 500.0D,
-                        "here is another button", comboBoxValues[1], "some "
-                    + "value", ""
-                } };
+                        "here is another button", comboBoxValues[1],
+                        "some " + "value", "" } };
 
         private final ComboBox<String> comboBox;
 
@@ -602,7 +598,6 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         private ComboBox<String> comboBox2;
 
-
         private NativeSelect<String> createNativeSelect() {
             if (nativeSelect == null) {
                 List<String> items = new ArrayList<>();
@@ -619,10 +614,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             comboBox.setItems(comboBoxValues);
             comboBox.addValueChangeListener(e -> {
                 if (!initializingComboBoxValue) {
-                    CellReference cr = spreadsheet
-                            .getSelectedCellReference();
-                    Cell cell = spreadsheet.getCell(cr.getRow(),
-                            cr.getCol());
+                    CellReference cr = spreadsheet.getSelectedCellReference();
+                    Cell cell = spreadsheet.getCell(cr.getRow(), cr.getCol());
                     if (cell != null) {
                         cell.setCellValue(comboBox.getValue());
                         spreadsheet.refreshCells(cell);
@@ -636,8 +629,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         public SpreadsheetEditorComponentFactoryTest() {
             testWorkbook = new XSSFWorkbook();
-            final Sheet sheet = getTestWorkbook().createSheet(
-                    "Custom Components");
+            final Sheet sheet = getTestWorkbook()
+                    .createSheet("Custom Components");
             Row lastRow = sheet.createRow(100);
             lastRow.createCell(100, CellType.BOOLEAN).setCellValue(true);
             sheet.setColumnWidth(0, 6000);
@@ -684,15 +677,15 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                             cell.setCellValue((Date) value);
                             CellStyle dateStyle = sheet.getWorkbook()
                                     .createCellStyle();
-                            dateStyle.setDataFormat(format
-                                    .getFormat("m/d/yy h:mm"));
+                            dateStyle.setDataFormat(
+                                    format.getFormat("m/d/yy h:mm"));
                             cell.setCellStyle(dateStyle);
                         } else if (value instanceof Calendar) {
                             cell.setCellValue((Calendar) value);
                             CellStyle dateStyle = sheet.getWorkbook()
                                     .createCellStyle();
-                            dateStyle.setDataFormat(format
-                                    .getFormat("d m yyyy"));
+                            dateStyle.setDataFormat(
+                                    format.getFormat("d m yyyy"));
                             cell.setCellStyle(dateStyle);
                         }
                     } // null sells don't get a value
@@ -702,10 +695,11 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             row5.setHeightInPoints(20F);
             row5.createCell(0).setCellValue(
                     "This cell has a value, and a component (label)");
-            row5.createCell(1).setCellValue(
-                    "This cell has a value, and a button");
+            row5.createCell(1)
+                    .setCellValue("This cell has a value, and a button");
             Cell cell2 = row5.createCell(2);
-            cell2.setCellValue("This cell has a value and button, and is locked.");
+            cell2.setCellValue(
+                    "This cell has a value and button, and is locked.");
             CellStyle lockedCellStyle = sheet.getWorkbook().createCellStyle();
             lockedCellStyle.setLocked(true);
             cell2.setCellStyle(lockedCellStyle);
@@ -714,31 +708,30 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
             comboBox = createCombobox();
 
-            dateField.addValueChangeListener(event ->{
+            dateField.addValueChangeListener(event -> {
 
-                    CellReference selectedCellReference = spreadsheet
-                            .getSelectedCellReference();
-                    Cell cell = spreadsheet.getCell(
-                            selectedCellReference.getRow(),
-                            selectedCellReference.getCol());
-                    try {
-                        Date oldValue = cell.getDateCellValue();
-                        Date value = Date.from(dateField.getValue().atStartOfDay().toInstant(ZoneOffset.UTC));
-                        if (oldValue != null && !oldValue.equals(value)) {
-                            cell.setCellValue(value);
-                            spreadsheet.refreshCells(cell);
-                        }
-                    } catch (IllegalStateException ise) {
-                        ise.printStackTrace();
-                    } catch (NullPointerException npe) {
-                        npe.printStackTrace();
+                CellReference selectedCellReference = spreadsheet
+                        .getSelectedCellReference();
+                Cell cell = spreadsheet.getCell(selectedCellReference.getRow(),
+                        selectedCellReference.getCol());
+                try {
+                    Date oldValue = cell.getDateCellValue();
+                    Date value = Date.from(dateField.getValue().atStartOfDay()
+                            .toInstant(ZoneOffset.UTC));
+                    if (oldValue != null && !oldValue.equals(value)) {
+                        cell.setCellValue(value);
+                        spreadsheet.refreshCells(cell);
                     }
+                } catch (IllegalStateException ise) {
+                    ise.printStackTrace();
+                } catch (NullPointerException npe) {
+                    npe.printStackTrace();
+                }
             });
             checkBox.addValueChangeListener(event -> {
                 CellReference selectedCellReference = spreadsheet
                         .getSelectedCellReference();
-                Cell cell = spreadsheet.getCell(
-                        selectedCellReference.getRow(),
+                Cell cell = spreadsheet.getCell(selectedCellReference.getRow(),
                         selectedCellReference.getCol());
                 try {
                     Boolean value = checkBox.getValue();
@@ -772,8 +765,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
                                 @Override
                                 public void buttonClick(ClickEvent event) {
-                                    Notification
-                                            .show("Clicked button inside sheet");
+                                    Notification.show(
+                                            "Clicked button inside sheet");
                                 }
                             });
                 } else if (5 == columnIndex) { // combobox
@@ -792,15 +785,16 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                     customEditor.setWidth("100%");
                 } else {
                     customEditor.setWidth("110px");
-                    customEditor.setCaption("Col " + columnIndex + " Row "
-                            + rowIndex);
+                    customEditor.setCaption(
+                            "Col " + columnIndex + " Row " + rowIndex);
                 }
                 return;
             }
             if (customEditor.equals(comboBox)) {
                 initializingComboBoxValue = true;
-                String stringCellValue = cell != null ? cell
-                        .getStringCellValue() : null;
+                String stringCellValue = cell != null
+                        ? cell.getStringCellValue()
+                        : null;
                 comboBox.setValue(stringCellValue);
                 comboBox.setWidth("100%");
                 initializingComboBoxValue = false;
@@ -808,8 +802,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
             if (cell != null) {
                 if (cell.getCellType() == CellType.BOOLEAN) {
-                    ((CheckBox) customEditor).setValue(cell
-                            .getBooleanCellValue());
+                    ((CheckBox) customEditor)
+                            .setValue(cell.getBooleanCellValue());
                 } else if (customEditor instanceof DateField) {
                     final String s = cell.getCellStyle().getDataFormatString();
 
@@ -824,7 +818,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                 .setResolution(DateResolution.YEAR);
                     }
 
-                    LocalDate date = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate date = cell.getDateCellValue().toInstant()
+                            .atZone(ZoneId.systemDefault()).toLocalDate();
                     ((DateField) customEditor).setValue(date);
                     ((DateField) customEditor).setWidth("100%");
                     Format format = spreadsheet.getDataFormatter()
@@ -864,9 +859,10 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     new Button.ClickListener() {
 
                                         @Override
-                                        public void buttonClick(ClickEvent event) {
-                                            Notification
-                                                    .show("Clicked button at row index "
+                                        public void buttonClick(
+                                                ClickEvent event) {
+                                            Notification.show(
+                                                    "Clicked button at row index "
                                                             + rowIndex
                                                             + " column index "
                                                             + columnIndex);
@@ -882,7 +878,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     new Button.ClickListener() {
 
                                         @Override
-                                        public void buttonClick(ClickEvent event) {
+                                        public void buttonClick(
+                                                ClickEvent event) {
                                             boolean hidden = !sheet.getRow(0)
                                                     .getZeroHeight();
                                             spreadsheet.setRowHidden(0, hidden);
@@ -900,7 +897,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     new Button.ClickListener() {
 
                                         @Override
-                                        public void buttonClick(ClickEvent event) {
+                                        public void buttonClick(
+                                                ClickEvent event) {
                                             boolean hidden = !sheet
                                                     .isColumnHidden(5);
                                             spreadsheet.setColumnHidden(5,
@@ -922,14 +920,17 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                     new Button.ClickListener() {
 
                                         @Override
-                                        public void buttonClick(ClickEvent event) {
+                                        public void buttonClick(
+                                                ClickEvent event) {
                                             if (spreadsheet.getActiveSheet()
                                                     .getProtect()) {
                                                 spreadsheet
-                                                        .setActiveSheetProtected(null);
+                                                        .setActiveSheetProtected(
+                                                                null);
                                             } else {
                                                 spreadsheet
-                                                        .setActiveSheetProtected("");
+                                                        .setActiveSheetProtected(
+                                                                "");
                                             }
                                         }
                                     });
@@ -964,8 +965,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                                 spreadsheet.unregisterTable(filterableTable);
                             }
                             filterableTable = new SpreadsheetFilterTable(
-                                spreadsheet, sheet,
-                                new CellRangeAddress(0, 100, 6, 6));
+                                    spreadsheet, sheet,
+                                    new CellRangeAddress(0, 100, 6, 6));
                             spreadsheet.registerTable(filterableTable);
                         });
                     }

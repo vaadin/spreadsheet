@@ -125,8 +125,6 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D4", true);
     }
 
-
-
     @Test
     public void sheetIsAllLocked_changeDefaultStyleAndTrySetCellValue_allCellUpdated() {
         spreadSheet.selectSheetAt(4);
@@ -158,7 +156,8 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
         checkProtectionInCell("D4", false);
     }
 
-    private void checkProtectionInCell(String address, boolean shouldBeProtected) {
+    private void checkProtectionInCell(String address,
+            boolean shouldBeProtected) {
         SheetCellElement cell = spreadSheet.getCellAt(address);
         try {
             cell.setValue(NEW_VALUE);
@@ -166,12 +165,12 @@ public class ProtectedCellsTBTest extends AbstractSpreadsheetTestCase {
             // Cell is locked and the input is not visible
         }
         if (shouldBeProtected) {
-            assertNotEquals(address
-                    + " is protected and value shouldn't have changed",
+            assertNotEquals(
+                    address + " is protected and value shouldn't have changed",
                     NEW_VALUE, cell.getValue());
         } else {
-            assertEquals(address
-                    + " is unprotected and value should have changed",
+            assertEquals(
+                    address + " is unprotected and value should have changed",
                     NEW_VALUE, cell.getValue());
         }
     }

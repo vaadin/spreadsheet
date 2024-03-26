@@ -22,9 +22,9 @@ import com.vaadin.ui.UI;
  */
 @SuppressWarnings("serial")
 public class TestUIProviderImpl extends UIProvider {
-    public static final String DEMOUI_PACKAGE="com.vaadin.addon.spreadsheet.test.demoapps";
-    private static Logger logger = Logger.getLogger(TestUIProviderImpl.class
-            .getName());
+    public static final String DEMOUI_PACKAGE = "com.vaadin.addon.spreadsheet.test.demoapps";
+    private static Logger logger = Logger
+            .getLogger(TestUIProviderImpl.class.getName());
 
     @Override
     public Class<? extends UI> getUIClass(UIClassSelectionEvent event) {

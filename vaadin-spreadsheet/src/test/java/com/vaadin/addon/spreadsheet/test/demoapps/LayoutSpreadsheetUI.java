@@ -28,7 +28,6 @@ import com.vaadin.ui.VerticalLayout;
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
 public class LayoutSpreadsheetUI extends UI {
 
-
     @Override
     protected void init(VaadinRequest request) {
         final VerticalLayout layout = new VerticalLayout();
@@ -41,7 +40,6 @@ public class LayoutSpreadsheetUI extends UI {
 
         layout.addComponent(buttons);
 
-
         HorizontalLayout showHideLayout = new HorizontalLayout();
         showHideLayout.setWidth(100, Unit.PERCENTAGE);
         showHideLayout.setHeight(100, Unit.PIXELS);
@@ -52,7 +50,7 @@ public class LayoutSpreadsheetUI extends UI {
         buttons.addComponent(showButton);
         buttons.addComponent(hiddenButton);
 
-        Component spreadsheet=createSpreadsheet();
+        Component spreadsheet = createSpreadsheet();
         layout.addComponent(buttons);
         layout.addComponent(showHideLayout);
         layout.addComponent(spreadsheet);
@@ -61,7 +59,8 @@ public class LayoutSpreadsheetUI extends UI {
     private Component createSpreadsheet() {
         Component spreadsheet;
         ClassLoader classLoader = SpreadsheetDemoUI.class.getClassLoader();
-        File file = new File(classLoader.getResource("test_sheets/500x200test.xlsx").getFile());
+        File file = new File(classLoader
+                .getResource("test_sheets/500x200test.xlsx").getFile());
         try {
             spreadsheet = new Spreadsheet(file);
         } catch (IOException e) {
@@ -72,13 +71,13 @@ public class LayoutSpreadsheetUI extends UI {
         return spreadsheet;
     }
 
-    private Button createShowHideButton(final boolean isShown, final Component component) {
+    private Button createShowHideButton(final boolean isShown,
+            final Component component) {
         Button button = new Button();
 
-        if(isShown){
+        if (isShown) {
             button.setCaption("Show");
-        }
-        else {
+        } else {
             button.setCaption("Hide");
         }
         button.addClickListener(new Button.ClickListener() {

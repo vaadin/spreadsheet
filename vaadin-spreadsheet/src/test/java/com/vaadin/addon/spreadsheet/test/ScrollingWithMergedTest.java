@@ -10,7 +10,9 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -28,22 +30,22 @@ public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
 
         final SpreadsheetElement spreadsheetElement = $(
                 SpreadsheetElement.class).first();
-        Assert.assertNotNull(spreadsheetElement.getCellAt("A1"));
+        assertNotNull(spreadsheetElement.getCellAt("A1"));
 
-        spreadsheetElement.scroll(spreadsheetElement.findElement(
-                By.className("floater")).getSize().height + 100);
+        spreadsheetElement.scroll(spreadsheetElement
+                .findElement(By.className("floater")).getSize().height + 100);
         Thread.sleep(1000);
 
         try {
             spreadsheetElement.getCellAt("A200");
         } catch (NoSuchElementException e) {
-            Assert.fail("final row not found");
+            fail("final row not found");
         }
 
         try {
             SheetCellElement mergedCells = spreadsheetElement.getCellAt("A1");
             if (mergedCells != null && mergedCells.getLocation().getY() > 0) {
-                Assert.fail("Merged cells visible when they shouldn't have been.");
+                fail("Merged cells visible when they shouldn't have been.");
             }
         } catch (NoSuchElementException e) {
             // this is fine too
@@ -62,12 +64,12 @@ public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
         ensureMergedRegionNotVisibleWhenScrolledLeft(spreadsheetElement);
 
         // scroll all the way to right
-        int scrollLeft = spreadsheetElement
-                .findElement(By.className("floater")).getSize().width + 100;
+        int scrollLeft = spreadsheetElement.findElement(By.className("floater"))
+                .getSize().width + 100;
         spreadsheetElement.scrollLeft(scrollLeft);
         Thread.sleep(1000);
 
-        Assert.assertNotNull(spreadsheetElement.getCellAt("AY1"));
+        assertNotNull(spreadsheetElement.getCellAt("AY1"));
 
         // scroll back to left
         spreadsheetElement.scrollLeft(-scrollLeft);
@@ -76,7 +78,7 @@ public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
         try {
             spreadsheetElement.getCellAt("A1");
         } catch (NoSuchElementException e) {
-            Assert.fail("first column not found");
+            fail("first column not found");
         }
 
         ensureMergedRegionNotVisibleWhenScrolledLeft(spreadsheetElement);
@@ -86,11 +88,10 @@ public class ScrollingWithMergedTest extends AbstractSpreadsheetTestCase {
             final SpreadsheetElement spreadsheetElement) {
         try {
             SheetCellElement mergedCells = spreadsheetElement.getCellAt("AY1");
-            if (mergedCells != null
-                    && mergedCells.getLocation().getX() < spreadsheetElement
-                            .getLocation().getX()
+            if (mergedCells != null && mergedCells.getLocation()
+                    .getX() < spreadsheetElement.getLocation().getX()
                             + spreadsheetElement.getSize().getWidth()) {
-                Assert.fail("Merged cells visible when they shouldn't have been.");
+                fail("Merged cells visible when they shouldn't have been.");
             }
         } catch (NoSuchElementException e) {
             // this would be fine too

@@ -19,9 +19,10 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
 
     @Test
-    public void zeroCellAsBlank_loadSheetWithSettingOn_zeroExpected() throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "show-zero-cells.xlsx", this);
+    public void zeroCellAsBlank_loadSheetWithSettingOn_zeroExpected()
+            throws Exception {
+        SpreadsheetPage spreadsheetPage = headerPage
+                .loadFile("show-zero-cells.xlsx", this);
 
         spreadsheetPage.selectSheetAt(0);
 
@@ -32,9 +33,10 @@ public class ZeroCellAsBlankTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void zeroCellAsBlank_loadSheetWithSettingOn_emptyExpected() throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "show-zero-cells.xlsx", this);
+    public void zeroCellAsBlank_loadSheetWithSettingOn_emptyExpected()
+            throws Exception {
+        SpreadsheetPage spreadsheetPage = headerPage
+                .loadFile("show-zero-cells.xlsx", this);
 
         spreadsheetPage.selectSheetAt(1);
 

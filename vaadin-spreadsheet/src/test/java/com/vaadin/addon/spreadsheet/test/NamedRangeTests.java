@@ -26,7 +26,7 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
-    
+
     // named ranges defined in the xlsx
     private Map<String, String> sheet1ranges = new HashMap<String, String>();
     {
@@ -35,11 +35,11 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         sheet1ranges.put("numbers", "C3:C9");
     }
 
-    private List<String> selectableRangesOnSheet1 = Arrays
-        .asList("", "john", "local", "numbers", "sheet2");
+    private List<String> selectableRangesOnSheet1 = Arrays.asList("", "john",
+            "local", "numbers", "sheet2");
 
-    private List<String> selectableRangesOnSheet2 = Arrays
-        .asList("", "john", "numbers", "sheet2");
+    private List<String> selectableRangesOnSheet2 = Arrays.asList("", "john",
+            "numbers", "sheet2");
 
     @Before
     @Override
@@ -49,9 +49,8 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
     }
 
     /**
-     * I put all testing in one method because it runs much faster instead 
-     * of running a new browser windows for each minor test.
-     * --Michael
+     * I put all testing in one method because it runs much faster instead of
+     * running a new browser windows for each minor test. --Michael
      */
     @Test
     public void testNamedRanges() throws Exception {
@@ -70,7 +69,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         selectAndAssertJohnRange();
 
         testCreatingNewRange();
-        
+
         testCreatingNewRangeAfterSelectingRange();
     }
 
@@ -78,7 +77,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         final String newCellRangeName = "numbers2";
 
         spreadsheetPage.setAddressFieldValue("A2");
-        
+
         selectAndAssertNameRange("numbers", sheet1ranges.get("numbers"));
 
         spreadsheetPage.setAddressFieldValue(newCellRangeName);
@@ -93,10 +92,10 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
     private void testCreatingNewRange() {
         final String newCellRange = "E3:F4";
         final String newCellRangeName = "new_range";
-        
+
         spreadsheetPage.setAddressFieldValue(newCellRange);
         spreadsheetPage.setAddressFieldValue(newCellRangeName);
-        
+
         assertTrue(spreadsheetPage.getNamedRanges().contains(newCellRangeName));
 
         selectAndAssertNameRange("john", sheet1ranges.get("john"));
@@ -116,7 +115,8 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
         }
     }
 
-    private void assertNamedRangeSelectValues(List<String> expectedNamedRanges) {
+    private void assertNamedRangeSelectValues(
+            List<String> expectedNamedRanges) {
         final List<String> actualNamedRanges = spreadsheetPage.getNamedRanges();
 
         assertEquals(expectedNamedRanges, actualNamedRanges);
@@ -124,7 +124,7 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
 
     private void testSheetSwitch_selectSheet2Range_assertSheet2AndCorrectSelection() {
         typeAndAssertNameRange("sheet2", "B3:D9");
-        
+
         assertEquals("Sheet2", spreadsheetPage.getSelectedSheetName());
     }
 
@@ -141,13 +141,14 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
     }
 
     private void typeAndAssertNameRange(String name, String expected) {
-        
+
         spreadsheetPage.setAddressFieldValue(name);
 
         assertSelectedRange(name, expected);
     }
 
-    private void typeCellRangeAndAssertNameRange(String cellRange, String name) {
+    private void typeCellRangeAndAssertNameRange(String cellRange,
+            String name) {
 
         spreadsheetPage.setAddressFieldValue(cellRange);
 
@@ -162,13 +163,13 @@ public class NamedRangeTests extends AbstractSpreadsheetTestCase {
     }
 
     private void assertSelectedRange(String name, String expected) {
-        
+
         String selection = spreadsheetPage.getSelectionFormula();
 
         assertEquals("Wrong selection for range " + name, expected, selection);
 
         assertEquals("Wrong address field for name", name,
-            spreadsheetPage.getAddressFieldValue());
+                spreadsheetPage.getAddressFieldValue());
     }
 
 }

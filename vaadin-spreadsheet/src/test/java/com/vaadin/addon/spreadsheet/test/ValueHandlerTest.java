@@ -12,6 +12,7 @@ package com.vaadin.addon.spreadsheet.test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+
 import java.util.GregorianCalendar;
 
 import org.junit.Before;
@@ -22,6 +23,7 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 
 public class ValueHandlerTest extends AbstractSpreadsheetTestCase {
 
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();

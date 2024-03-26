@@ -68,8 +68,10 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains() throws InterruptedException {
-        skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+    public void cellFocus_moveFromSheetOneToSheetTwoAndBack_cellSelectionRemains()
+            throws InterruptedException {
+        skipBrowser("Shift/Ctrl select fails with Firefox and PhantomJS",
+                Browser.FIREFOX, Browser.PHANTOMJS);
 
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         SheetCellElement cell = spreadsheet.getCellAt("C8");
@@ -79,12 +81,10 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
         sheetController.selectRegion("C3", "G14");
         spreadsheet.selectSheetAt(0);
         testBench(driver).waitForVaadin();
-        assertTrue(
-                spreadsheet.getCellAt("C8")
-                        .isCellSelected());
+        assertTrue(spreadsheet.getCellAt("C8").isCellSelected());
         spreadsheet.selectSheetAt(1);
         testBench(driver).waitForVaadin();
-        String[] cols = {"C", "D", "E", "F", "G"};
+        String[] cols = { "C", "D", "E", "F", "G" };
         for (String column : cols) {
             for (int row = 3; row <= 14; row++) {
                 assertTrue("Cell " + column + row + " is not selected",
@@ -108,7 +108,8 @@ public class SheetTabSheetTest extends AbstractSpreadsheetTestCase {
     }
 
     private void verifySheetFocused() {
-        assertThat("Sheet lost focus", getFocusedElement()
-                .getAttribute("class"), containsString("bottom-right-pane"));
+        assertThat("Sheet lost focus",
+                getFocusedElement().getAttribute("class"),
+                containsString("bottom-right-pane"));
     }
 }

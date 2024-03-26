@@ -28,7 +28,7 @@ import com.vaadin.testbench.annotations.RunOnHub;
 /**
  * Blatant copy of {@link PrivateTB3Configuration} to create TB tests that don't
  * rely on screenshot comparisons.
- * 
+ *
  * TODO Must be refactored and combined PrivateTB3Configuration with at some
  * point
  *

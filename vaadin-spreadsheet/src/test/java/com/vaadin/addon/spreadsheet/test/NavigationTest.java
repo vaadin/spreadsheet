@@ -149,8 +149,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("H10", spreadsheetPage.isCellSelected("H10"));
         assertNotSelectedCell("I10", spreadsheetPage.isCellSelected("I10"));
         assertNotSelectedCell("J10", spreadsheetPage.isCellSelected("J10"));
-        new Actions(getDriver())
-                .moveToElement(spreadsheetPage.getCellAt(8, 10))
+        new Actions(getDriver()).moveToElement(spreadsheetPage.getCellAt(8, 10))
                 .keyDown(Keys.SHIFT).sendKeys(Keys.RIGHT).build().perform();
         assertNotSelectedCell("G10", spreadsheetPage.isCellSelected("G10"));
         assertSelectedCell("H10", spreadsheetPage.isCellSelected("H10"));
@@ -188,8 +187,7 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
         assertSelectedCell("H10", spreadsheetPage.isCellSelected("H10"));
         assertNotSelectedCell("H11", spreadsheetPage.isCellSelected("H11"));
         assertNotSelectedCell("H12", spreadsheetPage.isCellSelected("H12"));
-        new Actions(getDriver())
-                .moveToElement(spreadsheetPage.getCellAt(8, 10))
+        new Actions(getDriver()).moveToElement(spreadsheetPage.getCellAt(8, 10))
                 .keyDown(Keys.SHIFT).sendKeys(Keys.DOWN).build().perform();
         assertNotSelectedCell("H9", spreadsheetPage.isCellSelected("H9"));
         assertSelectedCell("H10", spreadsheetPage.isCellSelected("H10"));
@@ -227,14 +225,17 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testEnterSelectionRangeInAddress_outsideOfViewport()
             throws Exception {
-        skipBrowser("setAddressFieldValue() does not work correctly with PhantomJS", Browser.PHANTOMJS);
+        skipBrowser(
+                "setAddressFieldValue() does not work correctly with PhantomJS",
+                Browser.PHANTOMJS);
         spreadsheetPage.setAddressFieldValue("AT1:AV7");
         assertSelectionRange("AT1:AV7", true);
     }
 
     @Test
     public void testKeyboardNavigation() throws Exception {
-        skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
+        skipBrowser("Sending multiple keys fails in IE", Browser.IE9,
+                Browser.IE10, Browser.IE11);
         skipBrowser("Fails randomly with PhantomJS", Browser.PHANTOMJS);
 
         spreadsheetPage.clickOnCell("J10");
@@ -270,7 +271,9 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     @Test
     @Ignore("Keys.RETURN loses active position indication")
     public void testNavigationInSelectionWithEnterAndTab() throws Exception {
-        skipBrowser("setAddressFieldValue() does not work correctly with PhantomJS", Browser.PHANTOMJS);
+        skipBrowser(
+                "setAddressFieldValue() does not work correctly with PhantomJS",
+                Browser.PHANTOMJS);
 
         spreadsheetPage.setAddressFieldValue("A1:C2");
         // Assert that everything is selected
@@ -372,33 +375,36 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void testSheetScrollsWhenPushingAgainstBottomEdge() throws Exception {
-        skipBrowser("Sending multiple keys fails in IE sometimes", Browser.IE9, Browser.IE10, Browser.IE11);
+    public void testSheetScrollsWhenPushingAgainstBottomEdge()
+            throws Exception {
+        skipBrowser("Sending multiple keys fails in IE sometimes", Browser.IE9,
+                Browser.IE10, Browser.IE11);
 
         spreadsheetPage.setAddressFieldValue("A40");
 
         // We need to press the key two times to make it scroll.
-        new Actions(getDriver()).sendKeys(Keys.DOWN).sendKeys(Keys.DOWN)
-                .build().perform();
+        new Actions(getDriver()).sendKeys(Keys.DOWN).sendKeys(Keys.DOWN).build()
+                .perform();
         assertSelectedCell("A42", spreadsheetPage.isCellSelected("A42"));
 
         // We need to press the key two times to make it scroll.
-        new Actions(getDriver()).sendKeys(Keys.DOWN).sendKeys(Keys.DOWN)
-                .build().perform();
+        new Actions(getDriver()).sendKeys(Keys.DOWN).sendKeys(Keys.DOWN).build()
+                .perform();
         assertSelectedCell("A44", spreadsheetPage.isCellSelected("A44"));
     }
 
     @Test
     public void testEnterAndTabWhenFormulaFieldIsFocused() throws Exception {
-        skipBrowser("Sending multiple keys fails in IE", Browser.IE9, Browser.IE10, Browser.IE11);
+        skipBrowser("Sending multiple keys fails in IE", Browser.IE9,
+                Browser.IE10, Browser.IE11);
 
         spreadsheetPage.clickOnCell("J10");
         spreadsheetPage.clickOnFormulaField();
         spreadsheetPage.setFormulaFieldValue("2");
 
         spreadsheetPage.clickOnCell("J10");
-        new Actions(getDriver()).sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).build()
-                .perform();
+        new Actions(getDriver()).sendKeys(Keys.ENTER).sendKeys(Keys.ENTER)
+                .build().perform();
         assertSelectedCell("J11", spreadsheetPage.isCellSelected("J11"));
         assertCellValue("2", "J10");
 
@@ -436,7 +442,8 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickShouldSelect() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX,
+                Browser.PHANTOMJS);
         spreadsheetPage.clickOnCell("B2");
         assertSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
         // new Actions(getDriver()).keyDown(Keys.SHIFT).build().perform();
@@ -449,7 +456,8 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickOnColumnHeader() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX,
+                Browser.PHANTOMJS);
         spreadsheetPage.clickOnCell("B2");
         assertSelectedCell("B2", spreadsheetPage.isCellSelected("B2"));
         // new Actions(getDriver()).keyDown(Keys.SHIFT).build().perform();
@@ -463,7 +471,8 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testShiftClickOnRowHeader() throws Exception {
-        skipBrowser("Range selection assertion fails", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Range selection assertion fails", Browser.FIREFOX,
+                Browser.PHANTOMJS);
 
         spreadsheetPage.clickOnCell("B10");
         assertSelectedCell("B10", spreadsheetPage.isCellSelected("B10"));
@@ -478,9 +487,12 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testSelectCellsByCtrlClick() throws Exception {
-        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX, Browser.PHANTOMJS);
+        skipBrowser("Fails on Firefox and PhantomJS", Browser.FIREFOX,
+                Browser.PHANTOMJS);
 
-        // ("only works on windows due to https://code.google.com/p/selenium/issues/detail?id=4843 (patch pending)")
+        // ("only works on windows due to
+        // https://code.google.com/p/selenium/issues/detail?id=4843 (patch
+        // pending)")
         spreadsheetPage.clickOnCell("A2");
         spreadsheetPage.clickOnCell("A1");
         assertSelectedCell("A1", spreadsheetPage.isCellSelected("A1"));
@@ -516,8 +528,8 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
      */
     private void assertSelectionRange(String range, boolean selected) {
         for (Point coordinate : AddressUtil.addressRangeToPoints(range)) {
-            boolean cellSelected = spreadsheetPage.isCellSelected(
-                    coordinate.getX(), coordinate.getY());
+            boolean cellSelected = spreadsheetPage
+                    .isCellSelected(coordinate.getX(), coordinate.getY());
             if (selected) {
                 assertTrue("Expected cell at " + coordinate.toString()
                         + " to be selected because part of range " + range,
@@ -525,7 +537,8 @@ public class NavigationTest extends AbstractSpreadsheetTestCase {
             } else {
                 assertFalse(
                         "Expected cell to NOT be selected because NOT part of range "
-                                + range, cellSelected);
+                                + range,
+                        cellSelected);
             }
         }
     }

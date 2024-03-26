@@ -10,7 +10,8 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -25,15 +26,15 @@ public class LockTest extends AbstractSpreadsheetTestCase {
         headerPage.createNewSpreadsheet();
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         spreadsheet.getCellAt("B2").setValue("value");
-        sheetController.selectRegion("B3","D4");
+        sheetController.selectRegion("B3", "D4");
         headerPage.loadTestFixture(TestFixtures.LockCell);
 
-        Assert.assertEquals("locked", spreadsheet.getCellAt("B2").getValue());
+        assertEquals("locked", spreadsheet.getCellAt("B2").getValue());
         spreadsheet.getCellAt("B2").setValue("new value on locked cell");
-        Assert.assertEquals("value", spreadsheet.getCellAt("B2").getValue());
+        assertEquals("value", spreadsheet.getCellAt("B2").getValue());
 
-        Assert.assertEquals("unlocked", spreadsheet.getCellAt("C3").getValue());
+        assertEquals("unlocked", spreadsheet.getCellAt("C3").getValue());
         sheetController.putCellContent("C3", "value");
-        Assert.assertEquals("value", spreadsheet.getCellAt("C3").getValue());
+        assertEquals("value", spreadsheet.getCellAt("C3").getValue());
     }
 }
