@@ -10,23 +10,26 @@
  */
 package com.vaadin.addon.spreadsheet.command;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
-import org.apache.poi.ss.usermodel.*;
+import java.util.ArrayList;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 
-import java.util.*;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
  * Command to insert or delete a row
  */
-public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
+public class RowInsertOrDeleteCommand extends SpreadsheetCommand {
 
     private final int row;
     private boolean wasDeleted = false;
     private RowData rowData;
 
-    public RowInsertOrDeleteCommand(Spreadsheet spreadsheet, CellRangeAddress headerRange) {
+    public RowInsertOrDeleteCommand(Spreadsheet spreadsheet,
+            CellRangeAddress headerRange) {
         super(spreadsheet);
         row = headerRange.getFirstRow();
         rowData = new RowData(spreadsheet);
@@ -34,7 +37,7 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
 
     @Override
     public void execute() {
-        if(wasDeleted) {
+        if (wasDeleted) {
             insertNewRow();
         } else {
             deleteRow();
@@ -54,8 +57,7 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
     public void insertNewRow() {
         wasDeleted = false;
         int rows = spreadsheet.getRows();
-        spreadsheet.shiftRows(row, (rows - 1), 1, true,
-                true);
+        spreadsheet.shiftRows(row, (rows - 1), 1, true, true);
         spreadsheet.setMaxRows(rows + 1);
         restoreOldCellValues();
         spreadsheet.refreshAllCellValues();
@@ -69,14 +71,13 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
             // if removed last row, just delete it and make sheet smaller
             spreadsheet.deleteRows(row, row);
         } else {
-            spreadsheet.shiftRows(row + 1, (rows - 1), -1, true,
-                    true);
+            spreadsheet.shiftRows(row + 1, (rows - 1), -1, true, true);
         }
         spreadsheet.setMaxRows(rows - 1);
     }
 
     private void captureOldValues() {
-        rowData.copy(this.row);
+        rowData.copy(row);
     }
 
     private void restoreOldCellValues() {
@@ -98,6 +99,5 @@ public class RowInsertOrDeleteCommand extends SpreadsheetCommand  {
             }
         }
     }
-
 
 }

@@ -17,7 +17,7 @@ import com.vaadin.addon.spreadsheet.client.CopyPasteTextBox.CopyPasteHandler;
  * {@link SpreadsheetWidget} together; copy operations are put into this class,
  * because we have the necessary info available. paste is delegated to
  * server-side.
- * 
+ *
  * @author Thomas Mattsson / Vaadin Ltd.
  *
  */
@@ -63,12 +63,14 @@ public class CopyPasteHandlerImpl implements CopyPasteHandler {
                     if (cellValue != null) {
                         sb.append(cellValue);
                     }
-                    if (col != xMax)
+                    if (col != xMax) {
                         sb.append("\t");
+                    }
                 }
 
-                if (row != yMax)
+                if (row != yMax) {
                     sb.append("\n");
+                }
             }
 
             String result = sb.toString();

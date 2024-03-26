@@ -65,12 +65,12 @@ public class PopupButtonHeader extends Widget {
     }
 
     public void setHidden(boolean headerHidden) {
-        getElement().getStyle().setDisplay(
-                headerHidden ? Display.NONE : Display.BLOCK);
+        getElement().getStyle()
+                .setDisplay(headerHidden ? Display.NONE : Display.BLOCK);
     }
 
     public boolean isHidden() {
-        return Display.NONE.getCssName().equals(
-                getElement().getStyle().getDisplay());
+        return Display.NONE.getCssName()
+                .equals(getElement().getStyle().getDisplay());
     }
 }

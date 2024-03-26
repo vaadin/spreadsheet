@@ -9,11 +9,12 @@
  * license.
  */
 package com.vaadin.addon.spreadsheet.client;
+
 import com.google.gwt.dom.client.Style.Unit;
 
 /**
  * Class that represents a single row grouping indicator.
- * 
+ *
  * @author Thomas Mattsson / Vaadin LTD
  *
  */

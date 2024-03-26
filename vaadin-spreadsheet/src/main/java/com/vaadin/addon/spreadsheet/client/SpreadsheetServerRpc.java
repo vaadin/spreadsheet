@@ -16,7 +16,7 @@ public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
 
     /**
      * Called when the client side connector has been initialized.
-     * 
+     *
      * This is for making sure that the non-state related stuff is cleared from
      * server side when needed, because non state stuff is not resent to client
      * when the component is attached again. Thus this marks that cached should
@@ -29,6 +29,7 @@ public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
      * <p>
      * Selection can change if the cell at the given indexes isn't included in
      * the previous selection.
+     *
      * @param row
      *            1-based
      * @param column
@@ -38,14 +39,14 @@ public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
 
     /**
      * The action was selected from context menu for the current selection.
-     * 
+     *
      * @param actionKey
      */
     void actionOnCurrentSelection(String actionKey);
 
     /**
      * Context menu should be created for the row.
-     * 
+     *
      * @param rowIndex
      *            1-based
      */
@@ -53,14 +54,14 @@ public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
 
     /**
      * The action was selected from context menu for the row header.
-     * 
+     *
      * @param actionKey
      */
     void actionOnRowHeader(String actionKey);
 
     /**
      * Context menu should be created for the column.
-     * 
+     *
      * @param columnIndex
      *            1-based
      */
@@ -68,7 +69,7 @@ public interface SpreadsheetServerRpc extends ServerRpc, SpreadsheetHandler {
 
     /**
      * The action was selected from context menu for the column header.
-     * 
+     *
      * @param actionKey
      */
     void actionOnColumnHeader(String actionKey);

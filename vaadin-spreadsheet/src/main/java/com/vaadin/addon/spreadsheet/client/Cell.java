@@ -94,15 +94,14 @@ public class Cell {
             element.getStyle().clearZIndex();
         } else {
             element.getStyle().setZIndex(ZINDEXVALUE);
-            if (needsMeasure
-                    && getCellWidth() > 0
-                    && sheetWidget.measureValueWidth(cellStyle, value) > getCellWidth()) {
+            if (needsMeasure && getCellWidth() > 0 && sheetWidget
+                    .measureValueWidth(cellStyle, value) > getCellWidth()) {
                 element.setInnerText("###");
             } else {
                 element.setInnerText(value);
             }
         }
-        
+
         appendOverlayElements();
     }
 
@@ -128,11 +127,9 @@ public class Cell {
             int colIndex = col;
             int width = 0;
             int[] colW = sheetWidget.actionHandler.getColWidths();
-            boolean inFreezePane = sheetWidget
-                    .isColumnFrozen(colIndex);
+            boolean inFreezePane = sheetWidget.isColumnFrozen(colIndex);
             while (colIndex < colW.length && width < overflowPx) {
-                if (inFreezePane
-                        && !sheetWidget.isColumnFrozen(colIndex + 1)) {
+                if (inFreezePane && !sheetWidget.isColumnFrozen(colIndex + 1)) {
                     break;
                 }
                 Cell nextCell = sheetWidget.getCell(colIndex + 1, row);
@@ -155,9 +152,8 @@ public class Cell {
 
             NodeList<Node> childNodes = element.getChildNodes();
             if (childNodes != null) {
-                for (int i = childNodes.getLength() -1; i >= 0 ; i--) {
-                    overflowDiv.appendChild(childNodes
-                        .getItem(i));
+                for (int i = childNodes.getLength() - 1; i >= 0; i--) {
+                    overflowDiv.appendChild(childNodes.getItem(i));
                 }
             }
             element.setInnerHTML(null);
@@ -207,7 +203,8 @@ public class Cell {
     }
 
     protected void updateClassName() {
-        element.setClassName(SheetWidget.toKey(col, row) + " cell " + cellStyle);
+        element.setClassName(
+                SheetWidget.toKey(col, row) + " cell " + cellStyle);
     }
 
     public String getCellStyle() {

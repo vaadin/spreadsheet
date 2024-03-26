@@ -32,7 +32,8 @@ public abstract class GroupingWidget extends FlowPanel {
     public static final String CONTRACT_SIGN = "&#x2212;";
 
     public interface GroupingHandler {
-        void setGroupingCollapsed(boolean cols, int colIndex, boolean collapsed);
+        void setGroupingCollapsed(boolean cols, int colIndex,
+                boolean collapsed);
 
         void levelHeaderClicked(boolean cols, int level);
     }

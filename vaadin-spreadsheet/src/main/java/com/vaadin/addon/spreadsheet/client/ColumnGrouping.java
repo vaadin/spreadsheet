@@ -14,7 +14,7 @@ import com.google.gwt.dom.client.Style.Unit;
 
 /**
  * Class that represents a single column grouping indicator.
- * 
+ *
  * @author Thomas Mattsson / Vaadin LTD
  *
  */

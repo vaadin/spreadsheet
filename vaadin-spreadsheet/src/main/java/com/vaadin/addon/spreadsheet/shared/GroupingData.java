@@ -33,7 +33,8 @@ public class GroupingData implements Serializable {
         this((int) start, (int) end, (int) level, (int) unique, coll);
     }
 
-    public GroupingData(int start, int end, int level, int unique, boolean coll) {
+    public GroupingData(int start, int end, int level, int unique,
+            boolean coll) {
         startIndex = start;
         endIndex = end;
         this.level = level;
