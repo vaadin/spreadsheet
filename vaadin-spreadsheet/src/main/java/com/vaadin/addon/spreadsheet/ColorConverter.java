@@ -29,7 +29,7 @@ public interface ColorConverter extends Serializable {
     /**
      * Creates the appropriate CSS text and background style for the given cell
      * style.
-     * 
+     *
      * @param cellStyle
      *            The cell style.
      * @param sb
@@ -39,7 +39,7 @@ public interface ColorConverter extends Serializable {
 
     /**
      * Returns CSS border definitions for the given cell style
-     * 
+     *
      * @param borderSide
      *            Which side the border should go
      * @param attribute
@@ -52,7 +52,7 @@ public interface ColorConverter extends Serializable {
 
     /**
      * Returns CSS border definitions for the given conditional formatting rule
-     * 
+     *
      * @param borderSide
      *            Which side the border should go
      * @param attribute
@@ -66,7 +66,7 @@ public interface ColorConverter extends Serializable {
     /**
      * Writes the default background and foreground colors as CSS styles from
      * the given cell style to the given string buffer.
-     * 
+     *
      * @param cellStyle
      *            The cell style
      * @param sb
@@ -76,7 +76,7 @@ public interface ColorConverter extends Serializable {
 
     /**
      * Returns true if the given cell style has a background color.
-     * 
+     *
      * @param cs
      * @return Whether the given cell style has a defined background color or
      *         not.
@@ -85,7 +85,7 @@ public interface ColorConverter extends Serializable {
 
     /**
      * Create a CSS color string for the background in the given rule.
-     * 
+     *
      * @param rule
      *            Formatting rule
      * @return valid color string with semicolon or <code>null</code> if no
@@ -95,7 +95,7 @@ public interface ColorConverter extends Serializable {
 
     /**
      * Create a CSS color string for the font in the given rule.
-     * 
+     *
      * @param rule
      *            Formatting rule
      * @return valid color string with semicolon or <code>null</code> if no

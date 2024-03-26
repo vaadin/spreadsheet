@@ -30,7 +30,7 @@ import com.vaadin.addon.spreadsheet.client.MergedRegionUtil;
 /**
  * CellSelectionManager is an utility class for Spreadsheet, which handles
  * details of which cells are selected.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Creates a new CellSelectionManager and ties it to the given Spreadsheet
-     * 
+     *
      * @param spreadsheet
      */
     public CellSelectionManager(Spreadsheet spreadsheet) {
@@ -72,7 +72,7 @@ public class CellSelectionManager implements Serializable {
      * Returns reference to the currently selected single cell OR in case of
      * multiple selections the last cell clicked OR in case of area select the
      * cell from which the area selection was started.
-     * 
+     *
      * @return CellReference to selection
      */
     public CellReference getSelectedCellReference() {
@@ -82,7 +82,7 @@ public class CellSelectionManager implements Serializable {
     /**
      * Returns the currently selected area in case there is only one area
      * selected.
-     * 
+     *
      * @return Single selected area
      */
     public CellRangeAddress getSelectedCellRange() {
@@ -91,7 +91,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Returns references to all individually selected cells.
-     * 
+     *
      * @return List of references to single cell selections
      */
     public List<CellReference> getIndividualSelectedCells() {
@@ -100,7 +100,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Returns all selected areas.
-     * 
+     *
      * @return Selected areas
      */
     public List<CellRangeAddress> getCellRangeAddresses() {
@@ -110,7 +110,7 @@ public class CellSelectionManager implements Serializable {
     /**
      * Returns the latest selection event. May be null if no selections have
      * been done, or clear() has been called prior to calling this method.
-     * 
+     *
      * @return Latest SelectionChangeEvent
      */
     public SelectionChangeEvent getLatestSelectionEvent() {
@@ -164,7 +164,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Sets/adds the cell at the given coordinates as/to the current selection.
-     * 
+     *
      * @param row
      *            Row index, 1-based
      * @param column
@@ -178,9 +178,8 @@ public class CellSelectionManager implements Serializable {
         CellReference cellReference = new CellReference(row - 1, column - 1);
         CellReference previousCellReference = selectedCellReference;
         if (!cellReference.equals(previousCellReference)
-                || discardOldRangeSelection
-                && (!cellRangeAddresses.isEmpty() || !individualSelectedCells
-                        .isEmpty())) {
+                || discardOldRangeSelection && (!cellRangeAddresses.isEmpty()
+                        || !individualSelectedCells.isEmpty())) {
             handleCellSelection(row, column);
             selectedCellReference = cellReference;
             spreadsheet.loadCustomEditorOnSelectedCell();
@@ -198,16 +197,16 @@ public class CellSelectionManager implements Serializable {
     /**
      * This is called when the sheet's address field has been changed and the
      * sheet selection and function field must be updated.
-     * 
+     *
      * @param value
      *            New value of the address field
      */
-    protected void onSheetAddressChanged(String value, boolean initialSelection) {
+    protected void onSheetAddressChanged(String value,
+            boolean initialSelection) {
         try {
             if (namedRangeUtils.isNamedRange(value)) {
                 namedRangeUtils.onNamedRange(value);
-            }
-            else if (value.contains(":")) {
+            } else if (value.contains(":")) {
                 CellRangeAddress cra = spreadsheet
                         .createCorrectCellRangeAddress(value);
                 // need to check the range for merged regions
@@ -216,8 +215,8 @@ public class CellSelectionManager implements Serializable {
                         cra.getFirstRow() + 1, cra.getLastRow() + 1,
                         cra.getFirstColumn() + 1, cra.getLastColumn() + 1);
                 if (region != null) {
-                    cra = new CellRangeAddress(region.row1 - 1,
-                            region.row2 - 1, region.col1 - 1, region.col2 - 1);
+                    cra = new CellRangeAddress(region.row1 - 1, region.row2 - 1,
+                            region.col1 - 1, region.col2 - 1);
                 }
                 handleCellRangeSelection(cra);
                 selectedCellReference = new CellReference(cra.getFirstRow(),
@@ -231,14 +230,14 @@ public class CellSelectionManager implements Serializable {
                         spreadsheet.getMergedRegionContainer(),
                         cellReference.getRow() + 1, cellReference.getRow() + 1,
                         cellReference.getCol() + 1, cellReference.getCol() + 1);
-                if (region != null
-                        && (region.col1 != region.col2 || region.row1 != region.row2)) {
+                if (region != null && (region.col1 != region.col2
+                        || region.row1 != region.row2)) {
                     CellRangeAddress cra = spreadsheet
                             .createCorrectCellRangeAddress(region.row1,
                                     region.col1, region.row2, region.col2);
                     handleCellRangeSelection(cra);
-                    selectedCellReference = new CellReference(
-                            cra.getFirstRow(), cra.getFirstColumn());
+                    selectedCellReference = new CellReference(cra.getFirstRow(),
+                            cra.getFirstColumn());
                     paintedCellRange = cra;
                     cellRangeAddresses.clear();
                     cellRangeAddresses.add(cra);
@@ -265,7 +264,7 @@ public class CellSelectionManager implements Serializable {
     }
 
     private void handleCellAddressChange(int rowIndex, int colIndex,
-        boolean initialSelection) {
+            boolean initialSelection) {
         handleCellAddressChange(rowIndex, colIndex, initialSelection, null);
     }
 
@@ -273,7 +272,7 @@ public class CellSelectionManager implements Serializable {
      * Reports the correct cell selection value (formula/data) and selection.
      * This method is called when the cell selection has changed via the address
      * field.
-     * 
+     *
      * @param rowIndex
      *            Index of row, 1-based
      * @param columnIndex
@@ -318,13 +317,13 @@ public class CellSelectionManager implements Serializable {
                             spreadsheet.isCellLocked(cell), initialSelection);
                 } else {
                     spreadsheet.getRpcProxy().showSelectedCell(name, colIndex,
-                            rowIndex, "", false,
-                            spreadsheet.isCellLocked(cell), initialSelection);
+                            rowIndex, "", false, spreadsheet.isCellLocked(cell),
+                            initialSelection);
                 }
             } else {
-                spreadsheet.getRpcProxy().showSelectedCell(name, colIndex, rowIndex,
-                        "", false, spreadsheet.isActiveSheetProtected(),
-                        initialSelection);
+                spreadsheet.getRpcProxy().showSelectedCell(name, colIndex,
+                        rowIndex, "", false,
+                        spreadsheet.isActiveSheetProtected(), initialSelection);
             }
         }
     }
@@ -340,7 +339,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Selects a single cell from the active sheet
-     * 
+     *
      * @param cellReference
      *            Reference to the cell to be selected
      */
@@ -352,54 +351,54 @@ public class CellSelectionManager implements Serializable {
     /**
      * Reports the selected cell formula value, if any. This method is called
      * when the cell value has changed via sheet cell selection change.
-     * 
+     *
      * This method can also be used when the selected cell has NOT changed but
      * the value it displays on the formula field might have changed and needs
      * to be updated.
-     * 
+     *
      * @param rowIndex
      *            1-based
      * @param columnIndex
      *            1-based
      */
     private void handleCellSelection(int rowIndex, int columnIndex) {
-        spreadsheet.getRpcProxy()
-            .updateFormulaBar(null, columnIndex, rowIndex);
+        spreadsheet.getRpcProxy().updateFormulaBar(null, columnIndex, rowIndex);
     }
 
     private void handleCellSelection(int rowIndex, int columnIndex,
-        CellRangeAddress cra) {
-        
-        final String possibleName = namedRangeUtils
-            .getNameForFormulaIfExists(cra);
+            CellRangeAddress cra) {
 
-        spreadsheet.getRpcProxy()
-            .updateFormulaBar(possibleName, columnIndex, rowIndex);
+        final String possibleName = namedRangeUtils
+                .getNameForFormulaIfExists(cra);
+
+        spreadsheet.getRpcProxy().updateFormulaBar(possibleName, columnIndex,
+                rowIndex);
     }
-    
+
     protected void handleCellRangeSelection(CellRangeAddress cra) {
         final String possibleName = namedRangeUtils
-            .getNameForFormulaIfExists(cra);
+                .getNameForFormulaIfExists(cra);
 
         handleCellRangeSelection(possibleName, cra);
     }
-    
+
     protected void handleCellRangeSelection(String name, CellRangeAddress cra) {
 
         final CellReference firstCell = new CellReference(cra.getFirstRow(),
-            cra.getFirstColumn());
+                cra.getFirstColumn());
 
         handleCellRangeSelection(name, firstCell, cra, true);
     }
 
     protected void handleCellRangeSelection(CellReference startingPoint,
-        CellRangeAddress cellsToSelect, boolean scroll) {
+            CellRangeAddress cellsToSelect, boolean scroll) {
 
         handleCellRangeSelection(null, startingPoint, cellsToSelect, scroll);
     }
 
-    private void handleCellRangeSelection(String name, CellReference startingPoint,
-            CellRangeAddress cellsToSelect, boolean scroll) {
+    private void handleCellRangeSelection(String name,
+            CellReference startingPoint, CellRangeAddress cellsToSelect,
+            boolean scroll) {
         int row1 = cellsToSelect.getFirstRow() + 1;
         int row2 = cellsToSelect.getLastRow() + 1;
         int col1 = cellsToSelect.getFirstColumn() + 1;
@@ -422,7 +421,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Sets the given range as the current selection.
-     * 
+     *
      * @param row1
      *            Starting row index, 1-based
      * @param col1
@@ -447,7 +446,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Sets the given range and starting point as the current selection.
-     * 
+     *
      * @param selectedCellRow
      *            Index of the row where the paint was started, 1-based
      * @param selectedCellColumn
@@ -473,7 +472,7 @@ public class CellSelectionManager implements Serializable {
                 col1, row2, col2);
 
         handleCellSelection(selectedCellRow, selectedCellColumn, cra);
-        
+
         paintedCellRange = cra;
         cellRangeAddresses.add(cra);
 
@@ -483,7 +482,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * Adds the cell at the given coordinates to the current selection.
-     * 
+     *
      * @param row
      *            Row index, 1-based
      * @param column
@@ -513,8 +512,8 @@ public class CellSelectionManager implements Serializable {
         selectedCellReference = new CellReference(row - 1, column - 1);
         spreadsheet.loadCustomEditorOnSelectedCell();
         if (individualSelectedCells.contains(selectedCellReference)) {
-            individualSelectedCells.remove(individualSelectedCells
-                    .indexOf(selectedCellReference));
+            individualSelectedCells.remove(
+                    individualSelectedCells.indexOf(selectedCellReference));
         }
         paintedCellRange = null;
         ensureClientHasSelectionData();
@@ -523,7 +522,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * This is called when a cell range has been added to the current selection.
-     * 
+     *
      * @param row1
      *            Starting row index, 1-based
      * @param col1
@@ -535,8 +534,8 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onCellsAddedToRangeSelection(int row1, int col1, int row2,
             int col2) {
-        CellRangeAddress newRange = spreadsheet.createCorrectCellRangeAddress(
-                row1, col1, row2, col2);
+        CellRangeAddress newRange = spreadsheet
+                .createCorrectCellRangeAddress(row1, col1, row2, col2);
         for (Iterator<CellReference> i = individualSelectedCells.iterator(); i
                 .hasNext();) {
             CellReference cell = i.next();
@@ -553,7 +552,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * This is called when a row has been made the current selection
-     * 
+     *
      * @param row
      *            Index of target row, 1-based
      * @param firstColumnIndex
@@ -561,12 +560,13 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onRowSelected(int row, int firstColumnIndex) {
         handleCellSelection(row, firstColumnIndex);
-        selectedCellReference = new CellReference(row - 1, firstColumnIndex - 1);
+        selectedCellReference = new CellReference(row - 1,
+                firstColumnIndex - 1);
         spreadsheet.loadCustomEditorOnSelectedCell();
         cellRangeAddresses.clear();
         individualSelectedCells.clear();
-        CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(row,
-                1, row, spreadsheet.getColumns());
+        CellRangeAddress cra = spreadsheet.createCorrectCellRangeAddress(row, 1,
+                row, spreadsheet.getColumns());
         paintedCellRange = cra;
         cellRangeAddresses.add(cra);
         ensureClientHasSelectionData();
@@ -575,7 +575,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * This is called when a row has been added to the current selection
-     * 
+     *
      * @param row
      *            Index of target row, 1-based
      * @param firstColumnIndex
@@ -594,10 +594,11 @@ public class CellSelectionManager implements Serializable {
             individualSelectedCells.add(selectedCellReference);
         }
         handleCellSelection(row, firstColumnIndex);
-        selectedCellReference = new CellReference(row - 1, firstColumnIndex - 1);
+        selectedCellReference = new CellReference(row - 1,
+                firstColumnIndex - 1);
         spreadsheet.loadCustomEditorOnSelectedCell();
-        cellRangeAddresses.add(spreadsheet.createCorrectCellRangeAddress(row,
-                1, row, spreadsheet.getColumns()));
+        cellRangeAddresses.add(spreadsheet.createCorrectCellRangeAddress(row, 1,
+                row, spreadsheet.getColumns()));
         paintedCellRange = null;
         ensureClientHasSelectionData();
         fireNewSelectionChangeEvent();
@@ -605,7 +606,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * This is called when a column has made the current selection
-     * 
+     *
      * @param firstRowIndex
      *            Index of first row, 1-based
      * @param column
@@ -613,7 +614,8 @@ public class CellSelectionManager implements Serializable {
      */
     protected void onColumnSelected(int firstRowIndex, int column) {
         handleCellSelection(firstRowIndex, column);
-        selectedCellReference = new CellReference(firstRowIndex - 1, column - 1);
+        selectedCellReference = new CellReference(firstRowIndex - 1,
+                column - 1);
         spreadsheet.loadCustomEditorOnSelectedCell();
         cellRangeAddresses.clear();
         individualSelectedCells.clear();
@@ -627,7 +629,7 @@ public class CellSelectionManager implements Serializable {
 
     /**
      * This is called when a column has been added to the current selection
-     * 
+     *
      * @param firstRowIndex
      *            Index of first row, 1-based
      * @param column
@@ -646,7 +648,8 @@ public class CellSelectionManager implements Serializable {
             individualSelectedCells.add(selectedCellReference);
         }
         handleCellSelection(firstRowIndex, column);
-        selectedCellReference = new CellReference(firstRowIndex - 1, column - 1);
+        selectedCellReference = new CellReference(firstRowIndex - 1,
+                column - 1);
         spreadsheet.loadCustomEditorOnSelectedCell();
         cellRangeAddresses.add(spreadsheet.createCorrectCellRangeAddress(1,
                 column, spreadsheet.getRows(), column));
@@ -658,7 +661,7 @@ public class CellSelectionManager implements Serializable {
     /**
      * This is called when a merged region has been added, since the selection
      * may need to be updated.
-     * 
+     *
      * @param region
      *            Merged region that was added
      */
@@ -703,7 +706,7 @@ public class CellSelectionManager implements Serializable {
     /**
      * This is called when a merged region is removed, since the selection may
      * need to be updated.
-     * 
+     *
      * @param region
      *            Merged region that was removed
      */
@@ -725,10 +728,10 @@ public class CellSelectionManager implements Serializable {
     private void ensureClientHasSelectionData() {
         // Make sure data for the selection has been loaded so it can be copied
         for (CellRangeAddress cellRangeAddress : cellRangeAddresses) {
-            spreadsheet.loadCells(cellRangeAddress.getFirstRow()+1,
-                    cellRangeAddress.getFirstColumn()+1,
-                    cellRangeAddress.getLastRow()+1,
-                    cellRangeAddress.getLastColumn()+1);
+            spreadsheet.loadCells(cellRangeAddress.getFirstRow() + 1,
+                    cellRangeAddress.getFirstColumn() + 1,
+                    cellRangeAddress.getLastRow() + 1,
+                    cellRangeAddress.getLastColumn() + 1);
         }
     }
 
@@ -738,28 +741,27 @@ public class CellSelectionManager implements Serializable {
     private void fireNewSelectionChangeEvent() {
         CellRangeAddress selectedCellMergedRegion = null;
         MergedRegion region = spreadsheet.getMergedRegionContainer()
-                .getMergedRegionStartingFrom(
-                        selectedCellReference.getCol() + 1,
+                .getMergedRegionStartingFrom(selectedCellReference.getCol() + 1,
                         selectedCellReference.getRow() + 1);
         if (region != null) {
             selectedCellMergedRegion = new CellRangeAddress(region.row1 - 1,
                     region.row2 - 1, region.col1 - 1, region.col2 - 1);
             // if the only range is the merged region, clear ranges
             if (cellRangeAddresses.size() == 1
-                    && cellRangeAddresses.get(0).formatAsString()
-                            .equals(selectedCellMergedRegion.formatAsString())) {
+                    && cellRangeAddresses.get(0).formatAsString().equals(
+                            selectedCellMergedRegion.formatAsString())) {
                 cellRangeAddresses.clear();
             }
         }
         if (latestSelectionEvent != null) {
             boolean changed = false;
-            if (!latestSelectionEvent.getSelectedCellReference().equals(
-                    selectedCellReference)) {
+            if (!latestSelectionEvent.getSelectedCellReference()
+                    .equals(selectedCellReference)) {
                 changed = true;
             }
             if (!changed) {
-                if (latestSelectionEvent.getIndividualSelectedCells().size() != individualSelectedCells
-                        .size()) {
+                if (latestSelectionEvent.getIndividualSelectedCells()
+                        .size() != individualSelectedCells.size()) {
                     changed = true;
                 } else {
                     for (CellReference cr : latestSelectionEvent
@@ -772,8 +774,8 @@ public class CellSelectionManager implements Serializable {
                 }
             }
             if (!changed) {
-                if (latestSelectionEvent.getCellRangeAddresses().size() != cellRangeAddresses
-                        .size()) {
+                if (latestSelectionEvent.getCellRangeAddresses()
+                        .size() != cellRangeAddresses.size()) {
                     changed = true;
                 } else {
                     for (CellRangeAddress cra : latestSelectionEvent
@@ -788,9 +790,11 @@ public class CellSelectionManager implements Serializable {
             if (!changed) {
                 CellRangeAddress previouSelectedCellMergedRegion = latestSelectionEvent
                         .getSelectedCellMergedRegion();
-                if ((previouSelectedCellMergedRegion == null && selectedCellMergedRegion != null)
-                        || (previouSelectedCellMergedRegion != null && !previouSelectedCellMergedRegion
-                                .equals(selectedCellMergedRegion))) {
+                if ((previouSelectedCellMergedRegion == null
+                        && selectedCellMergedRegion != null)
+                        || (previouSelectedCellMergedRegion != null
+                                && !previouSelectedCellMergedRegion
+                                        .equals(selectedCellMergedRegion))) {
                     changed = true;
                 }
             }

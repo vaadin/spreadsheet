@@ -62,7 +62,7 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
     /**
      * Constructs a new item filter for the given spreadsheet, filtering range,
      * pop-up button and filtering table.
-     * 
+     *
      * @param filterRange
      *            Range of cells to filter
      * @param spreadsheet
@@ -123,17 +123,18 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
                 // than what is displayed, like in case when allItems and all
                 // options were left unchecked.
                 if (!allItems.getValue()) {
-                    Collection<String> currentValue = filterCheckbox
-                            .getValue();
+                    Collection<String> currentValue = filterCheckbox.getValue();
                     cancelValueChangeUpdate = true;
                     if (currentValue.isEmpty()) {
                         if (latestFilteredValues.isEmpty()
                                 || latestFilteredValues
                                         .containsAll(allCellValues)) {
                             allItems.setValue(true);
-                            filterCheckbox.setValue(new HashSet<>(allCellValues));
+                            filterCheckbox
+                                    .setValue(new HashSet<>(allCellValues));
                         } else {
-                            filterCheckbox.setValue(new HashSet<>(latestFilteredValues));
+                            filterCheckbox.setValue(
+                                    new HashSet<>(latestFilteredValues));
                         }
                     } else {
                         if (currentValue.containsAll(allCellValues)) {
@@ -159,17 +160,17 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
     protected void initAllItemsCheckbox() {
         allItems = new CheckBox("(Select All)", true);
         allItems.addValueChangeListener(event -> {
-                if (!cancelValueChangeUpdate) {
-                    Boolean value = allItems.getValue();
-                    cancelValueChangeUpdate = true;
-                    if (value) {
-                        filterCheckbox.setValue(new HashSet<>(allCellValues));
-                        updateFilteredItems(allCellValues);
-                    } else {
-                        filterCheckbox.setValue(Collections.emptySet());
-                    }
-                    cancelValueChangeUpdate = false;
+            if (!cancelValueChangeUpdate) {
+                Boolean value = allItems.getValue();
+                cancelValueChangeUpdate = true;
+                if (value) {
+                    filterCheckbox.setValue(new HashSet<>(allCellValues));
+                    updateFilteredItems(allCellValues);
+                } else {
+                    filterCheckbox.setValue(Collections.emptySet());
                 }
+                cancelValueChangeUpdate = false;
+            }
         });
     }
 
@@ -180,15 +181,14 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
         filterOptionsProvider = new ListDataProvider<>(filterOptions);
         filterCheckbox = new CheckBoxGroup<>();
         filterCheckbox.setDataProvider(filterOptionsProvider);
-        filterCheckbox.addValueChangeListener(event->{
+        filterCheckbox.addValueChangeListener(event -> {
             if (firstUpdate) {
                 firstUpdate = false;
             } else {
                 if (!cancelValueChangeUpdate) {
-                    Collection<String> value = filterCheckbox
-                            .getValue();
-                    // value should not be updated when options are empty and all
-                    // items is unchecked - just as in Excel
+                    Collection<String> value = filterCheckbox.getValue();
+                    // value should not be updated when options are empty and
+                    // all items is unchecked - just as in Excel
                     if (!value.isEmpty()) {
                         updateFilteredItems(value);
                         cancelValueChangeUpdate = true;
@@ -235,7 +235,8 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
         }
 
         if (needsSort) {
-            Comparator<String> byString = (String s1,String s2) -> s1.compareToIgnoreCase(s2);
+            Comparator<String> byString = (String s1, String s2) -> s1
+                    .compareToIgnoreCase(s2);
             Collections.sort(filterOptions, byString);
         }
 
@@ -248,16 +249,17 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
 
     /**
      * Gets the currently NOT filtered cell values.
-     * 
+     *
      * @return All unique values currently visible (= not filtered) within this
      *         column
      */
     protected Set<String> getVisibleValues() {
         Set<String> values = new HashSet<>();
-        for (int r = filterRange.getFirstRow(); r <= filterRange.getLastRow(); r++) {
+        for (int r = filterRange.getFirstRow(); r <= filterRange
+                .getLastRow(); r++) {
             if (!filteredRows.contains(r) && !spreadsheet.isRowHidden(r)) {
-                values.add(spreadsheet.getCellValue(spreadsheet.getCell(r,
-                        filterRange.getFirstColumn())));
+                values.add(spreadsheet.getCellValue(
+                        spreadsheet.getCell(r, filterRange.getFirstColumn())));
             }
         }
         return values;
@@ -265,29 +267,31 @@ public class ItemFilter extends Panel implements SpreadsheetFilter {
 
     /**
      * Gets all of the unique values for this filter column.
-     * 
+     *
      * @return All unique values within this column
      */
     protected Set<String> getAllValues() {
         Set<String> values = new HashSet<>();
-        for (int r = filterRange.getFirstRow(); r <= filterRange.getLastRow(); r++) {
-            values.add(spreadsheet.getCellValue(spreadsheet.getCell(r,
-                    filterRange.getFirstColumn())));
+        for (int r = filterRange.getFirstRow(); r <= filterRange
+                .getLastRow(); r++) {
+            values.add(spreadsheet.getCellValue(
+                    spreadsheet.getCell(r, filterRange.getFirstColumn())));
         }
         return values;
     }
 
     /**
      * Updates the filtered rows to reflect the new filtered values.
-     * 
+     *
      * @param visibleValues
      *            the values that are NOT filtered
      */
     protected void updateFilteredItems(Collection<String> visibleValues) {
         filteredRows.clear();
-        for (int r = filterRange.getFirstRow(); r <= filterRange.getLastRow(); r++) {
-            String cellValue = spreadsheet.getCellValue(spreadsheet.getCell(r,
-                    filterRange.getFirstColumn()));
+        for (int r = filterRange.getFirstRow(); r <= filterRange
+                .getLastRow(); r++) {
+            String cellValue = spreadsheet.getCellValue(
+                    spreadsheet.getCell(r, filterRange.getFirstColumn()));
             if (!visibleValues.contains(cellValue)) {
                 filteredRows.add(new Integer(r));
             }

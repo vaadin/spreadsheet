@@ -153,7 +153,8 @@ public class ConditionalFormatter implements Serializable {
         cellToIndex.clear();
         topBorders.clear();
         leftBorders.clear();
-        spreadsheet.getState().conditionalFormattingStyles = new HashMap<Integer, String>();
+        spreadsheet
+                .getState().conditionalFormattingStyles = new HashMap<Integer, String>();
 
         SheetConditionalFormatting cfs = spreadsheet.getActiveSheet()
                 .getSheetConditionalFormatting();
@@ -167,12 +168,14 @@ public class ConditionalFormatter implements Serializable {
         for (int i = 0; i < cfs.getNumConditionalFormattings(); i++) {
             ConditionalFormatting cf = cfs.getConditionalFormattingAt(i);
 
-            List<XSSFConditionalFormattingRule> cfRuleList = getOrderedRuleList(cf);
+            List<XSSFConditionalFormattingRule> cfRuleList = getOrderedRuleList(
+                    cf);
 
             // rules are listen bottom up, but we want top down so that we can
             // stop when we need to. Rule indexes follow original order, because
             // that is the order CSS is applied on client side.
-            for (int ruleIndex = cf.getNumberOfRules() - 1; ruleIndex >= 0; ruleIndex--) {
+            for (int ruleIndex = cf.getNumberOfRules()
+                    - 1; ruleIndex >= 0; ruleIndex--) {
 
                 ConditionalFormattingRule rule = cfRuleList.get(ruleIndex);
 
@@ -200,7 +203,8 @@ public class ConditionalFormatter implements Serializable {
                     // DIV element, so use the first one that matches.
 
                     // HSSF might return 255 for 'none'...
-                    if (fontFormatting.getUnderlineType() != FontFormatting.U_NONE
+                    if (fontFormatting
+                            .getUnderlineType() != FontFormatting.U_NONE
                             && fontFormatting.getUnderlineType() != 255) {
                         css.append("text-decoration: underline;");
                     }
@@ -242,8 +246,8 @@ public class ConditionalFormatter implements Serializable {
 
                 cssIndex = addBorderFormatting(cf, rule, css, cssIndex);
 
-                spreadsheet.getState().conditionalFormattingStyles.put(
-                        cssIndex, css.toString());
+                spreadsheet.getState().conditionalFormattingStyles.put(cssIndex,
+                        css.toString());
 
                 // check actual cells
                 runCellMatcher(cf, rule, cssIndex);
@@ -336,7 +340,8 @@ public class ConditionalFormatter implements Serializable {
             // rules. Default is 'not set', in which case we add no CSS.
             boolean isLeftSet = isBorderSet(borderFormatting, BorderSide.LEFT);
             boolean isTopSet = isBorderSet(borderFormatting, BorderSide.TOP);
-            boolean isRightSet = isBorderSet(borderFormatting, BorderSide.RIGHT);
+            boolean isRightSet = isBorderSet(borderFormatting,
+                    BorderSide.RIGHT);
             boolean isBottomSet = isBorderSet(borderFormatting,
                     BorderSide.BOTTOM);
 
@@ -344,9 +349,9 @@ public class ConditionalFormatter implements Serializable {
                 css.append("border-right:");
                 if (borderRight != BorderStyle.NONE) {
                     css.append(borderRight.getBorderAttributeValue());
-                    css.append(colorConverter.getBorderColorCSS(
-                            BorderSide.RIGHT, "border-right-color",
-                            borderFormatting));
+                    css.append(
+                            colorConverter.getBorderColorCSS(BorderSide.RIGHT,
+                                    "border-right-color", borderFormatting));
                 } else {
                     css.append(BORDER_STYLE_DEFAULT);
                 }
@@ -355,9 +360,9 @@ public class ConditionalFormatter implements Serializable {
                 css.append("border-bottom:");
                 if (borderBottom != BorderStyle.NONE) {
                     css.append(borderBottom.getBorderAttributeValue());
-                    css.append(colorConverter.getBorderColorCSS(
-                            BorderSide.BOTTOM, "border-bottom-color",
-                            borderFormatting));
+                    css.append(
+                            colorConverter.getBorderColorCSS(BorderSide.BOTTOM,
+                                    "border-bottom-color", borderFormatting));
                 } else {
                     css.append(BORDER_STYLE_DEFAULT);
                 }
@@ -373,8 +378,8 @@ public class ConditionalFormatter implements Serializable {
                     sb2.append(colorConverter.getBorderColorCSS(BorderSide.TOP,
                             "border-bottom-color", borderFormatting));
 
-                    spreadsheet.getState().conditionalFormattingStyles.put(
-                            cssIndex, sb2.toString());
+                    spreadsheet.getState().conditionalFormattingStyles
+                            .put(cssIndex, sb2.toString());
                     topBorders.put(cf, cssIndex++);
                 } else {
                     css.append(BORDER_STYLE_DEFAULT);
@@ -386,12 +391,11 @@ public class ConditionalFormatter implements Serializable {
                 final StringBuilder sb2 = new StringBuilder("border-right:");
                 if (borderLeft != BorderStyle.NONE) {
                     sb2.append(borderLeft.getBorderAttributeValue());
-                    sb2.append(colorConverter.getBorderColorCSS(
-                            BorderSide.LEFT, "border-right-color",
-                            borderFormatting));
+                    sb2.append(colorConverter.getBorderColorCSS(BorderSide.LEFT,
+                            "border-right-color", borderFormatting));
 
-                    spreadsheet.getState().conditionalFormattingStyles.put(
-                            cssIndex, sb2.toString());
+                    spreadsheet.getState().conditionalFormattingStyles
+                            .put(cssIndex, sb2.toString());
                     leftBorders.put(cf, cssIndex++);
                 } else {
                     css.append(BORDER_STYLE_DEFAULT);
@@ -432,23 +436,19 @@ public class ConditionalFormatter implements Serializable {
             return val;
 
         } catch (NoSuchFieldException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation, unable to parse conditional formatting rule",
                     e);
         } catch (SecurityException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation, unable to parse conditional formatting rule",
                     e);
         } catch (IllegalArgumentException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation, unable to parse conditional formatting rule",
                     e);
         } catch (IllegalAccessException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation, unable to parse conditional formatting rule",
                     e);
         } finally {
@@ -538,16 +538,17 @@ public class ConditionalFormatter implements Serializable {
         for (CellRangeAddress cra : cf.getFormattingRanges()) {
 
             for (int row = cra.getFirstRow(); row <= cra.getLastRow(); row++) {
-                for (int col = cra.getFirstColumn(); col <= cra.getLastColumn(); col++) {
+                for (int col = cra.getFirstColumn(); col <= cra
+                        .getLastColumn(); col++) {
 
                     Cell cell = spreadsheet.getCell(row, col);
                     if (cell == null) {
                         cell = spreadsheet.createCell(row, col, "");
                     }
-                    if (matches(cell, rule, col - firstColumn, row
-                                    - firstRow)) {
-                        Set<Integer> list = cellToIndex.get(SpreadsheetUtil
-                                .toKey(cell));
+                    if (matches(cell, rule, col - firstColumn,
+                            row - firstRow)) {
+                        Set<Integer> list = cellToIndex
+                                .get(SpreadsheetUtil.toKey(cell));
                         if (list == null) {
                             list = new HashSet<Integer>();
                             cellToIndex.put(SpreadsheetUtil.toKey(cell), list);
@@ -567,8 +568,8 @@ public class ConditionalFormatter implements Serializable {
                                     cellToLeft = spreadsheet.createCell(row,
                                             col - 1, "");
                                 }
-                                list = cellToIndex.get(SpreadsheetUtil
-                                        .toKey(cellToLeft));
+                                list = cellToIndex
+                                        .get(SpreadsheetUtil.toKey(cellToLeft));
                                 if (list == null) {
                                     list = new HashSet<Integer>();
                                     cellToIndex.put(
@@ -589,8 +590,8 @@ public class ConditionalFormatter implements Serializable {
                                     cellOnTop = spreadsheet.createCell(row - 1,
                                             col, "");
                                 }
-                                list = cellToIndex.get(SpreadsheetUtil
-                                        .toKey(cellOnTop));
+                                list = cellToIndex
+                                        .get(SpreadsheetUtil.toKey(cellOnTop));
                                 if (list == null) {
                                     list = new HashSet<Integer>();
                                     cellToIndex.put(
@@ -621,16 +622,16 @@ public class ConditionalFormatter implements Serializable {
             int deltaColumn, int deltaRow) {
         /*
          * Formula type is the default for most rules in modern excel files.
-         * 
+         *
          * There are a couple of issues with this.
-         * 
+         *
          * 1. the condition type seems to be '0' in all xlsx files, which is an
          * illegal value according to the API. The formula is still correct, and
          * can be accessed.
-         * 
+         *
          * 2. in xls-files the type is correct, but the formula is not: it
          * references the wrong cell.
-         * 
+         *
          * 3. the formula is a String. POIs FormulaEvaluation only takes Cell
          * arguments. So, to use it, we need to copy the formula to an existing
          * cell temporarily, and run the eval.
@@ -658,12 +659,13 @@ public class ConditionalFormatter implements Serializable {
      *            Cell with conditional formatting
      * @param rule
      *            Conditional formatting rule based on formula
-     * @return Formula value, if the formula is of boolean formula type
-     *         Formula value != 0, if the formula is of numeric formula type
-     *         and false otherwise
+     * @return Formula value, if the formula is of boolean formula type Formula
+     *         value != 0, if the formula is of numeric formula type and false
+     *         otherwise
      */
-    protected boolean matchesFormula(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
-        if ( ! (rule instanceof XSSFConditionalFormattingRule)) {
+    protected boolean matchesFormula(Cell cell, ConditionalFormattingRule rule,
+            int deltaColumn, int deltaRow) {
+        if (!(rule instanceof XSSFConditionalFormattingRule)) {
             // TODO Does not support HSSF files for now, since HSSF does not
             // read cell references in the file correctly.Since HSSF formulas
             // are read completely wrong, that boolean formula above is useless.
@@ -675,27 +677,30 @@ public class ConditionalFormatter implements Serializable {
             return false;
         }
 
-        ValueEval eval = getValueEvalFromFormula(booleanFormula, cell, deltaColumn, deltaRow);
-        
-        if (eval instanceof ErrorEval){
+        ValueEval eval = getValueEvalFromFormula(booleanFormula, cell,
+                deltaColumn, deltaRow);
+
+        if (eval instanceof ErrorEval) {
             LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
         }
-        
+
         if (eval instanceof BoolEval) {
             return eval == null ? false : ((BoolEval) eval).getBooleanValue();
         } else {
             if (eval instanceof NumericValueEval) {
-                return  ((NumberEval) eval).getNumberValue() != 0;
+                return ((NumberEval) eval).getNumberValue() != 0;
             } else {
                 return false;
             }
         }
     }
 
-    private ValueEval getValueEvalFromFormula(String formula, Cell cell, int deltaColumn, int deltaRow) {
+    private ValueEval getValueEvalFromFormula(String formula, Cell cell,
+            int deltaColumn, int deltaRow) {
         // Parse formula and use deltas to get relative cell references to work
         // (#18702)
-        Ptg[] ptgs = FormulaParser.parse(formula, WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
+        Ptg[] ptgs = FormulaParser.parse(formula,
+                WorkbookEvaluatorUtil.getEvaluationWorkbook(spreadsheet),
                 FormulaType.CELL, spreadsheet.getActiveSheetIndex());
 
         for (Ptg ptg : ptgs) {
@@ -724,13 +729,14 @@ public class ConditionalFormatter implements Serializable {
      * @param rule
      *            Conditional formatting rule to match against.
      * @param deltaColumn
-     *            delta (on column axis) between cell and the origin cell 
+     *            delta (on column axis) between cell and the origin cell
      * @param deltaRow
-     *            delta (on row axis) between cell and the origin cell 
+     *            delta (on row axis) between cell and the origin cell
      * @return True if the given cells value matches the given
      *         <code>VALUE_IS</code> rule, false otherwise
      */
-    protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule, int deltaColumn, int deltaRow) {
+    protected boolean matchesValue(Cell cell, ConditionalFormattingRule rule,
+            int deltaColumn, int deltaRow) {
 
         boolean isFormulaType = cell.getCellType() == CellType.FORMULA;
 
@@ -738,7 +744,7 @@ public class ConditionalFormatter implements Serializable {
             // make sure we have the latest value for formula cells
             getFormulaEvaluator().evaluateFormulaCell(cell);
         }
-        
+
         boolean isFormulaStringType = isFormulaType
                 && cell.getCachedFormulaResultType() == CellType.STRING;
         boolean isFormulaBooleanType = isFormulaType
@@ -748,15 +754,16 @@ public class ConditionalFormatter implements Serializable {
 
         String formula = rule.getFormula1();
         byte comparisonOperation = rule.getComparisonOperation();
-        ValueEval eval = getValueEvalFromFormula(formula, cell, deltaColumn, deltaRow);
-        
-        if (eval instanceof ErrorEval){
+        ValueEval eval = getValueEvalFromFormula(formula, cell, deltaColumn,
+                deltaRow);
+
+        if (eval instanceof ErrorEval) {
             LOGGER.log(Level.FINEST, ((ErrorEval) eval).getErrorString(), eval);
             return false;
         }
-        
+
         if (!hasCoherentType(eval, cell.getCellType(), isFormulaStringType,
-            isFormulaBooleanType, isFormulaNumericType)) {
+                isFormulaBooleanType, isFormulaNumericType)) {
             // Comparison between different types (e.g. Bool vs String)
             return (comparisonOperation == ComparisonOperator.NOT_EQUAL);
         }
@@ -764,7 +771,7 @@ public class ConditionalFormatter implements Serializable {
         // other than numerical types
         if (cell.getCellType() == CellType.STRING || isFormulaStringType) {
 
-            String formulaValue = ((StringEval)eval).getStringValue();
+            String formulaValue = ((StringEval) eval).getStringValue();
             String stringValue = cell.getStringCellValue();
 
             // Excel string comparison ignores case
@@ -775,12 +782,11 @@ public class ConditionalFormatter implements Serializable {
                 return !stringValue.equalsIgnoreCase(formulaValue);
             }
         }
-        if (cell.getCellType() == CellType.BOOLEAN
-                || isFormulaBooleanType) {
+        if (cell.getCellType() == CellType.BOOLEAN || isFormulaBooleanType) {
             // not sure if this is used, since no boolean option exists in
             // Excel..
 
-            boolean formulaVal = ((BoolEval)eval).getBooleanValue();
+            boolean formulaVal = ((BoolEval) eval).getBooleanValue();
 
             switch (comparisonOperation) {
             case ComparisonOperator.EQUAL:
@@ -791,10 +797,9 @@ public class ConditionalFormatter implements Serializable {
         }
 
         // numerical types
-        if (cell.getCellType() == CellType.NUMERIC
-                || isFormulaNumericType) {
+        if (cell.getCellType() == CellType.NUMERIC || isFormulaNumericType) {
 
-            double formula1Val = ((NumericValueEval)eval).getNumberValue();
+            double formula1Val = ((NumericValueEval) eval).getNumberValue();
 
             switch (comparisonOperation) {
 
@@ -814,14 +819,14 @@ public class ConditionalFormatter implements Serializable {
 
             case ComparisonOperator.BETWEEN:
                 boolean lt = cell.getNumericCellValue() >= formula1Val;
-                boolean gt = cell.getNumericCellValue() <= Double.valueOf(rule
-                        .getFormula2());
+                boolean gt = cell.getNumericCellValue() <= Double
+                        .valueOf(rule.getFormula2());
                 return lt && gt;
 
             case ComparisonOperator.NOT_BETWEEN:
                 lt = cell.getNumericCellValue() <= formula1Val;
-                gt = cell.getNumericCellValue() >= Double.valueOf(rule
-                        .getFormula2());
+                gt = cell.getNumericCellValue() >= Double
+                        .valueOf(rule.getFormula2());
                 return lt && gt;
             }
         }
@@ -843,8 +848,8 @@ public class ConditionalFormatter implements Serializable {
      * @return true if eval is coherent with cellType, false otherwise
      */
     private boolean hasCoherentType(ValueEval eval, CellType cellType,
-        boolean isFormulaStringType, boolean isFormulaBooleanType,
-        boolean isFormulaNumericType) {
+            boolean isFormulaStringType, boolean isFormulaBooleanType,
+            boolean isFormulaNumericType) {
         switch (cellType) {
         case STRING:
             return eval instanceof StringEval;
@@ -861,11 +866,14 @@ public class ConditionalFormatter implements Serializable {
     }
 
     private boolean isCoherentTypeFormula(ValueEval eval,
-        boolean isFormulaStringType, boolean isFormulaBooleanType,
-        boolean isFormulaNumericType) {
-        boolean coherentString = eval instanceof StringEval && isFormulaStringType;
-        boolean coherentBoolean = eval instanceof BoolEval && isFormulaBooleanType;
-        boolean coherentNumeric = eval instanceof NumericValueEval && isFormulaNumericType;
+            boolean isFormulaStringType, boolean isFormulaBooleanType,
+            boolean isFormulaNumericType) {
+        boolean coherentString = eval instanceof StringEval
+                && isFormulaStringType;
+        boolean coherentBoolean = eval instanceof BoolEval
+                && isFormulaBooleanType;
+        boolean coherentNumeric = eval instanceof NumericValueEval
+                && isFormulaNumericType;
         return coherentString || coherentBoolean || coherentNumeric;
     }
 }
