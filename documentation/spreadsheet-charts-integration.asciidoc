@@ -47,8 +47,7 @@ You also need to define the repository for the Vaadin add-ons under the
 ----
 
 Finally, you need to enable the widget set compilation in the POM, as described
-in <<dummy/../../framework/addons/addons-maven#addons.maven.widgetset,"Enabling
-Widget Set Compilation">>, and compile it.
+in link:https://vaadin.com/docs/v8/framework/addons/addons-maven#addons.maven.widgetset["Configuring Widget Set Compilation"], and compile it.
 
 endif::web[]
 
@@ -71,8 +70,7 @@ in the [filename]#ivy.xml#:
 You can use the [literal]#++latest.release++# revision tag to always use the latest
 release or (preferably) specify a version by its version number. IvyDE should
 resolve the dependency immediately as you save the file. See
-<<dummy/../../framework/addons/addons-eclipse#addons.eclipse,"Installing Add-ons
-in Eclipse with Ivy">> for further details.
+link:https://vaadin.com/docs/v8/framework/addons/addons-eclipse#addons.eclipse["Installing Add-ons in Eclipse with Ivy"] for further details.
 
 endif::web[]
 
@@ -83,8 +81,11 @@ ifdef::web[]
 === For Users Without Dependency Management Tools
 
 Vaadin Spreadsheet is distributed as a Zip package that contains the Spreadsheet
-Vaadin Spreadsheet Charts JAR, a JavaDoc JAR, license texts, and other documentation. You can download the
+Vaadin Spreadsheet Charts JAR, a JavaDoc JAR, and other documentation. You can download the
 Zip package from Vaadin Directory. Vaadin Charts Zip package should be also downloaded.
+
+More information about Vaadin Commercial License and Service 
+Terms is available link:https://vaadin.com/commercial-license-and-service-terms[here].
 
 The [filename]#vaadin-spreadsheet-charts-&lt;version&gt;.jar#, [filename]#vaadin-charts-&lt;version&gt;.jar#,
 as well as all the dependency libraries in the [filename]#lib# folder, should be put in the
@@ -102,22 +103,19 @@ endif::web[]
 == Installing a License Key
 
 You need to install a license key for Vaadin Charts before compiling the widget set.
-The license key is checked during widget set compilation, so you do not need it when deploying the application.
+The license key is checked during widget set compilation, so you do not need it when deploying the application. See link:https://vaadin.com/pricing[pricing] for obtaining a Pro subscription.
 
-You can purchase Vaadin Charts or obtain a free trial key from the
-link:https://vaadin.com/directory#addon/vaadin-charts[Vaadin Charts
-download page] in Vaadin Directory. You need to register in Vaadin Directory to
-obtain the key.
+You can download Vaadin Charts from the
+link:https://vaadin.com/directory/component/vaadin-charts[Vaadin Charts download page] in Vaadin Directory.
 
-See <<dummy/../../framework/addons/addons-cval#addons.cval,"Installing
-Commercial Vaadin Add-on Licence">> for detailed instructions on obtaining and
+See link:https://vaadin.com/docs/v8/framework/addons/addons-cval["Installing Commercial Vaadin Add-on Licenses"] for detailed instructions on obtaining and
 installing the license key.
 
 
 [[spreadsheet.charts.integration.widgetset]]
 == Compiling the Widget Set
 
-Compile the widget set as instructed in <<dummy/../../framework/addons/addons-maven#addons.maven.compiling,"Compiling the Project Widget Set">>.
+Compile the widget set as instructed in link:https://vaadin.com/docs/v8/framework/addons/addons-maven#compiling-the-widget-set["Compiling the Widget Set"].
 Widget set compilation should automatically update your project widget set to include the Spreadsheet widget set:
 
 

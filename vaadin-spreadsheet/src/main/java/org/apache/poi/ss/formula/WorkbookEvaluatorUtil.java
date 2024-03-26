@@ -1,21 +1,14 @@
-package org.apache.poi.ss.formula;
-
 /*
- * #%L
- * Vaadin Spreadsheet
- * %%
- * Copyright (C) 2013 - 2015 Vaadin Ltd
- * %%
- * This program is available under Commercial Vaadin Add-On License 3.0
- * (CVALv3).
+ * Vaadin Spreadsheet Addon
  *
- * See the file license.html distributed with this software for more
- * information about licensing.
+ * Copyright (C) 2012-2024 Vaadin Ltd
  *
- * You should have received a copy of the CVALv3 along with this program.
- * If not, see <http://vaadin.com/license/cval-3>.
- * #L%
+ * This program is available under Vaadin Commercial License and Service Terms.
+ *
+ * See <https://vaadin.com/commercial-license-and-service-terms> for the full
+ * license.
  */
+package org.apache.poi.ss.formula;
 
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.ptg.Ptg;

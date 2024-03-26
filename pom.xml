@@ -16,6 +16,7 @@
         <Implementation-Title>${project.name}</Implementation-Title>
         <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <currentYear>2024</currentYear>
     </properties>
 
     <modules>
@@ -61,5 +62,45 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <!-- Profile for updating license headers. -->
+            <id>license</id>
+            
+            <build>
+                <plugins>
+                    <plugin> 
+                        <groupId>com.mycila</groupId>
+                        <artifactId>license-maven-plugin</artifactId>
+                        <version>4.3</version>
+                        <configuration>
+                            <header>vaadin-spreadsheet/src/license/header.txt</header>
+                            <quiet>false</quiet>
+                            <failIfMissing>true</failIfMissing>
+                            <aggregate>false</aggregate>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                            <useDefaultMapping>true</useDefaultMapping>
+                            <encoding>UTF-8</encoding>
+                            <properties>
+                                <year>${currentYear}</year>
+                            </properties>
+                            <includes>
+                                <include>/**/*.java</include>
+                                <include>*.java</include>
+                            </includes>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>format</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>

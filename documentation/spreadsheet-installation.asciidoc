@@ -9,13 +9,12 @@ layout: page
 
 You can download and install Spreadsheet from Vaadin Directory at
 link:https://vaadin.com/addon/vaadin-spreadsheet[vaadin.com/addon/vaadin-spreadsheet]
-as an installation package, or get it with Maven or Ivy. You can purchase the
-required CVAL license or get a free trial key from Vaadin Directory or subscribe
-to the Pro Tools at link:https://vaadin.com/pro[vaadin.com/pro].
+as an installation package, or get it with Maven or Ivy. You can get Pro 
+subscription at link:https://vaadin.com/pro[vaadin.com/pro].
 
-Add-on installation is described in detail in
-<<dummy/../../framework/addons/addons-overview.asciidoc#addons.overview,"Using
-Vaadin Add-ons">>. The add-on includes both a widget set and a theme, so you
+For general instructions on installing add-ons, please see
+https://vaadin.com/docs/v8/framework/addons/addons-overview#addons.overview[Installing Add-ons]. 
+This add-on includes both a widget set and a theme, so you
 need to compile the widget sets and themes in your project.
 
 ifdef::web[]
@@ -39,8 +38,7 @@ in the [filename]#ivy.xml#:
 You can use the [literal]#++latest.release++# revision tag to always use the latest
 release or (preferably) specify a version by its version number. IvyDE should
 resolve the dependency immediately as you save the file. See
-<<dummy/../../framework/addons/addons-eclipse#addons.eclipse,"Installing Add-ons
-in Eclipse with Ivy">> for further details.
+link:https://vaadin.com/docs/v8/framework/addons/addons-eclipse#addons.eclipse["Installing Add-ons in Eclipse with Ivy"] for further details.
 
 endif::web[]
 
@@ -84,8 +82,11 @@ ifdef::web[]
 === For Users Without Dependency Management Tools
 
 Vaadin Spreadsheet is distributed as a Zip package that contains the Spreadsheet
-JAR, a JavaDoc JAR, license texts, and other documentation. You can download the
+JAR, a JavaDoc JAR, and other documentation. You can download the
 Zip package from Vaadin Directory.
+
+More information about Vaadin Commercial License and Service 
+Terms is available link:https://vaadin.com/commercial-license-and-service-terms[here].
 
 The [filename]#vaadin-spreadsheet-&lt;version&gt;.jar#, as well as all the dependency
 libraries in the [filename]#lib# folder, should be put in the
@@ -110,26 +111,29 @@ endif::web[]
 [[spreadsheet.installing.license]]
 == Installing a License Key
 
+You need to install a license key for Vaadin Charts before compiling the widget set.
+The license key is checked during widget set compilation, so you do not need it when deploying the application. See link:https://vaadin.com/pricing[pricing] for obtaining a Pro subscription.
+
+You can download Vaadin Charts from the
+link:https://vaadin.com/directory/component/vaadin-charts[Vaadin Charts download page] in Vaadin Directory.
+
 You need to install a license key before compiling the widget set. The license
 key is checked during widget set compilation, so you do not need it when
-deploying the application.
+deploying the application. See link:https://vaadin.com/pricing[pricing] for 
+obtaining a Pro subscription.
 
-You can purchase Vaadin Spreadsheet or obtain a free trial key from the
-link:https://vaadin.com/directory#addon/vaadin-spreadsheet[Vaadin Spreadsheet
-download page] in Vaadin Directory. You need to register in Vaadin Directory to
-obtain the key.
+You can download Vaadin Spreadsheet from the
+link:https://vaadin.com/directory/component/vaadin-spreadsheet[Vaadin Spreadsheet download page] in Vaadin Directory.
 
-See <<dummy/../../framework/addons/addons-cval#addons.cval,"Installing
-Commercial Vaadin Add-on Licence">> for detailed instructions on obtaining and
+See link:https://vaadin.com/docs/v8/framework/addons/addons-cval["Installing Commercial Vaadin Add-on Licenses"] for detailed instructions on obtaining and
 installing the license key.
 
 
 [[spreadsheet.installation.widgetset]]
 == Compiling the Widget Set
 
-Compile the widget set as instructed in
-<<dummy/../../framework/addons/addons-maven#addons.maven.compiling,"Compiling
-the Project Widget Set">>. Widget set compilation should automatically update
+Compile the widget set as instructed in link:https://vaadin.com/docs/v8/framework/addons/addons-maven#compiling-the-widget-set["Compiling the Widget Set"]. 
+Widget set compilation should automatically update
 your project widget set to include the Spreadsheet widget set:
 
 
@@ -145,8 +149,8 @@ element yourself.
 == Compiling Theme
 
 Compile the theme as instructed in
-<<dummy/../../framework/themes/themes-compiling#themes.compiling,"Compiling Sass
-Themes">>. If you compile in Eclipse or with Maven, the [filename]#addons.scss#
+link:https://vaadin.com/docs/v8/framework/themes/themes-compiling["Compiling Sass Themes"]. 
+If you compile in Eclipse or with Maven, the [filename]#addons.scss#
 file in your theme should be automatically updated to include the Spreadsheet
 theme:
 
@@ -166,8 +170,8 @@ automatically updated for some reason, you need to add the statements yourself.
 == Importing the Demo
 
 The Demo, illustrated in
-<<dummy/../../spreadsheet/spreadsheet-overview#figure.spreadsheet.overview.demo,"Demo
-for Vaadin Spreadsheet">> in the overview, showcases most of the functionality
+link:https://vaadin.com/docs/v8/spreadsheet/spreadsheet-overview#spreadsheet.overview.demo["Demo for Vaadin Spreadsheet"] 
+in the overview, showcases most of the functionality
 in Vaadin Spreadsheet. You can try out the demo online at
 link:http://demo.vaadin.com/spreadsheet[demo.vaadin.com/spreadsheet] or check the sources
 from the link:https://github.com/vaadin/spreadsheet[GitHub page].
