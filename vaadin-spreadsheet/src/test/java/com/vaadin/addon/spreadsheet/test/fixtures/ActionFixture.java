@@ -28,10 +28,10 @@ public class ActionFixture implements SpreadsheetFixture {
 
         handler.addCellHandler(new SpreadsheetActionHandler.Cell() {
             @Override
-            public void handleAction(Action action,
-                    SelectionChangeEvent sender, Spreadsheet target) {
-                SpreadsheetHelper helper = new SpreadsheetHelper(sender
-                        .getSpreadsheet());
+            public void handleAction(Action action, SelectionChangeEvent sender,
+                    Spreadsheet target) {
+                SpreadsheetHelper helper = new SpreadsheetHelper(
+                        sender.getSpreadsheet());
 
                 for (Cell cell : helper.selectedCell(sender).values()) {
                     doubleValue(cell);
@@ -54,10 +54,10 @@ public class ActionFixture implements SpreadsheetFixture {
 
         handler.addCellHandler(new SpreadsheetActionHandler.Cell() {
             @Override
-            public void handleAction(Action action,
-                    SelectionChangeEvent sender, Spreadsheet target) {
-                SpreadsheetHelper helper = new SpreadsheetHelper(sender
-                        .getSpreadsheet());
+            public void handleAction(Action action, SelectionChangeEvent sender,
+                    Spreadsheet target) {
+                SpreadsheetHelper helper = new SpreadsheetHelper(
+                        sender.getSpreadsheet());
 
                 for (Cell cell : helper.selectedCell(sender).values()) {
                     cell.setCellValue(42);
@@ -78,10 +78,10 @@ public class ActionFixture implements SpreadsheetFixture {
             public void handleAction(Action action, CellRangeAddress sender,
                     Spreadsheet target) {
                 SpreadsheetHelper helper = new SpreadsheetHelper(target);
-                helper.retrieveCell(2, sender.getFirstColumn()).setCellValue(
-                        "first column");
-                helper.retrieveCell(3, sender.getFirstColumn()).setCellValue(
-                        "last column");
+                helper.retrieveCell(2, sender.getFirstColumn())
+                        .setCellValue("first column");
+                helper.retrieveCell(3, sender.getFirstColumn())
+                        .setCellValue("last column");
 
                 target.refreshAllCellValues();
             }

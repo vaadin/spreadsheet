@@ -36,7 +36,8 @@ public class SimpleCustomEditorFixture implements SpreadsheetFixture {
     }
 
     @SuppressWarnings("serial")
-    public static class ComponentFactory implements SpreadsheetComponentFactory {
+    public static class ComponentFactory
+            implements SpreadsheetComponentFactory {
 
         private final TextField textField = new TextField("");
 

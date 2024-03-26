@@ -20,8 +20,8 @@ public class TabsheetPopupButtonFixture implements SpreadsheetFixture {
 
     @Override
     public void loadFixture(final Spreadsheet spreadsheet) {
-        spreadsheet
-                .addSelectionChangeListener(new Spreadsheet.SelectionChangeListener() {
+        spreadsheet.addSelectionChangeListener(
+                new Spreadsheet.SelectionChangeListener() {
                     @Override
                     public void onSelectionChange(
                             Spreadsheet.SelectionChangeEvent selectionChangeEvent) {
