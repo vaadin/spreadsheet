@@ -43,7 +43,7 @@ public class HiddenAndFrozenTest extends AbstractSpreadsheetTestCase {
         assertFreezePanePositionedCorrectly("randomly_hidden_and_frozen.xlsx",
                 5, 3, "H15");
     }
-    
+
     @Test
     public void freezePane_sheetWithImplicitlyHiddenFrozenRowsAndColumns_freezePanePositionedCorrectly() {
         assertFreezePanePositionedCorrectly("scrolled_frozen.xlsx", 2, 4, "G5");
@@ -52,8 +52,8 @@ public class HiddenAndFrozenTest extends AbstractSpreadsheetTestCase {
     private void assertFreezePanePositionedCorrectly(String filename,
             int frozenRows, int frozenColumns, String regularCell) {
         SpreadsheetPage spreadsheetPage = headerPage.loadFile(filename, this);
-        WebElement topLeft = spreadsheetPage.findElement(By
-                .className("top-left-pane"));
+        WebElement topLeft = spreadsheetPage
+                .findElement(By.className("top-left-pane"));
 
         assertVisibleChildCount(topLeft, "rh", frozenRows);
         assertVisibleChildCount(topLeft, "ch", frozenColumns);
@@ -63,8 +63,8 @@ public class HiddenAndFrozenTest extends AbstractSpreadsheetTestCase {
 
     private void assertVisibleChildCount(WebElement parent,
             String childClassName, int expectedChildCount) {
-        List<WebElement> childElements = parent.findElements(By
-                .className(childClassName));
+        List<WebElement> childElements = parent
+                .findElements(By.className(childClassName));
         int actualChildCount = 0;
         for (WebElement childElement : childElements) {
             if ("none".equals(childElement.getCssValue("display"))

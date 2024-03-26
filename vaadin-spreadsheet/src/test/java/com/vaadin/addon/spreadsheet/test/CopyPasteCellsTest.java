@@ -31,7 +31,6 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
     public ErrorCollector collector = new ErrorCollector();
     private SheetController sheetController;
 
-
     @Override
     public void setUp() throws Exception {
         setDebug(true);
@@ -43,7 +42,8 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
     @Test
     public void spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("1");
         spreadsheet.getCellAt("A2").setValue("2");
         spreadsheet.getCellAt("A3").setValue("3");
@@ -55,7 +55,8 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return spreadsheet.getCellAt("E4").getValue().equals(expectedValue);
+                return spreadsheet.getCellAt("E4").getValue()
+                        .equals(expectedValue);
             }
         });
     }
@@ -64,7 +65,8 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
     public void spreadsheetHandlerOnPaste_PasteCells_SmallServerJsonResponse() {
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("500x200test.xlsx", this);
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         final int EXPECTED_JSON_LENGTH_LIMIT = 50;
         spreadsheet.getCellAt("B3").setValue("=A3+1");
 
@@ -78,12 +80,14 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
         });
         String json = getJson();
 
-        assertLessThanOrEqual("Json size is too big expected= " +
-                        EXPECTED_JSON_LENGTH_LIMIT + ", actual = " + json.length(),
+        assertLessThanOrEqual(
+                "Json size is too big expected= " + EXPECTED_JSON_LENGTH_LIMIT
+                        + ", actual = " + json.length(),
                 json.length(), EXPECTED_JSON_LENGTH_LIMIT);
     }
 
-    private void copyPasteRegion(String startCopyCell, String endCopyCell, String pasteStartCell, boolean clearLog) {
+    private void copyPasteRegion(String startCopyCell, String endCopyCell,
+            String pasteStartCell, boolean clearLog) {
         sheetController.selectRegion(startCopyCell, endCopyCell);
         copy();
         sheetController.clickCell(pasteStartCell);
@@ -105,8 +109,8 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
         actions.sendKeys(Keys.SPACE).perform();
         findElement(By.className("v-debugwindow-tab")).click();
 
-        List<WebElement> messages = findElements(By
-                .className("v-debugwindow-message"));
+        List<WebElement> messages = findElements(
+                By.className("v-debugwindow-message"));
         for (WebElement message : messages) {
             if (isUpdateCellValuesJSON(message.getAttribute("innerHTML"))) {
                 String text = message.getAttribute("innerHTML");
@@ -121,19 +125,18 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
     private boolean isUpdateCellValuesJSON(String json) {
         final String RPC_START_SUBSTRING = "Server to client RPC call";
         final String UPDATE_SUBSTRING = "update";
-        return json.startsWith(RPC_START_SUBSTRING) && json.toLowerCase().contains(UPDATE_SUBSTRING);
+        return json.startsWith(RPC_START_SUBSTRING)
+                && json.toLowerCase().contains(UPDATE_SUBSTRING);
     }
 
-
     private void paste() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "v")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "v")).build()
+                .perform();
     }
 
     private void copy() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "c")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "c")).build()
+                .perform();
     }
-
 
 }

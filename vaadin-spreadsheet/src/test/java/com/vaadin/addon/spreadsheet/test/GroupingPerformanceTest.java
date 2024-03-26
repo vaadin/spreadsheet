@@ -10,9 +10,10 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.junit.Assert.fail;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -46,13 +47,14 @@ public class GroupingPerformanceTest extends AbstractSpreadsheetTestCase {
 
         SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class)
                 .first();
-        WebElement rowGrouping = spreadsheetElement.findElement(By
-                .cssSelector(".row-group-pane .grouping.plus"));
+        WebElement rowGrouping = spreadsheetElement
+                .findElement(By.cssSelector(".row-group-pane .grouping.plus"));
 
         clearLog();
         rowGrouping.click();
 
-        waitForElementPresent(By.cssSelector(".row-group-pane .grouping.minus"));
+        waitForElementPresent(
+                By.cssSelector(".row-group-pane .grouping.minus"));
 
         waitUntil(new ExpectedCondition<Boolean>() {
             private int processingCount;
@@ -77,16 +79,17 @@ public class GroupingPerformanceTest extends AbstractSpreadsheetTestCase {
             expected = 2500;
         }
         Integer time = endMillis - startMillis;
-        assertLessThanOrEqual(String.format(
-                "Time should be less than %sms, was: %sms", expected, time),
+        assertLessThanOrEqual(
+                String.format("Time should be less than %sms, was: %sms",
+                        expected, time),
                 time, expected);
     }
 
     private int checkDebugLog() {
-        List<WebElement> messages = findElements(By
-                .className("v-debugwindow-message"));
-        List<WebElement> times = findElements(By
-                .className("v-debugwindow-time"));
+        List<WebElement> messages = findElements(
+                By.className("v-debugwindow-message"));
+        List<WebElement> times = findElements(
+                By.className("v-debugwindow-time"));
         int processingCount = 0;
         for (int i = 0; i < messages.size(); ++i) {
             WebElement message = messages.get(i);
@@ -98,7 +101,7 @@ public class GroupingPerformanceTest extends AbstractSpreadsheetTestCase {
             }
             String json = message.getAttribute("innerHTML");
             if (isLoadCellDataLogJSON(json)) {
-                Assert.fail("Cell data was loaded when it was unnecessary to do so.");
+                fail("Cell data was loaded when it was unnecessary to do so.");
             }
             if (isProcessingTimeLogJSON(json)) {
                 ++processingCount;

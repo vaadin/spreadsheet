@@ -17,7 +17,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -48,12 +47,12 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
     }
 
     protected void assertInRange(double from, double value, double to) {
-        Assert.assertTrue("Value [" + value + "] is not in range: [" + from
-                + " - " + to + "]", value >= from && value <= to);
+        assertTrue("Value [" + value + "] is not in range: [" + from + " - "
+                + to + "]", value >= from && value <= to);
     }
 
     protected void assertNoErrorIndicatorDetected() {
-        Assert.assertTrue("Error indicator detected when there should be none.",
+        assertTrue("Error indicator detected when there should be none.",
                 findElements(By.className("v-errorindicator")).isEmpty());
     }
 
@@ -89,7 +88,8 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
      * @param theme
      *            theme to load
      */
-    protected void loadPage(String theme, String spreadsheetFile) throws Exception {
+    protected void loadPage(String theme, String spreadsheetFile)
+            throws Exception {
         driver.get(getTestUrl() + "?theme=" + theme);
         headerPage.loadFile(spreadsheetFile, this);
         testBench(driver).waitForVaadin();
@@ -107,7 +107,8 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
     }
 
     protected void clearLog() {
-        List<WebElement> buttons = findElements(By.className("v-debugwindow-button"));
+        List<WebElement> buttons = findElements(
+                By.className("v-debugwindow-button"));
         for (int i = 0; i < buttons.size(); i++) {
             WebElement button = buttons.get(i);
             String title = button.getAttribute("title");

@@ -19,14 +19,14 @@ import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 import com.vaadin.testbench.parallel.BrowserUtil;
 
 public class BordersWithHiddenColumnsAndRowsTest
-    extends AbstractSpreadsheetTestCase {
+        extends AbstractSpreadsheetTestCase {
 
     private SpreadsheetPage spreadsheetPage;
 
     @Test
     public void test() throws Exception {
         spreadsheetPage = headerPage
-            .loadFile("borders_with_hidden_rows_and_columns.xlsx", this);
+                .loadFile("borders_with_hidden_rows_and_columns.xlsx", this);
 
         spreadsheetPage.selectSheetAt(0);
         compareScreen("sheet1_row_3_hidden");
@@ -53,8 +53,7 @@ public class BordersWithHiddenColumnsAndRowsTest
                 || BrowserUtil.isPhantomJS(capabilities);
     }
 
-    private void compareSheet1WithRow3Shown()
-        throws IOException {
+    private void compareSheet1WithRow3Shown() throws IOException {
         spreadsheetPage.contextClickOnRowHeader(2);
 
         spreadsheetPage.clickContextMenuItem("Unhide row 3");
@@ -62,8 +61,7 @@ public class BordersWithHiddenColumnsAndRowsTest
         compareScreen("sheet1_row_3_shown");
     }
 
-    private void compareSheet1WithColumnHShown()
-        throws IOException {
+    private void compareSheet1WithColumnHShown() throws IOException {
 
         spreadsheetPage.contextClickOnColumnHeader('G');
 
@@ -72,8 +70,7 @@ public class BordersWithHiddenColumnsAndRowsTest
         compareScreen("sheet1_column_H_shown");
     }
 
-    private void compareSheet2WithRowsShown()
-        throws IOException {
+    private void compareSheet2WithRowsShown() throws IOException {
         spreadsheetPage.unhideRow(5);
         spreadsheetPage.unhideRow(4);
         spreadsheetPage.unhideRow(3);
@@ -81,8 +78,7 @@ public class BordersWithHiddenColumnsAndRowsTest
         compareScreen("sheet2_rows_shown");
     }
 
-    private void compareSheet2WithColumnsShown()
-        throws IOException {
+    private void compareSheet2WithColumnsShown() throws IOException {
         spreadsheetPage.unhideColumn('H');
         spreadsheetPage.unhideColumn('G');
 

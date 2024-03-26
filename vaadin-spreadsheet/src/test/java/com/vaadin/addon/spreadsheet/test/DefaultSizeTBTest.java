@@ -10,12 +10,14 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.demoapps.EmptySpreadsheetUI;
 import com.vaadin.addon.spreadsheet.test.tb3.MultiBrowserTest;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class DefaultSizeTBTest extends MultiBrowserTest {
 
@@ -31,10 +33,11 @@ public class DefaultSizeTBTest extends MultiBrowserTest {
 
     @Test
     public void parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize() {
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
 
-        Assert.assertEquals(500,spreadsheet.getSize().getWidth());
-        Assert.assertEquals(400,spreadsheet.getSize().getHeight());
+        assertEquals(500, spreadsheet.getSize().getWidth());
+        assertEquals(400, spreadsheet.getSize().getHeight());
 
     }
 }

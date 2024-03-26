@@ -10,9 +10,10 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -29,6 +30,7 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
     private final String[] floatColumn = { "1.11", "2.22", "3.33", "4.44",
             "5.55", "", "", "", "6.66", "7.77" };
 
+    @Override
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
         // PhantomJS doesn't support right-click
@@ -36,6 +38,8 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
     }
 
     SpreadsheetElement spreadSheet;
+
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -54,10 +58,10 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         spreadSheet.getCellAt("B3").setValue("=PRODUCT(A1:A4)");
         spreadSheet.getCellAt("B4").setValue("=A1*A2*A3*A4");
 
-        Assert.assertEquals("10", sheetController.getCellContent("B1"));
-        Assert.assertEquals("10", sheetController.getCellContent("B2"));
-        Assert.assertEquals("24", sheetController.getCellContent("B3"));
-        Assert.assertEquals("24", sheetController.getCellContent("B4"));
+        assertEquals("10", sheetController.getCellContent("B1"));
+        assertEquals("10", sheetController.getCellContent("B2"));
+        assertEquals("24", sheetController.getCellContent("B3"));
+        assertEquals("24", sheetController.getCellContent("B4"));
     }
 
     @Test
@@ -71,8 +75,8 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         testBench(driver).waitForVaadin();
 
         // Date strings must be interpreted as numeric
-        Assert.assertEquals("2", spreadSheet.getCellAt("B1").getValue());
-        Assert.assertEquals("5", spreadSheet.getCellAt("B2").getValue());
+        assertEquals("2", spreadSheet.getCellAt("B1").getValue());
+        assertEquals("5", spreadSheet.getCellAt("B2").getValue());
     }
 
     @Test
@@ -95,15 +99,15 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         spreadSheet.getCellAt("C3").setValue("=SUBTOTAL(9,A1:A5)");
         spreadSheet.getCellAt("C4").setValue("=SUBTOTAL(9,A1:A6)");
 
-        Assert.assertEquals("280", sheetController.getCellContent("B1"));
-        Assert.assertEquals("60", sheetController.getCellContent("B2"));
-        Assert.assertEquals("130", sheetController.getCellContent("B3"));
-        Assert.assertEquals("230", sheetController.getCellContent("B4"));
+        assertEquals("280", sheetController.getCellContent("B1"));
+        assertEquals("60", sheetController.getCellContent("B2"));
+        assertEquals("130", sheetController.getCellContent("B3"));
+        assertEquals("230", sheetController.getCellContent("B4"));
 
-        Assert.assertEquals("150", sheetController.getCellContent("C1"));
-        Assert.assertEquals("30", sheetController.getCellContent("C2"));
-        Assert.assertEquals("100", sheetController.getCellContent("C3"));
-        Assert.assertEquals("100", sheetController.getCellContent("C4"));
+        assertEquals("150", sheetController.getCellContent("C1"));
+        assertEquals("30", sheetController.getCellContent("C2"));
+        assertEquals("100", sheetController.getCellContent("C3"));
+        assertEquals("100", sheetController.getCellContent("C4"));
     }
 
     @Test
@@ -115,11 +119,11 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
         spreadSheet.getCellAt("B1").setValue("=A1+A2");
         spreadSheet.getCellAt("B2").setValue("=B1+A3");
         spreadSheet.getCellAt("A3").setValue("30");
-        Assert.assertEquals("60", spreadSheet.getCellAt("B2").getValue());
+        assertEquals("60", spreadSheet.getCellAt("B2").getValue());
 
         // Change a basic cell value and check if other cells are updated.
         spreadSheet.getCellAt("A1").setValue("40");
-        Assert.assertEquals("90", spreadSheet.getCellAt("B2").getValue());
+        assertEquals("90", spreadSheet.getCellAt("B2").getValue());
     }
 
     @Test
@@ -136,12 +140,12 @@ public class FormulaTest2 extends AbstractSpreadsheetTestCase {
 
         testBench(driver).waitForVaadin();
 
-        Assert.assertEquals("31.08", sheetController.getCellContent("B1"));
-        Assert.assertEquals("7", sheetController.getCellContent("B2"));
-        Assert.assertEquals("3", sheetController.getCellContent("B3"));
-        Assert.assertEquals("19.98", sheetController.getCellContent("B4"));
-        Assert.assertEquals("4.44", sheetController.getCellContent("B5"));
-        Assert.assertEquals("2.59", sheetController.getCellContent("B6"));
+        assertEquals("31.08", sheetController.getCellContent("B1"));
+        assertEquals("7", sheetController.getCellContent("B2"));
+        assertEquals("3", sheetController.getCellContent("B3"));
+        assertEquals("19.98", sheetController.getCellContent("B4"));
+        assertEquals("4.44", sheetController.getCellContent("B5"));
+        assertEquals("2.59", sheetController.getCellContent("B6"));
     }
 
 }

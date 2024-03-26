@@ -30,7 +30,9 @@ public class ImageTests extends AbstractSpreadsheetTestCase {
 
     public double imageWidth(String cell) {
         testBench(driver).waitForVaadin();
-        return driver.findElement(
-                By.xpath(sheetController.cellToXPath(cell) + "/img")).getSize().width;
+        return driver
+                .findElement(
+                        By.xpath(sheetController.cellToXPath(cell) + "/img"))
+                .getSize().width;
     }
 }

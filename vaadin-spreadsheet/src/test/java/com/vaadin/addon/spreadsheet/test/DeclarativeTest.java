@@ -25,7 +25,7 @@ import com.vaadin.ui.declarative.Design;
 
 /**
  * Tests the declarative support of Spreadsheet.
- * 
+ *
  * @author Vaadin Ltd.
  */
 public class DeclarativeTest {
@@ -36,8 +36,8 @@ public class DeclarativeTest {
         URL resource = null;
         try {
             ClassLoader classLoader = DeclarativeTest.class.getClassLoader();
-            resource = classLoader.getResource("test_sheets" + File.separator
-                    + "formulasheet.xlsx");
+            resource = classLoader.getResource(
+                    "test_sheets" + File.separator + "formulasheet.xlsx");
             file = new File(resource.toURI());
         } catch (URISyntaxException e) {
             e.printStackTrace();

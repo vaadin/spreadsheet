@@ -13,9 +13,11 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
 import com.vaadin.addon.spreadsheet.test.pageobjects.SpreadsheetPage;
 
-public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTestCase {
+public class ConditionalFormattingCellValueIsTest
+        extends AbstractSpreadsheetTestCase {
 
     private static final String STRING_VALUE = "'Foo";
     private static final String NUMBER_VALUE = "1";
@@ -24,21 +26,21 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
     private static final String FALSE_VALUE = "FALSE";
     private static final String FALSE_CONDITION_COLOR = "rgba(255, 255, 255, 1)";
     private static final String TRUE_CONDITION_COLOR = "rgba(255, 0, 0, 1)";
-    
+
     private SpreadsheetPage spreadsheetPage;
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
         spreadsheetPage = headerPage
-            .loadFile("conditional_formatting_cell_is.xlsx", this);
+                .loadFile("conditional_formatting_cell_is.xlsx", this);
         spreadsheetPage.selectSheetAt(1);
     }
 
     @Test
     public void loadSpreadsheetWithEqualConditionFormattingInB3_MakeConditionFalse_CellB3FilledWhite() {
         spreadsheetPage.setCellValue("B2", STRING_VALUE);
-        spreadsheetPage.setCellValue("B3", "Not"+STRING_VALUE);
+        spreadsheetPage.setCellValue("B3", "Not" + STRING_VALUE);
 
         spreadsheetPage.setCellValue("D2", NUMBER_VALUE);
         spreadsheetPage.setCellValue("D3", DIFFERENT_NUMBER_VALUE);
@@ -65,7 +67,6 @@ public class ConditionalFormattingCellValueIsTest extends AbstractSpreadsheetTes
 
         spreadsheetPage.setCellValue("F2", TRUE_VALUE);
         spreadsheetPage.setCellValue("F3", TRUE_VALUE);
-
 
         String cellColorStringCase = spreadsheetPage.getCellColor("B3");
         String cellColorNumberCase = spreadsheetPage.getCellColor("D3");

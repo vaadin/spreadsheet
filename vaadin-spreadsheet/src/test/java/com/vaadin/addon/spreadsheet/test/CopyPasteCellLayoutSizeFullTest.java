@@ -10,11 +10,6 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
-import com.vaadin.addon.spreadsheet.test.demoapps.EmptySpreadsheetSizeFullUI;
-import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.annotations.RunLocally;
-import com.vaadin.testbench.parallel.Browser;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
@@ -23,8 +18,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import com.vaadin.addon.spreadsheet.test.demoapps.EmptySpreadsheetSizeFullUI;
+import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
 
-public class CopyPasteCellLayoutSizeFullTest extends AbstractSpreadsheetTestCase {
+public class CopyPasteCellLayoutSizeFullTest
+        extends AbstractSpreadsheetTestCase {
 
     @Override
     protected Class<?> getUIClass() {
@@ -34,7 +33,6 @@ public class CopyPasteCellLayoutSizeFullTest extends AbstractSpreadsheetTestCase
     @Rule
     public ErrorCollector collector = new ErrorCollector();
     private SheetController sheetController;
-
 
     @Override
     public void setUp() throws Exception {
@@ -46,7 +44,8 @@ public class CopyPasteCellLayoutSizeFullTest extends AbstractSpreadsheetTestCase
 
     @Test
     public void spreadsheetHandlerOnPaste_PasteCellsWhichOtherCellsDependingOn_UpdatesDependentCells() {
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("1");
         spreadsheet.getCellAt("A2").setValue("2");
         spreadsheet.getCellAt("A3").setValue("3");
@@ -58,12 +57,14 @@ public class CopyPasteCellLayoutSizeFullTest extends AbstractSpreadsheetTestCase
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return spreadsheet.getCellAt("E4").getValue().equals(expectedValue);
+                return spreadsheet.getCellAt("E4").getValue()
+                        .equals(expectedValue);
             }
         });
     }
 
-    private void copyPasteRegion(String startCopyCell, String endCopyCell, String pasteStartCell, boolean clearLog) {
+    private void copyPasteRegion(String startCopyCell, String endCopyCell,
+            String pasteStartCell, boolean clearLog) {
         sheetController.selectRegion(startCopyCell, endCopyCell);
         copy();
         sheetController.clickCell(pasteStartCell);
@@ -79,15 +80,14 @@ public class CopyPasteCellLayoutSizeFullTest extends AbstractSpreadsheetTestCase
         paste();
     }
 
-
     private void paste() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "v")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "v")).build()
+                .perform();
     }
 
     private void copy() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "c")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "c")).build()
+                .perform();
     }
 
 }

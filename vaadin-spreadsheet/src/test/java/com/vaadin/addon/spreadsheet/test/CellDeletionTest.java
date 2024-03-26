@@ -25,7 +25,7 @@ import com.vaadin.testbench.parallel.Browser;
 
 public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
-
+    @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
@@ -41,8 +41,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
         assertThat(sheetController.getCellContent("B2"), is(""));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Deleting: 1:1"));
     }
 
@@ -55,8 +55,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(sheetController.getCellContent("C2"),
                 is("Try to delete me!"));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Attempting to delete: 1:2"));
     }
 
@@ -74,8 +74,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(sheetController.getCellContent("B3"), is(""));
         assertThat(sheetController.getCellContent("B5"), is(""));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Deleting: 2:1;4:1"));
     }
 
@@ -95,8 +95,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(sheetController.getCellContent("C5"),
                 is("Try to delete us too!"));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Attempting to delete: 2:2;4:2"));
     }
 
@@ -115,8 +115,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(sheetController.getCellContent("B7"), is(""));
         assertThat(sheetController.getCellContent("B8"), is(""));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Deleting: 5:1-7:1"));
     }
 
@@ -138,8 +138,8 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
         assertThat(sheetController.getCellContent("C8"),
                 is("Try to delete this range!"));
 
-        WebElement notification = findElement(By
-                .className("v-Notification-caption"));
+        WebElement notification = findElement(
+                By.className("v-Notification-caption"));
         assertThat(notification.getText(), is("Attempting to delete: 5:2-7:2"));
     }
 }
