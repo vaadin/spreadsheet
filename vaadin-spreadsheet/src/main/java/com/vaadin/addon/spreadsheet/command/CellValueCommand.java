@@ -26,13 +26,13 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
  * Command for changing the value of one or more cells.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public class CellValueCommand extends SpreadsheetCommand implements
-        ValueChangeCommand {
+public class CellValueCommand extends SpreadsheetCommand
+        implements ValueChangeCommand {
 
     /**
      * Represents the coordinates and value of a single cell.
@@ -77,7 +77,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
     /**
      * Sets the currently selected cell of the spreadsheet as the selected cell
      * and possible painted range for this command.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      */
@@ -89,9 +89,9 @@ public class CellValueCommand extends SpreadsheetCommand implements
         selectedcellCol = selectedCellReference.getCol();
         CellRangeAddress paintedCellRange = spreadsheet
                 .getCellSelectionManager().getSelectedCellRange();
-        if (paintedCellRange != null
-                && (paintedCellRange.getFirstColumn() != paintedCellRange
-                        .getLastColumn() || paintedCellRange.getFirstRow() != paintedCellRange
+        if (paintedCellRange != null && (paintedCellRange
+                .getFirstColumn() != paintedCellRange.getLastColumn()
+                || paintedCellRange.getFirstRow() != paintedCellRange
                         .getLastRow())) {
             selectedCellRange = new int[] { paintedCellRange.getFirstRow(),
                     paintedCellRange.getLastRow(),
@@ -111,19 +111,20 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     /**
      * Capture values from cells defined in the given CellReference(s).
-     * 
+     *
      * @param cellReferences
      *            cell references to process
      */
     public void captureCellValues(CellReference... cellReferences) {
         for (CellReference cr : cellReferences) {
-            values.add(new CellValue(cr.getRow(), cr.getCol(), getCellValue(cr)));
+            values.add(
+                    new CellValue(cr.getRow(), cr.getCol(), getCellValue(cr)));
         }
     }
 
     /**
      * Capture values from cells defined in the given CellRangeAddress(es).
-     * 
+     *
      * @param cellRanges
      *            cell ranges to process
      */
@@ -135,13 +136,14 @@ public class CellValueCommand extends SpreadsheetCommand implements
                 Object[] v = new Object[h * w];
                 int i = 0;
                 for (int r = cra.getFirstRow(); r <= cra.getLastRow(); r++) {
-                    for (int c = cra.getFirstColumn(); c <= cra.getLastColumn(); c++) {
+                    for (int c = cra.getFirstColumn(); c <= cra
+                            .getLastColumn(); c++) {
                         v[i++] = getCellValue(r, c);
                     }
                 }
-                values.add(new CellRangeValue(cra.getFirstRow(), cra
-                        .getLastRow(), cra.getFirstColumn(), cra
-                        .getLastColumn(), v));
+                values.add(
+                        new CellRangeValue(cra.getFirstRow(), cra.getLastRow(),
+                                cra.getFirstColumn(), cra.getLastColumn(), v));
             }
         }
     }
@@ -153,9 +155,10 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     @Override
     public CellRangeAddress getPaintedCellRange() {
-        return selectedCellRange == null ? null : new CellRangeAddress(
-                selectedCellRange[0], selectedCellRange[1],
-                selectedCellRange[2], selectedCellRange[3]);
+        return selectedCellRange == null ? null
+                : new CellRangeAddress(selectedCellRange[0],
+                        selectedCellRange[1], selectedCellRange[2],
+                        selectedCellRange[3]);
     }
 
     @Override
@@ -190,7 +193,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     /**
      * Sets the given value to the cell at the given coordinates.
-     * 
+     *
      * @param row
      *            Row index, 0-based
      * @param col
@@ -259,7 +262,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
     /**
      * Returns the current value for the cell referenced by the given cell
      * reference
-     * 
+     *
      * @param cell
      *            Reference to the cell
      * @return Current value of the cell or null if not available
@@ -270,7 +273,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     /**
      * Returns the current value of the cell at the given coordinates.
-     * 
+     *
      * @param r
      *            Row index, 0-based
      * @param c
@@ -283,7 +286,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     /**
      * Returns the current value of the given Cell
-     * 
+     *
      * @param cell
      *            Target cell
      * @return Current value of the cell or null if not available
@@ -311,7 +314,7 @@ public class CellValueCommand extends SpreadsheetCommand implements
 
     /**
      * Returns the Cell at the given row and column.
-     * 
+     *
      * @param r
      *            Row index, 0-based
      * @param c

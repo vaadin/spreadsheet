@@ -29,7 +29,8 @@ public class FormulaFormatterTest {
 
         assertEquals("SUM(C4,E4)",
                 manager.unFormatFormulaValue("SUM(C4;E4)", locale));
-        assertEquals("1.1 + 2", manager.unFormatFormulaValue("1,1 + 2", locale));
+        assertEquals("1.1 + 2",
+                manager.unFormatFormulaValue("1,1 + 2", locale));
         assertEquals("IF(B2=3.2,1,0)",
                 manager.unFormatFormulaValue("IF(B2=3,2;1;0)", locale));
         assertEquals("1 + 2", manager.unFormatFormulaValue("1 + 2", locale));
@@ -48,7 +49,8 @@ public class FormulaFormatterTest {
 
         assertEquals("SUM(C4,E4)",
                 manager.unFormatFormulaValue("SUM(C4;E4)", locale));
-        assertEquals("1.1 + 2", manager.unFormatFormulaValue("1,1 + 2", locale));
+        assertEquals("1.1 + 2",
+                manager.unFormatFormulaValue("1,1 + 2", locale));
         assertEquals("IF(B2=3.2,1,0)",
                 manager.unFormatFormulaValue("IF(B2=3,2;1;0)", locale));
         assertEquals("1 + 2", manager.unFormatFormulaValue("1 + 2", locale));
@@ -76,7 +78,8 @@ public class FormulaFormatterTest {
 
         assertEquals("SUM(C4;E4)",
                 manager.reFormatFormulaValue("SUM(C4,E4)", locale));
-        assertEquals("1,1 + 2", manager.reFormatFormulaValue("1.1 + 2", locale));
+        assertEquals("1,1 + 2",
+                manager.reFormatFormulaValue("1.1 + 2", locale));
         assertEquals("IF(B2=3,2;1;0)",
                 manager.reFormatFormulaValue("IF(B2=3.2,1,0)", locale));
         assertEquals("1 + 2", manager.reFormatFormulaValue("1 + 2", locale));
@@ -95,7 +98,8 @@ public class FormulaFormatterTest {
 
         assertEquals("SUM(C4;E4)",
                 manager.reFormatFormulaValue("SUM(C4,E4)", locale));
-        assertEquals("1,1 + 2", manager.reFormatFormulaValue("1.1 + 2", locale));
+        assertEquals("1,1 + 2",
+                manager.reFormatFormulaValue("1.1 + 2", locale));
         assertEquals("IF(B2=3,2;1;0)",
                 manager.reFormatFormulaValue("IF(B2=3.2,1,0)", locale));
         assertEquals("1 + 2", manager.reFormatFormulaValue("1 + 2", locale));
@@ -121,7 +125,8 @@ public class FormulaFormatterTest {
         final FormulaFormatter formulaFormatter = new FormulaFormatter();
         Locale locale = new Locale("fi", "FI");
 
-        assertTrue(formulaFormatter.isValidFormulaFormat("=SUM(C4;E4)", locale));
+        assertTrue(
+                formulaFormatter.isValidFormulaFormat("=SUM(C4;E4)", locale));
         assertTrue(formulaFormatter.isValidFormulaFormat("=1,1 + 2", locale));
         assertTrue(formulaFormatter.isValidFormulaFormat("=IF(B2=3,2;1;0)",
                 locale));
@@ -137,7 +142,8 @@ public class FormulaFormatterTest {
         final FormulaFormatter formulaFormatter = new FormulaFormatter();
         Locale locale = new Locale("it", "IT");
 
-        assertTrue(formulaFormatter.isValidFormulaFormat("=SUM(C4;E4)", locale));
+        assertTrue(
+                formulaFormatter.isValidFormulaFormat("=SUM(C4;E4)", locale));
         assertTrue(formulaFormatter.isValidFormulaFormat("=1,1 + 2", locale));
         assertTrue(formulaFormatter.isValidFormulaFormat("=IF(B2=3,2;1;0)",
                 locale));

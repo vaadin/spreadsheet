@@ -39,7 +39,7 @@ public class ConditionalFormatterTest {
 
     /**
      * Test no NPE is thrown
-     * 
+     *
      * This test might fail if assertions are enabled due to
      * {@link SheetImageWrapper#hashCode()} using
      * {@link ClientAnchor#hashCode()} which wasn't designed and does {@code

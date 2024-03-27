@@ -34,7 +34,8 @@ public class HeaderPage extends Page {
 
     public SpreadsheetPage loadFile(String testSheetFilename,
             TestBenchTestCase tbtc) {
-        ComboBoxElement testSheetSelect = $(ComboBoxElement.class).id("testSheetSelect");
+        ComboBoxElement testSheetSelect = $(ComboBoxElement.class)
+                .id("testSheetSelect");
         testSheetSelect.selectByText(testSheetFilename);
         testSheetSelect.waitForVaadin();
         $(ButtonElement.class).id("update").click();
@@ -42,8 +43,8 @@ public class HeaderPage extends Page {
     }
 
     public void loadTestFixture(TestFixtures fixture) {
-        $(NativeSelectElement.class).id("fixtureSelect").selectByText(
-                fixture.toString());
+        $(NativeSelectElement.class).id("fixtureSelect")
+                .selectByText(fixture.toString());
         $(ButtonElement.class).id("loadFixtureBtn").click();
 
         // sanity check
@@ -56,10 +57,13 @@ public class HeaderPage extends Page {
         $(ButtonElement.class).caption("Submit values").first().click();
     }
 
-    public void addFreezePane(int horizontalSplitPosition, int verticalSplitPosition) {
+    public void addFreezePane(int horizontalSplitPosition,
+            int verticalSplitPosition) {
         $(ButtonElement.class).caption("Freeze Pane").first().click();
-        $(TextFieldElement.class).caption("Vertical Split Position").first().setValue(String.valueOf(verticalSplitPosition));
-        $(TextFieldElement.class).caption("Horizontal Split Position").first().setValue(String.valueOf(horizontalSplitPosition));
+        $(TextFieldElement.class).caption("Vertical Split Position").first()
+                .setValue(String.valueOf(verticalSplitPosition));
+        $(TextFieldElement.class).caption("Horizontal Split Position").first()
+                .setValue(String.valueOf(horizontalSplitPosition));
         $(ButtonElement.class).caption("Submit values").first().click();
     }
 

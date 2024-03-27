@@ -25,9 +25,8 @@ public class CellValueFormatter implements Serializable {
     private DecimalFormatSymbols localeDecimalSymbols = DecimalFormatSymbols
             .getInstance();
 
-    public String getScientificNotationStringForNumericCell(
-            double numericValue, String formattedValue, float cellWidthRatio,
-            int width) {
+    public String getScientificNotationStringForNumericCell(double numericValue,
+            String formattedValue, float cellWidthRatio, int width) {
         BigDecimal ratio = new BigDecimal(cellWidthRatio);
         BigDecimal columnWidth = new BigDecimal(width);
         int numberOfDigits = columnWidth.divide(ratio, RoundingMode.DOWN)
@@ -35,8 +34,8 @@ public class CellValueFormatter implements Serializable {
         if (numberOfDigits < 2) {
             return "#";
         } else {
-            int integerPartLength = formattedValue.indexOf(localeDecimalSymbols
-                    .getDecimalSeparator());
+            int integerPartLength = formattedValue
+                    .indexOf(localeDecimalSymbols.getDecimalSeparator());
             if (integerPartLength == -1) {
                 integerPartLength = formattedValue.length();
             }
@@ -52,7 +51,8 @@ public class CellValueFormatter implements Serializable {
             // decimals and all decimal don't fit
             boolean needsScientific = integerPartLength > numberOfDigits
                     || (Math.abs(numericValue) < 1
-                            && formattedValue.length() > numberOfDigits && numberOfDigits > 4);
+                            && formattedValue.length() > numberOfDigits
+                            && numberOfDigits > 4);
             int numberOfDecimals = 0;
             if (needsScientific) {
                 // 0.#E10

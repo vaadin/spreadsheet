@@ -20,7 +20,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 
 /**
  * Spreadsheet action for breaking a merged cell into its constituents.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */

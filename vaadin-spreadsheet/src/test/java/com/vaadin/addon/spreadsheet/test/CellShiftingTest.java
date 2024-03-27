@@ -59,8 +59,8 @@ public class CellShiftingTest extends AbstractSpreadsheetTestCase {
         assertEquals(value, cellA2.getValue());
         // open input
         cellA2.doubleClick();
-        WebElement shiftSelection = spreadSheet.findElement(By
-                .className("paintmode"));
+        WebElement shiftSelection = spreadSheet
+                .findElement(By.className("paintmode"));
         // verify shifting indicator is not visible (SHEET-62)
         assertFalse(shiftSelection.isDisplayed());
     }
@@ -71,8 +71,8 @@ public class CellShiftingTest extends AbstractSpreadsheetTestCase {
         SheetCellElement lastCell = spreadSheet.getCellAt(lastAddress);
         firstCell.setValue(value);
         firstCell.click();
-        WebElement shiftHandle = spreadSheet.findElement(By
-                .className("s-corner"));
+        WebElement shiftHandle = spreadSheet
+                .findElement(By.className("s-corner"));
         new Actions(driver).dragAndDrop(shiftHandle, lastCell).perform();
         waitUntilCellHasValue(lastCell, value);
     }

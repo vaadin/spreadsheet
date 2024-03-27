@@ -60,8 +60,8 @@ class ChartStylesReader {
 
     private Map<String, byte[]> colorMap;
 
-    private static Logger logger = Logger.getLogger(ChartStylesReader.class
-            .getName());
+    private static Logger logger = Logger
+            .getLogger(ChartStylesReader.class.getName());
 
     public ChartStylesReader(Spreadsheet spreadsheet, XSSFChart xssfChart) {
         this.spreadsheet = spreadsheet;
@@ -71,28 +71,29 @@ class ChartStylesReader {
     public BackgroundProperties getBackgroundProperties() {
         CTShapeProperties spPr = xssfChart.getCTChartSpace().getSpPr();
 
-        if (spPr == null)
+        if (spPr == null) {
             return null;
+        }
 
         BackgroundProperties backgroundProperties = new BackgroundProperties();
 
-        if (spPr.isSetNoFill())
-            backgroundProperties.color = new ColorProperties(new int[] { 0xFF,
-                    0xFF, 0xFF }, 0);
-        else if (spPr.isSetSolidFill())
+        if (spPr.isSetNoFill()) {
+            backgroundProperties.color = new ColorProperties(
+                    new int[] { 0xFF, 0xFF, 0xFF }, 0);
+        } else if (spPr.isSetSolidFill()) {
             backgroundProperties.color = ColorUtils
                     .createColorPropertiesFromFill(spPr.getSolidFill(),
                             getColorMap());
-        else if (spPr.isSetGradFill()) {
-            backgroundProperties.gradient = ColorUtils
-                    .createGradientProperties(spPr.getGradFill(), getColorMap());
+        } else if (spPr.isSetGradFill()) {
+            backgroundProperties.gradient = ColorUtils.createGradientProperties(
+                    spPr.getGradFill(), getColorMap());
         } else {
             boolean onlyBorderIsSet = (spPr.getDomNode().getChildNodes()
-                    .getLength() == 1)
-                    && spPr.isSetLn();
+                    .getLength() == 1) && spPr.isSetLn();
 
-            if (!onlyBorderIsSet)
+            if (!onlyBorderIsSet) {
                 logger.warning("Unsupported fill for shape " + spPr);
+            }
         }
 
         return backgroundProperties;
@@ -142,8 +143,7 @@ class ChartStylesReader {
                 .getValAxList();
 
         for (CTValAx valAx : valAxList) {
-            result.put(valAx.getAxId().getVal(),
-                    getAxisProperties(valAx));
+            result.put(valAx.getAxId().getVal(), getAxisProperties(valAx));
         }
 
         return result;
@@ -153,10 +153,11 @@ class ChartStylesReader {
         List<CTCatAx> catAxList = xssfChart.getCTChart().getPlotArea()
                 .getCatAxList();
 
-        if (catAxList.size() > 0)
+        if (catAxList.size() > 0) {
             return getAxisProperties(catAxList.get(0));
-        else
+        } else {
             return null;
+        }
     }
 
     public BorderStyle getBorderStyle() {
@@ -166,16 +167,19 @@ class ChartStylesReader {
             CTLineProperties borderLineProp = xssfChart.getCTChartSpace()
                     .getSpPr().getLn();
 
-            if (borderLineProp.isSetNoFill())
+            if (borderLineProp.isSetNoFill()) {
                 return result;
+            }
 
-            if (xssfChart.getCTChartSpace().getRoundedCorners().getVal())
+            if (xssfChart.getCTChartSpace().getRoundedCorners().getVal()) {
                 result.radius = EXCEL_BORDER_RADIUS;
+            }
 
-            if (borderLineProp.isSetW())
+            if (borderLineProp.isSetW()) {
                 result.width = borderLineProp.getW() / EMU_PER_PT;
-            else
+            } else {
                 result.width = DEFAULT_BORDER_WIDTH;
+            }
 
             result.color = ColorUtils.createColorPropertiesFromFill(
                     borderLineProp.getSolidFill(), getColorMap());
@@ -193,9 +197,10 @@ class ChartStylesReader {
 
     /**
      * Allows for overriding to wrap in additional property detection/conversion
-     * NOTE: POI needs a meta-API for the generated OOXML CT* classes,
-     * so shared properties like these can come from a common interface
-     * @param yAx 
+     * NOTE: POI needs a meta-API for the generated OOXML CT* classes, so shared
+     * properties like these can come from a common interface
+     *
+     * @param yAx
      * @return axis properties
      */
     protected AxisProperties getAxisProperties(CTValAx yAx) {
@@ -216,9 +221,10 @@ class ChartStylesReader {
 
     /**
      * Allows for overriding to wrap in additional property detection/conversion
-     * NOTE: POI needs a meta-API for the generated OOXML CT* classes,
-     * so shared properties like these can come from a common interface
-     * @param xAx 
+     * NOTE: POI needs a meta-API for the generated OOXML CT* classes, so shared
+     * properties like these can come from a common interface
+     *
+     * @param xAx
      * @return axis properties
      */
     protected AxisProperties getAxisProperties(CTCatAx xAx) {
@@ -243,11 +249,12 @@ class ChartStylesReader {
 
             axisProperties.title = "";
 
-            for (CTRegularTextRun r : p.getRList())
+            for (CTRegularTextRun r : p.getRList()) {
                 axisProperties.title += r.getT();
+            }
 
-            axisProperties.textProperties = createFontProperties(p.getPPr()
-                    .getDefRPr());
+            axisProperties.textProperties = createFontProperties(
+                    p.getPPr().getDefRPr());
 
             if (axisProperties.textProperties == null) {
                 axisProperties.textProperties = new TextProperties();
@@ -268,8 +275,8 @@ class ChartStylesReader {
             }
             ThemeDocument themeDocument;
             try {
-                themeDocument = ThemeDocument.Factory.parse(theme
-                        .getPackagePart().getInputStream());
+                themeDocument = ThemeDocument.Factory
+                        .parse(theme.getPackagePart().getInputStream());
             } catch (XmlException e) {
                 return null;
             } catch (IOException e) {
@@ -282,16 +289,18 @@ class ChartStylesReader {
         return themeElements;
     }
 
-    private String getFontFamilyConsideringTheme(CTTextCharacterProperties pPr) {
+    private String getFontFamilyConsideringTheme(
+            CTTextCharacterProperties pPr) {
         try {
             String fontString = pPr.getLatin().getTypeface();
 
-            if (fontString.startsWith("+mj"))
+            if (fontString.startsWith("+mj")) {
                 return getMajorFont();
-            else if (fontString.startsWith("+mn"))
+            } else if (fontString.startsWith("+mn")) {
                 return getMinorFont();
-            else
+            } else {
                 return fontString;
+            }
         } catch (NullPointerException e) {
             return null;
         }

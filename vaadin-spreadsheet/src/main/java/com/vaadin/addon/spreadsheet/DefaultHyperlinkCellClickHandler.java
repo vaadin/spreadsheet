@@ -31,13 +31,13 @@ import com.vaadin.ui.UI;
  * Default implementation of the {@link HyperlinkCellClickHandler} interface.
  * Handles links to cells in either the same or some other sheet, as well as
  * external URLs.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
 @SuppressWarnings("serial")
-public class DefaultHyperlinkCellClickHandler implements
-        HyperlinkCellClickHandler {
+public class DefaultHyperlinkCellClickHandler
+        implements HyperlinkCellClickHandler {
 
     private static final Logger LOGGER = Logger
             .getLogger(DefaultHyperlinkCellClickHandler.class.getName());
@@ -65,7 +65,7 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * expose for subclasses
-     * 
+     *
      * @return Spreadsheet for this handler
      */
     protected Spreadsheet getSpreadsheet() {
@@ -74,7 +74,7 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * expose for subclasses
-     * 
+     *
      * @return the openStyle
      */
     protected HyperlinkOpenStyle getOpenStyle() {
@@ -91,7 +91,7 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * Called when a hyperlink cell has been clicked.
-     * 
+     *
      * @param cell
      * @param hyperlink
      *            may be null, only for Excel link relations, not formula
@@ -107,14 +107,17 @@ public class DefaultHyperlinkCellClickHandler implements
         } else if (isHyperlinkFormulaCell(cell)) {
             String address = getHyperlinkFunctionTarget(cell);
 
-            // does nothing if no navigator present.  
+            // does nothing if no navigator present.
             // "#!" is an invalid start to an inter-sheet address
             // (null sheet name)
             if (address.startsWith("#!")) {
                 UI ui = UI.getCurrent();
                 // non-push fragment navigation - requires navigator
-                final Navigator navigator = ui == null ? null : ui.getNavigator();
-                if (navigator != null) navigator.navigateTo(address.substring(2));
+                final Navigator navigator = ui == null ? null
+                        : ui.getNavigator();
+                if (navigator != null) {
+                    navigator.navigateTo(address.substring(2));
+                }
             } else if (address.startsWith("#")) { // inter-sheet address
                 navigateTo(cell, address.substring(1));
             } else if (address.startsWith("[") && address.contains("]")) {
@@ -141,12 +144,12 @@ public class DefaultHyperlinkCellClickHandler implements
                 spreadsheet.setActiveSheetWithPOIIndex(sheetPOIIndex);
             }
             spreadsheet.initialSheetSelection = address;
-            spreadsheet.getCellSelectionManager().onSheetAddressChanged(
-                    addressInSheet, true);
+            spreadsheet.getCellSelectionManager()
+                    .onSheetAddressChanged(addressInSheet, true);
         } else {
             // change selection to cell within the same sheet
-            spreadsheet.getCellSelectionManager().onSheetAddressChanged(
-                    address, false);
+            spreadsheet.getCellSelectionManager().onSheetAddressChanged(address,
+                    false);
         }
     }
 
@@ -184,11 +187,11 @@ public class DefaultHyperlinkCellClickHandler implements
     /**
      * we parse the formula with a formula/POI trick so we don't have to use
      * tricky regular expressions that hit terminal runaway evaluation cases
-     * 
+     *
      * see: https://www.regular-expressions.info/catastrophic.html
-     * 
+     *
      * Instead, translate
-     * 
+     *
      * <pre>
      * HYPERLINK(arg1[, arg2])
      * to
@@ -219,7 +222,7 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * Returns true if the cell contains a hyperlink function.
-     * 
+     *
      * @param cell
      *            Cell to investigate
      * @return True if hyperlink is found
@@ -231,9 +234,9 @@ public class DefaultHyperlinkCellClickHandler implements
 
     /**
      * Uses the {@link HyperlinkOpenStyle} to open link addresses.
-     * 
+     *
      * Subclass and override to use something else with the address.
-     * 
+     *
      * @param address
      *            to navigate to
      */
@@ -275,7 +278,7 @@ public class DefaultHyperlinkCellClickHandler implements
 
         /**
          * open external link
-         * 
+         *
          * @param address
          */
         public abstract void openExternalLink(String address);

@@ -17,8 +17,8 @@ import org.openxmlformats.schemas.drawingml.x2006.chart.STRadarStyle;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.charts.converter.chartdata.RadarSeriesData;
 
-public class RadarSeriesReader extends
-        AbstractSeriesReader<CTRadarSer, RadarSeriesData> {
+public class RadarSeriesReader
+        extends AbstractSeriesReader<CTRadarSer, RadarSeriesData> {
 
     public RadarSeriesReader(CTRadarChart ctChart, Spreadsheet spreadsheet,
             boolean showDataInHiddenCells) {
@@ -37,15 +37,18 @@ public class RadarSeriesReader extends
     }
 
     @Override
-    protected void fillSeriesData(RadarSeriesData seriesData, CTRadarSer serie) {
+    protected void fillSeriesData(RadarSeriesData seriesData,
+            CTRadarSer serie) {
         super.fillSeriesData(seriesData, serie);
 
-        if (serie.getMarker() != null)
+        if (serie.getMarker() != null) {
             LineSeriesReaderUtils.setMarkerForData(seriesData,
                     serie.getMarker());
+        }
 
-        if (serie.getSpPr() != null)
+        if (serie.getSpPr() != null) {
             LineSeriesReaderUtils.setDashStyleForData(seriesData,
                     serie.getSpPr());
+        }
     }
 }

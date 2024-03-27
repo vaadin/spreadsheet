@@ -52,8 +52,8 @@ public class LineSeriesReaderUtils {
             CTMarker marker) {
         try {
             if (marker.getSymbol().getVal() != STMarkerStyle.NONE) {
-                seriesData.markerSymbol = marker.getSymbol().getVal()
-                        .toString().toUpperCase();
+                seriesData.markerSymbol = marker.getSymbol().getVal().toString()
+                        .toUpperCase();
             }
         } catch (NullPointerException e) {
             // instead of null or isSet checks
@@ -80,10 +80,11 @@ public class LineSeriesReaderUtils {
             }
         };
 
-        if (map.containsKey(val))
+        if (map.containsKey(val)) {
             return map.get(val);
-        else
+        } else {
             return "";
+        }
     }
 
 }

@@ -29,9 +29,9 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.ui.TextBox;
 
 //TODO merge with FormulaBarWidget? or parts of it?
-public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
-        KeyDownHandler, ClickHandler, MouseDownHandler, BlurHandler,
-        MouseUpHandler {
+public class SheetInputEventListener
+        implements FocusHandler, KeyPressHandler, KeyDownHandler, ClickHandler,
+        MouseDownHandler, BlurHandler, MouseUpHandler {
 
     private SheetWidget widget;
 
@@ -111,8 +111,8 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 break;
             case KeyCodes.KEY_UP:
                 if (formulaBarWidget.hasLightFocus()) {
-                    handler.onCellInputEnter(widget.getInlineEditor()
-                            .getValue(), true);
+                    handler.onCellInputEnter(
+                            widget.getInlineEditor().getValue(), true);
                     event.preventDefault();
                 } else if (formulaBarWidget.isKeyboardNavigationEnabled()) {
                     formulaBarWidget.moveFormulaCellSelection(
@@ -122,8 +122,8 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
                 break;
             case KeyCodes.KEY_DOWN:
                 if (formulaBarWidget.hasLightFocus()) {
-                    handler.onCellInputEnter(widget.getInlineEditor()
-                            .getValue(), false);
+                    handler.onCellInputEnter(
+                            widget.getInlineEditor().getValue(), false);
                     event.preventDefault();
                 } else if (formulaBarWidget.isKeyboardNavigationEnabled()) {
                     formulaBarWidget.moveFormulaCellSelection(
@@ -172,8 +172,7 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
             }
 
         } else {
-            handler.onSheetKeyPress(
-                    event.getNativeEvent(),
+            handler.onSheetKeyPress(event.getNativeEvent(),
                     widget.getSheetJsniUtil().convertUnicodeIntoCharacter(
                             event.getNativeEvent().getCharCode()));
         }
@@ -221,8 +220,8 @@ public class SheetInputEventListener implements FocusHandler, KeyPressHandler,
         if (formulaBarWidget.isEditingFormula()) {
             formulaBarWidget.updateEditorCaretPos(false);
         } else if (widget.isEditingCell()) {
-            widget.getSheetHandler().onCellInputBlur(
-                    widget.getInlineEditor().getValue());
+            widget.getSheetHandler()
+                    .onCellInputBlur(widget.getInlineEditor().getValue());
             formulaBarWidget.clearFormulaSelection();
         }
         event.stopPropagation();

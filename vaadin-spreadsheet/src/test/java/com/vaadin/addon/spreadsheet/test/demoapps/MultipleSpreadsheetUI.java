@@ -73,15 +73,15 @@ public class MultipleSpreadsheetUI extends UI {
                 });
 
         layout.addComponent(button);
-        layout.addComponent(new Button("change freeze panes",
-                new Button.ClickListener() {
+        layout.addComponent(
+                new Button("change freeze panes", new Button.ClickListener() {
                     @Override
                     public void buttonClick(ClickEvent event) {
                         spreadsheet.createFreezePane(6, 6);
                     }
                 }));
-        layout.addComponent(new Button("remove freeze panes",
-                new Button.ClickListener() {
+        layout.addComponent(
+                new Button("remove freeze panes", new Button.ClickListener() {
                     @Override
                     public void buttonClick(ClickEvent event) {
                         spreadsheet.createFreezePane(0, 0);
@@ -117,7 +117,8 @@ public class MultipleSpreadsheetUI extends UI {
         // Create some cell styles for this workbook
         for (Color color : colors) {
             XSSFCellStyle createCellStyle = xssfWorkbook.createCellStyle();
-            createCellStyle.setFillBackgroundColor(new XSSFColor(color, xssfWorkbook.getStylesSource().getIndexedColors()));
+            createCellStyle.setFillBackgroundColor(new XSSFColor(color,
+                    xssfWorkbook.getStylesSource().getIndexedColors()));
             XSSFFont createFont = xssfWorkbook.createFont();
             createCellStyle.setFont(createFont);
             createFont.setBold(true);
@@ -146,8 +147,8 @@ public class MultipleSpreadsheetUI extends UI {
         Random random = new Random();
 
         for (int y = 0; y < 100; y++) {
-            XSSFCellStyle xssfCellStyle = cellStyles.get(random
-                    .nextInt(cellStyles.size()));
+            XSSFCellStyle xssfCellStyle = cellStyles
+                    .get(random.nextInt(cellStyles.size()));
 
             for (int x = 0; x < 100; x++) {
                 Cell createCell = spreadsheet.createCell(y, x, counter++);

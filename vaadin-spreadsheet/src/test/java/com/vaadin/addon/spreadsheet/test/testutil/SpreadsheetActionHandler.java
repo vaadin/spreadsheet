@@ -58,8 +58,8 @@ public class SpreadsheetActionHandler implements Action.Handler {
             LinkedList<Action> actions = new LinkedList<Action>();
             cellActionOwnership = new HashMap<Integer, SpreadsheetActionHandler.Cell>();
             for (Cell cellHandler : cellHandlers) {
-                Action[] currentCellActions = cellHandler.getActions(
-                        (SelectionChangeEvent) target, spreadsheet);
+                Action[] currentCellActions = cellHandler
+                        .getActions((SelectionChangeEvent) target, spreadsheet);
                 for (Action action : currentCellActions) {
                     cellActionOwnership.put(action.hashCode(), cellHandler);
                     actions.add(action);
@@ -74,8 +74,8 @@ public class SpreadsheetActionHandler implements Action.Handler {
                 LinkedList<Action> actions = new LinkedList<Action>();
                 columnActionOwnership = new HashMap<Integer, SpreadsheetActionHandler.Column>();
                 for (Column columnHandler : columnHandlers) {
-                    Action[] currentColumnActions = columnHandler.getActions(
-                            cra, spreadsheet);
+                    Action[] currentColumnActions = columnHandler
+                            .getActions(cra, spreadsheet);
                     for (Action action : currentColumnActions) {
                         columnActionOwnership.put(action.hashCode(),
                                 columnHandler);
@@ -125,15 +125,15 @@ public class SpreadsheetActionHandler implements Action.Handler {
             CellRangeAddress cra = (CellRangeAddress) target;
             if (cra.isFullColumnRange()) {
                 if (columnActionOwnership.containsKey(action.hashCode())) {
-                    columnActionOwnership.get(action.hashCode()).handleAction(
-                            action, cra, spreadsheet);
+                    columnActionOwnership.get(action.hashCode())
+                            .handleAction(action, cra, spreadsheet);
                 }
                 return;
             }
             if (cra.isFullRowRange()) {
                 if (rowActionOwnership.containsKey(action.hashCode())) {
-                    rowActionOwnership.get(action.hashCode()).handleAction(
-                            action, cra, spreadsheet);
+                    rowActionOwnership.get(action.hashCode())
+                            .handleAction(action, cra, spreadsheet);
                 }
                 return;
             }

@@ -18,7 +18,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 
 /**
  * Spreadsheet action for hiding a single row or column.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */

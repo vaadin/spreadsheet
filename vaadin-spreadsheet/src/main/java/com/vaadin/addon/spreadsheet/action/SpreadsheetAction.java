@@ -20,7 +20,7 @@ import com.vaadin.event.Action;
 
 /**
  * Abstract base class for Spreadsheet actions.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -34,7 +34,7 @@ public abstract class SpreadsheetAction extends Action {
     /**
      * Returns true if this action is possible in the given spreadsheet for the
      * given selection.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      * @param event
@@ -46,7 +46,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Returns true if this action is possible for the given row/column header.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      * @param headerRange
@@ -58,7 +58,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Execute this action on the given spreadsheet and selection.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      * @param event
@@ -69,7 +69,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Execute this action on the given spreadsheet and row/column header.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      * @param headerRange
@@ -80,7 +80,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Returns the protection status of the given spreadsheet.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      * @return true if the given spreadsheet is protected
@@ -91,7 +91,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Returns the protection status of the given sheet.
-     * 
+     *
      * @param sheet
      *            Target sheet
      * @return true if the given sheet is protected
@@ -102,7 +102,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Returns the locking status of the given cell.
-     * 
+     *
      * @param cell
      *            Target cell
      * @return true if the given cell is locked
@@ -113,7 +113,7 @@ public abstract class SpreadsheetAction extends Action {
 
     /**
      * Returns the column header for the column at the given index.
-     * 
+     *
      * @param col
      *            Column index
      * @return Column header

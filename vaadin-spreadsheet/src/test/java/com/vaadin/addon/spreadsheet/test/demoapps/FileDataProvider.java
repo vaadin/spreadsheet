@@ -24,17 +24,20 @@ import java.util.stream.Stream;
 import com.vaadin.data.provider.ListDataProvider;
 
 /**
-Helper class a replacement for Vaadin 7 FilesystemContainer
-Doesn't support hierarchy.
+ * Helper class a replacement for Vaadin 7 FilesystemContainer Doesn't support
+ * hierarchy.
  */
 class FileDataProvider {
     /**
      *
-     * @param root root folder
-     * @param filter Regexp for filtering files.
+     * @param root
+     *            root folder
+     * @param filter
+     *            Regexp for filtering files.
      * @return a ListDataProvider of File
      */
-    public static ListDataProvider<File> create(URI root, String filter, Logger logger) {
+    public static ListDataProvider<File> create(URI root, String filter,
+            Logger logger) {
         return new ListDataProvider<>(getFiles(root, filter, logger));
     }
 

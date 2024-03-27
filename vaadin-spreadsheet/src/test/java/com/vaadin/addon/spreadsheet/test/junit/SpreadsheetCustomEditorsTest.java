@@ -10,6 +10,8 @@
  */
 package com.vaadin.addon.spreadsheet.test.junit;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,7 +19,6 @@ import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.Spreadsheet;
@@ -95,7 +96,6 @@ public class SpreadsheetCustomEditorsTest {
         expected.add("1,0");
         expected.add("1,3");
         Collections.sort(expected);
-        Assert.assertArrayEquals(expected.toArray(),
-                childComponentCaptions.toArray());
+        assertArrayEquals(expected.toArray(), childComponentCaptions.toArray());
     }
 }

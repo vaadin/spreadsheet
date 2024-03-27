@@ -12,12 +12,6 @@ package com.vaadin.addon.spreadsheet;
 
 import java.io.Serializable;
 
-import org.apache.poi.xssf.model.StylesTable;
-import org.apache.poi.xssf.usermodel.XSSFColor;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTColors;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTRgbColor;
-
 public class ColorConverterUtil implements Serializable {
 
     public static String toRGBA(byte[] argb) {

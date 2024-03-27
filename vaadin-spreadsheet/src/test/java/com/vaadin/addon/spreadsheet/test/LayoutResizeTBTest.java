@@ -33,8 +33,10 @@ public class LayoutResizeTBTest extends MultiBrowserTest {
     }
 
     @Test
-    public void parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize() throws IOException {
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+    public void parentLayoutSizeUndefined_addSpreadsheet_hadDefaultSize()
+            throws IOException {
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.scroll(500);
         $(ButtonElement.class).caption("Hide").first().click();
         compareScreen("layoutResize");

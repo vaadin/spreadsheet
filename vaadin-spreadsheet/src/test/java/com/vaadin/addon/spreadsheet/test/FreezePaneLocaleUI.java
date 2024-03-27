@@ -29,8 +29,8 @@ public class FreezePaneLocaleUI extends UI {
     @Override
     protected void init(VaadinRequest request) {
         ClassLoader classLoader = FreezePaneLocaleUITest.class.getClassLoader();
-        URL resource = classLoader.getResource("test_sheets" + File.separator
-                + "freezepanels.xlsx");
+        URL resource = classLoader.getResource(
+                "test_sheets" + File.separator + "freezepanels.xlsx");
 
         try {
             File file = new File(resource.toURI());

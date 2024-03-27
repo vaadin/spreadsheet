@@ -28,35 +28,35 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     public void setUp() throws Exception {
         super.setUp();
         sheetController = new SheetController(driver, testBench(driver),
-            getDesiredCapabilities());
+                getDesiredCapabilities());
         spreadsheetPage = headerPage.loadFile("leading_quotes.xlsx", this);
         waitForElementPresent(By.className("v-spreadsheet"));
     }
 
     @Test
     public void existingCell_numberStringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
-        throws Exception {
+            throws Exception {
 
         assertCellValues("B3", "01", "'01", "'01");
     }
 
     @Test
     public void existingCell_stringWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuote()
-        throws Exception {
+            throws Exception {
 
         assertCellValues("B4", "abc", "'abc", "'abc");
     }
 
     @Test
     public void existingCell_stringWithoutQuotePrefixStyle_noLeadingQuote()
-        throws Exception {
+            throws Exception {
 
         assertCellValues("B5", "def", "def", "def");
     }
 
     @Test
     public void typingOnCell_withLeadingQuote_noQuoteShownInCellAndInPOIModel()
-        throws Exception {
+            throws Exception {
 
         final String cell = "D15";
 
@@ -67,7 +67,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void typingOnCell_withTwoLeadingQuotes_justOneQuoteShownInCellAndInPOIModel()
-        throws Exception {
+            throws Exception {
 
         final String cell = "D10";
 
@@ -78,7 +78,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void existingCell_selectedCellWithQuotePrefixStyle_formulaBarAndInlineEditorShowALeadingQuoteAfterSheetSelection()
-        throws Exception {
+            throws Exception {
 
         final String cell = "B3";
 
@@ -93,7 +93,7 @@ public class LeadingQuoteTest extends AbstractSpreadsheetTestCase {
     }
 
     private void assertCellValues(String cell, String cellValue,
-        String formulaBarValue, String inlineEditorValue) {
+            String formulaBarValue, String inlineEditorValue) {
 
         assertEquals(cellValue, spreadsheetPage.getCellValue(cell));
 

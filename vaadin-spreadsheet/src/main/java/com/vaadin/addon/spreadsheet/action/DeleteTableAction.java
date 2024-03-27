@@ -15,13 +15,14 @@ import java.util.List;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
+
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 import com.vaadin.addon.spreadsheet.SpreadsheetTable;
 
 /**
  * Spreadsheet action for deleting a SpreadsheetTable.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -45,8 +46,8 @@ public class DeleteTableAction extends SpreadsheetAction {
                 List<SpreadsheetTable> tablesForActiveSheet = spreadsheet
                         .getTablesForActiveSheet();
                 for (SpreadsheetTable table : tablesForActiveSheet) {
-                    if (CellRangeUtil
-                            .intersect(cra, table.getFullTableRegion()) != CellRangeUtil.NO_INTERSECTION) {
+                    if (CellRangeUtil.intersect(cra, table
+                            .getFullTableRegion()) != CellRangeUtil.NO_INTERSECTION) {
                         setCaption("Delete Table "
                                 + table.getFullTableRegion().formatAsString());
                         tableToDelete = table;

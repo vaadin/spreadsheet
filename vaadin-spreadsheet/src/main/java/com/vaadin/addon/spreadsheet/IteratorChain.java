@@ -20,8 +20,7 @@ import java.util.Queue;
 @SuppressWarnings("serial")
 class IteratorChain<E> implements Iterator<E>, Serializable {
 
-    private static class EmptyIterator<E> implements Iterator<E>,
-            Serializable {
+    private static class EmptyIterator<E> implements Iterator<E>, Serializable {
         @Override
         public boolean hasNext() {
             return false;
@@ -37,7 +36,7 @@ class IteratorChain<E> implements Iterator<E>, Serializable {
             throw new UnsupportedOperationException("remove");
         }
     }
-    
+
     private final Queue<Iterator<? extends E>> iteratorChain = new LinkedList<Iterator<? extends E>>();
     private Iterator<? extends E> currentIterator = null;
 
@@ -54,8 +53,7 @@ class IteratorChain<E> implements Iterator<E>, Serializable {
             }
         }
 
-        while (currentIterator.hasNext() == false
-                && !iteratorChain.isEmpty()) {
+        while (currentIterator.hasNext() == false && !iteratorChain.isEmpty()) {
             currentIterator = iteratorChain.remove();
         }
     }

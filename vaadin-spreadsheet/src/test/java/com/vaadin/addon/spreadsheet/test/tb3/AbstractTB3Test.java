@@ -33,7 +33,8 @@ import com.vaadin.ui.UI;
  * <li>Hub connection setup and teardown</li>
  * <li>Automatic generation of URL for a given test on the development server
  * using {@link #getUIClass()} or by automatically finding an enclosing UI class
- * and based on requested features, e.g. {@link #isDebug()}, {@link #isPush()}</li>
+ * and based on requested features, e.g. {@link #isDebug()},
+ * {@link #isPush()}</li>
  * <li>Generic helpers for creating TB3+ tests</li>
  * </ul>
  *
@@ -94,7 +95,6 @@ public abstract class AbstractTB3Test extends ParallelTest {
 
         return baseUrl + getDeploymentPath();
     }
-
 
     /**
      * Used to determine what URL to initially open for the test
@@ -176,8 +176,8 @@ public abstract class AbstractTB3Test extends ParallelTest {
      * @throws AssertionError
      *             If comparison fails
      */
-    public static final <T> void assertLessThan(String message,
-            Comparable<T> a, T b) throws AssertionError {
+    public static final <T> void assertLessThan(String message, Comparable<T> a,
+            T b) throws AssertionError {
         if (a.compareTo(b) < 0) {
             return;
         }
@@ -232,8 +232,8 @@ public abstract class AbstractTB3Test extends ParallelTest {
         Class<?> enclosingClass = getClass().getEnclosingClass();
         if (enclosingClass != null) {
             if (UI.class.isAssignableFrom(enclosingClass)) {
-                Logger.getLogger(getClass().getName())
-                        .severe("Test is an static inner class to the UI. This will no longer be supported in the future. The test should be named UIClassTest and reside in the same package as the UI");
+                Logger.getLogger(getClass().getName()).severe(
+                        "Test is an static inner class to the UI. This will no longer be supported in the future. The test should be named UIClassTest and reside in the same package as the UI");
                 return enclosingClass;
             }
         }
@@ -318,11 +318,10 @@ public abstract class AbstractTB3Test extends ParallelTest {
         String runPath = "";
         String classPath = uiClass.getSimpleName();
         if (UI.class.isAssignableFrom(uiClass)) {
-            return runPath + "/" + classPath
-                    + (isDebug() ? "?debug" : "");
+            return runPath + "/" + classPath + (isDebug() ? "?debug" : "");
         } else if (LegacyApplication.class.isAssignableFrom(uiClass)) {
-            return runPath + "/" + classPath
-                    + "?restartApplication" + (isDebug() ? "&debug" : "");
+            return runPath + "/" + classPath + "?restartApplication"
+                    + (isDebug() ? "&debug" : "");
         } else {
             throw new IllegalArgumentException(
                     "Unable to determine path for enclosing class "
@@ -353,7 +352,7 @@ public abstract class AbstractTB3Test extends ParallelTest {
 
     /**
      * Uses JavaScript to determine the currently focused element.
-     * 
+     *
      * @return Focused element or null
      */
     protected WebElement getFocusedElement() {
@@ -367,7 +366,7 @@ public abstract class AbstractTB3Test extends ParallelTest {
 
     /**
      * Executes the given Javascript
-     * 
+     *
      * @param script
      *            the script to execute
      * @return whatever

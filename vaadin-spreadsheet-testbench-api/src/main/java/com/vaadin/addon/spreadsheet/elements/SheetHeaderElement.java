@@ -18,7 +18,7 @@ import com.vaadin.testbench.elementsbase.AbstractElement;
 /**
  * This class represents a header (either row- or column) within the currently
  * active sheet of a Spreadsheet.
- * 
+ *
  * @author Vaadin Ltd.
  */
 public class SheetHeaderElement extends AbstractElement {

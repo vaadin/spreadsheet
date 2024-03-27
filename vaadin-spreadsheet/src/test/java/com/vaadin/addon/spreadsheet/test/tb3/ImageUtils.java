@@ -37,7 +37,7 @@ class ImageUtils {
         }
 
         ImageProducer ip = new FilteredImageSource(inImage.getSource(),
-            new Filter(headerHeight));
+                new Filter(headerHeight));
         Image outImage = Toolkit.getDefaultToolkit().createImage(ip);
 
         try {
@@ -51,7 +51,7 @@ class ImageUtils {
 
     static private BufferedImage imageToBufferedImage(Image image) {
         BufferedImage dest = new BufferedImage(image.getWidth(null),
-            image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
         Graphics2D g2 = dest.createGraphics();
 
@@ -68,11 +68,13 @@ class ImageUtils {
             this.headerHeight = headerHeight;
         }
 
+        @Override
         public int filterRGB(int x, int y, int rgb) {
-            if (y < headerHeight)
+            if (y < headerHeight) {
                 return TRANPARENCY_MASK | (rgb & 0xFFFFFF);
-            else
+            } else {
                 return rgb;
+            }
         }
     }
 }

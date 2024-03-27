@@ -22,7 +22,6 @@ import com.vaadin.ui.VerticalLayout;
 @Widgetset("com.vaadin.addon.spreadsheet.Widgetset")
 public class EmptySpreadsheetUI extends UI {
 
-
     private Spreadsheet spreadsheet = null;
 
     @Override

@@ -10,9 +10,12 @@
  */
 package com.vaadin.spreadsheet.charts.interactiontests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
@@ -36,8 +39,9 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void userChangesInSpreadsheet_chartsUpdated() throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("InteractionSample.xlsx", this);
-        spreadsheetPage.getCellAt(1,14).setValue("10");
+        SpreadsheetPage spreadsheetPage = headerPage
+                .loadFile("InteractionSample.xlsx", this);
+        spreadsheetPage.getCellAt(1, 14).setValue("10");
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnDataChange");
     }
@@ -45,8 +49,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     @Test
     public void userChangesCategoryInSpreadsheet_chartsUpdated()
             throws Exception {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile(
-                "ChartsWithCategories.xlsx", this);
+        SpreadsheetPage spreadsheetPage = headerPage
+                .loadFile("ChartsWithCategories.xlsx", this);
 
         // need to move selection so that fill indicator is not clicked while
         // selecting A3
@@ -93,7 +97,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void userSelectsPoint_spreadsheetSelectionUpdated() throws Exception {
+    public void userSelectsPoint_spreadsheetSelectionUpdated()
+            throws Exception {
         headerPage.loadFile("InteractionSample.xlsx", this);
         overlayHelper.getOverlayElement("B1")
                 .findElements(By.cssSelector(".highcharts-series-0 > rect"))
@@ -111,7 +116,7 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         WebElement dataLabel = overlayHelper.getOverlayElement("A4")
                 .findElements(By.tagName("tspan")).get(0);
 
-        Assert.assertEquals("Header 1", dataLabel.getText());
+        assertEquals("Header 1", dataLabel.getText());
     }
 
     @Test
@@ -126,7 +131,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void openFileWithNotSuportedForumla_noExceptionRaised_noChart() throws Exception {
+    public void openFileWithNotSuportedForumla_noExceptionRaised_noChart()
+            throws Exception {
         skipBrowser("Fails to select file in combobox", Browser.IE11);
         headerPage.loadFile("unparsed_formula.xlsx", this);
         compareScreen("unparsedFormula");
@@ -162,14 +168,12 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnFormulaChange");
     }
-    
+
     @Test
     public void sheetWithGroupingAndChart_groupIsCollapsed_chartPointsAreHidden()
             throws Exception {
-        headerPage
-                .loadFile("chart and grouping.xlsx", this);
-        WebElement marker =  driver.findElement(By
-                .cssSelector(".grouping"));
+        headerPage.loadFile("chart and grouping.xlsx", this);
+        WebElement marker = driver.findElement(By.cssSelector(".grouping"));
         marker.click();
         Thread.sleep(1000);
         compareScreen("chartsUpdatedOnCollapse");
@@ -200,24 +204,24 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     }
 
     private void assertCellInSelectionRange(String cell) {
-        Assert.assertTrue("Cell " + cell + " is not selected",
+        assertTrue("Cell " + cell + " is not selected",
                 cellHasCellRangeClass(cell) || cellIsSpecialSelected(cell));
     }
 
     private void assertNotCellInSelectionRange(String cell) {
-        Assert.assertFalse("Cell " + cell + "is selected",
+        assertFalse("Cell " + cell + "is selected",
                 cellHasCellRangeClass(cell) || cellIsSpecialSelected(cell));
     }
 
     private boolean cellIsSpecialSelected(String cell) {
-        WebElement addressfield = driver.findElement(By
-                .cssSelector(".addressfield"));
+        WebElement addressfield = driver
+                .findElement(By.cssSelector(".addressfield"));
         return cell.equals(addressfield.getAttribute("value"));
     }
 
     private boolean cellHasCellRangeClass(String cell) {
-        return Arrays.asList(
-                getCellElement(cell).getAttribute("class").split(" "))
+        return Arrays
+                .asList(getCellElement(cell).getAttribute("class").split(" "))
                 .contains("cell-range");
     }
 
@@ -230,8 +234,8 @@ public class InteractionTBTest extends AbstractSpreadsheetTestCase {
     private WebElement getCellElement(String cell) {
         int[] coordinates = overlayHelper.numericCoordinates(cell);
 
-        WebElement element = driver.findElement(By.cssSelector(".cell.col"
-                + coordinates[0] + ".row" + coordinates[1]));
+        WebElement element = driver.findElement(By.cssSelector(
+                ".cell.col" + coordinates[0] + ".row" + coordinates[1]));
 
         return element;
     }

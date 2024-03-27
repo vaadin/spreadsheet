@@ -49,8 +49,9 @@ public class ScatterSeriesDataWriter extends AbstractSeriesDataWriter {
         getPlotOptions().setDashStyle(
                 LineSeriesWriterUtils.getDashStyle(getSeriesData().dashStyle));
 
-        if (!getSeriesData().markerSymbol.isEmpty())
-            getPlotOptions().setMarker(
-                    LineSeriesWriterUtils.getMarker(getSeriesData().markerSymbol));
+        if (!getSeriesData().markerSymbol.isEmpty()) {
+            getPlotOptions().setMarker(LineSeriesWriterUtils
+                    .getMarker(getSeriesData().markerSymbol));
+        }
     }
 }

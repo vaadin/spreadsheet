@@ -24,7 +24,7 @@ import com.vaadin.addon.spreadsheet.command.ValueChangeCommand;
  * SpreadsheetHistoryManager is an utility class of the Spreadsheet add-on. This
  * class handles remembering any actions done in the Spreadsheet. The purpose is
  * to allow the user to undo and redo any action.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
@@ -49,7 +49,7 @@ public class SpreadsheetHistoryManager implements Serializable {
 
     /**
      * Creates a new history manager for the given Spreadsheet.
-     * 
+     *
      * @param spreadsheet
      *            Target spreadsheet
      */
@@ -68,7 +68,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Adds a command to the end of the command history. Discards commands after
      * the current position (historyIndex) within the history.
-     * 
+     *
      * @param command
      *            Command to add as the latest command in history
      */
@@ -86,7 +86,7 @@ public class SpreadsheetHistoryManager implements Serializable {
 
     /**
      * Gets the Command at the given history index.
-     * 
+     *
      * @param historyIndex
      *            Index of Command to get, 0-based
      * @return The command at the index or {@link IndexOutOfBoundsException}
@@ -98,7 +98,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Determines if redo is possible at the moment. In practice tells if there
      * is at least one Command available after the current history index.
-     * 
+     *
      * @return true if {@link #redo()} possible, false otherwise.
      */
     public boolean canRedo() {
@@ -108,7 +108,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Determines if undo is possible at the moment. In practice tells if there
      * is at least one Command available before the current history index.
-     * 
+     *
      * @return true if {@link #undo()} possible, false otherwise.
      */
     public boolean canUndo() {
@@ -154,7 +154,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Changes the history size. Discards possible commands that won't fit the
      * size anymore.
-     * 
+     *
      * @param historySize
      *            New size for Command history
      */
@@ -166,7 +166,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Gets the current size of the Command history. The default size is 20
      * commands.
-     * 
+     *
      * @return Current size of history.
      */
     public int getHistorySize() {
@@ -175,7 +175,7 @@ public class SpreadsheetHistoryManager implements Serializable {
 
     /**
      * Gets the current index within the Command history.
-     * 
+     *
      * @return Current history index, 0-based
      */
     public int getHistoryIndex() {
@@ -185,27 +185,29 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Ensures that the correct sheet is active, as recorded in the given
      * Command.
-     * 
+     *
      * @param command
      *            Command to fetch the sheet from
      */
     protected void makeSureCorrectSheetActive(Command command) {
-        if (spreadsheet.getActiveSheetIndex() != command.getActiveSheetIndex()) {
+        if (spreadsheet.getActiveSheetIndex() != command
+                .getActiveSheetIndex()) {
             spreadsheet.setActiveSheetIndex(command.getActiveSheetIndex());
             CellRangeAddress paintedCellRange = command.getPaintedCellRange();
             CellReference selectedCellReference = command
                     .getSelectedCellReference();
-            String initialSheetSelection = paintedCellRange != null ? paintedCellRange
-                    .formatAsString()
-                    : selectedCellReference != null ? selectedCellReference
-                            .formatAsString() : "A1";
+            String initialSheetSelection = paintedCellRange != null
+                    ? paintedCellRange.formatAsString()
+                    : selectedCellReference != null
+                            ? selectedCellReference.formatAsString()
+                            : "A1";
             spreadsheet.initialSheetSelection = initialSheetSelection;
         }
     }
 
     /**
      * Applies the cell selection from the given Command.
-     * 
+     *
      * @param command
      *            Command to fetch the cell selection from.
      */
@@ -217,10 +219,8 @@ public class SpreadsheetHistoryManager implements Serializable {
             CellRangeAddress paintedCellRange = command.getPaintedCellRange();
             if (selectedCellReference != null) {
                 if (paintedCellRange == null) {
-                    spreadsheet.getCellSelectionManager()
-                            .onSheetAddressChanged(
-                                    selectedCellReference.formatAsString(),
-                                    false);
+                    spreadsheet.getCellSelectionManager().onSheetAddressChanged(
+                            selectedCellReference.formatAsString(), false);
                 } else {
                     spreadsheet.getCellSelectionManager()
                             .handleCellRangeSelection(selectedCellReference,
@@ -237,7 +237,7 @@ public class SpreadsheetHistoryManager implements Serializable {
     /**
      * Clears all history after the given history index NOT including the
      * command at the given index.
-     * 
+     *
      * @param index
      *            History index to start the clearing from.
      */

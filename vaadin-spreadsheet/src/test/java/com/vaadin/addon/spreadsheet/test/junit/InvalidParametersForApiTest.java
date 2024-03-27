@@ -10,11 +10,12 @@
  */
 package com.vaadin.addon.spreadsheet.test.junit;
 
-import com.vaadin.addon.spreadsheet.Spreadsheet;
+import static org.junit.Assert.assertNotNull;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 public class InvalidParametersForApiTest {
 

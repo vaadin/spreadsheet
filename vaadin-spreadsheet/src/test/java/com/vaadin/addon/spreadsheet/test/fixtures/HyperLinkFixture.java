@@ -24,8 +24,8 @@ public class HyperLinkFixture implements SpreadsheetFixture {
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {
 
-        spreadsheet
-                .setHyperlinkCellClickHandler(new Spreadsheet.HyperlinkCellClickHandler() {
+        spreadsheet.setHyperlinkCellClickHandler(
+                new Spreadsheet.HyperlinkCellClickHandler() {
 
                     @Override
                     public void onHyperLinkCellClick(Cell cell,

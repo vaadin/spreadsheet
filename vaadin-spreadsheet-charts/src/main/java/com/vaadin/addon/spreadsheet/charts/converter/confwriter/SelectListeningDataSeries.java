@@ -18,7 +18,8 @@ public class SelectListeningDataSeries extends DataSeries {
         void selected();
     }
 
-    public SelectListeningDataSeries(String name, SelectListener selectListener) {
+    public SelectListeningDataSeries(String name,
+            SelectListener selectListener) {
         super(name);
         this.selectListener = selectListener;
 

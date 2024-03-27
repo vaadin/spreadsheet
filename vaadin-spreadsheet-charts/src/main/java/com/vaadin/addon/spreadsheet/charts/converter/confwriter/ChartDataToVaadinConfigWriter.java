@@ -57,7 +57,8 @@ public class ChartDataToVaadinConfigWriter {
         logger.setLevel(Level.OFF);
     }
 
-    public Configuration createConfigurationFromChartData(ChartData definition) {
+    public Configuration createConfigurationFromChartData(
+            ChartData definition) {
         logger.info("createConfData()");
 
         if (definition.plotData.size() > 0) {
@@ -139,14 +140,13 @@ public class ChartDataToVaadinConfigWriter {
                     + "      //numberFormat can handle numbers 20 digits long.\n"
                     + "      var tooltipDecimals = (Math.ceil(Math.log(signlessNumer)/Math.LN10) + $tooltipDecimals<= 20 ? $tooltipDecimals : 20);\n"
                     + "      formattedNumber = Highcharts.numberFormat(this.$v, tooltipDecimals);\n"
-                    + "   }\n"
+                    + "   }\n" //
                     + "   text = $seriesTitle + ' ' + \n"
                     + "      (typeof $seriesName == 'number' ? $seriesName : JSON.stringify($seriesName)) + ' ' + $pointTitle + ' ' + \n"
                     + "      (('name' in this.point) ? JSON.stringify(this.point.name) : this.x + 1) + \n"
                     + "      ' <br>' + formattedNumber;" + "}";
 
-            formatter.append(seriesFormatter
-                    .replace("$v", pointData)
+            formatter.append(seriesFormatter.replace("$v", pointData)
                     .replace("$id", Integer.toString(i++))
                     .replace("$seriesTitle", seriesTitle)
                     .replace("$seriesName", seriesName)
@@ -216,10 +216,8 @@ public class ChartDataToVaadinConfigWriter {
             Double position = grdStop.getKey();
             ColorProperties colorProp = grdStop.getValue();
 
-            linear.addColorStop(
-                    position,
-                    createSolidColorFromColorProperties(colorProp,
-                            SolidColor.WHITE));
+            linear.addColorStop(position, createSolidColorFromColorProperties(
+                    colorProp, SolidColor.WHITE));
         }
 
         return linear;
@@ -276,7 +274,8 @@ public class ChartDataToVaadinConfigWriter {
                 createStyleFromTextFroperties(axisProperties.textProperties));
     }
 
-    private void updateLegendTextProperties(Legend legend, TextProperties textPr) {
+    private void updateLegendTextProperties(Legend legend,
+            TextProperties textPr) {
         Style style = createStyleFromTextFroperties(textPr);
         legend.setItemStyle(style);
     }
@@ -284,8 +283,8 @@ public class ChartDataToVaadinConfigWriter {
     private void updateBorder(ChartModel chart, BorderStyle borderStyle) {
         chart.setBorderRadius(borderStyle.radius);
         chart.setBorderWidth(borderStyle.width);
-        chart.setBorderColor(createSolidColorFromColorProperties(
-                borderStyle.color, null));
+        chart.setBorderColor(
+                createSolidColorFromColorProperties(borderStyle.color, null));
     }
 
     private Options3d getOptions3d(View3dData view3dData) {
@@ -375,7 +374,8 @@ public class ChartDataToVaadinConfigWriter {
         }
     }
 
-    protected Title createTitle(String titleString, TitleProperties titleProps) {
+    protected Title createTitle(String titleString,
+            TitleProperties titleProps) {
         logger.info("createTitle()");
 
         if (titleString == null) {

@@ -39,8 +39,8 @@ class NamedRangeUtils implements Serializable {
 
         for (Name name : spreadsheet.getWorkbook().getAllNames()) {
             final boolean globalName = name.getSheetIndex() == -1;
-            final boolean nameRefersToThisSheet =
-                name.getSheetIndex() == spreadsheet.getActiveSheetIndex();
+            final boolean nameRefersToThisSheet = name
+                    .getSheetIndex() == spreadsheet.getActiveSheetIndex();
 
             if (globalName || nameRefersToThisSheet) {
                 if (formula.equals(name.getRefersToFormula())) {
@@ -56,12 +56,12 @@ class NamedRangeUtils implements Serializable {
      * Check if entered range is cell reference
      *
      * @param value
-     *     New value of the address field
+     *            New value of the address field
      */
     public boolean isCellReference(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);
         List<CellReference.NameType> cellColRowTypes = Arrays
-            .asList(NameType.CELL, NameType.COLUMN, NameType.ROW);
+                .asList(NameType.CELL, NameType.COLUMN, NameType.ROW);
         if (cellColRowTypes.contains(nameType)) {
             return true;
         } else {
@@ -74,7 +74,7 @@ class NamedRangeUtils implements Serializable {
      * selects already existing one.
      *
      * @param value
-     *     Address field value
+     *            Address field value
      */
     public void onNamedRange(String value) {
         Workbook workbook = spreadsheet.getWorkbook();
@@ -90,7 +90,7 @@ class NamedRangeUtils implements Serializable {
      * Check if entered range is cell reference
      *
      * @param value
-     *     New value of the address field
+     *            New value of the address field
      */
     public boolean isNamedRange(String value) {
         CellReference.NameType nameType = getCellReferenceType(value);
@@ -124,7 +124,7 @@ class NamedRangeUtils implements Serializable {
         String sheetName = spreadsheet.getActiveSheet().getSheetName();
 
         return getSelectionManager().getSelectedCellRange()
-            .formatAsString(sheetName, true);
+                .formatAsString(sheetName, true);
     }
 
     private void selectExistingNameRange(Name name) {
@@ -132,7 +132,7 @@ class NamedRangeUtils implements Serializable {
         String formulaSheet = name.getSheetName();
 
         final boolean rangeIsOnDifferentSheet = !name.getSheetName()
-            .equals(spreadsheet.getActiveSheet().getSheetName());
+                .equals(spreadsheet.getActiveSheet().getSheetName());
 
         if (rangeIsOnDifferentSheet) {
             switchSheet(formulaSheet, rangeFormula);
@@ -144,7 +144,7 @@ class NamedRangeUtils implements Serializable {
     private void switchSheet(String formulaSheet, String range) {
         if (!spreadsheet.getActiveSheet().getSheetName().equals(formulaSheet)) {
             int sheetIndex = spreadsheet.getWorkbook()
-                .getSheetIndex(formulaSheet);
+                    .getSheetIndex(formulaSheet);
             spreadsheet.setActiveSheetIndex(sheetIndex);
             spreadsheet.initialSheetSelection = range;
         }
@@ -154,12 +154,11 @@ class NamedRangeUtils implements Serializable {
         if (formula.indexOf(":") == -1) {
             final CellReference cell = new CellReference(formula);
 
-            getSelectionManager()
-                .handleCellAddressChange(cell.getRow() + 1, cell.getCol() + 1,
-                    false, name);
+            getSelectionManager().handleCellAddressChange(cell.getRow() + 1,
+                    cell.getCol() + 1, false, name);
         } else {
             CellRangeAddress cra = spreadsheet
-                .createCorrectCellRangeAddress(formula);
+                    .createCorrectCellRangeAddress(formula);
 
             getSelectionManager().handleCellRangeSelection(name, cra);
         }

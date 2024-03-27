@@ -21,8 +21,9 @@ public class ScrollTBTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testHiddenColumnHeaderScrollingFix() throws IOException {
-        headerPage.loadFile("hidden.xlsx",this);
-        SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class).first();
+        headerPage.loadFile("hidden.xlsx", this);
+        SpreadsheetElement spreadsheetElement = $(SpreadsheetElement.class)
+                .first();
         spreadsheetElement.scroll(128);
         spreadsheetElement.scroll(128);
         spreadsheetElement.scroll(512);

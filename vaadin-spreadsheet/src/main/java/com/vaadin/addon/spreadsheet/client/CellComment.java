@@ -254,8 +254,8 @@ public class CellComment extends VOverlay {
         line.getStyle().setLeft(cellOffsetLeft + cellOffsetWidth, Unit.PX);
         line.getStyle().setProperty("transform", "rotate(" + deg + "deg)");
         line.getStyle().setProperty("msTransform", "rotate(" + deg + "deg)");
-        line.getStyle()
-                .setProperty("webkitTransform", "rotate(" + deg + "deg)");
+        line.getStyle().setProperty("webkitTransform",
+                "rotate(" + deg + "deg)");
 
         line.addClassName(linePositionClassName);
         paneElement.appendChild(line);
@@ -295,7 +295,7 @@ public class CellComment extends VOverlay {
     }
 
     private void hideIfNoContent(VLabel label) {
-        if(label.getText().isEmpty()) {
+        if (label.getText().isEmpty()) {
             label.setVisible(false);
         } else {
             label.setVisible(true);
@@ -303,14 +303,19 @@ public class CellComment extends VOverlay {
     }
 
     private void showOrHideSeparator() {
-        if(invalidFormula.isVisible() && (author.isVisible() || label.isVisible()
-                        || Display.BLOCK.equals(input.getStyle().getDisplay()) )) {
-            if(!invalidFormula.getStyleName().contains(COMMENT_OVERLAY_SEPARATOR_CLASSNAME)) {
-                invalidFormula.addStyleName(COMMENT_OVERLAY_SEPARATOR_CLASSNAME);
+        if (invalidFormula.isVisible() && (author.isVisible()
+                || label.isVisible()
+                || Display.BLOCK.equals(input.getStyle().getDisplay()))) {
+            if (!invalidFormula.getStyleName()
+                    .contains(COMMENT_OVERLAY_SEPARATOR_CLASSNAME)) {
+                invalidFormula
+                        .addStyleName(COMMENT_OVERLAY_SEPARATOR_CLASSNAME);
             }
         } else {
-            if(invalidFormula.getStyleName().contains(COMMENT_OVERLAY_SEPARATOR_CLASSNAME)) {
-                invalidFormula.removeStyleName(COMMENT_OVERLAY_SEPARATOR_CLASSNAME);
+            if (invalidFormula.getStyleName()
+                    .contains(COMMENT_OVERLAY_SEPARATOR_CLASSNAME)) {
+                invalidFormula
+                        .removeStyleName(COMMENT_OVERLAY_SEPARATOR_CLASSNAME);
             }
         }
     }

@@ -18,10 +18,9 @@ public class MergedCell extends Cell {
 
     @Override
     protected void updateClassName() {
-        getElement().setClassName(
-                SheetWidget.toKey(getCol(), getRow()) + " cell "
-                        + getCellStyle() + " "
-                        + SheetWidget.MERGED_CELL_CLASSNAME);
+        getElement().setClassName(SheetWidget.toKey(getCol(), getRow())
+                + " cell " + getCellStyle() + " "
+                + SheetWidget.MERGED_CELL_CLASSNAME);
     }
 
     @Override

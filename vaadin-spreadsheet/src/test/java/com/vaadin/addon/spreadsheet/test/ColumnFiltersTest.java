@@ -47,7 +47,7 @@ public class ColumnFiltersTest {
         workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet();
 
-        //create a column with some data and set it as a sheet filter
+        // create a column with some data and set it as a sheet filter
         Row row1 = sheet.createRow(1);
         row1.createCell(1).setCellValue("col1");
 
@@ -59,7 +59,7 @@ public class ColumnFiltersTest {
 
         sheet.setAutoFilter(new CellRangeAddress(1, 3, 1, 1));
 
-        //create another column (to be added)as a table
+        // create another column (to be added)as a table
         Row r1 = sheet.createRow(5);
         r1.createCell(1).setCellValue("col");
 
@@ -77,12 +77,13 @@ public class ColumnFiltersTest {
         assertNotNull(spreadsheet.getTables());
         assertEquals(1, spreadsheet.getTables().size());
         assertEquals(CellRangeAddress.valueOf(TABLE1_RANGE),
-            spreadsheet.getTables().iterator().next().getFullTableRegion());
+                spreadsheet.getTables().iterator().next().getFullTableRegion());
     }
 
     @Test
     public void sheetWithTables_loadWorkbook_tablesPreserved() {
-        XSSFTable table = workbook.getSheetAt(0).createTable(new AreaReference(TABLE2_RANGE, null));
+        XSSFTable table = workbook.getSheetAt(0)
+                .createTable(new AreaReference(TABLE2_RANGE, null));
 
         spreadsheet.setWorkbook(workbook);
 
@@ -90,23 +91,23 @@ public class ColumnFiltersTest {
         assertEquals(2, spreadsheet.getTables().size());
 
         final Iterator<SpreadsheetTable> iterator = spreadsheet.getTables()
-            .iterator();
+                .iterator();
 
         final CellRangeAddress table1 = iterator.next().getFullTableRegion();
-        
+
         final CellRangeAddress table2 = iterator.next().getFullTableRegion();
 
         assertThat(CellRangeAddress.valueOf(TABLE1_RANGE),
-            anyOf(is(table1), is(table2)));
-        
+                anyOf(is(table1), is(table2)));
+
         assertThat(CellRangeAddress.valueOf(TABLE2_RANGE),
-            anyOf(is(table1), is(table2)));
+                anyOf(is(table1), is(table2)));
     }
-    
+
     @Test
     public void loadFile_filteredColumnsLoadedAsActive() throws Exception {
         Spreadsheet spr = new Spreadsheet(
-            getTestSheetFile("autofilter_with_active_column.xlsx"));
+                getTestSheetFile("autofilter_with_active_column.xlsx"));
 
         final SpreadsheetTable table = spr.getTables().iterator().next();
 
@@ -114,10 +115,8 @@ public class ColumnFiltersTest {
         assertFalse(table.getPopupButton(2).isActive());
     }
 
-    private File getTestSheetFile(String name)
-        throws URISyntaxException {
+    private File getTestSheetFile(String name) throws URISyntaxException {
         return new File(getClass().getClassLoader()
-            .getResource("test_sheets" + File.separator + name)
-            .toURI());
+                .getResource("test_sheets" + File.separator + name).toURI());
     }
 }

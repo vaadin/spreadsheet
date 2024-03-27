@@ -10,7 +10,9 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -84,19 +86,18 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void contextClick_on_commentIndicator()
-            throws InterruptedException {
+    public void contextClick_on_commentIndicator() throws InterruptedException {
         headerPage.loadFile("comment_sheet.xlsx", this);
 
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
         ContextMenuHelper contextMenu = new ContextMenuHelper(driver);
         SheetCellElement cell = spreadsheet.getCellAt(3, 3);
-        Assert.assertTrue(cell.hasCommentIndicator());
-        WebElement triangle = cell.findElement(By.className("cell-comment-triangle"));
+        assertTrue(cell.hasCommentIndicator());
+        WebElement triangle = cell
+                .findElement(By.className("cell-comment-triangle"));
         new Actions(getDriver()).contextClick(triangle).build().perform();
-        Assert.assertFalse(contextMenu.hasOption("Insert comment"));
+        assertFalse(contextMenu.hasOption("Insert comment"));
     }
-
 
     @Test
     public void removeRow_removeRowWithComment_commentIsRemoved() {
@@ -141,8 +142,8 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return webDriver.findElements(By
-                        .xpath("//div[(@class='comment-overlay-label' or @class='comment-overlay-invalidformula')"
+                return webDriver.findElements(By.xpath(
+                        "//div[(@class='comment-overlay-label' or @class='comment-overlay-invalidformula')"
                                 + " and contains(text(), '" + text + "')]"))
                         .size() > 0;
             }
@@ -153,8 +154,8 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return webDriver.findElements(By
-                        .xpath("//div[(@class='comment-overlay-label' or @class='comment-overlay-invalidformula')"
+                return webDriver.findElements(By.xpath(
+                        "//div[(@class='comment-overlay-label' or @class='comment-overlay-invalidformula')"
                                 + " and contains(text(), '" + text + "')]"))
                         .size() == 0;
             }

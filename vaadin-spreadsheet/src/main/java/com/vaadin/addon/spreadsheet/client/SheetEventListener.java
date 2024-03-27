@@ -39,11 +39,12 @@ public class SheetEventListener implements EventListener {
     }
 
     protected void listenToEventsOnPane(Element sheetElement) {
-        Event.sinkEvents(sheetElement, Event.ONSCROLL | Event.ONMOUSEDOWN
-                | Event.ONMOUSEMOVE | Event.ONMOUSEOVER | Event.ONMOUSEOUT
-                | Event.ONMOUSEUP | Event.TOUCHEVENTS | Event.ONLOSECAPTURE
-                | Event.ONCLICK | Event.ONDBLCLICK | Event.ONKEYPRESS
-                | Event.ONKEYDOWN | Event.FOCUSEVENTS);
+        Event.sinkEvents(sheetElement,
+                Event.ONSCROLL | Event.ONMOUSEDOWN | Event.ONMOUSEMOVE
+                        | Event.ONMOUSEOVER | Event.ONMOUSEOUT | Event.ONMOUSEUP
+                        | Event.TOUCHEVENTS | Event.ONLOSECAPTURE
+                        | Event.ONCLICK | Event.ONDBLCLICK | Event.ONKEYPRESS
+                        | Event.ONKEYDOWN | Event.FOCUSEVENTS);
         Event.setEventListener(sheetElement, this);
     }
 
@@ -239,17 +240,15 @@ public class SheetEventListener implements EventListener {
 
                 case KeyCodes.KEY_ENTER:
                     // happens on FF (other browsers have charcode as 13)
-                    widget.getSheetHandler().onSheetKeyPress(
-                            event,
+                    widget.getSheetHandler().onSheetKeyPress(event,
                             widget.getSheetJsniUtil()
                                     .convertUnicodeIntoCharacter(charCode));
                     break;
                 }
             } else if (!event.getCtrlKey() && !event.getMetaKey()) {
-                widget.getSheetHandler().onSheetKeyPress(
-                        event,
-                        widget.getSheetJsniUtil().convertUnicodeIntoCharacter(
-                                charCode));
+                widget.getSheetHandler().onSheetKeyPress(event,
+                        widget.getSheetJsniUtil()
+                                .convertUnicodeIntoCharacter(charCode));
             }
         }
     }

@@ -10,9 +10,10 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -48,7 +49,7 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
 
         double newWidth = spreadsheetPage.getCellAt(2, 2).getSize().getWidth();
 
-        Assert.assertTrue(String.format(
+        assertTrue(String.format(
                 "Width changed when it shouldn't have. Was: %s, now: %s.",
                 originalWidth, newWidth), originalWidth == newWidth);
     }
@@ -73,9 +74,10 @@ public class ResizeProtectedTest extends AbstractSpreadsheetTestCase {
         assertInRange(2.5 * originalWidth, newWidth, 3.5 * originalWidth);
     }
 
+    @Override
     protected void assertInRange(double from, double value, double to) {
-        Assert.assertTrue("Value [" + value + "] is not in range: [" + from
-                + " - " + to + "]", value >= from && value <= to);
+        assertTrue("Value [" + value + "] is not in range: [" + from + " - "
+                + to + "]", value >= from && value <= to);
     }
 
     @Override

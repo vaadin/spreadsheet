@@ -34,12 +34,12 @@ public interface SpreadsheetClientRpc extends ClientRpc {
 
     void invalidCellAddress();
 
-    void showSelectedCell(String name, int col, int row, String cellValue, boolean function,
-            boolean locked, boolean initialSelection);
+    void showSelectedCell(String name, int col, int row, String cellValue,
+            boolean function, boolean locked, boolean initialSelection);
 
     /**
      * The String arrays contain the caption and the icon resource key.
-     * 
+     *
      * @param actionDetails
      */
     void showActions(ArrayList<SpreadsheetActionDetails> actionDetails);
@@ -48,8 +48,8 @@ public interface SpreadsheetClientRpc extends ClientRpc {
      * Updates the selected cell and painted range. Displays the selected cell
      * value. Indexes 1-based.
      */
-    void setSelectedCellAndRange(String name, int col, int row, int c1, int c2, int r1,
-            int r2, boolean scroll);
+    void setSelectedCellAndRange(String name, int col, int row, int c1, int c2,
+            int r1, int r2, boolean scroll);
 
     void cellsUpdated(ArrayList<CellData> updatedCellData);
 

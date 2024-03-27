@@ -28,7 +28,7 @@ import com.vaadin.testbench.elementsbase.ServerClass;
 /**
  * This is the base element class for accessing a Vaadin Spreadsheet component
  * for TestBench testing.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @ServerClass("com.vaadin.addon.spreadsheet.Spreadsheet")
@@ -38,7 +38,7 @@ public class SpreadsheetElement extends AbstractElement {
      * Gets the cell element at the given coordinates for the currently active
      * sheet. Throws NoSuchElementException if the cell is outside the visible
      * area.
-     * 
+     *
      * @param row
      *            Row index, 1-based
      * @param column
@@ -53,8 +53,8 @@ public class SpreadsheetElement extends AbstractElement {
         if (findElements(By.cssSelector(cellSelector)).size() > 1) {
             cellSelector += ".merged-cell";
         }
-        TestBenchElement cell = (TestBenchElement) findElement(By
-                .cssSelector(cellSelector));
+        TestBenchElement cell = (TestBenchElement) findElement(
+                By.cssSelector(cellSelector));
         SheetCellElement cellElement = cell.wrap(SheetCellElement.class);
         cellElement.setParent(this);
         return cellElement;
@@ -64,7 +64,7 @@ public class SpreadsheetElement extends AbstractElement {
      * Gets the cell element at the given cell address for the currently active
      * sheet. Throws NoSuchElementException if the cell is outside the visible
      * area.
-     * 
+     *
      * @param cellAddress
      *            Target address, e.g. A3
      * @return Cell element at the given index.
@@ -78,34 +78,34 @@ public class SpreadsheetElement extends AbstractElement {
 
     /**
      * Gets the row header element at the given index.
-     * 
+     *
      * @param rowIndex
      *            Index of target row, 1-based
      * @return Header of the row at the given index
      */
     public SheetHeaderElement getRowHeader(int rowIndex) {
-        TestBenchElement cell = (TestBenchElement) findElement(By
-                .cssSelector(String.format(".rh.row%d", rowIndex)));
+        TestBenchElement cell = (TestBenchElement) findElement(
+                By.cssSelector(String.format(".rh.row%d", rowIndex)));
         return cell.wrap(SheetHeaderElement.class);
     }
 
     /**
      * Gets the column header element at the given index.
-     * 
+     *
      * @param columnIndex
      *            Index of target column, 1-based
      * @return Header of the column at the given index
      */
     public SheetHeaderElement getColumnHeader(int columnIndex) {
-        TestBenchElement cell = (TestBenchElement) findElement(By
-                .cssSelector(String.format(".ch.col%d", columnIndex)));
+        TestBenchElement cell = (TestBenchElement) findElement(
+                By.cssSelector(String.format(".ch.col%d", columnIndex)));
         return cell.wrap(SheetHeaderElement.class);
     }
 
     /**
      * Gets the address field. The address field contains the address of the
      * cell that was last clicked, or A1 if no clicks have yet been made.
-     * 
+     *
      * @return Address field element
      */
     public TestBenchElement getAddressField() {
@@ -115,7 +115,7 @@ public class SpreadsheetElement extends AbstractElement {
     /**
      * Gets the formula field. This field is where the user can input data for
      * the cell whose address the address field currently contains.
-     * 
+     *
      * @return Formula field element
      */
     public TestBenchElement getFormulaField() {
@@ -125,17 +125,17 @@ public class SpreadsheetElement extends AbstractElement {
     /**
      * Gets the info label. Info label is the small text at the bottom right
      * corner of the Spreadsheet.
-     * 
+     *
      * @return Info label element
      */
     public TestBenchElement getInfoLabel() {
-        return (TestBenchElement) findElement(By
-                .className("sheet-tabsheet-infolabel"));
+        return (TestBenchElement) findElement(
+                By.className("sheet-tabsheet-infolabel"));
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.testbench.TestBenchElement#scroll(int)
      */
     @Override
@@ -145,7 +145,7 @@ public class SpreadsheetElement extends AbstractElement {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.vaadin.testbench.TestBenchElement#scrollLeft(int)
      */
     @Override
@@ -155,7 +155,7 @@ public class SpreadsheetElement extends AbstractElement {
 
     /**
      * Scrolls the sheet selector to the beginning.
-     * 
+     *
      * Has no effect if there are not enough sheets to require scrolling.
      */
     public void scrollSheetsToStart() {
@@ -164,7 +164,7 @@ public class SpreadsheetElement extends AbstractElement {
 
     /**
      * Scrolls the sheet selector to the end.
-     * 
+     *
      * Has no effect if there are not enough sheets to require scrolling.
      */
     public void scrollSheetsToEnd() {
@@ -173,17 +173,16 @@ public class SpreadsheetElement extends AbstractElement {
 
     /**
      * Scrolls the sheet selector left or right by the given amount.
-     * 
+     *
      * Has no effect if there are not enough sheets to require scrolling.
-     * 
+     *
      * @param amount
      *            Amount to scroll. Positive numbers scroll to the right and
      *            negative numbers scroll to the left.
      */
     public void scrollSheets(int amount) {
-        WebElement target = findElement(By
-                .className(amount > 0 ? "scroll-tabs-right"
-                        : "scroll-tabs-left"));
+        WebElement target = findElement(By.className(
+                amount > 0 ? "scroll-tabs-right" : "scroll-tabs-left"));
         for (int i = 0; i < amount; i++) {
             target.click();
         }
@@ -192,13 +191,13 @@ public class SpreadsheetElement extends AbstractElement {
     /**
      * Selects the sheet at the given index. Indexes are counted only for
      * visible sheets.
-     * 
+     *
      * @param sheetIndex
      *            Index of sheet to select, 0-based
      */
     public void selectSheetAt(int sheetIndex) {
-        WebElement tabContainer = findElement(By
-                .className("sheet-tabsheet-container"));
+        WebElement tabContainer = findElement(
+                By.className("sheet-tabsheet-container"));
         List<WebElement> tabs = tabContainer.findElements(By.xpath(".//*"));
         WebElement target = tabs.get(sheetIndex);
         scrollSheetVisible(target);
@@ -208,13 +207,13 @@ public class SpreadsheetElement extends AbstractElement {
     /**
      * Selects the sheet with the given name. Only visible sheets can be
      * selected.
-     * 
+     *
      * @param sheetName
      *            Name of sheet to select
      */
     public void selectSheet(String sheetName) {
-        WebElement tabContainer = findElement(By
-                .className("sheet-tabsheet-container"));
+        WebElement tabContainer = findElement(
+                By.className("sheet-tabsheet-container"));
         List<WebElement> tabs = tabContainer.findElements(By.xpath(".//*"));
         for (WebElement tab : tabs) {
             if (tab.getText().equals(sheetName)) {
@@ -236,13 +235,15 @@ public class SpreadsheetElement extends AbstractElement {
      * Fetches the context menu for the spreadsheet
      *
      * @return {@link com.vaadin.addon.spreadsheet.elements.SpreadsheetElement.ContextMenuElement}
-     * @throws java.util.NoSuchElementException if the menu isn't open
+     * @throws java.util.NoSuchElementException
+     *             if the menu isn't open
      */
     public ContextMenuElement getContextMenu() {
         try {
-            WebElement cm = getDriver().findElement(By.className("v-contextmenu"));
-            return wrapElement(cm, getCommandExecutor()).wrap(
-                    ContextMenuElement.class);
+            WebElement cm = getDriver()
+                    .findElement(By.className("v-contextmenu"));
+            return wrapElement(cm, getCommandExecutor())
+                    .wrap(ContextMenuElement.class);
         } catch (WebDriverException e) {
             throw new NoSuchElementException("Context menu not found", e);
         }
@@ -251,7 +252,9 @@ public class SpreadsheetElement extends AbstractElement {
     public static class ContextMenuElement extends AbstractElement {
 
         public WebElement getItem(String text) {
-            return findElement(By.xpath(".//table//tr[*]//td//div[contains(text(), \""+text+"\")]"));
+            return findElement(
+                    By.xpath(".//table//tr[*]//td//div[contains(text(), \""
+                            + text + "\")]"));
         }
 
     }
@@ -309,8 +312,8 @@ public class SpreadsheetElement extends AbstractElement {
         int bottomH = sBottom.getSize().getHeight();
         int rightX = sRight.getLocation().getX();
         int rightW = sRight.getSize().getWidth();
-        sSize = new Dimension(rightX + rightW - sLocation.getX(), bottomY
-                + bottomH - sLocation.getY());
+        sSize = new Dimension(rightX + rightW - sLocation.getX(),
+                bottomY + bottomH - sLocation.getY());
     }
 
     private boolean isInSelection(Point location) {

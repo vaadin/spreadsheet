@@ -32,7 +32,6 @@ public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
     public ErrorCollector collector = new ErrorCollector();
     private SheetController sheetController;
 
-
     @Override
     public void setUp() throws Exception {
         setDebug(true);
@@ -43,7 +42,8 @@ public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void spreadsheetWithManyStyles_setValueInCell_styleUpdateTimeLessThanASecond() {
-        SpreadsheetPage spreadsheetPage = headerPage.loadFile("cell_styles_performance.xlsx", this);
+        SpreadsheetPage spreadsheetPage = headerPage
+                .loadFile("cell_styles_performance.xlsx", this);
         clearLog();
         SheetCellElement cell = spreadsheetPage.getCellAt(1, 1);
         cell.setValue("foo");
@@ -56,23 +56,24 @@ public class CellsStylePerformanceTest extends AbstractSpreadsheetTestCase {
             }
         });
         Integer time = Integer.parseInt(getJson());
-        assertLessThanOrEqual(String.format(
-                "Time should be less than %sms, was: %sms", expected, time),
+        assertLessThanOrEqual(
+                String.format("Time should be less than %sms, was: %sms",
+                        expected, time),
                 time, expected);
     }
-
 
     private String getJson() {
         Actions actions = new Actions(getDriver());
         actions.sendKeys(Keys.TAB);
         actions.sendKeys(Keys.SPACE).perform();
         findElement(By.className("v-debugwindow-tab")).click();
-        List<WebElement> messages = findElements(By
-                .className("v-debugwindow-message"));
+        List<WebElement> messages = findElements(
+                By.className("v-debugwindow-message"));
         for (WebElement message : messages) {
             if (isStyleUpdateLogJSON(message.getAttribute("innerHTML"))) {
                 String json = message.getAttribute("innerHTML");
-                String timeString = json.replaceFirst("Style update took:", "").replaceFirst("ms", "");
+                String timeString = json.replaceFirst("Style update took:", "")
+                        .replaceFirst("ms", "");
                 return timeString;
             }
         }

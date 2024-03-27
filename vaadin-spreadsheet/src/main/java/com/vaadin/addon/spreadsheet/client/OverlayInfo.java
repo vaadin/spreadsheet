@@ -15,17 +15,16 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class OverlayInfo implements Serializable {
     public enum Type {
-        IMAGE,
-        COMPONENT
+        IMAGE, COMPONENT
     };
-    
+
     public OverlayInfo() {
     }
 
     public OverlayInfo(Type t) {
         type = t;
-    }    
-    
+    }
+
     public Type type = Type.IMAGE;
 
     public int col;

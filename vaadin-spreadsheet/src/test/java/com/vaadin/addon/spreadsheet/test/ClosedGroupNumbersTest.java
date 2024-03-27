@@ -31,11 +31,12 @@ public class ClosedGroupNumbersTest extends AbstractSpreadsheetTestCase {
         headerPage.loadFile("closed-group-with-numbers.xlsx", this);
         SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
 
-        WebElement rowGrouping = spreadsheet.findElement(By
-                .cssSelector(".col-group-pane .grouping.plus"));
+        WebElement rowGrouping = spreadsheet
+                .findElement(By.cssSelector(".col-group-pane .grouping.plus"));
         rowGrouping.click();
 
-        waitForElementPresent(By.cssSelector(".col-group-pane .grouping.minus"));
+        waitForElementPresent(
+                By.cssSelector(".col-group-pane .grouping.minus"));
 
         SheetCellElement c2 = spreadsheet.getCellAt("C2");
         assertThat(c2.getValue(), equalTo("100"));

@@ -41,12 +41,11 @@ public class AreaSeriesDataWriter extends AbstractSeriesDataWriter {
     @Override
     protected void configureDataSeries(DataSeries dataSeriesForWriting) {
         super.configureDataSeries(dataSeriesForWriting);
-        
+
         String stacking = getSeriesData().stacking.toString();
 
-        getPlotOptions().setStacking(
-                Utils.getEnumValueOrDefault(Stacking.class,
-                        stacking, Stacking.NONE));
+        getPlotOptions().setStacking(Utils.getEnumValueOrDefault(Stacking.class,
+                stacking, Stacking.NONE));
 
         getPlotOptions().setDashStyle(
                 LineSeriesWriterUtils.getDashStyle(getSeriesData().dashStyle));

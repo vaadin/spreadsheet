@@ -29,7 +29,8 @@ public class StyleTests extends AbstractSpreadsheetTestCase {
     }
 
     @Test
-    public void cellBorders_mergeCells_NeighborCellsKeepBorderStyles() throws IOException {
+    public void cellBorders_mergeCells_NeighborCellsKeepBorderStyles()
+            throws IOException {
         headerPage.loadFile("merged_borders.xlsx", this);
         headerPage.loadTestFixture(TestFixtures.StyleMergeReigions);
 

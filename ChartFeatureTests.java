@@ -10,7 +10,11 @@
  */
 package com.vaadin.spreadsheet.charts;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.vaadin.addon.charts.model.Configuration;
@@ -25,10 +29,10 @@ public class ChartFeatureTests extends ChartTestBase {
     public void axisTitles_loadSampleB3_titlesAbsent() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Axis Title Options.xlsx", "B3")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals("", conf.getxAxis().getTitle().getText());
-        Assert.assertEquals("", conf.getyAxis().getTitle().getText());
+        assertEquals("", conf.getxAxis().getTitle().getText());
+        assertEquals("", conf.getyAxis().getTitle().getText());
     }
 
     @Test
@@ -36,31 +40,29 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Axis Title Options.xlsx", "G3")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals("horizontal title", conf.getyAxis().getTitle()
-                .getText());
-        Assert.assertEquals("Title below axis", conf.getxAxis().getTitle()
-                .getText());
+        assertEquals("horizontal title", conf.getyAxis().getTitle().getText());
+        assertEquals("Title below axis", conf.getxAxis().getTitle().getText());
     }
 
     @Test
     public void chartTitle_loadSampleA3_titlesAbsent() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Custom Title Position.xlsx", "A3")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals("", conf.getTitle().getText());
+        assertEquals("", conf.getTitle().getText());
     }
 
     @Test
     public void chartTitle_loadSampleE3_titlesPresentAbove() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Custom Title Position.xlsx", "E3")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals("Title above", conf.getTitle().getText());
-        Assert.assertEquals(Boolean.FALSE, conf.getTitle().getFloating());
+        assertEquals("Title above", conf.getTitle().getText());
+        assertEquals(Boolean.FALSE, conf.getTitle().getFloating());
     }
 
     @Test
@@ -68,84 +70,74 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Custom Title Position.xlsx", "I3")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals("Title overlay", conf.getTitle().getText());
-        Assert.assertEquals(Boolean.TRUE, conf.getTitle().getFloating());
+        assertEquals("Title overlay", conf.getTitle().getText());
+        assertEquals(Boolean.TRUE, conf.getTitle().getFloating());
     }
 
     @Test
     public void chartLegend_loadSampleA7_legendAbsent() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "A7")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(Boolean.FALSE, conf.getLegend().getEnabled());
+        assertEquals(Boolean.FALSE, conf.getLegend().getEnabled());
     }
 
     @Test
     public void chartLegend_loadSampleI7_legendOnTop() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "I7")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.TOP, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.TOP, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend().getLayout());
     }
 
     @Test
     public void chartLegend_loadSampleR7_legendOnLeft() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "R7")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.MIDDLE, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.LEFT, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.VERTICAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.MIDDLE, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.LEFT, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.VERTICAL, conf.getLegend().getLayout());
     }
 
     @Test
     public void chartLegend_loadSampleA25_legendOnTopRight() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "A25")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.TOP, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.RIGHT, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.VERTICAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.TOP, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.RIGHT, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.VERTICAL, conf.getLegend().getLayout());
     }
 
     @Test
     public void chartLegend_loadSampleI25_legendOnBottom() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "I25")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.BOTTOM, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.BOTTOM, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend().getLayout());
     }
 
     @Test
     public void chartLegend_loadSampleR25_legendOnRight() throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "R25")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.MIDDLE, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.RIGHT, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.VERTICAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.MIDDLE, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.RIGHT, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.VERTICAL, conf.getLegend().getLayout());
     }
 
     /**
@@ -158,15 +150,13 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Legend Position.xlsx", "I43")
-                .getConfiguration();
+                        .getConfiguration();
 
-        Assert.assertEquals(VerticalAlign.TOP, conf.getLegend()
-                .getVerticalAlign());
-        Assert.assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
-        Assert.assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend()
-                .getLayout());
+        assertEquals(VerticalAlign.TOP, conf.getLegend().getVerticalAlign());
+        assertEquals(HorizontalAlign.CENTER, conf.getLegend().getAlign());
+        assertEquals(LayoutDirection.HORIZONTAL, conf.getLegend().getLayout());
 
-        Assert.assertTrue(
+        assertTrue(
                 "Vertical offset for legend is not set, overlapping might occur",
                 conf.getLegend().getY() != null);
     }
@@ -174,12 +164,15 @@ public class ChartFeatureTests extends ChartTestBase {
     private static final Double[] ZEROS = { 0d, 0d, 0d, 0d, 0d, 0d, 0d, 0d, 0d,
             0d };
 
-    private static final Double[] NULLS = { null, null, null, null, null, null, null, null, null, null };
+    private static final Double[] NULLS = { null, null, null, null, null, null,
+            null, null, null, null };
 
-    private static final Double[][] blanksToZerosData = { ZEROS, ZEROS, ZEROS, ZEROS, ZEROS, ZEROS,
+    private static final Double[][] blanksToZerosData = { ZEROS, ZEROS, ZEROS,
+            ZEROS, ZEROS, ZEROS,
             { 10d, 0d, 43d, 16d, 0d, 8d, 0d, 0d, 35d, 78d } };
 
-    private static final Double[][] blanksToNullsData = { NULLS, NULLS, NULLS, NULLS, NULLS, NULLS,
+    private static final Double[][] blanksToNullsData = { NULLS, NULLS, NULLS,
+            NULLS, NULLS, NULLS,
             { 10d, null, 43d, 16d, null, 8d, null, null, 35d, 78d } };
 
     @Test
@@ -187,7 +180,7 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Blanks as zeros.xlsm", "B14")
-                .getConfiguration();
+                        .getConfiguration();
 
         assertData(conf.getSeries(), blanksToZerosData);
     }
@@ -197,7 +190,7 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Blanks as zeros.xlsm", "B29")
-                .getConfiguration();
+                        .getConfiguration();
 
         assertData(conf.getSeries(), blanksToNullsData);
     }
@@ -207,7 +200,7 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Blanks as zeros.xlsm", "K14")
-                .getConfiguration();
+                        .getConfiguration();
 
         assertData(conf.getSeries(), blanksToZerosData);
     }
@@ -217,7 +210,7 @@ public class ChartFeatureTests extends ChartTestBase {
             throws Exception {
         Configuration conf = getChartFromSampleFile(
                 "FeatureSample - Blanks as zeros.xlsm", "K29")
-                .getConfiguration();
+                        .getConfiguration();
 
         assertData(conf.getSeries(), blanksToNullsData);
     }
@@ -226,16 +219,21 @@ public class ChartFeatureTests extends ChartTestBase {
     public void dualAxis_loadSampleA6_hasTwoAxesAndAssignedCorrectlyToSeries()
             throws Exception {
         Configuration conf = getChartFromSampleFile(
-                "TypeSample - Combination (Column + Line + Dual Axis).xlsx", "A6")
-                .getConfiguration();
+                "TypeSample - Combination (Column + Line + Dual Axis).xlsx",
+                "A6").getConfiguration();
 
-        Assert.assertEquals(2, conf.getyAxes().getNumberOfAxes());
-        
-        Assert.assertEquals(new Integer(0), ((DataSeries)conf.getSeries().get(0)).getyAxis());
-        Assert.assertEquals(new Integer(0), ((DataSeries)conf.getSeries().get(1)).getyAxis());
-        Assert.assertEquals(new Integer(0), ((DataSeries)conf.getSeries().get(2)).getyAxis());
-        Assert.assertEquals(new Integer(1), ((DataSeries)conf.getSeries().get(3)).getyAxis());
-        Assert.assertEquals(new Integer(1), ((DataSeries)conf.getSeries().get(4)).getyAxis());
+        assertEquals(2, conf.getyAxes().getNumberOfAxes());
+
+        assertEquals(new Integer(0),
+                ((DataSeries) conf.getSeries().get(0)).getyAxis());
+        assertEquals(new Integer(0),
+                ((DataSeries) conf.getSeries().get(1)).getyAxis());
+        assertEquals(new Integer(0),
+                ((DataSeries) conf.getSeries().get(2)).getyAxis());
+        assertEquals(new Integer(1),
+                ((DataSeries) conf.getSeries().get(3)).getyAxis());
+        assertEquals(new Integer(1),
+                ((DataSeries) conf.getSeries().get(4)).getyAxis());
     }
 
 }

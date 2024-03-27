@@ -14,7 +14,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
@@ -105,7 +104,7 @@ public class CellOverflowTest extends AbstractSpreadsheetTestCase {
 
         final SheetCellElement cellElement = spr.getCellAt(cell);
 
-        Assert.assertEquals("hidden", cellElement.getCssValue("overflow"));
+        assertEquals("hidden", cellElement.getCssValue("overflow"));
     }
 
     private void loadWrapTextTest() {

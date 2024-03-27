@@ -33,8 +33,9 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
- * This class is used to store the data of removed row so that it can be restored. This feature
- * is needed for example when user undoes the row deletion.
+ * This class is used to store the data of removed row so that it can be
+ * restored. This feature is needed for example when user undoes the row
+ * deletion.
  */
 class RowData implements Serializable {
 
@@ -61,10 +62,10 @@ class RowData implements Serializable {
 
         Row row = spreadsheet.getActiveSheet().getRow(rowIndex);
 
-        height = row == null ? null : row.getZeroHeight() ? 0.0F : row
-                .getHeightInPoints();
+        height = row == null ? null
+                : row.getZeroHeight() ? 0.0F : row.getHeightInPoints();
 
-        if(row != null) {
+        if (row != null) {
             copyCellsData(row);
         }
 
@@ -89,10 +90,11 @@ class RowData implements Serializable {
             }
         }
 
-        for(int i = 0; i < maxCol; ++i) {
-            Comment cellComment = row.getSheet().getCellComment(new CellAddress(row.getRowNum(), i));
+        for (int i = 0; i < maxCol; ++i) {
+            Comment cellComment = row.getSheet()
+                    .getCellComment(new CellAddress(row.getRowNum(), i));
             Cell cell = row.getCell(i);
-            if(cellComment != null && cell == null) {
+            if (cellComment != null && cell == null) {
                 CommentData commenData = new CommentData();
                 commenData.read(cellComment);
                 commentsWithoutCell.add(commenData);
@@ -105,28 +107,28 @@ class RowData implements Serializable {
     }
 
     public void writeTo(Row row) {
-        for(CellData cellData : cellsData) {
-            if(cellData == null) {
+        for (CellData cellData : cellsData) {
+            if (cellData == null) {
                 continue;
             }
             int col = cellData.getColumnIndex();
             Cell cell = row.getCell(col);
-            if(cell == null) { // Do real check
+            if (cell == null) { // Do real check
                 cell = row.createCell(col);
             }
             cellData.writeTo(cell);
         }
 
-        for(CommentData comment : commentsWithoutCell) {
+        for (CommentData comment : commentsWithoutCell) {
             Cell cell = row.createCell(comment.getColumn());
             comment.writeTo(cell);
         }
 
-        for(CellRangeAddress mergedRegion : mergedCells) {
+        for (CellRangeAddress mergedRegion : mergedCells) {
             spreadsheet.addMergedRegion(mergedRegion);
         }
 
-        if(height != null) {
+        if (height != null) {
             spreadsheet.setRowHeight(rowIndex, height);
         }
 
@@ -165,7 +167,7 @@ class RowData implements Serializable {
         public void read(Cell cell) {
             columnIndex = cell.getColumnIndex();
             rowIndex = cell.getRowIndex();
-            if(cell.getCellComment() != null) {
+            if (cell.getCellComment() != null) {
                 CommentData commenData = new CommentData();
                 commenData.read(cell.getCellComment());
                 cellComment = commenData;
@@ -175,39 +177,39 @@ class RowData implements Serializable {
             cellType = cell.getCellType();
 
             switch (cellType) {
-                case _NONE:
-                case BLANK:
-                    stringCellValue = cell.getStringCellValue();
-                    break;
-                case BOOLEAN:
-                    booleanCellValue = cell.getBooleanCellValue();
-                    break;
-                case ERROR:
-                    errorCellValue = cell.getErrorCellValue();
-                    break;
-                case FORMULA:
-                    cellFormula = cell.getCellFormula();
-                    break;
-                case NUMERIC:
+            case _NONE:
+            case BLANK:
+                stringCellValue = cell.getStringCellValue();
+                break;
+            case BOOLEAN:
+                booleanCellValue = cell.getBooleanCellValue();
+                break;
+            case ERROR:
+                errorCellValue = cell.getErrorCellValue();
+                break;
+            case FORMULA:
+                cellFormula = cell.getCellFormula();
+                break;
+            case NUMERIC:
+                if (DateUtil.isCellDateFormatted(cell)) {
                     if (DateUtil.isCellDateFormatted(cell)) {
-                        if (DateUtil.isCellDateFormatted(cell)) {
-                            dateCellValue = cell.getDateCellValue();
-                        }
-                    } else {
-                        numericCellValue = cell.getNumericCellValue();
+                        dateCellValue = cell.getDateCellValue();
                     }
-                    break;
-                case STRING:
-                    richTextCellValue = cell.getRichStringCellValue();
-                    break;
+                } else {
+                    numericCellValue = cell.getNumericCellValue();
+                }
+                break;
+            case STRING:
+                richTextCellValue = cell.getRichStringCellValue();
+                break;
             }
         }
 
         public void writeTo(Cell cell) {
-            if(cellComment != null) {
+            if (cellComment != null) {
                 cellComment.writeTo(cell);
             }
-            if(hyperlink != null) {
+            if (hyperlink != null) {
                 cell.setHyperlink(hyperlink);
             }
             cell.setCellStyle(cellStyle);
@@ -215,29 +217,29 @@ class RowData implements Serializable {
             cell.setCellType(cellType);
 
             switch (cellType) {
-                case _NONE:
-                case BLANK:
-                    cell.setCellValue(stringCellValue);
-                    break;
-                case BOOLEAN:
-                    cell.setCellValue(booleanCellValue);
-                    break;
-                case ERROR:
-                    cell.setCellErrorValue(errorCellValue);
-                    break;
-                case FORMULA:
-                    cell.setCellFormula(cellFormula);
-                    break;
-                case NUMERIC:
-                    if(dateCellValue != null) {
-                        cell.setCellValue(dateCellValue);
-                    } else {
-                        cell.setCellValue(numericCellValue);
-                    }
-                    break;
-                case STRING:
-                    cell.setCellValue(richTextCellValue);
-                    break;
+            case _NONE:
+            case BLANK:
+                cell.setCellValue(stringCellValue);
+                break;
+            case BOOLEAN:
+                cell.setCellValue(booleanCellValue);
+                break;
+            case ERROR:
+                cell.setCellErrorValue(errorCellValue);
+                break;
+            case FORMULA:
+                cell.setCellFormula(cellFormula);
+                break;
+            case NUMERIC:
+                if (dateCellValue != null) {
+                    cell.setCellValue(dateCellValue);
+                } else {
+                    cell.setCellValue(numericCellValue);
+                }
+                break;
+            case STRING:
+                cell.setCellValue(richTextCellValue);
+                break;
             }
 
         }
@@ -263,10 +265,13 @@ class RowData implements Serializable {
         }
 
         public void writeTo(Cell cell) {
-            Drawing<?> drawingPatriarch = cell.getSheet().createDrawingPatriarch();
-            CreationHelper factory = cell.getSheet().getWorkbook().getCreationHelper();
+            Drawing<?> drawingPatriarch = cell.getSheet()
+                    .createDrawingPatriarch();
+            CreationHelper factory = cell.getSheet().getWorkbook()
+                    .getCreationHelper();
 
-            Comment newCellComment = drawingPatriarch.createCellComment(clientAnchor);
+            Comment newCellComment = drawingPatriarch
+                    .createCellComment(clientAnchor);
             newCellComment.setAuthor(author);
             RichTextString richTextString = factory.createRichTextString(text);
             newCellComment.setString(richTextString);

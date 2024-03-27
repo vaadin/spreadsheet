@@ -52,9 +52,9 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
                     List<CellReference> individualSelectedCells, Sheet sheet,
                     FormulaEvaluator formulaEvaluator, DataFormatter formatter,
                     ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
-                String message = "Deleting: "
-                        + MultiplexerCellDeletionHandler
-                                .parseIndividualSelectedCellsKey(individualSelectedCells);
+                String message = "Deleting: " + MultiplexerCellDeletionHandler
+                        .parseIndividualSelectedCellsKey(
+                                individualSelectedCells);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return true;
             }
@@ -64,9 +64,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
                     List<CellRangeAddress> cellRangeAddresses, Sheet sheet,
                     FormulaEvaluator formulaEvaluator, DataFormatter formatter,
                     ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
-                String message = "Deleting: "
-                        + MultiplexerCellDeletionHandler
-                                .parseCellRangeKey(cellRangeAddresses);
+                String message = "Deleting: " + MultiplexerCellDeletionHandler
+                        .parseCellRangeKey(cellRangeAddresses);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return true;
             }
@@ -92,7 +91,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
                     ConditionalFormattingEvaluator conditionalFormattingEvaluator) {
                 String message = "Attempting to delete: "
                         + MultiplexerCellDeletionHandler
-                                .parseIndividualSelectedCellsKey(individualSelectedCells);
+                                .parseIndividualSelectedCellsKey(
+                                        individualSelectedCells);
                 Notification.show(message, Type.ERROR_MESSAGE);
                 return false;
             }
@@ -135,7 +135,8 @@ public class DeletionHandlerFixture implements SpreadsheetFixture {
     }
 }
 
-class MultiplexerCellDeletionHandler implements Spreadsheet.CellDeletionHandler {
+class MultiplexerCellDeletionHandler
+        implements Spreadsheet.CellDeletionHandler {
 
     private Map<String, Spreadsheet.CellDeletionHandler> handlerFactories = new HashMap<String, Spreadsheet.CellDeletionHandler>();
 

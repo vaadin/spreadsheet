@@ -20,7 +20,7 @@ import org.openqa.selenium.Point;
 
 /**
  * An utility class that converts Excel cell addresses to integer coordinates.
- * 
+ *
  * @author Vaadin Ltd.
  */
 public class AddressUtil implements Serializable {
@@ -32,7 +32,7 @@ public class AddressUtil implements Serializable {
 
     /**
      * Converts a single cell address to its integer coordinates (Point)
-     * 
+     *
      * @param address
      *            The address of the cell, e.g. A3
      * @return the coordinates of the cell
@@ -49,7 +49,7 @@ public class AddressUtil implements Serializable {
 
     /**
      * Converts an address range to a set of coordinates (Points)
-     * 
+     *
      * @param addressRange
      *            The address range, e.g. A1:B3, AA20:AZ98, etc.
      * @return A set of integer coordinates for all cells in the specified
@@ -76,14 +76,15 @@ public class AddressUtil implements Serializable {
 
     /**
      * Converts a character address (like "A", "BA", "AFK") to a numeric one
-     * 
+     *
      * @param address
      *            The character address
      * @return The numeric value of the address
      */
     private static int charAddressToInt(String address) {
         int result = 0;
-        String reversed = new StringBuffer(address.toUpperCase()).reverse().toString();
+        String reversed = new StringBuffer(address.toUpperCase()).reverse()
+                .toString();
         for (int i = 0; i < reversed.length(); i++) {
             result += ((reversed.charAt(i) - 'A') + 1) * Math.pow(26, i);
         }

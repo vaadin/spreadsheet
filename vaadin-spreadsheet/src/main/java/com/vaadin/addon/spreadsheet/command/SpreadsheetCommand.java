@@ -16,7 +16,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet;
 
 /**
  * Abstract base class for Spreadsheet commands.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -27,7 +27,7 @@ public abstract class SpreadsheetCommand implements Command {
 
     /**
      * Creates a new command targeting the given spreadsheet.
-     * 
+     *
      * @param spreadsheet
      *            The target spreadsheet
      */
@@ -38,7 +38,7 @@ public abstract class SpreadsheetCommand implements Command {
 
     /**
      * Returns the currently active sheet.
-     * 
+     *
      * @return active sheet
      */
     protected Sheet getSheet() {

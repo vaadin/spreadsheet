@@ -37,7 +37,7 @@ import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTXf;
 /**
  * Color converter implementation for the current Excel file type (.xlsx or XSSF
  * in POI terms).
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -126,9 +126,10 @@ public class XSSFColorConverter implements ColorConverter {
             String temp = ColorConverterUtil.toRGBA(argb);
             sb.append(temp);
         } catch (NumberFormatException nfe) {
-            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
-            sb.append(String
-                    .format("#%02x%02x%02x;", argb[1], argb[2], argb[3]));
+            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(),
+                    nfe);
+            sb.append(
+                    String.format("#%02x%02x%02x;", argb[1], argb[2], argb[3]));
         }
 
         return sb.toString();
@@ -155,8 +156,8 @@ public class XSSFColorConverter implements ColorConverter {
 
         byte[] argb;
         if (color.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) color.getTheme());
+            XSSFColor themeColor = workbook.getTheme()
+                    .getThemeColor((int) color.getTheme());
             argb = themeColor.getARGB();
         } else {
             argb = color.getRgb();
@@ -178,9 +179,10 @@ public class XSSFColorConverter implements ColorConverter {
             String temp = ColorConverterUtil.toRGBA(argb);
             sb.append(temp);
         } catch (NumberFormatException nfe) {
-            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
-            sb.append(String
-                    .format("#%02x%02x%02x;", argb[1], argb[2], argb[3]));
+            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(),
+                    nfe);
+            sb.append(
+                    String.format("#%02x%02x%02x;", argb[1], argb[2], argb[3]));
         }
 
         return sb.toString();
@@ -211,23 +213,19 @@ public class XSSFColorConverter implements ColorConverter {
                 break;
             }
         } catch (IllegalArgumentException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation; unable to parse border color",
                     e);
         } catch (IllegalAccessException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation; unable to parse border color",
                     e);
         } catch (NoSuchFieldException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation; unable to parse border color",
                     e);
         } catch (SecurityException e) {
-            LOGGER.log(
-                    Level.SEVERE,
+            LOGGER.log(Level.SEVERE,
                     "Incompatible POI implementation; unable to parse border color",
                     e);
         } finally {
@@ -318,8 +316,8 @@ public class XSSFColorConverter implements ColorConverter {
         CTColor ctColor = font.getColorList().get(0);
 
         if (ctColor.isSetTheme()) {
-            XSSFColor themeColor = workbook.getTheme().getThemeColor(
-                    (int) ctColor.getTheme());
+            XSSFColor themeColor = workbook.getTheme()
+                    .getThemeColor((int) ctColor.getTheme());
 
             return styleColor(themeColor, ctColor.getTint());
         } else {
@@ -366,7 +364,8 @@ public class XSSFColorConverter implements ColorConverter {
             return null;
         }
 
-        // pulls color directly, or from an indexed color (custom, default, or theme) if set
+        // pulls color directly, or from an indexed color (custom, default, or
+        // theme) if set
         byte[] argb = color.getARGB();
         if (argb == null) {
             return null;
@@ -382,7 +381,8 @@ public class XSSFColorConverter implements ColorConverter {
             String temp = ColorConverterUtil.toRGBA(argb);
             return temp;
         } catch (NumberFormatException nfe) {
-            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(), nfe);
+            LOGGER.log(Level.FINE, nfe.getMessage() + " " + nfe.getCause(),
+                    nfe);
             return String.format("#%02x%02x%02x;", argb[1], argb[2], argb[3]);
         }
     }
@@ -399,7 +399,7 @@ public class XSSFColorConverter implements ColorConverter {
 
     /**
      * XSSF doesn't have an API to get this value, so brute force it is..
-     * 
+     *
      * @param rule
      *            The rule that has color data defined
      * @return OpenXML data format that contains the real defined styles

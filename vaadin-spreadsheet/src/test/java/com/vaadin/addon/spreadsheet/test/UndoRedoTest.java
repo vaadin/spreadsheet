@@ -43,7 +43,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Test
     public void undo_cellValueIsSetAndUndone_cellHasNoValue() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
 
         undo();
@@ -54,7 +55,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Test
     public void redo_cellValueIsSetAndUndoneAndRedone_cellHasValue() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         undo();
 
@@ -66,14 +68,16 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Test
     public void undo_cellValuesHasDeletedAndUndone_cellsHaveValue() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getCellAt("A2").setValue("b");
         deleteValueFromA1andA2(spreadsheet);
 
         undo();
 
-        String selectionValue = String.format("A1=%s, A2=%s", spreadsheet.getCellAt("A1").getValue(),
+        String selectionValue = String.format("A1=%s, A2=%s",
+                spreadsheet.getCellAt("A1").getValue(),
                 spreadsheet.getCellAt("A2").getValue());
         assertEquals("A1=a, A2=b", selectionValue);
     }
@@ -81,7 +85,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Test
     public void undo_cellValuesHasDeletedAndUndoneAndRedone_cellsHasNoValue() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getCellAt("A2").setValue("b");
         deleteValueFromA1andA2(spreadsheet);
@@ -89,7 +94,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
         redo();
 
-        String selectionValue = String.format("A1=%s, A2=%s", spreadsheet.getCellAt("A1").getValue(),
+        String selectionValue = String.format("A1=%s, A2=%s",
+                spreadsheet.getCellAt("A1").getValue(),
                 spreadsheet.getCellAt("A2").getValue());
         assertEquals("A1=, A2=", selectionValue);
     }
@@ -97,7 +103,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Test
     public void undo_cellValuesHasDeletedAndUndoneRedoneAndUndone_cellsHaveValues() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getCellAt("A2").setValue("b");
         deleteValueFromA1andA2(spreadsheet);
@@ -106,16 +113,19 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
         undo();
 
-        String selectionValue = String.format("A1=%s, A2=%s", spreadsheet.getCellAt("A1").getValue(),
+        String selectionValue = String.format("A1=%s, A2=%s",
+                spreadsheet.getCellAt("A1").getValue(),
                 spreadsheet.getCellAt("A2").getValue());
         assertEquals("A1=a, A2=b", selectionValue);
     }
 
     @Test
     public void undo_addRowAndUndone_addedRowIsRemoved() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getRowHeader(1).contextClick();
         spreadsheet.getContextMenu().getItem("Insert new row").click();
@@ -127,9 +137,11 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void redo_addRowAndUndoneAndRedo_rowIsAdded() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getRowHeader(1).contextClick();
         spreadsheet.getContextMenu().getItem("Insert new row").click();
@@ -143,9 +155,11 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_removeRowAndUndone_removedRowIsAdded() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getRowHeader(1).contextClick();
         spreadsheet.getContextMenu().getItem("Delete row").click();
@@ -157,9 +171,11 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void redo_removeRowAndUndoneAndRedo_rowIsRemoved() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("a");
         spreadsheet.getRowHeader(1).contextClick();
         spreadsheet.getContextMenu().getItem("Delete row").click();
@@ -170,13 +186,14 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals("", spreadsheet.getCellAt("A1").getValue());
     }
 
-
     @Test
     public void undo_removeRowWithCommentAndUndo_cellStillHasComment() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("cell_comments.xlsx", this); // A1 has a comment
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getRowHeader(1).contextClick();
         spreadsheet.getContextMenu().getItem("Delete row").click();
 
@@ -192,9 +209,11 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_userAddsCommentAndRemovesTheRowAndUndo_cellStillHasComment() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").contextClick();
         spreadsheet.getContextMenu().getItem("Insert comment").click();
         spreadsheet.getRowHeader(1).contextClick();
@@ -210,13 +229,15 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         });
     }
 
-
     @Test
     public void undo_removeRowsWithStyledCellsAndUndo_cellsHaveStyles() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        headerPage.loadFile("spreadsheet_styles.xlsx", this); // differently styled cells on rows 2-5
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        // differently styled cells on rows 2-5
+        headerPage.loadFile("spreadsheet_styles.xlsx", this);
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         deleteRow(spreadsheet, 2);
         deleteRow(spreadsheet, 2);
         deleteRow(spreadsheet, 2);
@@ -232,11 +253,13 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void undo_addRowWithDateAndUndone_dateIsVisible() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
 
         String expectedDate = "11/11/11";
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue(expectedDate);
         deleteRow(spreadsheet, 1);
 
@@ -244,12 +267,13 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         assertEquals(expectedDate, spreadsheet.getCellAt("A1").getValue());
     }
 
-
     @Test
     public void undo_theSecondRowWithMergedCellIsRemovedAndUndo_cellIsMerged() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         new Actions(driver).clickAndHold(spreadsheet.getCellAt("A2"))
                 .release(spreadsheet.getCellAt("B2")).perform();
         spreadsheet.getCellAt("A2").contextClick();
@@ -261,7 +285,9 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return spreadsheet.findElement(By.cssSelector(".col1.row2.merged-cell")).isDisplayed();
+                return spreadsheet
+                        .findElement(By.cssSelector(".col1.row2.merged-cell"))
+                        .isDisplayed();
             }
         });
     }
@@ -269,9 +295,11 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_theSecondRowWithInvalidFormulaIsRemovedAndUndo_formulaIndicatorIsPresent() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A2").setValue("=a");
         deleteRow(spreadsheet, 2);
 
@@ -288,10 +316,12 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
     @Ignore("This is a known issue which should be fixed.")
     @Test
     public void undo_conditionalFormattedCellsRemovedAndUndo_cellsAreStillConditionallyFormatted() {
-        skipBrowser("Context click does not work with PhantomJS and Firefox", Browser.PHANTOMJS, Browser.FIREFOX);
+        skipBrowser("Context click does not work with PhantomJS and Firefox",
+                Browser.PHANTOMJS, Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("conditional_formatting.xlsx", this);
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         deleteRow(spreadsheet, 1);
 
         undo();
@@ -299,7 +329,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         waitUntil(new ExpectedCondition<Object>() {
             @Override
             public Object apply(WebDriver webDriver) {
-                return "rgba(255, 199, 206, 1)".equals(spreadsheet.getCellAt("B1").getCssValue("background-color"));
+                return "rgba(255, 199, 206, 1)".equals(spreadsheet
+                        .getCellAt("B1").getCssValue("background-color"));
             }
         });
     }
@@ -325,7 +356,8 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
             }
         });
 
-        String selectionValue = String.format("D1=%s, E1=%s", spreadsheet.getCellAt("D1").getValue(),
+        String selectionValue = String.format("D1=%s, E1=%s",
+                spreadsheet.getCellAt("D1").getValue(),
                 spreadsheet.getCellAt("E1").getValue());
         assertEquals("D1=3, E1=4", selectionValue);
     }
@@ -358,14 +390,16 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
             }
         });
 
-        String selectionValue = String.format("D1=%s, E1=%s", spreadsheet.getCellAt("D1").getValue(),
+        String selectionValue = String.format("D1=%s, E1=%s",
+                spreadsheet.getCellAt("D1").getValue(),
                 spreadsheet.getCellAt("E1").getValue());
         assertEquals("D1=1, E1=2", selectionValue);
     }
 
     private SpreadsheetElement setupSpreadSheetForRegionCopyPasteTest() {
         headerPage.createNewSpreadsheet();
-        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class).first();
+        final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
+                .first();
         spreadsheet.getCellAt("A1").setValue("1");
         spreadsheet.getCellAt("B1").setValue("2");
         spreadsheet.getCellAt("D1").setValue("3");
@@ -390,31 +424,30 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
 
     private void deleteValueFromA1andA2(SpreadsheetElement spreadsheet) {
         spreadsheet.getCellAt("A1").click();
-        new Actions(getDriver()).sendKeys(Keys.chord(Keys.SHIFT, Keys.DOWN),
-                Keys.DELETE)
+        new Actions(getDriver())
+                .sendKeys(Keys.chord(Keys.SHIFT, Keys.DOWN), Keys.DELETE)
                 .build().perform();
     }
 
-
     private void redo() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "y")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "y")).build()
+                .perform();
     }
 
     private void undo() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "z")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "z")).build()
+                .perform();
     }
 
     private void paste() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "v")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "v")).build()
+                .perform();
         getCommandExecutor().waitForVaadin();
     }
 
     private void copy() {
-        new Actions(getDriver())
-                .sendKeys(Keys.chord(Keys.CONTROL, "c")).build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "c")).build()
+                .perform();
     }
 
     private void assertCorrectCss(SpreadsheetElement c) {
@@ -424,11 +457,14 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
         collector.checkThat(c.getCellAt("B2").getCssValue("text-align"),
                 equalTo("right"));
 
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-color"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-color"),
                 equalTo("rgba(0, 0, 255, 1)"));
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-style"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-style"),
                 equalTo("solid"));
-        collector.checkThat(c.getCellAt("A3").getCssValue("border-bottom-width"),
+        collector.checkThat(
+                c.getCellAt("A3").getCssValue("border-bottom-width"),
                 equalTo("4px"));
 
         collector.checkThat(c.getCellAt("B3").getCssValue("background-color"),
@@ -441,24 +477,29 @@ public class UndoRedoTest extends AbstractSpreadsheetTestCase {
                 equalTo("italic"));
 
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("A5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("A5").getCssValue("font-size"))),
                 equalTo(11));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("B5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("B5").getCssValue("font-size"))),
                 equalTo(14));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("C5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("C5").getCssValue("font-size"))),
                 equalTo(16));
         collector.checkThat(
-                (int) Math.ceil(parseSize(c.getCellAt("D5").getCssValue("font-size"))),
+                (int) Math.ceil(
+                        parseSize(c.getCellAt("D5").getCssValue("font-size"))),
                 equalTo(19));
 
         if (getDesiredCapabilities().getBrowserName()
                 .equalsIgnoreCase("chrome")) {
-            collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("bold"));
+            collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"),
+                    equalTo("bold"));
         } else {
-            collector
-                    .checkThat(c.getCellAt("B4").getCssValue("font-weight"), equalTo("700"));
+            collector.checkThat(c.getCellAt("B4").getCssValue("font-weight"),
+                    equalTo("700"));
         }
     }
 

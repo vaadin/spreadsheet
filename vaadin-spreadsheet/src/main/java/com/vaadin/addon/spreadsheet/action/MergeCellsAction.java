@@ -20,7 +20,7 @@ import com.vaadin.addon.spreadsheet.Spreadsheet.SelectionChangeEvent;
 
 /**
  * Spreadsheet action for merging two or more cells.
- * 
+ *
  * @author Vaadin Ltd.
  * @since 1.0
  */
@@ -38,8 +38,8 @@ public class MergeCellsAction extends SpreadsheetAction {
                 && event.getIndividualSelectedCells().size() == 0) {
             Sheet sheet = spreadsheet.getActiveSheet();
             if (isSheetProtected(sheet)) {
-                CellRangeAddress selection = event.getCellRangeAddresses().get(
-                        0);
+                CellRangeAddress selection = event.getCellRangeAddresses()
+                        .get(0);
                 for (int r = selection.getFirstRow(); r <= selection
                         .getLastRow(); r++) {
                     Row row = sheet.getRow(r);

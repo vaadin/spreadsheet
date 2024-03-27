@@ -28,16 +28,16 @@ import com.vaadin.testbench.parallel.BrowserUtil;
  * Base class for tests which should be run on all supported browsers. The test
  * is automatically launched for multiple browsers in parallel by the test
  * runner.
- * 
+ *
  * Sub classes can, but typically should not, restrict the browsers used by
  * implementing a
- * 
+ *
  * <pre>
  * &#064;Parameters
  * public static Collection&lt;DesiredCapabilities&gt; getBrowsersForTest() {
  * }
  * </pre>
- * 
+ *
  * @author Vaadin Ltd
  */
 public abstract class MultiBrowserTest extends PrivateTB3Configuration {
@@ -46,7 +46,8 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     public TestName testName = new TestName();
 
     @Override
-    public void setDesiredCapabilities(DesiredCapabilities desiredCapabilities) {
+    public void setDesiredCapabilities(
+            DesiredCapabilities desiredCapabilities) {
         if (BrowserUtil.isIE(desiredCapabilities)) {
             desiredCapabilities.setCapability(
                     InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
@@ -57,23 +58,21 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
         desiredCapabilities.setCapability("project", "Vaadin Spreadsheet");
         desiredCapabilities.setCapability("build", String.format("%s / %s",
                 getDeploymentHostname(), Calendar.getInstance().getTime()));
-        desiredCapabilities.setCapability(
-                "name",
-                String.format("%s.%s", getClass().getCanonicalName(),
-                        testName.getMethodName()));
+        desiredCapabilities.setCapability("name", String.format("%s.%s",
+                getClass().getCanonicalName(), testName.getMethodName()));
 
         super.setDesiredCapabilities(desiredCapabilities);
     }
 
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
-        return getBrowserCapabilities( Browser.IE11,
-                Browser.FIREFOX, Browser.CHROME, Browser.PHANTOMJS);
+        return getBrowserCapabilities(Browser.IE11, Browser.FIREFOX,
+                Browser.CHROME, Browser.PHANTOMJS);
     }
 
     protected List<DesiredCapabilities> getBrowsersExcludingPhantomJS() {
-        return getBrowserCapabilities(Browser.IE11,
-                Browser.CHROME, Browser.FIREFOX);
+        return getBrowserCapabilities(Browser.IE11, Browser.CHROME,
+                Browser.FIREFOX);
     }
 
     protected List<DesiredCapabilities> getBrowserCapabilities(
@@ -86,24 +85,28 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     }
 
     /**
-     * Exception which is thrown when some specific browser is wanted to be skipped.
-     * Extends AssumptionViolatedException which causes JUnit to ignore the running
-     * test.
+     * Exception which is thrown when some specific browser is wanted to be
+     * skipped. Extends AssumptionViolatedException which causes JUnit to ignore
+     * the running test.
      */
     private class BrowserSkipped extends AssumptionViolatedException {
         public BrowserSkipped(String message) {
-            super("Skipped <"+message+">");
+            super("Skipped <" + message + ">");
         }
     }
 
     /**
      * Call this method if you want to skip the test on some specific browser.
-     * For example, some versions of PhantomJS does not fire onContextMenu event on right click so
-     * that browser could be skipped for a test which relays on it.
+     * For example, some versions of PhantomJS does not fire onContextMenu event
+     * on right click so that browser could be skipped for a test which relays
+     * on it.
      *
      *
-     * @param reason why the browser is skipped. This will be shown in test results.
-     * @param browser which is wanted to be skipped
+     * @param reason
+     *            why the browser is skipped. This will be shown in test
+     *            results.
+     * @param browser
+     *            which is wanted to be skipped
      */
     protected void skipBrowser(String reason, Browser... browser) {
         for (int i = 0; i < browser.length; i++) {
@@ -114,23 +117,48 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     private void skipBrowser(String reason, Browser browser) {
         DesiredCapabilities capabilities = getDesiredCapabilities();
         switch (browser) {
-            case FIREFOX: if(BrowserUtil.isFirefox(capabilities)) { throw new BrowserSkipped(reason); }
-                break;
-            case CHROME: if(BrowserUtil.isChrome(capabilities)) { throw new BrowserSkipped(reason); }
-                break;
-            case SAFARI: if(BrowserUtil.isSafari(capabilities)) { throw new BrowserSkipped(reason); }
-                break;
-            case IE8: if(BrowserUtil.isIE(capabilities, 8)) { throw new BrowserSkipped(reason); }
-                break;
-            case IE9: if(BrowserUtil.isIE(capabilities, 9)) { throw new BrowserSkipped(reason); }
-                break;
-            case IE10: if(BrowserUtil.isIE(capabilities, 10)) { throw new BrowserSkipped(reason); }
-                break;
-            case IE11: if(BrowserUtil.isIE(capabilities, 11)) { throw new BrowserSkipped(reason); }
-                break;
-            case PHANTOMJS: if(BrowserUtil.isPhantomJS(capabilities)) { throw new BrowserSkipped(reason); }
-                break;
-            default: throw new RuntimeException("Unknown browser: "+browser);
+        case FIREFOX:
+            if (BrowserUtil.isFirefox(capabilities)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case CHROME:
+            if (BrowserUtil.isChrome(capabilities)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case SAFARI:
+            if (BrowserUtil.isSafari(capabilities)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case IE8:
+            if (BrowserUtil.isIE(capabilities, 8)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case IE9:
+            if (BrowserUtil.isIE(capabilities, 9)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case IE10:
+            if (BrowserUtil.isIE(capabilities, 10)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case IE11:
+            if (BrowserUtil.isIE(capabilities, 11)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        case PHANTOMJS:
+            if (BrowserUtil.isPhantomJS(capabilities)) {
+                throw new BrowserSkipped(reason);
+            }
+            break;
+        default:
+            throw new RuntimeException("Unknown browser: " + browser);
         }
     }
 }

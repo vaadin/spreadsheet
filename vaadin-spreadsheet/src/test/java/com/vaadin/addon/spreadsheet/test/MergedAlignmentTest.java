@@ -24,5 +24,4 @@ public class MergedAlignmentTest extends AbstractSpreadsheetTestCase {
         compareScreen("alignment_with_merged_cells");
     }
 
-
 }

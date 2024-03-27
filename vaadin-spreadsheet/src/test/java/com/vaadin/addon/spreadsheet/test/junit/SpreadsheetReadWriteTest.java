@@ -82,8 +82,8 @@ public class SpreadsheetReadWriteTest {
         sheet.write(tempOutputStream);
         tempOutputStream.close();
 
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(
-                tempFile));
+        ZipInputStream zipInputStream = new ZipInputStream(
+                new FileInputStream(tempFile));
 
         ZipEntry entry = zipInputStream.getNextEntry();
         do {
@@ -113,8 +113,8 @@ public class SpreadsheetReadWriteTest {
         workbook.write(fos);
         fos.close();
 
-        ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(
-                tempFile));
+        ZipInputStream zipInputStream = new ZipInputStream(
+                new FileInputStream(tempFile));
 
         ZipEntry entry = zipInputStream.getNextEntry();
         do {

@@ -20,7 +20,7 @@ public interface ChartCreator extends Serializable {
 
     /**
      * Converts the XSSFChart model into a Chart Component
-     * 
+     *
      * @param chartXml
      *            metadata with the chart configuration
      * @param spreadsheet

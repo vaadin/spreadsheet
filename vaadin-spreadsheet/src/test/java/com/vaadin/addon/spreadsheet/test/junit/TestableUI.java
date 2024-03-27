@@ -46,8 +46,7 @@ public class TestableUI extends UI {
         deploymentConfiguration = new DefaultDeploymentConfiguration(
                 TestableUI.class, new Properties());
         try {
-            service = new MockServletService(servlet,
-                    deploymentConfiguration);
+            service = new MockServletService(servlet, deploymentConfiguration);
         } catch (ServiceException e) {
             throw new RuntimeException("Failed to create service", e);
         }
@@ -78,7 +77,7 @@ public class TestableUI extends UI {
             });
             init();
         }
-        
+
         @Override
         protected List<RequestHandler> createRequestHandlers()
                 throws ServiceException {

@@ -22,7 +22,8 @@ public class CommentFixture implements SpreadsheetFixture {
 
     @Override
     public void loadFixture(Spreadsheet spreadsheet) {
-        Drawing<?> drawing = spreadsheet.getActiveSheet().createDrawingPatriarch();
+        Drawing<?> drawing = spreadsheet.getActiveSheet()
+                .createDrawingPatriarch();
         CreationHelper factory = spreadsheet.getActiveSheet().getWorkbook()
                 .getCreationHelper();
 

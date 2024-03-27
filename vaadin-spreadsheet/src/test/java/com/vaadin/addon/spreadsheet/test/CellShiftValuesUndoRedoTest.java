@@ -10,7 +10,8 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -31,13 +32,13 @@ public class CellShiftValuesUndoRedoTest extends AbstractSpreadsheetTestCase {
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
         SheetCellElement target = spreadsheet.getCellAt("A9");
-        Assert.assertEquals("9", target.getValue());
+        assertEquals("9", target.getValue());
 
         spreadsheet.getCellAt("A1").click();
 
-        WebElement selectionCorner = spreadsheet.findElement(
-                By.className("sheet-selection")).findElement(
-                By.className("s-corner"));
+        WebElement selectionCorner = spreadsheet
+                .findElement(By.className("sheet-selection"))
+                .findElement(By.className("s-corner"));
         // drag corner element of the selected cell to the target cell
         new Actions(driver).dragAndDrop(selectionCorner, target).perform();
 
@@ -66,13 +67,13 @@ public class CellShiftValuesUndoRedoTest extends AbstractSpreadsheetTestCase {
     }
 
     private void undo() {
-        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "z"))
-                .build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "z")).build()
+                .perform();
     }
 
     private void redo() {
-        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "y"))
-                .build().perform();
+        new Actions(getDriver()).sendKeys(Keys.chord(Keys.CONTROL, "y")).build()
+                .perform();
     }
 
 }

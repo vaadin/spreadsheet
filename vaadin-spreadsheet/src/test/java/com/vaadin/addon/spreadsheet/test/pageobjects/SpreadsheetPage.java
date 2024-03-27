@@ -136,11 +136,11 @@ public class SpreadsheetPage extends Page {
         Point point = AddressUtil.addressToPoint(address);
         return getCellValue(point.getX(), point.getY());
     }
-    
+
     public void setCellValue(String address, String newValue) {
         getCellAt(address).setValue(newValue);
     }
-    
+
     public String getCellColor(String cellAddress) {
         SheetCellElement cellAt = getCellAt(cellAddress);
         return cellAt.getCssValue(BACKGROUND_COLOR);
@@ -159,8 +159,8 @@ public class SpreadsheetPage extends Page {
 
     public void clickOnColumnHeader(int column, Keys... modifiers) {
         Actions actions = new Actions(driver);
-        WebElement header = driver.findElement(By.cssSelector(".ch.col"
-                + column));
+        WebElement header = driver
+                .findElement(By.cssSelector(".ch.col" + column));
         actions.moveToElement(header, 1, 1);
         for (Keys modifier : modifiers) {
             actions.keyDown(modifier);
@@ -185,8 +185,8 @@ public class SpreadsheetPage extends Page {
         }
         actions.build().perform();
     }
-    
-    public void deleteCellValue(String cellAddress){
+
+    public void deleteCellValue(String cellAddress) {
         clickOnCell(cellAddress);
         new Actions(getDriver()).sendKeys(Keys.DELETE).build().perform();
     }
@@ -216,16 +216,16 @@ public class SpreadsheetPage extends Page {
 
     public void contextClickOnColumnHeader(char column) {
         $(SpreadsheetElement.class).first().getColumnHeader(column - 'A' + 1)
-            .contextClick();
+                .contextClick();
     }
-    
+
     public void clickContextMenuItem(String caption) {
         final ContextMenuHelper contextMenu = new ContextMenuHelper(
-            getDriver());
+                getDriver());
 
         contextMenu.clickItem(caption);
     }
-    
+
     public void unhideRow(int i) {
         contextClickOnRowHeader(i + 1);
         clickContextMenuItem("Unhide row " + i);
@@ -235,11 +235,13 @@ public class SpreadsheetPage extends Page {
         contextClickOnColumnHeader((char) (c + 1));
         clickContextMenuItem("Unhide column " + c);
     }
-        
-    public String getSelectionFormula() {
-        final SpreadsheetElement sprElement = $(SpreadsheetElement.class).first();
 
-        WebElement selection = findElement(org.openqa.selenium.By.className("sheet-selection"));
+    public String getSelectionFormula() {
+        final SpreadsheetElement sprElement = $(SpreadsheetElement.class)
+                .first();
+
+        WebElement selection = findElement(
+                org.openqa.selenium.By.className("sheet-selection"));
         final String[] classes = selection.getAttribute("class").split(" ");
 
         int startRow = -1;
@@ -267,22 +269,22 @@ public class SpreadsheetPage extends Page {
         endColumn--;
 
         return new CellRangeAddress(startRow - 1, endRow - 1, startColumn - 1,
-            endColumn - 1).formatAsString();
+                endColumn - 1).formatAsString();
     }
 
     public String getSelectedSheetName() {
         WebElement selectedSheetTab = findElement(
-            By.cssSelector(".sheet-tabsheet-tab.selected-tab"));
+                By.cssSelector(".sheet-tabsheet-tab.selected-tab"));
 
         return selectedSheetTab.getText();
     }
 
     public List<String> getNamedRanges() {
         final List<WebElement> options = new Select(
-            findElement(By.className("namedrangebox"))).getOptions();
+                findElement(By.className("namedrangebox"))).getOptions();
 
         final List<String> optionStrings = new ArrayList<String>();
-        
+
         for (WebElement option : options) {
             optionStrings.add(option.getText());
         }
@@ -292,7 +294,7 @@ public class SpreadsheetPage extends Page {
 
     public void selectNamedRange(String name) {
         new Select(findElement(By.className("namedrangebox")))
-            .selectByVisibleText(name);
+                .selectByVisibleText(name);
     }
 
     public List<WebElement> getGroupings() {

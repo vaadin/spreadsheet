@@ -10,7 +10,6 @@
  */
 package com.vaadin.addon.spreadsheet.test.demoapps;
 
-
 import com.vaadin.addon.spreadsheet.Spreadsheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Widgetset;

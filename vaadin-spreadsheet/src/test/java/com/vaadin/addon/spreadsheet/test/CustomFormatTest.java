@@ -11,6 +11,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertEquals;
+
 import java.util.Locale;
 
 import org.junit.Test;
@@ -125,29 +126,29 @@ public class CustomFormatTest extends AbstractSpreadsheetTestCase {
     @Test
     public void customFormatFourParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C1", "=5555555.5", "5.555.555,5",
-            Locale.ITALY);
+                Locale.ITALY);
     }
 
     @Test
     public void customFormatThreeParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C6", "=5555555.5", "5.555.555,5",
-            Locale.ITALY);
+                Locale.ITALY);
     }
 
     @Test
     public void customFormatTwoParts_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C11", "=5555555.5", "5.555.555,5",
-            Locale.ITALY);
+                Locale.ITALY);
     }
 
     @Test
     public void customFormatOnePart_enterNumberAndChangeLocale_getsFormatted() {
         assertCellFormatAfterLocaleChange("C16", "=5555555.5", "5.555.555,5",
-            Locale.ITALY);
+                Locale.ITALY);
     }
 
     private void assertCellFormatAfterLocaleChange(String cellID, String value,
-        String expected, Locale locale) {
+            String expected, Locale locale) {
         SheetCellElement formatCell = spreadSheet.getCellAt(cellID);
         formatCell.setValue(value);
         setLocale(locale);

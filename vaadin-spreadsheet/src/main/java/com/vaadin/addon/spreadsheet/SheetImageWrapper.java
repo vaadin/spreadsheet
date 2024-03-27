@@ -26,19 +26,20 @@ import com.vaadin.server.StreamResource.StreamSource;
  * SheetImageWrapper is an utility class of the Spreadsheet component. In
  * addition to the image resource, this wrapper contains the images visibility
  * state, position and size.
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
-public class SheetImageWrapper extends SheetOverlayWrapper implements
-        Serializable {
+public class SheetImageWrapper extends SheetOverlayWrapper
+        implements Serializable {
 
     private StreamResource resource;
 
     private final byte[] data;
     private final String MIMEType;
 
-    public SheetImageWrapper(ClientAnchor anchor, String MIMEType, byte[] data) {
+    public SheetImageWrapper(ClientAnchor anchor, String MIMEType,
+            byte[] data) {
         super(anchor);
         this.MIMEType = MIMEType;
         this.data = data;
@@ -46,7 +47,7 @@ public class SheetImageWrapper extends SheetOverlayWrapper implements
 
     /**
      * Gets the resource containing this image
-     * 
+     *
      * @return Image resource
      */
     @Override

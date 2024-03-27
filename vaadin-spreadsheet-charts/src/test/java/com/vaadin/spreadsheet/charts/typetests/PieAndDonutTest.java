@@ -10,9 +10,10 @@
  */
 package com.vaadin.spreadsheet.charts.typetests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.vaadin.addon.charts.model.ChartType;
@@ -82,7 +83,7 @@ public class PieAndDonutTest extends ChartTestBase {
     private void assertSlicedItems(List<Series> series) {
         for (Series s : series) {
             for (DataSeriesItem i : ((DataSeries) s).getData()) {
-                Assert.assertTrue("Item was not sliced in an exploded pie",
+                assertTrue("Item was not sliced in an exploded pie",
                         i.getSliced());
             }
         }

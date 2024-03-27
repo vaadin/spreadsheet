@@ -29,7 +29,7 @@ public class SheetOverlay extends SimplePanel {
 
         this.add(widget);
 
-        this.updateSizeLocationPadding(overlayInfo);
+        updateSizeLocationPadding(overlayInfo);
     }
 
     public void updateSizeLocationPadding(OverlayInfo imageInfo) {

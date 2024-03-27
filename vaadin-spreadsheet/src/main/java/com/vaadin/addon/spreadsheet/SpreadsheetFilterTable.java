@@ -36,12 +36,12 @@ import com.vaadin.ui.VerticalLayout;
  * <p>
  * Has a "Clear Filters" button inside the {@link PopupButton}s pop-up, that
  * clears all the filters for that column (contained within the same pop-up).
- * 
+ *
  * @author Vaadin Ltd.
  */
 @SuppressWarnings("serial")
-public class SpreadsheetFilterTable extends SpreadsheetTable implements
-        Button.ClickListener {
+public class SpreadsheetFilterTable extends SpreadsheetTable
+        implements Button.ClickListener {
     public static final String CLEAR_FILTERS_BUTTON_CLASSNAME = "clear-filters-button";
 
     protected final Map<PopupButton, HashSet<SpreadsheetFilter>> popupButtonToFiltersMap;
@@ -52,7 +52,7 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
      * Creates a new filter table for the given spreadsheet component, its
      * active sheet ({@link Spreadsheet#getActiveSheet()} and region. Pop-up
      * buttons and content (filters) are created.
-     * 
+     *
      * @param spreadsheet
      *            Target Spreadsheet
      * @param fullTableRegion
@@ -67,7 +67,7 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
      * Creates a new filter table for the given spreadsheet component, sheet and
      * region. If the component is currently displaying the sheet that the table
      * belongs to, pop-up buttons and content (filters) are created.
-     * 
+     *
      * @param spreadsheet
      *            Target Spreadsheet
      * @param sheet
@@ -82,8 +82,8 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
         popupButtonToFiltersMap = new HashMap<PopupButton, HashSet<SpreadsheetFilter>>();
         popupButtonToClearButtonMap = new HashMap<PopupButton, Button>();
         filteringRegion = new CellRangeAddress(
-                fullTableRegion.getFirstRow() + 1,
-                fullTableRegion.getLastRow(), fullTableRegion.getFirstColumn(),
+                fullTableRegion.getFirstRow() + 1, fullTableRegion.getLastRow(),
+                fullTableRegion.getFirstColumn(),
                 fullTableRegion.getLastColumn());
 
         if (isTableSheetCurrentlyActive()) {
@@ -174,9 +174,9 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
         int lastRow = filteringRegion.getLastRow();
         for (PopupButton popupButton : getPopupButtons()) {
             int column = popupButton.getColumn();
-            ItemFilter itemFilter = new ItemFilter(new CellRangeAddress(
-                    firstRow, lastRow, column, column), getSpreadsheet(),
-                    popupButton, this);
+            ItemFilter itemFilter = new ItemFilter(
+                    new CellRangeAddress(firstRow, lastRow, column, column),
+                    getSpreadsheet(), popupButton, this);
             addComponentToPopup(popupButton, itemFilter);
             registerFilter(popupButton, itemFilter);
         }
@@ -196,7 +196,7 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
     /**
      * Creates a "Clear filters" button. It has the
      * {@value #CLEAR_FILTERS_BUTTON_CLASSNAME} class name.
-     * 
+     *
      * @return Button for clearing the filters
      */
     protected Button createClearButton() {
@@ -210,7 +210,7 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
 
     /**
      * Gets the filtering region, {@link CellRangeAddress} for this table.
-     * 
+     *
      * @return The filtering region
      */
     public CellRangeAddress getFilteringRegion() {
@@ -237,8 +237,8 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
             for (SpreadsheetFilter filter : filters) {
                 temp.addAll(filter.getFilteredRows());
             }
-            popupButtonToClearButtonMap.get(popupButton).setEnabled(
-                    !temp.isEmpty());
+            popupButtonToClearButtonMap.get(popupButton)
+                    .setEnabled(!temp.isEmpty());
             popupButton.markActive(!temp.isEmpty());
             filteredRows.addAll(temp);
         }
@@ -255,13 +255,14 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
      * <p>
      * NOTE: Does not apply updates, if the registered filter is filtering some
      * rows, {@link #onFiltersUpdated()} should be called.
-     * 
+     *
      * @param popupButton
      *            The pop-up button this filter is added to
      * @param filter
      *            The filter to apply
      */
-    public void registerFilter(PopupButton popupButton, SpreadsheetFilter filter) {
+    public void registerFilter(PopupButton popupButton,
+            SpreadsheetFilter filter) {
         if (getPopupButtons().contains(popupButton)) {
             if (popupButtonToFiltersMap.containsKey(popupButton)) {
                 popupButtonToFiltersMap.get(popupButton).add(filter);
@@ -279,7 +280,7 @@ public class SpreadsheetFilterTable extends SpreadsheetTable implements
     /**
      * Unregisters the filter from this filter table and removes it from the
      * given pop-up button.
-     * 
+     *
      * @param popupButton
      *            The pop-up button this filter is removed from
      * @param filter

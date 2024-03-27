@@ -10,14 +10,15 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
-import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
-import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import org.junit.Test;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.interactions.Actions;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import com.vaadin.addon.spreadsheet.elements.SheetCellElement;
+import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 
 /**
  * Arrow key navigation tests.
@@ -39,7 +40,8 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("B2");
-        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); //edit mode
+        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); // edit
+                                                                      // mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT).build().perform();
 
@@ -53,7 +55,8 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("B2");
-        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); //edit mode
+        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); // edit
+                                                                      // mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_LEFT).build().perform();
 
@@ -67,7 +70,8 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("B2");
-        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); //edit mode
+        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); // edit
+                                                                      // mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_UP).build().perform();
 
@@ -81,7 +85,8 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("B2");
-        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); //edit mode
+        new Actions(getDriver()).sendKeys(Keys.F2).build().perform(); // edit
+                                                                      // mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN).build().perform();
 
@@ -95,7 +100,7 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("A1");
-        sheetController.doubleClickCell("B2"); //edit mode
+        sheetController.doubleClickCell("B2"); // edit mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT).build().perform();
 
@@ -109,7 +114,7 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("A1");
-        sheetController.doubleClickCell("B2"); //edit mode
+        sheetController.doubleClickCell("B2"); // edit mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_LEFT).build().perform();
 
@@ -123,7 +128,7 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("A1");
-        sheetController.doubleClickCell("B2"); //edit mode
+        sheetController.doubleClickCell("B2"); // edit mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_DOWN).build().perform();
 
@@ -137,7 +142,7 @@ public class CellArrowKeyNavigationTest extends AbstractSpreadsheetTestCase {
         b2.setValue("123");
 
         sheetController.selectCell("A1");
-        sheetController.doubleClickCell("B2"); //edit mode
+        sheetController.doubleClickCell("B2"); // edit mode
 
         new Actions(getDriver()).sendKeys(Keys.ARROW_UP).build().perform();
 

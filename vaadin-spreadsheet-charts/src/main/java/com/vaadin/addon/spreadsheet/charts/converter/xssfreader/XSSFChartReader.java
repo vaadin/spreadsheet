@@ -149,13 +149,17 @@ public class XSSFChartReader {
         ArrayList<AbstractSeriesData> list = new ArrayList<AbstractSeriesData>();
 
         for (CTBarChart ctChart : plotArea.getBarChartList()) {
-            list.addAll(addYAxis(new BarSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new BarSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTBar3DChart ctChart : plotArea.getBar3DChartList()) {
-            list.addAll(addYAxis(new BarSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new BarSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTPieChart ctChart : plotArea.getPieChartList()) {
@@ -169,28 +173,38 @@ public class XSSFChartReader {
         }
 
         for (CTAreaChart ctChart : plotArea.getAreaChartList()) {
-            list.addAll(addYAxis(new AreaSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new AreaSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTBubbleChart ctChart : plotArea.getBubbleChartList()) {
-            list.addAll(addYAxis(new BubbleSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new BubbleSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTLineChart ctChart : plotArea.getLineChartList()) {
-            list.addAll(addYAxis(new LineSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new LineSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTRadarChart ctChart : plotArea.getRadarChartList()) {
-            list.addAll(addYAxis(new RadarSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new RadarSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTScatterChart ctChart : plotArea.getScatterChartList()) {
-            list.addAll(addYAxis(new ScatterSeriesReader(ctChart, spreadsheet,
-                    showDataInHiddenCells).getSeries(), getAxIdList(ctChart)));
+            list.addAll(addYAxis(
+                    new ScatterSeriesReader(ctChart, spreadsheet,
+                            showDataInHiddenCells).getSeries(),
+                    getAxIdList(ctChart)));
         }
 
         for (CTDoughnutChart ctChart : plotArea.getDoughnutChartList()) {
@@ -235,7 +249,8 @@ public class XSSFChartReader {
                 "getAxIdList");
     }
 
-    private String getTitle(XSSFChart chart, List<AbstractSeriesData> plotData) {
+    private String getTitle(XSSFChart chart,
+            List<AbstractSeriesData> plotData) {
         String title = "";
 
         final CTChart ctChart = chart.getCTChart();

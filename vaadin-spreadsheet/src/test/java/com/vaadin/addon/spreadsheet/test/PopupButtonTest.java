@@ -11,6 +11,7 @@
 package com.vaadin.addon.spreadsheet.test;
 
 import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -144,20 +145,20 @@ public class PopupButtonTest extends AbstractSpreadsheetTestCase {
         headerPage.loadTestFixture(TestFixtures.PopupButton);
 
         final SpreadsheetElement spreadsheetElement = $(
-            SpreadsheetElement.class).first();
+                SpreadsheetElement.class).first();
 
         final SheetCellElement cell = spreadsheetElement.getCellAt("D1");
 
-        // these actions trigger addition/removal of inner element, 
+        // these actions trigger addition/removal of inner element,
         // which used to accidentally remove the popup button and other overlays
 
         insertValue_assertPopupButtonPresent(cell, "looooooooooooong text");
 
-        insertValue_assertPopupButtonPresent(cell,"");
+        insertValue_assertPopupButtonPresent(cell, "");
     }
 
     private void insertValue_assertPopupButtonPresent(SheetCellElement cell,
-        String newValue) {
+            String newValue) {
 
         cell.setValue(newValue);
 

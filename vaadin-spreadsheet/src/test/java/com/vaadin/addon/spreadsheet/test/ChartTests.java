@@ -13,6 +13,7 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 
 import org.junit.Test;
@@ -77,8 +78,8 @@ public class ChartTests extends AbstractSpreadsheetTestCase {
 
         WebElement chartWrapperElement = overlayHelper
                 .getOverlayElement(CHART1_CELL);
-        WebElement minimizeButton = chartWrapperElement.findElement(By
-                .className("minimize-button"));
+        WebElement minimizeButton = chartWrapperElement
+                .findElement(By.className("minimize-button"));
 
         minimizeButton.click();
 
