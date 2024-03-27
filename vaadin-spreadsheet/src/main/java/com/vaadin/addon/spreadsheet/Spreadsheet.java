@@ -770,7 +770,7 @@ public class Spreadsheet extends AbstractComponent
      * Returns true if embedded charts are displayed
      *
      * @see #setChartsEnabled(boolean)
-     * @return
+     * @return {@code true} if the charts are enabled, {@code false} otherwise
      */
     public boolean isChartsEnabled() {
         return chartsEnabled;

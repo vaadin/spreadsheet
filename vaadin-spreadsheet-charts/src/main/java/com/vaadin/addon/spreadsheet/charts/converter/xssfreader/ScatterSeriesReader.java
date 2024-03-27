@@ -64,7 +64,14 @@ public class ScatterSeriesReader
     }
 
     /**
-     * Scatter requires x and y values, for other charts we use only X
+     * Scatter requires x and y values, for other charts we use only X.
+     *
+     * @param xVal
+     *            x data source
+     * @param yVal
+     *            y data source
+     * @param seriesData
+     *            series data
      */
     protected void createSeriesDataPointsForScatter(CTAxDataSource xVal,
             CTNumDataSource yVal, ScatterSeriesData seriesData) {

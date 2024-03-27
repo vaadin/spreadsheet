@@ -140,6 +140,8 @@ public abstract class AbstractSeriesDataWriter {
     /**
      * This should only instantiate the object, configuration is done in
      * configureDataSeries.
+     *
+     * @return plot options object
      */
     protected abstract AbstractPlotOptions createPlotOptions();
 

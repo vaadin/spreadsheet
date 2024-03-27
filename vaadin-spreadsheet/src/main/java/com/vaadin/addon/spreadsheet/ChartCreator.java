@@ -25,7 +25,7 @@ public interface ChartCreator extends Serializable {
      *            metadata with the chart configuration
      * @param spreadsheet
      *            spreadsheet that chart uses as data source
-     * @return
+     * @return a Chart matching the given model, by itself or within a layout
      */
     public Component createChart(XSSFChart chartXml, Spreadsheet spreadsheet);
 }

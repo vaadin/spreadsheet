@@ -76,9 +76,13 @@ public class Utils {
     }
 
     /**
+     * Returns all the cells that the given formula references, hidden ones
+     * included.
+     *
      * @param version
      *            for inferring ranges for column-only references
      * @param formula
+     *            the formula to find referenced cells for
      * @return all cells in the referenced areas
      */
     public static List<CellReference> getAllReferencedCells(
@@ -112,9 +116,16 @@ public class Utils {
     }
 
     /**
-     * This function uses the getAllReferencedCells function but filters out all
-     * the hidden rows from the list honoring filtering of charts based on
-     * spreadsheettable filter settings
+     * This function uses the
+     * {@link #getAllReferencedCells(String, Spreadsheet, boolean)} function but
+     * filters out all the hidden rows from the list honoring filtering of
+     * charts based on spreadsheettable filter settings
+     *
+     * @param formula
+     *            the formula to find referenced cells for
+     * @param spreadsheet
+     *            the spreadsheet to operate on
+     * @return all visible cells in the referenced areas
      */
     public static List<CellReference> getAllReferencedVisibleCells(
             String formula, Spreadsheet spreadsheet) {
@@ -133,7 +144,7 @@ public class Utils {
      * @param includeHiddenCells
      *            <code>true</code> to include cells residing on hidden rows or
      *            columns, <code>false</code> to omit them
-     *
+     * @return all cells in the referenced areas that match the given parameters
      */
     public static List<CellReference> getAllReferencedCells(String formula,
             Spreadsheet spreadsheet, boolean includeHiddenCells) {
