@@ -336,7 +336,10 @@ public class SpreadsheetElement extends AbstractElement {
     }
 
     /**
-     * Determine if the pop-up of PopupuButton is currently visible
+     * Determine if the pop-up of PopupuButton is currently visible.
+     *
+     * @return {@code true} if there is a visible PopupButton overlay element,
+     *         {@code false} otherwise
      */
     public boolean isPopupButtonPopupVisible() {
         List<WebElement> elements = getDriver().findElements(

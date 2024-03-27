@@ -1030,13 +1030,16 @@ public class SelectionWidget extends Composite {
     }
 
     /**
+     * Calculates the sum of the given sizes between the given indexes.
      *
      * @param sizes
+     *            size array
      * @param beginIndex
      *            1-based inclusive
      * @param endIndex
      *            1-based exclusive
-     * @return
+     * @return the calculated sum, or zero if the given parameters don't match
+     *         with any sizes
      */
     public int countSum(int[] sizes, int beginIndex, int endIndex) {
         if (sizes == null || sizes.length < endIndex - 1) {
@@ -1064,7 +1067,7 @@ public class SelectionWidget extends Composite {
      * @param forSelection
      *            true if the result is used for touch selection, false if it's
      *            used for painting cells
-     * @return
+     * @return index
      */
     public int closestCellEdgeIndexToCursor(int cellSizes[], int startIndex,
             int cursorPosition, boolean forSelection) {

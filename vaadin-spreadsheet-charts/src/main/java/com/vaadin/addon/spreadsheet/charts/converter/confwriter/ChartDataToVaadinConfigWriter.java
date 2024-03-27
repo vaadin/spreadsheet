@@ -431,7 +431,10 @@ public class ChartDataToVaadinConfigWriter {
     }
 
     /**
-     * This is supposed to set the defaults closed to what Excel uses.
+     * This is supposed to set the defaults close to what Excel uses.
+     *
+     * @param conf
+     *            chart configurations
      */
     protected void setDefaults(Configuration conf) {
         logger.info("setDefaults()");

@@ -62,35 +62,52 @@ public interface SheetHandler extends GroupingHandler {
     int getColumnBufferSize();
 
     /**
-     * default row height in points (?)
+     * Returns the default row height in points (pt).
      *
-     * @return
+     * @return height
      */
     float getDefaultRowHeight();
 
-    /** Number of defined rows in the spreadsheet */
+    /**
+     * Returns the number of defined rows in the spreadsheet.
+     *
+     * @return row count
+     */
     int getDefinedRows();
 
+    /**
+     * Returns the widths of the columns.
+     *
+     * @return width array
+     */
     int[] getColWidths();
 
     /**
      * Height of a row in points (pt) including bottom border. Rows are indexed
      * from 1 to getRows(). Returns 0 for hidden rows.
+     *
+     * @param row
+     *            row index, 1-based
+     * @return height
      */
     float getRowHeight(int row);
 
     /**
      * Width of a column in pixels including right border. Columns are indexed
      * from 1 to getColumns(). Returns 0 for hidden columns.
+     *
+     * @param col
+     *            column index, 1-based
+     * @return width
      */
     int getColWidth(int col);
 
     /**
-     * Returns 0 for hidden columns, otherwise same as {@link #getColWidth(int)}
-     * .
+     * Returns 0 for hidden columns, otherwise same as
+     * {@link #getColWidth(int)}.
      *
      * @param col
-     *            1-based
+     *            column index, 1-based
      * @return width (px)
      */
     int getColWidthActual(int col);
@@ -98,23 +115,33 @@ public interface SheetHandler extends GroupingHandler {
     /**
      * Get header of a column as HTML. Columns are indexed from 1 to
      * getColumns().
+     *
+     * @param col
+     *            column index, 1-based
+     * @return header HTML
      */
     String getColHeader(int col);
 
-    /** Get header of a row as HTML. Rows are indexed from 1 to getRows(). */
+    /**
+     * Get header of a row as HTML. Rows are indexed from 1 to getRows().
+     *
+     * @param row
+     *            row index, 1-based
+     * @return header HTML
+     */
     String getRowHeader(int row);
 
     /**
-     * The maximum amount of columns that are visible
+     * The maximum amount of columns that are visible.
      *
-     * @return
+     * @return count
      */
     int getMaxColumns();
 
     /**
-     * The maximum amount of rows that are visible
+     * The maximum amount of rows that are visible.
      *
-     * @return
+     * @return count
      */
     int getMaxRows();
 
@@ -129,45 +156,50 @@ public interface SheetHandler extends GroupingHandler {
     Map<Integer, String> getConditionalFormattingStyles();
 
     /**
+     * Returns whether the given column is hidden.
      *
-     * @param i
-     *            1-based
-     * @return true if the column is hidden
+     * @param col
+     *            column index, 1-based
+     * @return {@code true} if the column is hidden, {@code false} otherwise
      */
-    boolean isColumnHidden(int i);
+    boolean isColumnHidden(int col);
 
     /**
+     * Returns whether the given row is hidden.
      *
-     * @param i
-     *            1-based
-     * @return true if the row is hidden
+     * @param row
+     *            row index, 1-based
+     * @return {@code true} if the row is hidden, {@code false} otherwise
      */
-    boolean isRowHidden(int i);
+    boolean isRowHidden(int row);
 
     /**
      * Called on right mouse button click on top of some cell.
      *
      * @param nativeEvent
+     *            triggered event
      * @param column
-     *            1-based
+     *            index, 1-based
      * @param row
-     *            1-based
+     *            index, 1-based
      */
     void onCellRightClick(NativeEvent nativeEvent, int column, int row);
 
     /**
-     * Called on right mouse button click on top of a row header
+     * Called on right mouse button click on top of a row header.
      *
      * @param nativeEvent
+     *            triggered event
      * @param rowIndex
      *            1-based
      */
     void onRowHeaderRightClick(NativeEvent nativeEvent, int rowIndex);
 
     /**
-     * Called on right mouse button click on top of a column header
+     * Called on right mouse button click on top of a column header.
      *
      * @param nativeEvent
+     *            triggered event
      * @param columnIndex
      *            1-based
      */
@@ -179,19 +211,32 @@ public interface SheetHandler extends GroupingHandler {
 
     boolean canResizeRow();
 
-    /** Map containing 1-based row indexes and new sizes as pt */
+    /**
+     * Triggered after row resize.
+     *
+     * @param newSizes
+     *            map containing 1-based row indexes and new sizes as pt
+     */
     void onRowsResized(Map<Integer, Float> newSizes);
 
-    /** Map containing 1-based column indexes and new sizes as pt */
+    /**
+     * Triggered after column resize.
+     *
+     * @param newSizes
+     *            map containing 1-based column indexes and new sizes as pt
+     */
     void onColumnsResized(Map<Integer, Integer> newSizes);
 
     /**
+     * Triggered when a row header receives a double-click.
+     *
      * @param rowIndex
      *            1-based
      */
     void onRowHeaderDoubleClick(int rowIndex);
 
     /**
+     * Triggered when a column header receives a double-click.
      *
      * @param columnIndex
      *            1-based
@@ -202,19 +247,21 @@ public interface SheetHandler extends GroupingHandler {
      * Returns the merged region that this cell belongs to.
      *
      * @param col
+     *            column index, 1-based
      * @param row
-     * @return
+     *            row index, 1-based
+     * @return merged region or {@code null} if not found
      */
     MergedRegion getMergedRegion(int col, int row);
 
     /**
-     * Params 1-based
+     * Returns the merged region starting at the given coordinates.
      *
      * @param col
-     *            starting column of merged cell
+     *            starting column index of merged cell, 1-based
      * @param row
-     *            starting row of merged cell
-     * @return
+     *            starting row index of merged cell, 1-based
+     * @return merged region or {@code null} if not found
      */
     MergedRegion getMergedRegionStartingFrom(int col, int row);
 

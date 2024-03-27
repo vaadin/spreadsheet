@@ -52,7 +52,7 @@ public class MergedRegionUtil {
      * @param bottomRow
      * @param leftColumn
      * @param rightColumn
-     * @return
+     * @return the increased selection
      */
     public static MergedRegion findIncreasingSelection(
             MergedRegionContainer container, int topRow, int bottomRow,

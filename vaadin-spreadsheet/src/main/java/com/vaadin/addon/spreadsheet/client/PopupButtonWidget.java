@@ -225,7 +225,7 @@ public class PopupButtonWidget extends FocusWidget
     /**
      * Returns the position callback method used for the button's popup.
      *
-     * @return
+     * @return callback method
      */
     public PositionCallback getPositionCallback() {
         return callback;
