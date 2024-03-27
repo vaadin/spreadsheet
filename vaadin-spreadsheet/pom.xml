@@ -19,6 +19,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jetty.version>9.4.54.v20240208</jetty.version>
         <vaadin.version>8.14.3</vaadin.version>
         <testbench.version>5.1.2</testbench.version>
@@ -255,12 +256,12 @@
                     <includes>
                         <include>**/*Test*.java</include>
                     </includes>
-                    <systemProperties>
+                    <systemPropertyVariables>
                         <property>
                             <name>tb.hub</name>
                             <value>${tb.hub}</value>
                         </property>
-                    </systemProperties>
+                    </systemPropertyVariables>
                 </configuration>
                 <executions>
                     <execution>
