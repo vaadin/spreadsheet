@@ -192,7 +192,7 @@
                     <extraJvmArgs>-Xms512M -Xmx1g</extraJvmArgs>
                     <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                     <noServer>true</noServer>
-                    <runTarget>https://localhost:9998/</runTarget>
+                    <runTarget>http://localhost:9998/</runTarget>
                     <draftCompile>true</draftCompile>
                     <style>PRETTY</style>
                     <compileReport>true</compileReport>
