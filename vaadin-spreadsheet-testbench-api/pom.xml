@@ -4,16 +4,16 @@
          xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-	<parent>
-		<groupId>com.vaadin</groupId>
-		<artifactId>vaadin-spreadsheet-directorypackage</artifactId>
-		<version>3.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-spreadsheet-directorypackage</artifactId>
+        <version>3.0-SNAPSHOT</version>
+    </parent>
 
     <artifactId>vaadin-spreadsheet-testbench-api</artifactId>
     <name>Vaadin Spreadsheet Testbench API</name>
     <inceptionYear>2013</inceptionYear>
-    
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <currentYear>2024</currentYear>
@@ -62,7 +62,7 @@
     </dependencies>
     <build>
         <plugins>
-			<plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
