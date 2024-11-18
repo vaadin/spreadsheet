@@ -3,11 +3,11 @@
     xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-	<parent>
-		<groupId>com.vaadin</groupId>
-		<artifactId>vaadin-spreadsheet-directorypackage</artifactId>
-		<version>3.0-SNAPSHOT</version>
-	</parent>
+    <parent>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-spreadsheet-directorypackage</artifactId>
+        <version>3.0-SNAPSHOT</version>
+    </parent>
 
     
     <artifactId>vaadin-spreadsheet</artifactId>
@@ -25,7 +25,6 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <currentYear>2024</currentYear>
     </properties>
-
 
     <licenses>
         <license>
@@ -217,7 +216,7 @@
                             <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                             <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                             <noServer>true</noServer>
-                            <runTarget>https://localhost:9998/</runTarget>
+                            <runTarget>http://localhost:9998/</runTarget>
                             <draftCompile>true</draftCompile>
                             <style>PRETTY</style>
                             <module>com.vaadin.addon.spreadsheet.Widgetset</module>
@@ -320,7 +319,7 @@
                         <extraJvmArgs>-Xmx1g -Xms1g</extraJvmArgs>
                         <hostedWebapp>${project.build.directory}/testwebapp</hostedWebapp>
                         <noServer>true</noServer>
-                        <runTarget>https://localhost:9998/</runTarget>
+                        <runTarget>http://localhost:9998/</runTarget>
                         <draftCompile>true</draftCompile>
                         <style>PRETTY</style>
                         <module>com.vaadin.addon.spreadsheet.Widgetset</module>
