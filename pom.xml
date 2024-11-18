@@ -27,7 +27,7 @@
         <junit.version>4.13.2</junit.version>
         <poi.version>4.0.1</poi.version>
 
-		<testbench.api.version>${vaadin.version}</testbench.api.version>
+        <testbench.api.version>${vaadin.version}</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
     </properties>
 
