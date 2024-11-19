@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>com.vaadin</groupId>
+        <artifactId>vaadin-spreadsheet-directorypackage</artifactId>
+        <version>3.0-SNAPSHOT</version>
+    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <vaadin.version>8.14.3</vaadin.version>
-        <charts.version>4.0.5</charts.version>
-        <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-        <testbench.version>5.1.2</testbench.version>
-        <testbench.api.version>${vaadin.version}</testbench.api.version>
-        <jetty.version>9.4.54.v20240208</jetty.version>
-        <tb.hub>testbench-hub.intra.itmill.com</tb.hub>
         <currentYear>2024</currentYear>
+        
+        <assembly.skipAssembly>true</assembly.skipAssembly>
     </properties>
-
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <groupId>com.vaadin</groupId>
     <artifactId>vaadin-spreadsheet-charts</artifactId>
-    <version>3.0-SNAPSHOT</version>
     <name>Vaadin Spreadsheet Charts Integration</name>
     <inceptionYear>2016</inceptionYear>
 
@@ -94,7 +92,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-            <version>3.0.1</version>
+            <version>${javax.servlet.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- This can be replaced with TestNG or some other test framework supported
@@ -102,7 +100,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -276,9 +274,6 @@
                         <exclude>**/Abstract*</exclude>
                         <exclude>**/junit/*</exclude>
                     </excludes>
-                    <systemPropertyVariables>
-                            <tb.hub>${tb.hub}</tb.hub>
-                    </systemPropertyVariables>
                 </configuration>
                 <executions>
                     <execution>
