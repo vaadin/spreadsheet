@@ -21,7 +21,7 @@
 
         <vaadin.version>8.14.4</vaadin.version>
         <charts.version>4.3.4</charts.version>
-        <testbench.version>5.3.1</testbench.version>
+        <testbench.version>5.1.2</testbench.version> <!-- Testing with previously working version -->
         <jetty.version>9.4.54.v20240208</jetty.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>
         <junit.version>4.13.2</junit.version>
