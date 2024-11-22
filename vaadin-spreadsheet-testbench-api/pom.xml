@@ -2,12 +2,14 @@
 <project xmlns="https://maven.apache.org/POM/4.0.0"
          xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>vaadin-spreadsheet-testbench-api</artifactId>
     <groupId>com.vaadin</groupId>
+    <artifactId>vaadin-spreadsheet-testbench-api</artifactId>
     <version>3.0-SNAPSHOT</version>
-    
+
+	<packaging>jar</packaging>    
     <name>Vaadin Spreadsheet Testbench API</name>
     <inceptionYear>2013</inceptionYear>
 
