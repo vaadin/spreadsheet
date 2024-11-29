@@ -2466,7 +2466,7 @@ public class Spreadsheet extends AbstractComponent
         if (getState().mergedRegions == null) {
             getState().mergedRegions = new ArrayList<MergedRegion>();
         }
-        getState().mergedRegions.add(addMergedRegionIndex - 1, mergedRegion);
+        getState().mergedRegions.add(mergedRegion);
         // update the style & data for the region cells, effects region + 1
         // FIXME POI doesn't seem to care that the other cells inside the merged
         // region should be removed; the values those cells have are still used
