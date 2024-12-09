@@ -61,7 +61,9 @@ public class PieSeriesReader
         if (isDoughnut) {
             isExplodedDoughnutHandled = true;
             seriesData.isDonut = true;
-            seriesData.donutHoleSizePercent = ((CTDoughnutChart) getChart())
+
+            // Dangerous cast
+            seriesData.donutHoleSizePercent = (short) ((CTDoughnutChart) getChart())
                     .getHoleSize().getVal();
         }
     }

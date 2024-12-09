@@ -22,7 +22,7 @@
         <charts.version>4.3.5</charts.version>
         <testbench.version>5.1.2</testbench.version>
         <jetty.version>9.4.54.v20240208</jetty.version>
-        <poi.version>4.1.2</poi.version>
+        <poi.version>5.2.2</poi.version>
         
         <javax.servlet.version>3.0.1</javax.servlet.version>
         <junit.version>4.13.2</junit.version>

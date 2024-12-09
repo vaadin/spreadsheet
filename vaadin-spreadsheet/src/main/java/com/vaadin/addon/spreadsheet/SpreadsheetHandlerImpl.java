@@ -20,7 +20,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.RichTextString;
 import org.apache.poi.ss.usermodel.Row;
@@ -306,14 +305,13 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
                     Double numVal = SpreadsheetUtil.parseNumber(cell,
                             cellContent, spreadsheet.getLocale());
                     if (numVal != null) {
-                        cell.setCellType(CellType.NUMERIC);
                         cell.setCellValue(numVal);
                     } else {
                         cell.setCellValue(cellContent);
                     }
                 } else {
-                    cell.setCellType(CellType.BLANK);
                     spreadsheet.markCellAsDeleted(cell, true);
+                    cell.setBlank();
                 }
 
                 spreadsheet.getCellValueManager().markCellForUpdate(cell);
@@ -447,8 +445,8 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
         spreadsheet.getSpreadsheetHistoryManager().addCommand(command);
 
         for (Cell targetCell : targetCells) {
-            targetCell.setCellType(CellType.BLANK);
             spreadsheet.markCellAsDeleted(targetCell, true);
+            cell.setBlank();
         }
 
         fireCellValueChangeEvent(spreadsheet.getSelectedCellReferences());
