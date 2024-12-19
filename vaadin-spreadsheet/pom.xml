@@ -473,16 +473,19 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-server</artifactId>
             <version>${vaadin.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client</artifactId>
             <version>${vaadin.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
             <version>${vaadin.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -495,6 +498,7 @@
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-client-compiled</artifactId>
             <version>${vaadin.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.vaadin</groupId>
@@ -657,6 +661,23 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <dependencies>
+	                        <dependency>
+					            <groupId>com.vaadin</groupId>
+					            <artifactId>vaadin-server</artifactId>
+					            <version>${vaadin.version}</version>
+					        </dependency>
+					        <dependency>
+					            <groupId>com.vaadin</groupId>
+					            <artifactId>vaadin-client</artifactId>
+					            <version>${vaadin.version}</version>
+					        </dependency>
+					        <dependency>
+					            <groupId>com.vaadin</groupId>
+					            <artifactId>vaadin-themes</artifactId>
+					            <version>${vaadin.version}</version>
+					        </dependency>
+                        </dependencies>
                     </plugin>
                 </plugins>
             </build>
