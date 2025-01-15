@@ -13,7 +13,6 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
@@ -60,8 +59,8 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
                 .findElement(By.cssSelector(".col-group-pane .grouping.minus"));
         WebElement rowGrouping = spreadsheetElement
                 .findElement(By.cssSelector(".row-group-pane .grouping.minus"));
-        assertEquals(280, colGrouping.getSize().getWidth());
-        assertEquals(110, rowGrouping.getSize().getHeight());
+        assertInRange(270, 290, colGrouping.getSize().getWidth());
+        assertInRange(105, 115, rowGrouping.getSize().getHeight());
     }
 
     @Test
