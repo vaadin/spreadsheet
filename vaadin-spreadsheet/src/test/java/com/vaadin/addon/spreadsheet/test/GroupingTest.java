@@ -59,8 +59,10 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
                 .findElement(By.cssSelector(".col-group-pane .grouping.minus"));
         WebElement rowGrouping = spreadsheetElement
                 .findElement(By.cssSelector(".row-group-pane .grouping.minus"));
-        assertInRange(270, 290, colGrouping.getSize().getWidth());
-        assertInRange(105, 115, rowGrouping.getSize().getHeight());
+
+        // assertInRange(from, value, to). Very sensible argument ordering. :(
+        assertInRange(270, colGrouping.getSize().getWidth(), 290);
+        assertInRange(105, rowGrouping.getSize().getHeight(), 115);
     }
 
     @Test
