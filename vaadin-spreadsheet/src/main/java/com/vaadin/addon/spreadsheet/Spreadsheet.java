@@ -43,6 +43,8 @@ import org.apache.poi.ss.formula.BaseFormulaEvaluator;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -57,6 +59,8 @@ import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.PaneInformation;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -3483,11 +3487,33 @@ public class Spreadsheet extends AbstractComponent
      * Decides if overlay is visible in the current view.
      */
     private boolean isOverlayVisible(SheetOverlayWrapper overlay) {
-        int col1 = overlay.getAnchor().getCol1();
-        int col2 = overlay.getAnchor().getCol2();
-        int row1 = overlay.getAnchor().getRow1();
-        int row2 = overlay.getAnchor().getRow2();
-
+    	if (overlay == null) {
+    		LOGGER.warning("isOverlayVisible(): overlay is null");
+    		return false;
+    	}
+    	
+    	ClientAnchor anchor = overlay.getAnchor();
+    	if (overlay.getAnchor() == null) {
+    		LOGGER.warning("isOverlayVisible(): overlay.getAnchor() is null");
+    		return false;
+    	}
+    	
+        // Need special handling for XSSFClientAnchor anchors of type
+        // DONT_MOVE_AND_RESIZE.
+        // See https://github.com/vaadin/flow-components/issues/3261
+        if (AnchorType.DONT_MOVE_AND_RESIZE.equals(anchor.getAnchorType())
+                && anchor instanceof XSSFClientAnchor) {
+            // Since there's no way to know if an arbitrary x/y coordinate is
+            // inside the current viewport, always return true for these
+            // anchors.
+            return true;
+        }
+    	
+    	final int col1 = overlay.getAnchor().getCol1();
+    	final int col2 = overlay.getAnchor().getCol2();
+    	final int row1 = overlay.getAnchor().getRow1();
+    	final int row2 = overlay.getAnchor().getRow2();
+        
         // type=2, doesn't size with cells
         final boolean isType2 = (col2 == 0 && row2 == 0);
 
@@ -3499,8 +3525,8 @@ public class Spreadsheet extends AbstractComponent
             }
         }
 
-        int horizontalSplitPosition = getLastFrozenColumn();
-        int verticalSplitPosition = getLastFrozenRow();
+        final int horizontalSplitPosition = getLastFrozenColumn();
+        final int verticalSplitPosition = getLastFrozenRow();
 
         // the sheet is divided into four areas by vertical and horizontal split
 
@@ -3552,6 +3578,28 @@ public class Spreadsheet extends AbstractComponent
 
         Sheet sheet = getActiveSheet();
 
+        ClientAnchor anchor = overlayWrapper.getAnchor();
+
+        // Need special handling for XSSFClientAnchor anchors of type
+        // DONT_MOVE_AND_RESIZE.
+        // See https://github.com/vaadin/flow-components/issues/3261
+        if (AnchorType.DONT_MOVE_AND_RESIZE.equals(anchor.getAnchorType())
+                && anchor instanceof XSSFClientAnchor) {
+            info.col = 1;
+            info.row = 1;
+
+            XSSFClientAnchor xssfAnchor = (XSSFClientAnchor) anchor;
+            info.dx = (Long) xssfAnchor.getPosition().getX()
+                    / Units.EMU_PER_PIXEL;
+            info.dy = (Long) xssfAnchor.getPosition().getY()
+                    / Units.EMU_PER_POINT;
+            info.width = xssfAnchor.getSize().getCx() / Units.EMU_PER_PIXEL;
+            info.height = xssfAnchor.getSize().getCy() / Units.EMU_PER_POINT;
+
+            return info;
+        }
+
+        
         int col = overlayWrapper.getAnchor().getCol1();
         while (isColumnHidden(col)) {
             col++;
