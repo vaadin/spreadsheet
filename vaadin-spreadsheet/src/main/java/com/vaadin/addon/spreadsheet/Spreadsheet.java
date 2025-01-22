@@ -3598,7 +3598,6 @@ public class Spreadsheet extends AbstractComponent
 
             return info;
         }
-
         
         int col = overlayWrapper.getAnchor().getCol1();
         while (isColumnHidden(col)) {
