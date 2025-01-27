@@ -21,7 +21,7 @@
         <Implementation-Vendor>${project.organization.name}</Implementation-Vendor>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <currentYear>2024</currentYear>
+        <currentYear>2025</currentYear>
 
         <vaadin.version>8.14.4</vaadin.version>
         <charts.version>4.3.5</charts.version>
