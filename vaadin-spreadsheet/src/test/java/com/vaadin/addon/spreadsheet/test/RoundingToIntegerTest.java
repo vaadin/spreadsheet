@@ -1,7 +1,7 @@
 /*
  * Vaadin Spreadsheet Addon
  *
- * Copyright (C) 2013-2024 Vaadin Ltd
+ * Copyright (C) 2013-2025 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
