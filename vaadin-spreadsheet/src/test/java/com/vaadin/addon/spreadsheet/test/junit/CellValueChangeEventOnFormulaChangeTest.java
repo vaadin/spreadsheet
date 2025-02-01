@@ -62,7 +62,7 @@ public class CellValueChangeEventOnFormulaChangeTest {
         spreadsheet.getCellValueManager().onCellValueChange(3, 1, "=A1+2*B1");
 
         assertEquals("There should be 1 changed cell", 1, changedCells.size());
-        assertEquals("The changed cell should be C1", new CellReference("C1"),
+        assertEquals("The changed cell should be C1", new CellReference("Sheet0!C1"),
                 changedCells.get(0));
     }
 

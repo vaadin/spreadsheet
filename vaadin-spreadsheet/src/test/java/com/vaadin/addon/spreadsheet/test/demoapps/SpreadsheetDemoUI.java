@@ -164,6 +164,11 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         updateButton = createUpdateButton();
         save = createSaveButton();
 
+        // Retain old behavior. Vaadin 8.something set immediate mode to
+        // default; these tests were written before that and may depend on the
+        // old behavior.
+        upload.setImmediateMode(false);
+
         download = new Button("Download");
         download.setEnabled(false);
 

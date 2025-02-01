@@ -214,12 +214,10 @@ class RowData implements Serializable {
             }
             cell.setCellStyle(cellStyle);
 
-            cell.setCellType(cellType);
-
             switch (cellType) {
             case _NONE:
             case BLANK:
-                cell.setCellValue(stringCellValue);
+                cell.setBlank();
                 break;
             case BOOLEAN:
                 cell.setCellValue(booleanCellValue);

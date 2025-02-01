@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.poi.common.usermodel.HyperlinkType;
+import org.apache.poi.ss.formula.LazyRefEval;
 import org.apache.poi.ss.formula.WorkbookEvaluatorProvider;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
@@ -209,6 +210,17 @@ public class DefaultHyperlinkCellClickHandler
                             new CellReference(cell.getSheet().getSheetName(),
                                     cell.getRowIndex(), cell.getColumnIndex(),
                                     false, false));
+
+            // Apache POI from 4.1.x onwards give a LazyRefEval instead of a
+            // straight up StringEval due to multi-sheet support.. so we fudge
+            // the old behavior.
+            // TODO: In the future we should add helper API for ease of use
+            // of multi-sheet documents.
+            if (value instanceof LazyRefEval) {
+                int idx = ((LazyRefEval) value).getFirstSheetIndex();
+                value = ((LazyRefEval) value).getInnerValueEval(idx);
+            }
+
             if (value instanceof StringEval) {
                 return ((StringEval) value).getStringValue();
             }

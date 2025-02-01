@@ -75,8 +75,10 @@ class ColorUtils {
             ColorProperties stopClrProp = createColorPropertiesFromGradientStop(
                     stop, colorMap);
 
+            // Dangerous cast
             gradientProp.colorStops.put(
-                    stop.getPos() / (double) PERCENTAGE_FACTOR, stopClrProp);
+                    (double) stop.getPos() / (double) PERCENTAGE_FACTOR,
+                    stopClrProp);
         }
 
         if (gradFill.isSetLin() && gradFill.getLin().isSetAng()) {
@@ -162,7 +164,8 @@ class ColorUtils {
 
     private static float getLum(List<CTPercentage> list) {
         if (list.size() > 0) {
-            return list.get(0).getVal() / PERCENTAGE_FACTOR;
+            // Dangerous cast
+            return (float) list.get(0).getVal() / PERCENTAGE_FACTOR;
         } else {
             return 0;
         }
@@ -170,7 +173,8 @@ class ColorUtils {
 
     private static float getAlpha(List<CTPositiveFixedPercentage> alphaList) {
         if (alphaList.size() > 0) {
-            return alphaList.get(0).getVal() / PERCENTAGE_FACTOR;
+            // Dangerous cast
+            return (float) alphaList.get(0).getVal() / PERCENTAGE_FACTOR;
         } else {
             return 1;
         }

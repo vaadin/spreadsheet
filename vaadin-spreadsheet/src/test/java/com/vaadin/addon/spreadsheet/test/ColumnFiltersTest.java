@@ -10,12 +10,12 @@
  */
 package com.vaadin.addon.spreadsheet.test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -26,7 +26,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFTable;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Before;
 import org.junit.Test;
@@ -82,7 +81,7 @@ public class ColumnFiltersTest {
 
     @Test
     public void sheetWithTables_loadWorkbook_tablesPreserved() {
-        XSSFTable table = workbook.getSheetAt(0)
+        workbook.getSheetAt(0)
                 .createTable(new AreaReference(TABLE2_RANGE, null));
 
         spreadsheet.setWorkbook(workbook);
