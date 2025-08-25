@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <currentYear>2024</currentYear>
+        <currentYear>2025</currentYear>
         
         <vaadin.version>8.14.4</vaadin.version>
         <testbench.version>5.1.2</testbench.version>
