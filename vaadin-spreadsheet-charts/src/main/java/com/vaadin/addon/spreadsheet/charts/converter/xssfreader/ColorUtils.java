@@ -76,9 +76,14 @@ class ColorUtils {
                     stop, colorMap);
 
             // Dangerous cast
-            gradientProp.colorStops.put(
-                    (double) stop.getPos() / (double) PERCENTAGE_FACTOR,
-                    stopClrProp);
+            double c = 0.5;
+            try {
+                c = Double.parseDouble(stop.getPos().toString())
+                        / (double) PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+            } catch (NullPointerException npe) {
+            }
+            gradientProp.colorStops.put(c, stopClrProp);
         }
 
         if (gradFill.isSetLin() && gradFill.getLin().isSetAng()) {
