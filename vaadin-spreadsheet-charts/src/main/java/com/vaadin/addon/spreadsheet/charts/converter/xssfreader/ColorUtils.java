@@ -165,18 +165,33 @@ class ColorUtils {
     private static float getLum(List<CTPercentage> list) {
         if (list.size() > 0) {
             // Dangerous cast
-            return (float) list.get(0).getVal() / PERCENTAGE_FACTOR;
+            try {
+                return Float.parseFloat(list.get(0).getVal().toString())
+                        / PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+                return .0f;
+            } catch (NullPointerException npe) {
+                return .0f;
+            }
         } else {
-            return 0;
+            return .0f;
         }
     }
 
     private static float getAlpha(List<CTPositiveFixedPercentage> alphaList) {
         if (alphaList.size() > 0) {
             // Dangerous cast
-            return (float) alphaList.get(0).getVal() / PERCENTAGE_FACTOR;
+            try {
+                return Float
+                        .parseFloat(alphaList.get(0).getVal().toString())
+                        / PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+                return 1.0f;
+            } catch (NullPointerException npe) {
+                return 1.0f;
+            }
         } else {
-            return 1;
+            return 1.0f;
         }
     }
 
