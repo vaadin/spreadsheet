@@ -37,8 +37,10 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     @Test
     public void grouping_themeHasChanged_theSpreadsheetIsRenderedCorrectly()
             throws Exception {
-        loadPage("demo-reindeer", "Groupingtest.xlsx");
-        compareScreen("grouping_styling_legacy");
+        // Disabled, as reindeer theme is no longer being packaged
+        // TODO: consider re-enabling after fixing packaging
+        // loadPage("demo-reindeer", "Groupingtest.xlsx");
+        // compareScreen("grouping_styling_legacy");
 
         loadPage("demo", "Groupingtest.xlsx");
         compareScreen("grouping_styling_demo");

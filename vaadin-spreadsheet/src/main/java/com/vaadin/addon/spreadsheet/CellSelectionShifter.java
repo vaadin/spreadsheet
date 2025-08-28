@@ -194,7 +194,6 @@ public class CellSelectionShifter implements Serializable {
             shiftString(shiftedCell, newCell, sequenceIncrement);
             break;
         case BLANK:
-            // cell is cleared when type is set
             newCell.setBlank();
         default:
             break;

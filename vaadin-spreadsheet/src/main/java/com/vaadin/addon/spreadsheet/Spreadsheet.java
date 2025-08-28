@@ -4476,7 +4476,6 @@ public class Spreadsheet extends AbstractComponent
         public void onFormulaValueChange(FormulaValueChangeEvent event);
     }
 
-
     /**
      * Adds the given SelectionChangeListener to this Spreadsheet.
      *

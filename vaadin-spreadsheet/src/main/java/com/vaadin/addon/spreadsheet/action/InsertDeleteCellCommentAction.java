@@ -97,7 +97,7 @@ public class InsertDeleteCellCommentAction extends SpreadsheetAction {
             cell.removeCellComment();
         }
 
-        // Refresh the cell we just added a comment to
+        // Refresh the cell we just modified
         spreadsheet.refreshCells(cell);
 
         // If we created the comment, we will want to edit it
