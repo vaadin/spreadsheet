@@ -29,7 +29,7 @@
         <jetty.version>9.4.54.v20240208</jetty.version>
         <javax.servlet.version>3.0.1</javax.servlet.version>
         <junit.version>4.13.2</junit.version>
-        <poi.version>4.0.1</poi.version>
+        <poi.version>5.2.2</poi.version>
 
         <testbench.api.version>${vaadin.version}</testbench.api.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>

@@ -61,8 +61,20 @@ public class PieSeriesReader
         if (isDoughnut) {
             isExplodedDoughnutHandled = true;
             seriesData.isDonut = true;
-            seriesData.donutHoleSizePercent = ((CTDoughnutChart) getChart())
-                    .getHoleSize().getVal();
+
+            // This cast was potentially dangerous - chart.getHoleSize().getVal()
+            // might not be naturally castable to short. We now parse the returned
+            // value in hopes of getting a more reliable result, but if the result
+            // is wrong, we want it to look obviously wrong.
+            short sizePct = 90; 
+            try {
+                CTDoughnutChart chart = (CTDoughnutChart) getChart();
+                Object val = chart.getHoleSize().getVal();
+                sizePct = Short.parseShort(val.toString());
+            } catch (NumberFormatException ex) {
+            } catch (NullPointerException ex) {
+            }
+            seriesData.donutHoleSizePercent = sizePct;
         }
     }
 }

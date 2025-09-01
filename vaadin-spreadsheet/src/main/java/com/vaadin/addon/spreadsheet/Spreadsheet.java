@@ -37,13 +37,14 @@ import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
 import org.apache.poi.ss.usermodel.Comment;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -58,6 +59,8 @@ import org.apache.poi.ss.util.CellRangeUtil;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.PaneInformation;
 import org.apache.poi.ss.util.WorkbookUtil;
+import org.apache.poi.util.Units;
+import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFHyperlink;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -81,7 +84,9 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.event.SerializableEventListener;
 import com.vaadin.server.Resource;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
@@ -1743,7 +1748,6 @@ public class Spreadsheet extends AbstractComponent
         } else {
             final String key = SpreadsheetUtil.toKey(col + 1, row + 1);
             valueManager.clearCellCache(key);
-            cell.setCellType(CellType.FORMULA);
         }
         cell.setCellFormula(formula);
         valueManager.cellUpdated(cell);
@@ -2002,9 +2006,9 @@ public class Spreadsheet extends AbstractComponent
                     e);
             return;
         }
+
         int columnPixelWidth = getColumnAutofitPixelWidth(columnIndex,
-                AbstractExcelUtils.getColumnWidthInPx(
-                        activeSheet.getColumnWidth(columnIndex)));
+                (int) activeSheet.getColumnWidthInPixels(columnIndex));
 
         getState().colW[columnIndex] = columnPixelWidth;
         getCellValueManager().clearCacheForColumn(columnIndex + 1);
@@ -2456,7 +2460,7 @@ public class Spreadsheet extends AbstractComponent
 
     private void createMergedRegionIntoSheet(CellRangeAddress region) {
         Sheet sheet = getActiveSheet();
-        int addMergedRegionIndex = sheet.addMergedRegion(region);
+        sheet.addMergedRegion(region);
         MergedRegion mergedRegion = new MergedRegion();
         mergedRegion.col1 = region.getFirstColumn() + 1;
         mergedRegion.col2 = region.getLastColumn() + 1;
@@ -2466,7 +2470,7 @@ public class Spreadsheet extends AbstractComponent
         if (getState().mergedRegions == null) {
             getState().mergedRegions = new ArrayList<MergedRegion>();
         }
-        getState().mergedRegions.add(addMergedRegionIndex - 1, mergedRegion);
+        getState().mergedRegions.add(mergedRegion);
         // update the style & data for the region cells, effects region + 1
         // FIXME POI doesn't seem to care that the other cells inside the merged
         // region should be removed; the values those cells have are still used
@@ -2580,9 +2584,8 @@ public class Spreadsheet extends AbstractComponent
                 && getState().hiddenColumnIndexes.contains(columnIndex + 1)) {
             getState().hiddenColumnIndexes.remove(
                     getState().hiddenColumnIndexes.indexOf(columnIndex + 1));
-            getState().colW[columnIndex] = AbstractExcelUtils
-                    .getColumnWidthInPx(
-                            getActiveSheet().getColumnWidth(columnIndex));
+            getState().colW[columnIndex] = (int) getActiveSheet()
+                    .getColumnWidthInPixels(columnIndex);
             getCellValueManager().clearCacheForColumn(columnIndex + 1);
             getCellValueManager().loadCellData(firstRow, columnIndex + 1,
                     lastRow, columnIndex + 1);
@@ -3484,11 +3487,33 @@ public class Spreadsheet extends AbstractComponent
      * Decides if overlay is visible in the current view.
      */
     private boolean isOverlayVisible(SheetOverlayWrapper overlay) {
-        int col1 = overlay.getAnchor().getCol1();
-        int col2 = overlay.getAnchor().getCol2();
-        int row1 = overlay.getAnchor().getRow1();
-        int row2 = overlay.getAnchor().getRow2();
-
+    	if (overlay == null) {
+    		LOGGER.warning("isOverlayVisible(): overlay is null");
+    		return false;
+    	}
+    	
+    	ClientAnchor anchor = overlay.getAnchor();
+    	if (overlay.getAnchor() == null) {
+    		LOGGER.warning("isOverlayVisible(): overlay.getAnchor() is null");
+    		return false;
+    	}
+    	
+        // Need special handling for XSSFClientAnchor anchors of type
+        // DONT_MOVE_AND_RESIZE.
+        // See https://github.com/vaadin/flow-components/issues/3261
+        if (AnchorType.DONT_MOVE_AND_RESIZE.equals(anchor.getAnchorType())
+                && anchor instanceof XSSFClientAnchor) {
+            // Since there's no way to know if an arbitrary x/y coordinate is
+            // inside the current viewport, always return true for these
+            // anchors.
+            return true;
+        }
+    	
+    	final int col1 = overlay.getAnchor().getCol1();
+    	final int col2 = overlay.getAnchor().getCol2();
+    	final int row1 = overlay.getAnchor().getRow1();
+    	final int row2 = overlay.getAnchor().getRow2();
+        
         // type=2, doesn't size with cells
         final boolean isType2 = (col2 == 0 && row2 == 0);
 
@@ -3500,8 +3525,8 @@ public class Spreadsheet extends AbstractComponent
             }
         }
 
-        int horizontalSplitPosition = getLastFrozenColumn();
-        int verticalSplitPosition = getLastFrozenRow();
+        final int horizontalSplitPosition = getLastFrozenColumn();
+        final int verticalSplitPosition = getLastFrozenRow();
 
         // the sheet is divided into four areas by vertical and horizontal split
 
@@ -3553,6 +3578,27 @@ public class Spreadsheet extends AbstractComponent
 
         Sheet sheet = getActiveSheet();
 
+        ClientAnchor anchor = overlayWrapper.getAnchor();
+
+        // Need special handling for XSSFClientAnchor anchors of type
+        // DONT_MOVE_AND_RESIZE.
+        // See https://github.com/vaadin/flow-components/issues/3261
+        if (AnchorType.DONT_MOVE_AND_RESIZE.equals(anchor.getAnchorType())
+                && anchor instanceof XSSFClientAnchor) {
+            info.col = 1;
+            info.row = 1;
+
+            XSSFClientAnchor xssfAnchor = (XSSFClientAnchor) anchor;
+            info.dx = (Long) xssfAnchor.getPosition().getX()
+                    / Units.EMU_PER_PIXEL;
+            info.dy = (Long) xssfAnchor.getPosition().getY()
+                    / Units.EMU_PER_POINT;
+            info.width = xssfAnchor.getSize().getCx() / Units.EMU_PER_PIXEL;
+            info.height = xssfAnchor.getSize().getCy() / Units.EMU_PER_POINT;
+
+            return info;
+        }
+        
         int col = overlayWrapper.getAnchor().getCol1();
         while (isColumnHidden(col)) {
             col++;
@@ -4054,8 +4100,8 @@ public class Spreadsheet extends AbstractComponent
                 continue;
             }
             Integer autofittedWidth = autofittedColumnWidths.get(cr);
-            int currentWidth = AbstractExcelUtils.getColumnWidthInPx(
-                    filteredSheet.getColumnWidth(cr.getCol()));
+            int currentWidth = (int) filteredSheet
+                    .getColumnWidthInPixels(cr.getCol());
             // only update columns that haven't changed size since the last
             // autofit
             if (currentWidth == autofittedWidth) {
@@ -4379,7 +4425,7 @@ public class Spreadsheet extends AbstractComponent
     /**
      * Used for knowing when a user has changed the cell selection in any way.
      */
-    public interface SelectionChangeListener extends Serializable {
+    public interface SelectionChangeListener extends SerializableEventListener {
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(SelectionChangeListener.class, "onSelectionChange",
                         SelectionChangeEvent.class);
@@ -4397,7 +4443,7 @@ public class Spreadsheet extends AbstractComponent
      * Used for knowing when a user has changed the cell value in Spreadsheet
      * UI.
      */
-    public interface CellValueChangeListener extends Serializable {
+    public interface CellValueChangeListener extends SerializableEventListener {
         public static final Method CELL_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(CellValueChangeListener.class, "onCellValueChange",
                         CellValueChangeEvent.class);
@@ -4415,7 +4461,8 @@ public class Spreadsheet extends AbstractComponent
      * Used for knowing when a cell referenced by a formula cell has changed in
      * the Spreadsheet UI making the formula value change
      */
-    public interface FormulaValueChangeListener extends Serializable {
+    public interface FormulaValueChangeListener
+            extends SerializableEventListener {
         public static final Method FORMULA_VALUE_CHANGE_METHOD = ReflectTools
                 .findMethod(FormulaValueChangeListener.class,
                         "onFormulaValueChange", FormulaValueChangeEvent.class);
@@ -4435,8 +4482,9 @@ public class Spreadsheet extends AbstractComponent
      * @param listener
      *            Listener to add.
      */
-    public void addSelectionChangeListener(SelectionChangeListener listener) {
-        addListener(SelectionChangeEvent.class, listener,
+    public Registration addSelectionChangeListener(
+            SelectionChangeListener listener) {
+        return addListener(SelectionChangeEvent.class, listener,
                 SelectionChangeListener.SELECTION_CHANGE_METHOD);
     }
 
@@ -4446,8 +4494,9 @@ public class Spreadsheet extends AbstractComponent
      * @param listener
      *            Listener to add.
      */
-    public void addCellValueChangeListener(CellValueChangeListener listener) {
-        addListener(CellValueChangeEvent.class, listener,
+    public Registration addCellValueChangeListener(
+            CellValueChangeListener listener) {
+        return addListener(CellValueChangeEvent.class, listener,
                 CellValueChangeListener.CELL_VALUE_CHANGE_METHOD);
     }
 
@@ -4457,9 +4506,9 @@ public class Spreadsheet extends AbstractComponent
      * @param listener
      *            Listener to add.
      */
-    public void addFormulaValueChangeListener(
+    public Registration addFormulaValueChangeListener(
             FormulaValueChangeListener listener) {
-        addListener(FormulaValueChangeEvent.class, listener,
+        return addListener(FormulaValueChangeEvent.class, listener,
                 FormulaValueChangeListener.FORMULA_VALUE_CHANGE_METHOD);
     }
 
@@ -4468,7 +4517,12 @@ public class Spreadsheet extends AbstractComponent
      *
      * @param listener
      *            Listener to remove.
+     * @deprecated as of 3.1.0 use the {@link Registration#remove()} method of
+     *             the {@link Registration} object returned from the
+     *             {@link #addSelectionChangeListener(SelectionChangeListener)}
+     *             method
      */
+    @Deprecated
     public void removeSelectionChangeListener(
             SelectionChangeListener listener) {
         removeListener(SelectionChangeEvent.class, listener,
@@ -4480,7 +4534,12 @@ public class Spreadsheet extends AbstractComponent
      *
      * @param listener
      *            Listener to remove.
+     * @deprecated as of 3.1.0 use the {@link Registration#remove()} method of
+     *             the {@link Registration} object returned from the
+     *             {@link #addCellValueChangeListener(CellValueChangeListener)}
+     *             method
      */
+    @Deprecated
     public void removeCellValueChangeListener(
             CellValueChangeListener listener) {
         removeListener(CellValueChangeEvent.class, listener,
@@ -4501,7 +4560,7 @@ public class Spreadsheet extends AbstractComponent
     /**
      * A listener for when an attempt to modify a locked cell has been made.
      */
-    public interface ProtectedEditListener extends Serializable {
+    public interface ProtectedEditListener extends SerializableEventListener {
         public static final Method SELECTION_CHANGE_METHOD = ReflectTools
                 .findMethod(ProtectedEditListener.class, "writeAttempted",
                         ProtectedEditEvent.class);
@@ -4535,7 +4594,12 @@ public class Spreadsheet extends AbstractComponent
      *
      * @param listener
      *            The listener to remove.
+     * @deprecated as of 3.1.0 use the {@link Registration#remove()} method of
+     *             the {@link Registration} object returned from the
+     *             {@link #addProtectedEditListener(ProtectedEditListener)}
+     *             method
      */
+    @Deprecated
     public void removeProtectedEditListener(ProtectedEditListener listener) {
         removeListener(ProtectedEditEvent.class, listener,
                 ProtectedEditListener.SELECTION_CHANGE_METHOD);
@@ -4674,7 +4738,7 @@ public class Spreadsheet extends AbstractComponent
     /**
      * A listener for when a sheet is selected.
      */
-    public interface SheetChangeListener extends Serializable {
+    public interface SheetChangeListener extends SerializableEventListener {
         public static final Method SHEET_CHANGE_METHOD = ReflectTools
                 .findMethod(SheetChangeListener.class, "onSheetChange",
                         SheetChangeEvent.class);
@@ -4705,7 +4769,11 @@ public class Spreadsheet extends AbstractComponent
      *
      * @param listener
      *            Listener to remove
+     * @deprecated as of 3.1.0 use the {@link Registration#remove()} method of
+     *             the {@link Registration} object returned from the
+     *             {@link #addSheetChangeListener(SheetChangeListener)} method
      */
+    @Deprecated
     public void removeSheetChangeListener(SheetChangeListener listener) {
         removeListener(SheetChangeEvent.class, listener,
                 SheetChangeListener.SHEET_CHANGE_METHOD);
@@ -5408,7 +5476,8 @@ public class Spreadsheet extends AbstractComponent
     /**
      * Interface for listening a {@link RowHeaderDoubleClickEvent} event
      **/
-    public interface RowHeaderDoubleClickListener extends Serializable {
+    public interface RowHeaderDoubleClickListener
+            extends SerializableEventListener {
         Method ON_ROW_ON_ROW_HEADER_DOUBLE_CLICK = ReflectTools.findMethod(
                 RowHeaderDoubleClickListener.class, "onRowHeaderDoubleClick",
                 RowHeaderDoubleClickEvent.class);

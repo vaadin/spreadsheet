@@ -23,7 +23,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.ss.formula.WorkbookEvaluatorProvider;
 import org.apache.poi.ss.formula.eval.AreaEval;
 import org.apache.poi.ss.formula.eval.RefEval;
@@ -36,6 +35,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
+import org.apache.poi.util.Units;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
@@ -237,9 +237,10 @@ public class SpreadsheetUtil implements Serializable {
      * @return Default column width in PX
      */
     static int getDefaultColumnWidthInPx() {
-        return ExcelToHtmlUtils
-                .getColumnWidthInPx(SpreadsheetFactory.DEFAULT_COL_WIDTH_UNITS
-                        * EXCEL_COLUMN_WIDTH_FACTOR);
+        // Formula taken from XSSFSheet.getColumnWidthInPixels
+        return (int) (SpreadsheetFactory.DEFAULT_COL_WIDTH_UNITS
+                * EXCEL_COLUMN_WIDTH_FACTOR / 256.0
+                * Units.DEFAULT_CHARACTER_WIDTH);
     }
 
     /**

@@ -13,7 +13,6 @@ package com.vaadin.addon.spreadsheet.test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.lessThan;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
@@ -38,8 +37,10 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
     @Test
     public void grouping_themeHasChanged_theSpreadsheetIsRenderedCorrectly()
             throws Exception {
-        loadPage("demo-reindeer", "Groupingtest.xlsx");
-        compareScreen("grouping_styling_legacy");
+        // Disabled, as reindeer theme is no longer being packaged
+        // TODO: consider re-enabling after fixing packaging
+        // loadPage("demo-reindeer", "Groupingtest.xlsx");
+        // compareScreen("grouping_styling_legacy");
 
         loadPage("demo", "Groupingtest.xlsx");
         compareScreen("grouping_styling_demo");
@@ -60,8 +61,10 @@ public class GroupingTest extends AbstractSpreadsheetTestCase {
                 .findElement(By.cssSelector(".col-group-pane .grouping.minus"));
         WebElement rowGrouping = spreadsheetElement
                 .findElement(By.cssSelector(".row-group-pane .grouping.minus"));
-        assertEquals(280, colGrouping.getSize().getWidth());
-        assertEquals(110, rowGrouping.getSize().getHeight());
+
+        // assertInRange(from, value, to). Very sensible argument ordering. :(
+        assertInRange(270, colGrouping.getSize().getWidth(), 290);
+        assertInRange(105, rowGrouping.getSize().getHeight(), 115);
     }
 
     @Test

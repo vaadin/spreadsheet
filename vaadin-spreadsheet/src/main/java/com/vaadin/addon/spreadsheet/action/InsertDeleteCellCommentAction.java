@@ -70,33 +70,38 @@ public class InsertDeleteCellCommentAction extends SpreadsheetAction {
             SelectionChangeEvent event) {
         Sheet sheet = spreadsheet.getActiveSheet();
         CellReference cr = event.getSelectedCellReference();
-        boolean cellCreated = false, rowCreated = false, commentEdited = false;
+
+        boolean commentCreated = false;
+
+        // XXX: We do not know yet whether we're creating or deleting a comment
+
+        // We must have a row to have a cell
         Row row = sheet.getRow(cr.getRow());
         if (row == null) {
             row = sheet.createRow(cr.getRow());
-            rowCreated = true;
         }
+
+        // We must have a cell to be able to change it
         Cell cell = spreadsheet.getCell(cr);
         if (cell == null) {
             cell = row.createCell(cr.getCol());
-            cellCreated = true;
         }
+
+        // If the cell does not have a commment, we must be here
+        // in order to add one
         if (cell.getCellComment() == null) {
             createCellComment(spreadsheet, sheet, cell, cr);
-            commentEdited = true;
+            commentCreated = true;
         } else {
+            // ..otherwise I suppose we're here to remove it.
             cell.removeCellComment();
-            if (cellCreated) {
-                sheet.getRow(cr.getRow()).removeCell(cell);
-            }
-            if (rowCreated) {
-                sheet.removeRow(sheet.getRow(cr.getRow()));
-            }
         }
-        if (cell != null) {
-            spreadsheet.refreshCells(cell);
-        }
-        if (commentEdited) {
+
+        // Refresh the cell we just modified
+        spreadsheet.refreshCells(cell);
+
+        // If we created the comment, we will want to edit it
+        if (commentCreated) {
             spreadsheet.editCellComment(cr);
         }
     }

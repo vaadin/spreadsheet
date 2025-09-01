@@ -75,8 +75,18 @@ class ColorUtils {
             ColorProperties stopClrProp = createColorPropertiesFromGradientStop(
                     stop, colorMap);
 
-            gradientProp.colorStops.put(
-                    stop.getPos() / (double) PERCENTAGE_FACTOR, stopClrProp);
+            // This used to be a dangerous cast (stop.getPos() was not
+            // necessarily castable to double) - now we're doing our best
+            // to make sure we get an actual number out. If the process
+            // fails, we want it to look consistently wrong.
+            double c = 0.5;
+            try {
+                c = Double.parseDouble(stop.getPos().toString())
+                        / (double) PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+            } catch (NullPointerException npe) {
+            }
+            gradientProp.colorStops.put(c, stopClrProp);
         }
 
         if (gradFill.isSetLin() && gradFill.getLin().isSetAng()) {
@@ -162,17 +172,44 @@ class ColorUtils {
 
     private static float getLum(List<CTPercentage> list) {
         if (list.size() > 0) {
-            return list.get(0).getVal() / PERCENTAGE_FACTOR;
+            // This used to be a dangerous cast (list.get(0).getVal())
+            // was not necessarily castable to float or even an object
+            // of the right type).
+            // Now we're doing our best to make sure we get an actual
+            // number out, or if the process fails, we want the result
+            // to look noticeably wrong.
+            try {
+                return Float.parseFloat(list.get(0).getVal().toString())
+                        / PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+                return .0f;
+            } catch (NullPointerException npe) {
+                return .0f;
+            }
         } else {
-            return 0;
+            return .0f;
         }
     }
 
     private static float getAlpha(List<CTPositiveFixedPercentage> alphaList) {
         if (alphaList.size() > 0) {
-            return alphaList.get(0).getVal() / PERCENTAGE_FACTOR;
+            // This used to be a dangerous cast (alphaList.get(0).getVal())
+            // was not necessarily castable to float or even an object of
+            // the right type).
+            // Now we're doing our best to make sure we get an actual
+            // number out, or if the process fails, we want the result
+            // to look noticeably wrong.
+            try {
+                return Float
+                        .parseFloat(alphaList.get(0).getVal().toString())
+                        / PERCENTAGE_FACTOR;
+            } catch (NumberFormatException nfe) {
+                return 1.0f;
+            } catch (NullPointerException npe) {
+                return 1.0f;
+            }
         } else {
-            return 1;
+            return 1.0f;
         }
     }
 

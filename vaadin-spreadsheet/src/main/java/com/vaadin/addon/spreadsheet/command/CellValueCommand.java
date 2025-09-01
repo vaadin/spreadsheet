@@ -224,10 +224,11 @@ public class CellValueCommand extends SpreadsheetCommand
 
         if (value == null) { // delete
             if (cell == null || cell.getCellStyle().getIndex() == 0) {
-                getSheet().getRow(row).removeCell(cell);
                 if (!spreadsheet.isRerenderPending()) {
                     spreadsheet.markCellAsDeleted(cell, false);
                 }
+                // this MUST happen *after* markCellAsDeleted
+                getSheet().getRow(row).removeCell(cell);
             } else {
                 cell.setCellValue((String) null);
                 if (!spreadsheet.isRerenderPending()) {

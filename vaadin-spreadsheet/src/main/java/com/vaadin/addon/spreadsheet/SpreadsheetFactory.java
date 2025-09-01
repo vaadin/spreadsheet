@@ -26,7 +26,6 @@ import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
 import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFPicture;
@@ -555,8 +554,7 @@ public class SpreadsheetFactory implements Serializable {
                 colWidths[i] = 0;
                 hiddenColumnIndexes.add(i + 1);
             } else {
-                colWidths[i] = ExcelToHtmlUtils
-                        .getColumnWidthInPx(sheet.getColumnWidth(i));
+                colWidths[i] = (int) sheet.getColumnWidthInPixels(i);
             }
         }
         spreadsheet.getState().hiddenColumnIndexes = hiddenColumnIndexes;
@@ -1085,8 +1083,12 @@ public class SpreadsheetFactory implements Serializable {
 
     private static void setDefaultColumnWidth(Spreadsheet spreadsheet,
             final Sheet sheet) {
-        int charactersToPixels = ExcelToHtmlUtils
-                .getColumnWidthInPx(sheet.getDefaultColumnWidth() * 256);
+        // TODO: Potentially incorrect. With POI 5, the previous utility
+        // methods were removed and the logic needed to change.
+        // We're assuming that column 1 of the sheet adheres to
+        // default size in the cases where this method is called,
+        // but this assumption may need revisiting.
+        int charactersToPixels = (int) sheet.getColumnWidthInPixels(0);
         if (charactersToPixels > 0) {
             spreadsheet.getState().defColW = charactersToPixels;
         } else {
