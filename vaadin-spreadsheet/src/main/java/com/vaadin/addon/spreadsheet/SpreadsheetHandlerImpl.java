@@ -279,6 +279,9 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
                         return;
                     }
                 }
+            } else if (spreadsheet.isActiveSheetProtected()) {
+                protectedCellWriteAttempted();
+                return;
             }
         }
 
