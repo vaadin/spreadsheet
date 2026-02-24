@@ -23,7 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <currentYear>2026</currentYear>
 
-        <vaadin.version>8.14.4</vaadin.version>
+        <vaadin.version>8.30.1</vaadin.version>
         <charts.version>4.3.5</charts.version>
         <testbench.version>5.1.2</testbench.version>
         <jetty.version>9.4.54.v20240208</jetty.version>
