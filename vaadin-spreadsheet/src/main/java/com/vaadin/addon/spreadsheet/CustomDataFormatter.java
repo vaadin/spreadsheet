@@ -10,11 +10,13 @@
  */
 package com.vaadin.addon.spreadsheet;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.format.CellFormat;
+import org.apache.poi.ss.format.CellFormatResult;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -62,12 +64,19 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
     private final int NEGATIVE_FORMAT_INDEX = 1;
     private final int ZERO_FORMAT_INDEX = 2;
     private final int TEXT_FORMAT_INDEX = 3;
+    private Locale locale;
 
     public CustomDataFormatter() {
     }
 
     public CustomDataFormatter(Locale locale) {
         super(locale);
+    }
+
+    @Override
+    public void updateLocale(Locale newLocale) {
+        super.updateLocale(newLocale);
+        this.locale = newLocale;
     }
 
     /**
@@ -183,5 +192,51 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
         }
 
         return CellFormat.getInstance(formatString).apply(cell).text;
+    }
+
+    /**
+     * Get the applicable text color for the cell. This uses Apache POI's
+     * CellFormat logic, which parses and evaluates the cell's format string
+     * against the cell's current value.
+     * 
+     * @param cell
+     *            The cell to get the applicable custom formatting text color
+     *            for.
+     * @return a CSS color value string, or null if no text color should be
+     *         applied.
+     */
+    public String getCellTextColor(Cell cell) {
+        try {
+            final String format = cell.getCellStyle().getDataFormatString();
+            if (format == null || format.isEmpty() || isGeneralFormat(format)) {
+                return null;
+            }
+
+            CellFormatResult result = CellFormat.getInstance(locale, format)
+                    .apply(cell);
+
+            if (result.textColor == null) {
+                return null;
+            }
+
+            Color color = result.textColor; // AWT color value returned by POI
+
+            // Convert calculated color value to simplest parseable hex string
+            // @formatter:off
+            final int cval = (color.getRed() << 16) | 
+                (color.getGreen() << 8) | color.getBlue();
+            final String hex = Integer.toHexString(cval);
+            switch (hex.length()) {
+                case 1: return "00000" + hex;
+                case 2: return "0000" + hex;
+                case 3: return "000" + hex;
+                case 4: return "00" + hex;
+                case 5: return "0" + hex;
+                default: return hex;
+            }
+            // @formatter:on
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

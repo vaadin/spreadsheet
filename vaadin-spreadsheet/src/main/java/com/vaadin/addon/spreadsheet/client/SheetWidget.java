@@ -3461,7 +3461,7 @@ public class SheetWidget extends Panel {
     }
 
     private void addCustomWidgetToCell(Cell cell, Widget customWidget) {
-        cell.setValue(null);
+        cell.setValue(null, null, null, true);
         Widget parent = customWidget.getParent();
         if (parent != null) {
             if (equals(parent)) {
@@ -3527,12 +3527,13 @@ public class SheetWidget extends Panel {
         String key = toKey(region.col1, region.row1);
         MergedCell mergedCell = new MergedCell(this, region.col1, region.row1);
         String cellStyle = "cs0";
+        String textColor = getMergedRegionTextColor(region);
         Cell cell = getCell(region.col1, region.row1);
         if (cell != null) {
             cellStyle = cell.getCellStyle();
         }
         mergedCell.setValue(getCellValue(region.col1, region.row1), cellStyle,
-                false);
+                textColor, false);
         DivElement element = mergedCell.getElement();
         element.addClassName(MERGED_CELL_CLASSNAME);
         updateMergedRegionRegionSize(region, mergedCell);
@@ -3557,6 +3558,18 @@ public class SheetWidget extends Panel {
             Widget customWidget = customWidgetMap.get(key);
             addCustomWidgetToCell(mergedCell, customWidget);
         }
+    }
+
+    private String getMergedRegionTextColor(MergedRegion region) {
+        CellData cellData = getCellData(region.col1, region.row1);
+        if (cellData != null && cellData.cellStyle != null) {
+            return cellData.textColor;
+        }
+        Cell cell = getCell(region.col1, region.row1);
+        if (cell != null) {
+            return cell.getTextColor();
+        }
+        return null;
     }
 
     /**
@@ -3695,7 +3708,7 @@ public class SheetWidget extends Panel {
         Cell originalCell = getCell(region.col1, region.row1);
         if (originalCell != null) {
             originalCell.setValue(mCell.getValue(), mCell.getCellStyle(),
-                    false);
+                    mCell.getTextColor(), false);
         }
         mergedCells.remove(region.id).getElement().removeFromParent();
         overflownMergedCells.remove(region);
@@ -4176,11 +4189,12 @@ public class SheetWidget extends Panel {
                 topLeftCells
                         .get((cd.row - 1) * horizontalSplitPosition + cd.col
                                 - 1)
-                        .setValue(cd.value, cd.cellStyle, cd.needsMeasure);
+                        .setValue(cd.value, cd.cellStyle, cd.textColor,
+                            cd.needsMeasure);
                 String key = toKey(cd.col, cd.row);
                 if (isMergedCell(key)) {
                     getMergedCell(key).setValue(cd.value, cd.cellStyle,
-                            cd.needsMeasure);
+                            cd.textColor, cd.needsMeasure);
                 }
                 if (cd.value == null) {
                     cachedCellData.remove(key);
@@ -4227,12 +4241,12 @@ public class SheetWidget extends Panel {
                     }
                 }
                 row.get(cd.col - c1).setValue(cd.value, cd.cellStyle,
-                        cd.needsMeasure);
+                        cd.textColor, cd.needsMeasure);
             }
             String key = toKey(cd.col, cd.row);
             if (isMergedCell(key)) {
                 getMergedCell(key).setValue(cd.value, cd.cellStyle,
-                        cd.needsMeasure);
+                        cd.textColor, cd.needsMeasure);
             }
             if (cd.value == null) {
                 cachedCellData.remove(key);
@@ -4257,7 +4271,7 @@ public class SheetWidget extends Panel {
             }
             if (isMergedCell(key)) {
                 getMergedCell(key).setValue(cd.value, cd.cellStyle,
-                        cd.needsMeasure);
+                        cd.textColor, cd.needsMeasure);
             } else {
                 Cell cell = null;
                 if (isCellRenderedInScrollPane(cd.col, cd.row)) {
@@ -4268,7 +4282,8 @@ public class SheetWidget extends Panel {
                 }
 
                 if (cell != null) {
-                    cell.setValue(cd.value, cd.cellStyle, cd.needsMeasure);
+                    cell.setValue(cd.value, cd.cellStyle, cd.textColor,
+                            cd.needsMeasure);
                     cell.markAsOverflowDirty();
                 }
                 int j = verticalSplitPosition > 0 ? 0 : firstColumnIndex;
@@ -4360,7 +4375,8 @@ public class SheetWidget extends Panel {
     private void recalculateInputElementWidth(final String value) {
         try {
             final Cell selectedCell = getSelectedCell();
-            selectedCell.setValue(value);
+            CellData cd = getCellData(selectedCell.getCol(), selectedCell.getCol());
+            selectedCell.setValue(value, cd.cellStyle, cd.textColor, true);
             int textWidth = measureValueWidth(selectedCell.getCellStyle(),
                     value);
             int col = selectedCell.getCol();
@@ -5010,7 +5026,7 @@ public class SheetWidget extends Panel {
                 ".notusedselector", 0);
         this.customEditorWidget = customEditorWidget;
         Cell selectedCell = getSelectedCell();
-        selectedCell.setValue(null);
+        selectedCell.setValue(null, null, null, true);
 
         Widget parent = customEditorWidget.getParent();
         if (parent != null && !equals(parent)) {
@@ -5038,9 +5054,9 @@ public class SheetWidget extends Panel {
             if (loaded && getSelectedCell() != null) {
                 CellData cd = cachedCellData.get(getSelectedCellKey());
                 if (cd == null) {
-                    getSelectedCell().setValue(null);
+                    getSelectedCell().setValue(null, null, null, true);
                 } else {
-                    getSelectedCell().setValue(cd.value);
+                    getSelectedCell().setValue(cd.value, cd.cellStyle, cd.textColor, cd.needsMeasure);
                 }
             }
             customEditorWidget = null;
@@ -5212,7 +5228,9 @@ public class SheetWidget extends Panel {
 
     public void updateSelectedCellValue(String value) {
         if (isSelectedCellRendered()) {
-            getSelectedCell().setValue(value);
+            Cell cell = getSelectedCell();
+            CellData cd = getCellData(cell.getRow(), cell.getCol());
+            cell.setValue(value, cd.cellStyle, cd.textColor, true);
         }
 
         int j = verticalSplitPosition > 0 ? 0 : firstColumnIndex;
