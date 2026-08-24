@@ -458,7 +458,9 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
 
     @Override
     public void updateCellComment(String text, int col, int row) {
-        if (spreadsheet.isCellLocked(new CellAddress(row - 1, col - 1))) {
+        Row row = activesheet.getRow(row);
+        Cell cell = row.getCell(col);
+        if (spreadsheet.isCellLocked(cell)) {
             protectedCellWriteAttempted();
             return;
         }
