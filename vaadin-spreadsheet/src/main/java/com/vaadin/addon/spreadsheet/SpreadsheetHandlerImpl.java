@@ -460,8 +460,8 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
     public void updateCellComment(String text, int col, int row) {
         Workbook workbook = spreadsheet.getWorkbook();
         Sheet activesheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
-        Row row = activesheet.getRow(row);
-        Cell cell = row.getCell(col);
+        Row r = activesheet.getRow(row);
+        Cell cell = r.getCell(col);
         if (spreadsheet.isCellLocked(cell)) {
             protectedCellWriteAttempted();
             return;
