@@ -127,6 +127,7 @@ public class LockedCellTest {
     }
 
     private void fireCellValueEditedEvent(int row, int col, String value) {
+        spreadsheet.setSelection("B2");
         handler.cellValueEdited(row, col, value);
     }
 
