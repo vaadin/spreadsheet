@@ -509,7 +509,7 @@ public class Spreadsheet extends AbstractComponent
         sheetOverlays = new HashSet<SheetOverlayWrapper>();
         tables = new HashSet<SpreadsheetTable>();
         spreadsheetHandler = new SpreadsheetHandlerImpl(this);
-        registerRpc(hanler);
+        registerRpc(spreadsheetHandler);
         setSizeFull(); // Default to full size
         defaultActionHandler = new SpreadsheetDefaultActionHandler();
         hyperlinkCellClickHandler = new DefaultHyperlinkCellClickHandler(this);
