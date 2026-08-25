@@ -33,7 +33,7 @@ import com.vaadin.addon.spreadsheet.SpreadsheetHandlerImpl;
 
 public class LockedCellTest {
 
-    private Spreadsheet spreadsheet;
+    private TestSpreadsheet spreadsheet;
     private SpreadsheetHandlerImpl handler;
 
     @Before
