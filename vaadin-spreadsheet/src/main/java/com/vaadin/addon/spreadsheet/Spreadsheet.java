@@ -379,6 +379,8 @@ public class Spreadsheet extends AbstractComponent
 
     private boolean defaultColWidthSet, defaultRowHeightSet;
 
+    private SpreadsheetHandlerImpl spreadsheetHandler;
+
     /**
      * Container for merged regions for the currently active sheet.
      */
@@ -506,12 +508,17 @@ public class Spreadsheet extends AbstractComponent
         valueManager = createCellValueManager();
         sheetOverlays = new HashSet<SheetOverlayWrapper>();
         tables = new HashSet<SpreadsheetTable>();
-        registerRpc(new SpreadsheetHandlerImpl(this));
+        spreadsheetHandler = new SpreadsheetHandlerImpl(this);
+        registerRpc(hanler);
         setSizeFull(); // Default to full size
         defaultActionHandler = new SpreadsheetDefaultActionHandler();
         hyperlinkCellClickHandler = new DefaultHyperlinkCellClickHandler(this);
         addActionHandler(defaultActionHandler);
         customInit();
+    }
+
+    protected SpreadsheetHandlerImpl getSpreadsheetHandler() {
+        return spreadsheetHandler;
     }
 
     /**

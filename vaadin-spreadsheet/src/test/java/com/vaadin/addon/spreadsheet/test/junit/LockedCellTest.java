@@ -38,10 +38,10 @@ public class LockedCellTest {
 
     @Before
     public void setUp() {
-        spreadsheet = new Spreadsheet();
+        spreadsheet = new TestSpreadsheet();
         spreadsheet.setLocale(Locale.US);
         new TestableUI(spreadsheet);
-        handler = new SpreadsheetHandlerImpl(spreadsheet);
+        handler = spreadsheet.getTestHandler();
     }
 
     @Test
@@ -90,7 +90,7 @@ public class LockedCellTest {
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
 
-        fireProtectedCellWriteAttempted();
+        fireUpdateCellCommentEvent(2, 2, "Updated comment");
 
         assertNotNull(protectedEditEvent.get());
         assertEquals("Initial comment", cell.getCellComment().getString().getString());
@@ -103,7 +103,7 @@ public class LockedCellTest {
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
 
-        fireProtectedCellWriteAttempted();
+        fireUpdateCellCommentEvent(5, 5, "Comment");
 
         assertNotNull(protectedEditEvent.get());
         assertNull(spreadsheet.getActiveSheet().getRow(4));
@@ -166,4 +166,11 @@ public class LockedCellTest {
         comment.setAuthor("Spreadsheet User");
         cell.setCellComment(comment);
     }
+
+    private static class TestSpreadsheet extends Spreadsheet {
+        SpreadsheetHandlerImpl getTestHandler() {
+            return getSpreadsheetHandler();
+        }
+    }
+
 }
