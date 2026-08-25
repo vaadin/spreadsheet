@@ -55,7 +55,6 @@ public class LockedCellTest {
         AtomicReference<CellValueChangeEvent> cellValueChangeEvent = new AtomicReference<>();
         spreadsheet.addCellValueChangeListener(cellValueChangeEvent::set);
 
-        spreadsheet.setSelection("B2");
         fireCellValueEditedEvent(2, 2, "Updated value");
 
         assertNotNull(protectedEditEvent.get());
