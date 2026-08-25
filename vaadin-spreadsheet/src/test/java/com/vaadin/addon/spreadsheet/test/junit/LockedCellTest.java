@@ -49,6 +49,9 @@ public class LockedCellTest {
         Cell cell = spreadsheet.createCell(1, 1, "Initial value");
         lockSheet();
 
+        assertEquals(true, spreadsheet.isActiveSheetProtected());
+        assertEquals(false, spreadsheet.isCellLocked(cell));
+
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
 
@@ -86,6 +89,9 @@ public class LockedCellTest {
         Cell cell = spreadsheet.createCell(1, 1, "Initial value");
         addComment(cell, "Initial comment");
         lockSheet();
+
+        assertEquals(true, spreadsheet.isActiveSheetProtected());
+        assertEquals(false, spreadsheet.isCellLocked(cell));
 
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
