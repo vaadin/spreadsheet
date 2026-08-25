@@ -140,7 +140,7 @@ public class LockedCellTest {
     }
 
     private void lockSheet() {
-        spreadsheet.getActiveSheet().protectSheet("password");
+        spreadsheet.setSheetProtected(0, "password");
     }
 
     private void unlockCell(String cellAddress) {
