@@ -130,6 +130,11 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
 
     @Override
     public void cellValueEdited(int row, int col, String value) {
+        Cell cell = spreadsheet.getCell(row - 1, col - 1);
+        if (spreadsheet.isCellLocked(cell)) {
+            protectedCellWriteAttempted();
+            return;
+        }
         spreadsheet.getCellValueManager().onCellValueChange(col, row, value);
     }
 
