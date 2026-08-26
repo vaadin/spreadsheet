@@ -131,7 +131,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
     @Override
     public void cellValueEdited(int row, int col, String value) {
         Cell cell = spreadsheet.getCell(row - 1, col - 1);
-        if (spreadsheet.isCellLocked(cell)) {
+        if (!spreadsheet.isCellEditable(cell)) {
             protectedCellWriteAttempted();
             return;
         }
@@ -279,7 +279,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
             if (row != null) {
                 for (int j = 0; j < pasteWidth; j++) {
                     Cell cell = row.getCell(colIndex + j);
-                    if (spreadsheet.isCellLocked(cell)) {
+                    if (!spreadsheet.isCellEditable(cell)) {
                         protectedCellWriteAttempted();
                         return;
                     }
@@ -422,7 +422,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
                         .getLastColumn(); col++) {
                     Cell cell = spreadsheet.getCell(row, col);
                     if (cell != null) {
-                        if (spreadsheet.isCellLocked(cell)) {
+                        if (!spreadsheet.isCellEditable(cell)) {
                             protectedCellWriteAttempted();
                             return;
                         }
@@ -437,7 +437,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
                 .getSelectedCellReference();
         Cell cell = spreadsheet.getCell(reference.getRow(), reference.getCol());
         if (cell != null) {
-            if (spreadsheet.isCellLocked(cell)) {
+            if (!spreadsheet.isCellEditable(cell)) {
                 protectedCellWriteAttempted();
                 return;
             }
@@ -464,7 +464,7 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
     @Override
     public void updateCellComment(String text, int col, int row) {
         Cell cell = spreadsheet.getCell(row - 1, col - 1);
-        if (spreadsheet.isCellLocked(cell)) {
+        if (!spreadsheet.isCellEditable(cell)) {
             protectedCellWriteAttempted();
             return;
         }

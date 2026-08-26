@@ -890,7 +890,7 @@ public class Spreadsheet extends AbstractComponent
                 if (row != null) {
                     for (int c = col1; c <= col2; c++) {
                         final Cell cell = row.getCell(c);
-                        if (isCellLocked(cell)) {
+                        if (!isCellEditable(cell)) {
                             return false;
                         }
                     }
@@ -3075,6 +3075,37 @@ public class Spreadsheet extends AbstractComponent
      */
     public boolean isCellHidden(Cell cell) {
         return isActiveSheetProtected() && cell.getCellStyle().getHidden();
+    }
+
+    /**
+     * Gets the editable state of the given cell.
+     *
+     * @param cell
+     *            The cell to check
+     * @return true if the cell is editable, false otherwise
+     */
+    protected boolean isCellEditable(Cell cell) {
+        if (!isActiveSheetProtected()) {
+            return true; // Cell is editable if the sheet is not protected
+        }
+
+        if (cell == null) {
+            return false;
+        }
+
+        if (cell.getCellStyle().getIndex() != 0) {
+            return !cell.getCellStyle().getLocked();
+        }
+
+        Sheet sheet = getActiveSheet();
+        Row row = sheet.getRow(cell.getRowIndex());
+
+        CellStyle rowStyle = row != null ? row.getRowStyle() : null;
+        CellStyle columnStyle = sheet.getColumnStyle(cell.getColumnIndex());
+        boolean rowEditable = rowStyle == null || !rowStyle.getLocked();
+        boolean columnEditable = columnStyle == null || !columnStyle.getLocked();
+
+        return rowEditable && columnEditable;
     }
 
     /**

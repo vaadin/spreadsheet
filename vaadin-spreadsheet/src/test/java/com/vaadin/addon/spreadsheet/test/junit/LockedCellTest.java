@@ -50,7 +50,7 @@ public class LockedCellTest {
         lockSheet();
 
         assertEquals(true, spreadsheet.isActiveSheetProtected());
-        assertEquals(false, spreadsheet.isCellLocked(cell));
+        assertEquals(false, spreadsheet.isCellEditable(cell));
 
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
@@ -91,7 +91,7 @@ public class LockedCellTest {
         lockSheet();
 
         assertEquals(true, spreadsheet.isActiveSheetProtected());
-        assertEquals(false, spreadsheet.isCellLocked(cell));
+        assertEquals(false, spreadsheet.isCellEditable(cell));
 
         AtomicReference<ProtectedEditEvent> protectedEditEvent = new AtomicReference<>();
         spreadsheet.addProtectedEditListener(protectedEditEvent::set);
@@ -176,6 +176,11 @@ public class LockedCellTest {
     private static class TestSpreadsheet extends Spreadsheet {
         SpreadsheetHandlerImpl getTestHandler() {
             return getSpreadsheetHandler();
+        }
+
+        @Override
+        public boolean isCellEditable(Cell cell) {
+            return super.isCellEditable(cell);
         }
     }
 
