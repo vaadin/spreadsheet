@@ -1,7 +1,7 @@
 /*
  * Vaadin Spreadsheet Addon
  *
- * Copyright (C) 2013-2025 Vaadin Ltd
+ * Copyright (C) 2013-2026 Vaadin Ltd
  *
  * This program is available under Vaadin Commercial License and Service Terms.
  *
@@ -42,6 +42,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.BaseFormulaEvaluator;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.ClientAnchor.AnchorType;
@@ -379,6 +380,8 @@ public class Spreadsheet extends AbstractComponent
 
     private boolean defaultColWidthSet, defaultRowHeightSet;
 
+    private SpreadsheetHandlerImpl spreadsheetHandler;
+
     /**
      * Container for merged regions for the currently active sheet.
      */
@@ -506,12 +509,17 @@ public class Spreadsheet extends AbstractComponent
         valueManager = createCellValueManager();
         sheetOverlays = new HashSet<SheetOverlayWrapper>();
         tables = new HashSet<SpreadsheetTable>();
-        registerRpc(new SpreadsheetHandlerImpl(this));
+        spreadsheetHandler = new SpreadsheetHandlerImpl(this);
+        registerRpc(spreadsheetHandler);
         setSizeFull(); // Default to full size
         defaultActionHandler = new SpreadsheetDefaultActionHandler();
         hyperlinkCellClickHandler = new DefaultHyperlinkCellClickHandler(this);
         addActionHandler(defaultActionHandler);
         customInit();
+    }
+
+    protected SpreadsheetHandlerImpl getSpreadsheetHandler() {
+        return spreadsheetHandler;
     }
 
     /**
@@ -883,7 +891,7 @@ public class Spreadsheet extends AbstractComponent
                 if (row != null) {
                     for (int c = col1; c <= col2; c++) {
                         final Cell cell = row.getCell(c);
-                        if (isCellLocked(cell)) {
+                        if (!isCellEditable(cell)) {
                             return false;
                         }
                     }
@@ -3068,6 +3076,37 @@ public class Spreadsheet extends AbstractComponent
      */
     public boolean isCellHidden(Cell cell) {
         return isActiveSheetProtected() && cell.getCellStyle().getHidden();
+    }
+
+    /**
+     * Gets the editable state of the given cell.
+     *
+     * @param cell
+     *            The cell to check
+     * @return true if the cell is editable, false otherwise
+     */
+    protected boolean isCellEditable(Cell cell) {
+        if (!isActiveSheetProtected()) {
+            return true; // Cell is editable if the sheet is not protected
+        }
+
+        if (cell == null) {
+            return false;
+        }
+
+        if (cell.getCellStyle().getIndex() != 0) {
+            return !cell.getCellStyle().getLocked();
+        }
+
+        Sheet sheet = getActiveSheet();
+        Row row = sheet.getRow(cell.getRowIndex());
+
+        CellStyle rowStyle = row != null ? row.getRowStyle() : null;
+        CellStyle columnStyle = sheet.getColumnStyle(cell.getColumnIndex());
+        boolean rowEditable = rowStyle == null || !rowStyle.getLocked();
+        boolean columnEditable = columnStyle == null || !columnStyle.getLocked();
+
+        return rowEditable && columnEditable;
     }
 
     /**

@@ -16,7 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <currentYear>2025</currentYear>
+        <currentYear>2026</currentYear>
         
         <vaadin.version>8.14.4</vaadin.version>
         <charts.version>4.3.5</charts.version>
@@ -42,13 +42,10 @@
         </repository>
         <repository>
             <id>vaadin-prereleases</id>
-            <name>Vaadin Pre-releases</name>
-            <url>https://maven.vaadin.com/vaadin-prereleases</url>
-        </repository>
-        <repository>
-            <id>vaadin-snapshots</id>
-            <name>Vaadin addons snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <url>https://maven.vaadin.com/vaadin-prereleases/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </repositories>
 
@@ -62,9 +59,9 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>vaadin-snapshots</id>
-            <name>Vaadin snapshot repository</name>
-            <url>https://oss.sonatype.org/content/repositories/vaadin-snapshots/</url>
+            <id>vaadin-prereleases</id>
+            <name>Vaadin Pre-releases</name>
+            <url>https://maven.vaadin.com/vaadin-prereleases/</url>
         </snapshotRepository>
         <repository>
             <id>vaadin-addons</id>
