@@ -44,6 +44,7 @@ public class Cell {
     private SheetWidget sheetWidget;
     private boolean overflowDirty = true;
     private boolean overflowing;
+    private String textColor;
 
     public Cell(SheetWidget sheetWidget, int col, int row) {
         this.sheetWidget = sheetWidget;
@@ -61,10 +62,12 @@ public class Cell {
         element = Document.get().createDivElement();
         if (cellData == null) {
             value = null;
+            textColor = null;
         } else {
             needsMeasure = cellData.needsMeasure;
             value = cellData.value;
             cellStyle = cellData.cellStyle;
+            textColor = cellData.textColor;
         }
         updateCellValues();
         updateInnerText();
@@ -78,6 +81,7 @@ public class Cell {
         this.col = col;
         this.row = row;
         cellStyle = cellData == null ? "cs0" : cellData.cellStyle;
+        textColor = textColor == null ? null : cellData.textColor;
         value = cellData == null ? null : cellData.value;
         needsMeasure = cellData == null ? false : cellData.needsMeasure;
 
@@ -89,6 +93,7 @@ public class Cell {
 
     private void updateInnerText() {
         element.getStyle().setOverflow(Overflow.HIDDEN);
+        element.getStyle().clearColor();
         if (value == null || value.isEmpty()) {
             element.setInnerText("");
             element.getStyle().clearZIndex();
@@ -100,6 +105,10 @@ public class Cell {
             } else {
                 element.setInnerText(value);
             }
+            if (textColor != null && !textColor.isEmpty())
+            {
+                element.getStyle().setColor("#" + textColor);
+            }
         }
 
         appendOverlayElements();
@@ -107,6 +116,13 @@ public class Cell {
 
     protected int getCellWidth() {
         return sheetWidget.actionHandler.getColWidth(col);
+    }
+
+    /**
+     * Return a CSS compatible text color value
+     */
+    public String getTextColor() {
+        return textColor;
     }
 
     void updateOverflow() {
@@ -223,16 +239,17 @@ public class Cell {
         return value;
     }
 
-    public void setValue(String value, String cellStyle, boolean needsMeasure) {
+    public void setValue(String value, String cellStyle, String textColor, boolean needsMeasure) {
         if (!this.cellStyle.equals(cellStyle)) {
             this.cellStyle = cellStyle;
             updateClassName();
         }
         this.needsMeasure = needsMeasure;
+        this.textColor = textColor;
         setValue(value);
     }
 
-    public void setValue(String value) {
+    private void setValue(String value) {
         this.value = value;
         updateInnerText();
 
