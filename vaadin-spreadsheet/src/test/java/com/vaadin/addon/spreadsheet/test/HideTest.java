@@ -16,7 +16,6 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
-import com.vaadin.testbench.parallel.Browser;
 
 public class HideTest extends AbstractSpreadsheetTestCase {
 
@@ -40,8 +39,6 @@ public class HideTest extends AbstractSpreadsheetTestCase {
     @Test
     public void testHideRow() {
         headerPage.createNewSpreadsheet();
-        skipBrowser("Fails on phantom JS, B3 is visible after hiding region",
-                Browser.PHANTOMJS);
 
         sheetController.selectCell("B3");
         headerPage.loadTestFixture(TestFixtures.RowToggle);

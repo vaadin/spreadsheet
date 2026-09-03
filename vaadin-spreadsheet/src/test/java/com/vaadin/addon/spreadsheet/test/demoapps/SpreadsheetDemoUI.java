@@ -279,7 +279,8 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 return o1.getDisplayName().compareTo(o2.getDisplayName());
             }
         });
-        localeSelect.setItems(locales);
+        //localeSelect.setItems(locales);
+        localeSelect.setItems(new Locale("en_US"));
         localeSelect.setItemCaptionGenerator(Locale::getDisplayName);
         localeSelect.addValueChangeListener(e -> updateLocale());
 
@@ -415,6 +416,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
         cb.setId("testSheetSelect");
         cb.setPageLength(30);
         cb.setWidth("250px");
+
         return cb;
     }
 

@@ -31,7 +31,7 @@ public class BordersWithHiddenColumnsAndRowsTest
         spreadsheetPage.selectSheetAt(0);
         compareScreen("sheet1_row_3_hidden");
 
-        if (!isPhantomOrFF()) {
+        if (!isFirefox()) {
             // Context click doesn't work in those FF and Phantom
             compareSheet1WithRow3Shown();
             compareSheet1WithColumnHShown();
@@ -40,17 +40,16 @@ public class BordersWithHiddenColumnsAndRowsTest
         spreadsheetPage.selectSheetAt(1);
         compareScreen("sheet2_initial");
 
-        if (!isPhantomOrFF()) {
+        if (!isFirefox()) {
             // Context click doesn't work in those FF and Phantom
             compareSheet2WithRowsShown();
             compareSheet2WithColumnsShown();
         }
     }
 
-    private boolean isPhantomOrFF() {
+    private boolean isFirefox() {
         DesiredCapabilities capabilities = getDesiredCapabilities();
-        return BrowserUtil.isFirefox(capabilities)
-                || BrowserUtil.isPhantomJS(capabilities);
+        return BrowserUtil.isFirefox(capabilities);
     }
 
     private void compareSheet1WithRow3Shown() throws IOException {

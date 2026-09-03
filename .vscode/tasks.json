@@ -1,0 +1,35 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run Maven Jetty with debugger",
+            "type": "shell",
+            "command": "mvn",
+            "args": [
+                "jetty:run"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/vaadin-spreadsheet",
+                "env": {
+                    "MAVEN_OPTS": "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5005"
+                }
+            },
+            "isBackground": true,
+            "problemMatcher": {
+                "owner": "java",
+                "fileLocation": "absolute",
+                "pattern": {
+                    "regexp": "^(.+\\.java):\\[(\\d+),(\\d+)\\]\\s+(.+)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "message": 4
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "Listening for transport dt_socket at address: 5005",
+                    "endsPattern": "Listening for transport dt_socket at address: 5005"
+                }
+            }
+        }
+    ]

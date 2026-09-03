@@ -17,6 +17,7 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.TestName;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -67,7 +68,7 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
     @BrowserConfiguration
     public List<DesiredCapabilities> getBrowsersToTest() {
         return getBrowserCapabilities(Browser.IE11, Browser.FIREFOX,
-                Browser.CHROME, Browser.PHANTOMJS);
+                Browser.CHROME);
     }
 
     protected List<DesiredCapabilities> getBrowsersExcludingPhantomJS() {
@@ -149,11 +150,6 @@ public abstract class MultiBrowserTest extends PrivateTB3Configuration {
             break;
         case IE11:
             if (BrowserUtil.isIE(capabilities, 11)) {
-                throw new BrowserSkipped(reason);
-            }
-            break;
-        case PHANTOMJS:
-            if (BrowserUtil.isPhantomJS(capabilities)) {
                 throw new BrowserSkipped(reason);
             }
             break;
