@@ -25,8 +25,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theFirstCellHasInvalidFormula_formulaIndicatorIsRemoved() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -45,8 +46,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theSecondRowCellHasInvalidFormula_formulaIndicatorIsRemoved() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -67,8 +69,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void insertRow_theFirstCellHasInvalidFormula_theInvalidFormulaIsMovedToNextRow() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -86,8 +89,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theSecondRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -105,8 +109,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theSecondAndThirdRowHasInvalidFormulaCell_formulaIndicatorIsMovedUp() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -127,8 +132,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void insertRow_theFirstAndSecondRowHasInvalidFormulaCellAndTheRowIsAddedBetween_theFirstAndThirdRowHasErrorIndicator() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -151,8 +157,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theFirstRowHasInvalidFormulaCellAndTheSecondRowIsRemoved_theFirstRowHasErrorIndicator() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -170,8 +177,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theFirstCellHasMergedCell_thereIsNoMergedCells() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -193,8 +201,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void insertRow_theFirstCellHasMergedCell_theMergedCellIsMovedToNextRow() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -217,8 +226,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theFirstCellHasPopupButton_thereIsNoPopupButtons() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -238,8 +248,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theSecondRowCellHasPopupButton_thereIsNoPopupButtons() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -260,8 +271,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void removeRow_theSecondRowCellHasPopupButton_popupButtonIsMovedUp() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -281,8 +293,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
 
     @Test
     public void insertRow_theFirstCellHasPopupButton_thePopupButtonIsMovedToNextRow() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
@@ -303,8 +316,9 @@ public class RemoveInsertRow extends AbstractSpreadsheetTestCase {
     @Ignore("This is a known issue which should be fixed. The problem is most likely on client side.")
     @Test
     public void insertRow_theFirstAndSecondRowHasPopupbuttonsNewRowIsAddedToFirstRow_theSecondAndThirdRowHasPopupButton() {
+        // TODO: Is this still true?
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX);
         headerPage.createNewSpreadsheet();
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();

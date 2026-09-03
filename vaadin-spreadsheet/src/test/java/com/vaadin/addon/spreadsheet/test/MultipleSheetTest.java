@@ -21,7 +21,6 @@ import org.openqa.selenium.interactions.Actions;
 import com.vaadin.addon.spreadsheet.elements.SpreadsheetElement;
 import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.By;
-import com.vaadin.testbench.parallel.Browser;
 
 public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
 
@@ -58,9 +57,6 @@ public class MultipleSheetTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void testRenameSheet() {
-        skipBrowser("Cannot find the 'new sheet name' element on PhantomJS",
-                Browser.PHANTOMJS);
-
         Actions actions = new Actions(driver);
         actions.doubleClick(driver.findElement(By.xpath(
                 "//div[@class='sheet-tabsheet-container']//div[text()='Sheet1']")));

@@ -21,9 +21,11 @@ import java.util.Properties;
 
 import com.vaadin.addon.spreadsheet.test.tb3.AbstractTB3Test;
 import com.vaadin.addon.spreadsheet.test.tb3.PrivateTB3Configuration;
-import com.vaadin.addon.spreadsheet.test.tb3.VaadinBrowserFactory;
+//import com.vaadin.addon.spreadsheet.test.tb3.VaadinBrowserFactory;
 import com.vaadin.testbench.annotations.BrowserFactory;
+import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.annotations.RunOnHub;
+import com.vaadin.testbench.parallel.Browser;
 
 /**
  * Blatant copy of {@link PrivateTB3Configuration} to create TB tests that don't
@@ -33,8 +35,9 @@ import com.vaadin.testbench.annotations.RunOnHub;
  * point
  *
  */
-@RunOnHub("tb3-hub.intra.itmill.com")
-@BrowserFactory(VaadinBrowserFactory.class)
+@RunLocally(Browser.FIREFOX)
+//@RunOnHub("tb3-hub.intra.itmill.com")
+//@BrowserFactory(VaadinBrowserFactory.class)
 public abstract class NoScreenshotTBTest extends AbstractTB3Test {
 
     public static final String PORT_PROPERTY = "com.vaadin.testbench.deployment.port";

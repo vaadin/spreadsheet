@@ -20,7 +20,9 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import com.vaadin.testbench.annotations.BrowserFactory;
+import com.vaadin.testbench.annotations.RunLocally;
 import com.vaadin.testbench.annotations.RunOnHub;
+import com.vaadin.testbench.parallel.Browser;
 
 /**
  * Provides values for parameters which depend on where the test is run.
@@ -29,8 +31,8 @@ import com.vaadin.testbench.annotations.RunOnHub;
  *
  * @author Vaadin Ltd
  */
-@RunOnHub("tb3-hub.intra.itmill.com")
-@BrowserFactory(VaadinBrowserFactory.class)
+//@RunOnHub("tb3-hub.intra.itmill.com")
+@RunLocally(Browser.FIREFOX)
 public abstract class PrivateTB3Configuration extends ScreenshotTB3Test {
     /**
      *

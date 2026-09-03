@@ -341,7 +341,7 @@ public abstract class ScreenshotTB3Test extends AbstractTB3Test {
      */
     private String getBrowserIdentifierWithVersion() {
         return getBrowserIdentifierWithoutVersion() + "_"
-                + getDesiredCapabilities().getVersion();
+                + getDesiredCapabilities().getBrowserVersion();
 
     }
 

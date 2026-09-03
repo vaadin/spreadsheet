@@ -10,6 +10,7 @@
  */
 package com.vaadin.addon.spreadsheet.elements;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -287,7 +288,7 @@ public class SpreadsheetElement extends AbstractElement {
     private void findSelectionOutline() {
         // sometimes the spreadsheet takes so long to load that the selection
         // widget elements are not found
-        new WebDriverWait(getDriver(), 10).until(ExpectedConditions
+        new WebDriverWait(getDriver(), Duration.ofMillis(10)).until(ExpectedConditions
                 .presenceOfElementLocated(By.className("s-top")));
         sTop = findElement(By.className("s-top"));
         sBottom = findElement(By.className("s-bottom"));

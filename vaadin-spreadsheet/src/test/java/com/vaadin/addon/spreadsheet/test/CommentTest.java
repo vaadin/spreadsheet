@@ -102,7 +102,7 @@ public class CommentTest extends AbstractSpreadsheetTestCase {
     @Test
     public void removeRow_removeRowWithComment_commentIsRemoved() {
         skipBrowser("Context click does not work with PhantomJS and Firefox",
-                Browser.PHANTOMJS, Browser.FIREFOX);
+                Browser.FIREFOX); // is this true?
         headerPage.createNewSpreadsheet();
         headerPage.loadFile("cell_comments.xlsx", this); // A1 has a comment
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)

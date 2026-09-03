@@ -62,7 +62,6 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellSucceedsWhenHandlerReturnsTrue() {
-        skipBrowser("PhantomJS ignores the CTRL", Browser.PHANTOMJS);
         skipBrowser("Firefox ignores the CTRL", Browser.FIREFOX);
 
         sheetController.clickCell("B3");
@@ -81,7 +80,6 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteIndividualCellFailsWhenHandlerReturnsFalse() {
-        skipBrowser("PhantomJS ignores the CTRL", Browser.PHANTOMJS);
         skipBrowser("Firefox ignores the CTRL", Browser.FIREFOX);
 
         sheetController.clickCell("C3");
@@ -102,7 +100,6 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeSucceedsWhenHandlerReturnsTrue() {
-        skipBrowser("PhantomJS ignores the SHIFT", Browser.PHANTOMJS);
         skipBrowser("Firefox ignores the SHIFT", Browser.FIREFOX);
 
         sheetController.clickCell("B6");
@@ -122,7 +119,6 @@ public class CellDeletionTest extends AbstractSpreadsheetTestCase {
 
     @Test
     public void deletionHandler_SpreadsheetWithDeletionFixture_deleteCellRangeFailsWhenHandlerReturnsFalse() {
-        skipBrowser("PhantomJS ignores the SHIFT", Browser.PHANTOMJS);
         skipBrowser("Firefox ignores the SHIFT", Browser.FIREFOX);
 
         sheetController.clickCell("C6");
