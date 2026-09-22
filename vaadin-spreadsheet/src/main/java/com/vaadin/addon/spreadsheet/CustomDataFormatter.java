@@ -10,11 +10,13 @@
  */
 package com.vaadin.addon.spreadsheet;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.format.CellFormat;
+import org.apache.poi.ss.format.CellFormatResult;
 import org.apache.poi.ss.formula.ConditionalFormattingEvaluator;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -136,6 +138,41 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
 
             // DataFormatter can format numbers correctly
             return super.formatRawCellContents(absValue, 0, format);
+        }
+    }
+
+    /**
+     * Get the applicable text color for the cell. This uses Apache POI's
+     * CellFormat logic, which parses and evaluates the cell's format string
+     * against the cell's current value.
+     *
+     * @param cell
+     *            The cell to get the applicable custom formatting text color
+     *            for.
+     * @return a CSS color value string, or null if no text color should be
+     *         applied.
+     */
+    public String getCellTextColor(Cell cell) {
+        try {
+            final String format = cell.getCellStyle().getDataFormatString();
+            if (format == null || format.isEmpty()
+                    || isGeneralFormat(format)) {
+                return null;
+            }
+
+            CellFormatResult result = CellFormat.getInstance(format)
+                    .apply(cell);
+
+            if (result.textColor == null) {
+                return null;
+            }
+
+            Color color = result.textColor;
+            final int colorValue = (color.getRed() << 16)
+                    | (color.getGreen() << 8) | color.getBlue();
+            return String.format("%06x", colorValue);
+        } catch (Exception e) {
+            return null;
         }
     }
 
