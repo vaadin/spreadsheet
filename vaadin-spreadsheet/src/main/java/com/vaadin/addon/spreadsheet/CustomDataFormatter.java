@@ -13,6 +13,7 @@ package com.vaadin.addon.spreadsheet;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.format.CellFormat;
@@ -55,6 +56,7 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
  */
 class CustomDataFormatter extends DataFormatter implements Serializable {
 
+    private static final Logger LOG = Logger.getLogger(CustomDataFormatter.class.getSimpleName());
     private static final Pattern NUMBER_PATTERN = Pattern.compile("[0#]+");
 
     // In a custom format the first part represents a format for positive
@@ -170,8 +172,9 @@ class CustomDataFormatter extends DataFormatter implements Serializable {
             Color color = result.textColor;
             final int colorValue = (color.getRed() << 16)
                     | (color.getGreen() << 8) | color.getBlue();
-            return String.format("%06x", colorValue);
+            return String.format("#%06x", colorValue);
         } catch (Exception e) {
+            LOG.fine("Caught exception parsing text color: " + e.getMessage());
             return null;
         }
     }
