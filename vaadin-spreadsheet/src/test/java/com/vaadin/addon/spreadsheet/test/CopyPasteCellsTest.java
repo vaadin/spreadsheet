@@ -67,7 +67,7 @@ public class CopyPasteCellsTest extends AbstractSpreadsheetTestCase {
         headerPage.loadFile("500x200test.xlsx", this);
         final SpreadsheetElement spreadsheet = $(SpreadsheetElement.class)
                 .first();
-        final int EXPECTED_JSON_LENGTH_LIMIT = 50;
+        final int EXPECTED_JSON_LENGTH_LIMIT = 60;  // This was increased due to addition of color
         spreadsheet.getCellAt("B3").setValue("=A3+1");
 
         copyPasteRegion("A3", "B3", "D3", true);
