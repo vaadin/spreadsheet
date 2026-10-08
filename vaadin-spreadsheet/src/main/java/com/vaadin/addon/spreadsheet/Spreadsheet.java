@@ -85,15 +85,23 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.event.SerializableEventListener;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -1456,6 +1464,94 @@ public class Spreadsheet extends AbstractComponent
         // if excel doesn't keep these in history, neither will we
         setSheetNameWithPOIIndex(getVisibleSheetPOIIndex(sheetIndex),
                 sheetName);
+    }
+
+    /**
+     * This method is called when a request to delete a sheet has been made.
+     *
+     * @param sheetIndex
+     *            Index of the sheet to delete (among visible sheets).
+     */
+    protected void onSheetDelete(int sheetIndex) {
+        if (getState(false).workbookProtected) {
+            return;
+        }
+
+        Sheet sheet = workbook.getSheetAt(getVisibleSheetPOIIndex(sheetIndex));
+        if (!sheet.getProtect() && !hasSheetContent(sheet)) {
+            deleteSheetFromUI(sheetIndex);
+        } else {
+            showSheetDeleteConfirmation(sheetIndex);
+        }
+    }
+
+    private void deleteSheetFromUI(int sheetIndex) {
+        Sheet replacementSheet = null;
+        boolean renameReplacement = false;
+        if (getNumberOfVisibleSheets() == 1) {
+            renameReplacement = workbook
+                    .getSheetName(getVisibleSheetPOIIndex(sheetIndex))
+                    .equals("Sheet1");
+            createNewSheet(renameReplacement ? null : "Sheet1",
+                    defaultNewSheetRows,
+                    defaultNewSheetColumns);
+            replacementSheet = getActiveSheet();
+        }
+        deleteSheet(sheetIndex);
+        if (renameReplacement) {
+            setSheetNameWithPOIIndex(workbook.getSheetIndex(replacementSheet),
+                    "Sheet1");
+        }
+    }
+
+    private boolean hasSheetContent(Sheet sheet) {
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                if (cell.getCellType() != CellType.BLANK
+                        || cell.getCellComment() != null
+                        || cell.getHyperlink() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected void showSheetDeleteConfirmation(int sheetIndex) {
+        Window confirmation = new Window(" \t Confirm sheet deletion");
+        confirmation.setIcon(VaadinIcons.WARNING);
+        confirmation.setModal(true);
+        confirmation.setResizable(false);
+        confirmation.setClosable(false);
+
+        Button deleteButton = new Button("Delete sheet", event -> {
+            if (!getState(false).workbookProtected) {
+                deleteSheetFromUI(sheetIndex);
+            }
+            confirmation.close();
+        });
+        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        Button cancelButton = new Button("Cancel",
+                event -> confirmation.close());
+        
+        HorizontalLayout actions = new HorizontalLayout(cancelButton,
+            deleteButton);
+
+        String sheetName = workbook
+                .getSheetName(getVisibleSheetPOIIndex(sheetIndex));
+        VerticalLayout content = new VerticalLayout(
+                new Label("Are you sure you want to delete sheet '" + sheetName
+                        + "'?"),
+                actions);
+        
+        content.setMargin(true);
+        content.setSpacing(true);
+        content.setComponentAlignment(actions, Alignment.MIDDLE_RIGHT);
+        confirmation.setContent(content);
+
+        getUI().addWindow(confirmation);
+        confirmation.center();
+        cancelButton.focus();
     }
 
     /**

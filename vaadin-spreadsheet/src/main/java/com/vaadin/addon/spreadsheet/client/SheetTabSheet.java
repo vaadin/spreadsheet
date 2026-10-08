@@ -30,11 +30,14 @@ import com.vaadin.client.WidgetUtil;
 public class SheetTabSheet extends Widget {
 
     private static final String HIDDEN = "hidden";
+    private static final String DELETE_TAB_CLASSNAME = "sheet-tabsheet-delete";
 
     public interface SheetTabSheetHandler {
         public void onSheetTabSelected(int tabIndex);
 
         public void onSheetRename(int selectedTabIndex, String value);
+
+        public void onSheetDelete(int tabIndex);
 
         public void onNewSheetCreated();
 
@@ -78,6 +81,8 @@ public class SheetTabSheet extends Widget {
     private double tabScrollMargin;
 
     private boolean readOnly;
+
+    private boolean deleteEnabled = true;
 
     private boolean editing;
 
@@ -183,26 +188,35 @@ public class SheetTabSheet extends Widget {
                         }
                     } else if (container.isOrHasChild(target)) {
                         for (int i = 0; i < tabs.length(); i++) {
-                            if (tabs.get(i).equals(target)) {
-                                if (i != selectedTabIndex) {
+                            Element tab = tabs.get(i).cast();
+                            if (tab.isOrHasChild(target)) {
+                                if (target.hasClassName(
+                                        DELETE_TAB_CLASSNAME)) {
+                                    if (!readOnly && deleteEnabled) {
+                                        handler.onSheetDelete(i);
+                                    }
+                                } else if (i != selectedTabIndex) {
                                     handler.onSheetTabSelected(i);
                                 }
+                                return;
                             }
                         }
                     }
                 } else if (type == Event.ONDBLCLICK) {
                     if (!readOnly) {
                         for (int i = 0; i < tabs.length(); i++) {
-                            if (tabs.get(i).equals(target)) {
+                            Element tab = tabs.get(i).cast();
+                            if (tab.isOrHasChild(target)
+                                    && !target.hasClassName(
+                                            DELETE_TAB_CLASSNAME)) {
                                 if (i != selectedTabIndex) {
                                     handler.onSheetTabSelected(i);
                                 } else {
                                     editing = true;
-                                    Element e = tabs.get(i).cast();
-                                    cachedSheetName = e.getInnerText();
+                                    Element e = tab;
+                                    cachedSheetName = e.getTitle();
                                     input.setValue(cachedSheetName);
-                                    e.setInnerText("");
-                                    e.appendChild(input);
+                                    beginNameEdit(e);
                                     input.focus();
                                     updateInputSize();
                                 }
@@ -230,9 +244,9 @@ public class SheetTabSheet extends Widget {
                             break;
                         case KeyCodes.KEY_ESCAPE:
                             editing = false;
-                            input.removeFromParent();
                             Element element = (Element) tabs
                                     .get(selectedTabIndex).cast();
+                                endNameEdit(element);
                             element.getStyle().clearWidth();
                             setTabName(element, cachedSheetName);
                             handler.onSheetRenameCancel();
@@ -340,8 +354,8 @@ public class SheetTabSheet extends Widget {
 
     private void commitSheetName() {
         editing = false;
-        input.removeFromParent();
         Element selectedTab = tabs.get(selectedTabIndex).cast();
+        endNameEdit(selectedTab);
         selectedTab.getStyle().clearWidth();
         String value = input.getValue();
         if (validateSheetName(value) && !cachedSheetName.equals(value)) {
@@ -360,6 +374,46 @@ public class SheetTabSheet extends Widget {
             // TODO show error ?
             setTabName(selectedTab, cachedSheetName);
         }
+    }
+
+    /**
+     * Prepares a tab for rename editing. The input replaces the label and the
+     * delete control is hidden so that the editor has the same DOM structure
+     * and available width as it had before delete controls were added.
+     * <p>
+     * This is kept in a method, together with {@link #endNameEdit(Element)},
+     * to keep the paired DOM and style changes consistent across all paths that
+     * start, commit, or cancel editing.
+     *
+     * @param tab
+     *            the tab being edited
+     */
+    private void beginNameEdit(Element tab) {
+        double leftPadding = new ComputedStyle(tab).getPadding()[3];
+        tab.getStyle().setPaddingRight(leftPadding, Unit.PX);
+        Element label = tab.getFirstChildElement();
+        label.getNextSiblingElement().getStyle().setDisplay(Display.NONE);
+        tab.replaceChild(input, label);
+    }
+
+    /**
+     * Restores a tab after rename editing by replacing the input with its label
+     * and restoring the delete control and theme-defined padding.
+     * <p>
+     * This is kept separate from the commit and cancel handlers so both paths
+     * reverse every change made by {@link #beginNameEdit(Element)} in the
+     * same order and cannot leave the tab in a partially edited state.
+     *
+     * @param tab
+     *            the tab whose normal presentation should be restored
+     */
+    private void endNameEdit(Element tab) {
+        Element delete = input.getNextSiblingElement();
+        Element label = Document.get().createSpanElement();
+        label.setClassName("sheet-tabsheet-tab-label");
+        tab.replaceChild(label, input);
+        tab.getStyle().clearPaddingRight();
+        delete.getStyle().clearDisplay();
     }
 
     private boolean validateSheetName(String sheetName) {
@@ -395,8 +449,20 @@ public class SheetTabSheet extends Widget {
 
     private Element createTabElement(String tabName) {
         final Element e = Document.get().createDivElement();
-        setTabName(e, tabName);
         e.setClassName("sheet-tabsheet-tab");
+
+        Element label = Document.get().createSpanElement();
+        label.setClassName("sheet-tabsheet-tab-label");
+        e.appendChild(label);
+
+        Element delete = Document.get().createSpanElement();
+        delete.setClassName(DELETE_TAB_CLASSNAME);
+        delete.setTitle("Delete sheet");
+        delete.setAttribute("role", "button");
+        delete.setAttribute("aria-label", "Delete sheet");
+        e.appendChild(delete);
+
+        setTabName(e, tabName);
         return e;
     }
 
@@ -473,8 +539,22 @@ public class SheetTabSheet extends Widget {
 
     public void setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
+        if (readOnly) {
+            root.addClassName("readonly");
+        } else {
+            root.removeClassName("readonly");
+        }
         addNewSheet.getStyle()
                 .setDisplay(readOnly ? Display.NONE : Display.INLINE_BLOCK);
+    }
+
+    public void setDeleteEnabled(boolean deleteEnabled) {
+        this.deleteEnabled = deleteEnabled;
+        if (deleteEnabled) {
+            root.removeClassName("delete-disabled");
+        } else {
+            root.addClassName("delete-disabled");
+        }
     }
 
     public void setFirstVisibleTab(int firstVisibleTab) {
@@ -523,7 +603,7 @@ public class SheetTabSheet extends Widget {
         if (tab == null) {
             return;
         }
-        tab.setInnerText(name);
+        tab.getFirstChildElement().setInnerText(name);
         tab.setTitle(name);
     }
 

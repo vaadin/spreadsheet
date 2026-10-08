@@ -143,6 +143,14 @@ public interface SpreadsheetHandler extends GroupingHandler {
      */
     public void sheetRenamed(int sheetIndex, String newName);
 
+        /**
+         * Requests deletion of a sheet.
+         *
+         * @param sheetIndex
+         *            0-based index among visible sheets
+         */
+        public void sheetDeleted(int sheetIndex);
+
     /**
      * Sheet is created as the last sheet
      *

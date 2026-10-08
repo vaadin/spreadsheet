@@ -869,12 +869,47 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
           max-width: 200px;
           min-width: 50px;
           overflow: hidden;
-          padding: 4px 8px 0;
+          padding: 4px 20px 0 8px;
           position: relative;
           text-align: center;
           text-overflow: ellipsis;
           top: -1px;
           z-index: inherit;
+
+          .sheet-tabsheet-tab-label {
+            pointer-events: none;
+          }
+
+          .sheet-tabsheet-delete {
+            border-radius: 2px;
+            color: inherit;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: normal;
+            height: 16px;
+            line-height: 14px;
+            opacity: 0;
+            position: absolute;
+            right: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: opacity 150ms, color 150ms, background-color 150ms;
+            width: 14px;
+
+            &::before {
+              content: "\00d7";
+            }
+          }
+
+          &:hover .sheet-tabsheet-delete {
+            opacity: .55;
+          }
+
+          &:hover .sheet-tabsheet-delete:hover {
+            background-color: rgba(0, 0, 0, .1);
+            color: $sheet-selection-border-color;
+            opacity: 1;
+          }
 
           &.selected-tab {
             background: $active-tab-background;
@@ -899,6 +934,11 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
             }
           }
         }
+      }
+
+      &.readonly .sheet-tabsheet-delete,
+      &.delete-disabled .sheet-tabsheet-delete {
+        display: none;
       }
 
       .sheet-tabsheet-temp {
