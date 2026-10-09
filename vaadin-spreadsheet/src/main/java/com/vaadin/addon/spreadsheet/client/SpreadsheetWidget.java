@@ -281,6 +281,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         sheetTabSheet.setInfoLabelValue(value);
     }
 
+    public void setSheetDeleteCaption(String caption) {
+        sheetTabSheet.setSheetDeleteCaption(caption);
+    }
+
     /**
      * @return current content of the info label.
      */

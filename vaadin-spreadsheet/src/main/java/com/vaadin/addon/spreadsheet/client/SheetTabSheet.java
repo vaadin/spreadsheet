@@ -88,6 +88,8 @@ public class SheetTabSheet extends Widget {
 
     private String cachedSheetName = "";
 
+    private String sheetDeleteCaption = "Delete sheet";
+
     private DivElement infoLabel = Document.get().createDivElement();
 
     public SheetTabSheet(SheetTabSheetHandler handler) {
@@ -457,13 +459,23 @@ public class SheetTabSheet extends Widget {
 
         Element delete = Document.get().createSpanElement();
         delete.setClassName(DELETE_TAB_CLASSNAME);
-        delete.setTitle("Delete sheet");
+        delete.setTitle(sheetDeleteCaption);
         delete.setAttribute("role", "button");
-        delete.setAttribute("aria-label", "Delete sheet");
+        delete.setAttribute("aria-label", sheetDeleteCaption);
         e.appendChild(delete);
 
         setTabName(e, tabName);
         return e;
+    }
+
+    public void setSheetDeleteCaption(String caption) {
+        sheetDeleteCaption = caption;
+        for (int index = 0; index < tabs.length(); index++) {
+            Element tab = tabs.get(index).cast();
+            Element delete = tab.getFirstChildElement().getNextSiblingElement();
+            delete.setTitle(caption);
+            delete.setAttribute("aria-label", caption);
+        }
     }
 
     public void addTabs(String[] tabNames) {
