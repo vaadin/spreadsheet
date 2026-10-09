@@ -18,7 +18,6 @@ import com.vaadin.addon.spreadsheet.test.fixtures.TestFixtures;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.ComboBoxElement;
-import com.vaadin.testbench.elements.NativeSelectElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 
 public class HeaderPage extends Page {
@@ -43,13 +42,13 @@ public class HeaderPage extends Page {
     }
 
     public void loadTestFixture(TestFixtures fixture) {
-        $(NativeSelectElement.class).id("fixtureSelect")
+        $(ComboBoxElement.class).id("fixtureSelect")
                 .selectByText(fixture.toString());
         $(ButtonElement.class).id("loadFixtureBtn").click();
 
         // sanity check
         assertEquals("Fixture not loaded correctly", fixture.toString(),
-                $(NativeSelectElement.class).id("fixtureSelect").getValue());
+            $(ComboBoxElement.class).id("fixtureSelect").getValue());
     }
 
     public void addFreezePane() {
