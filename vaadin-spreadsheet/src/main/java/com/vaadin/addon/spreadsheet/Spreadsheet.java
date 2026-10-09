@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,15 +86,23 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.event.SerializableEventListener;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -107,6 +116,29 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class Spreadsheet extends AbstractComponent
         implements HasComponents, Action.Container, Focusable {
+
+    /**
+     * Identifies customizable user-facing strings in the spreadsheet.
+     * Each value defines a fallback used when neither a locale-specific value
+     * nor a configured default is available.
+     */
+    public enum LocalizableString {
+        SHEET_DELETE_CAPTION("Delete sheet"),
+        SHEET_DELETE_CONFIRMATION_CAPTION("Confirm sheet deletion"),
+        SHEET_DELETE_CANCEL_CAPTION("Cancel"),
+        SHEET_DELETE_CONFIRMATION_MESSAGE(
+                "Are you sure you want to delete sheet '{0}'?");
+
+        private final String fallback;
+
+        LocalizableString(String fallback) {
+            this.fallback = fallback;
+        }
+    }
+
+    private static final Map<Locale, Map<LocalizableString, String>> localizedStrings = new HashMap<>();
+    private static final Map<LocalizableString, String> defaultStrings = new EnumMap<>(
+            LocalizableString.class);
 
     /**
      * This is a style which hides the top (address and formula) bar.
@@ -1002,6 +1034,7 @@ public class Spreadsheet extends AbstractComponent
     public void setLocale(Locale locale) {
         super.setLocale(locale);
         valueManager.updateLocale(locale);
+        refreshLocalizedStrings();
         refreshAllCellValues();
     }
 
@@ -1009,6 +1042,7 @@ public class Spreadsheet extends AbstractComponent
     public void attach() {
         super.attach();
         valueManager.updateLocale(getLocale());
+        refreshLocalizedStrings();
     }
 
     /**
@@ -1456,6 +1490,163 @@ public class Spreadsheet extends AbstractComponent
         // if excel doesn't keep these in history, neither will we
         setSheetNameWithPOIIndex(getVisibleSheetPOIIndex(sheetIndex),
                 sheetName);
+    }
+
+    /**
+     * This method is called when a request to delete a sheet has been made.
+     *
+     * @param sheetIndex
+     *            Index of the sheet to delete (among visible sheets).
+     */
+    protected void onSheetDelete(int sheetIndex) {
+        if (getState(false).workbookProtected) {
+            return;
+        }
+
+        Sheet sheet = workbook.getSheetAt(getVisibleSheetPOIIndex(sheetIndex));
+        if (!sheet.getProtect() && !hasSheetContent(sheet)) {
+            deleteSheetFromUI(sheetIndex);
+        } else {
+            showSheetDeleteConfirmation(sheetIndex);
+        }
+    }
+
+    private void deleteSheetFromUI(int sheetIndex) {
+        Sheet replacementSheet = null;
+        boolean renameReplacement = false;
+        if (getNumberOfVisibleSheets() == 1) {
+            renameReplacement = workbook
+                    .getSheetName(getVisibleSheetPOIIndex(sheetIndex))
+                    .equals("Sheet1");
+            createNewSheet(renameReplacement ? null : "Sheet1",
+                    defaultNewSheetRows,
+                    defaultNewSheetColumns);
+            replacementSheet = getActiveSheet();
+        }
+        deleteSheet(sheetIndex);
+        if (renameReplacement) {
+            setSheetNameWithPOIIndex(workbook.getSheetIndex(replacementSheet),
+                    "Sheet1");
+        }
+    }
+
+    private boolean hasSheetContent(Sheet sheet) {
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                if (cell.getCellType() != CellType.BLANK
+                        || cell.getCellComment() != null
+                        || cell.getHyperlink() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Sets the default value of a localizable string, used when no value has
+     * been set for the current locale. If no default has been configured,
+     * the enum value's fallback is used.
+     * This configuration is shared by all spreadsheet instances. Existing
+    * client controls receive changes on their next client response. Call
+    * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+    * that response when it has no other pending changes.
+     * For confirmation messages, the literal {@code {0}} is the sheet name.
+     *
+     * @param key
+     *            the string to customize
+     * @param value
+     *            the default text
+     */
+    public static synchronized void setLocalizedString(LocalizableString key,
+            String value) {
+        defaultStrings.put(key, value);
+    }
+
+    /**
+     * Sets a localizable string for an exact locale. Values for other locales
+     * and the default value are retained. For confirmation messages, the
+     * literal {@code {0}} is replaced with the sheet name.
+     * This configuration is shared by all spreadsheet instances. Existing
+    * client controls receive changes on their next client response. Call
+    * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+    * that response when it has no other pending changes.
+     *
+     * @param locale
+     *            the locale for this text
+     * @param key
+     *            the string to customize
+     * @param value
+     *            the localized text
+     */
+    public static synchronized void setLocalizedString(Locale locale,
+            LocalizableString key, String value) {
+        localizedStrings.computeIfAbsent(locale,
+                unused -> new EnumMap<>(LocalizableString.class)).put(key, value);
+    }
+
+    private String getLocalizedString(LocalizableString key) {
+        synchronized (Spreadsheet.class) {
+            Map<LocalizableString, String> translations = localizedStrings
+                    .get(getLocale());
+            if (translations != null && translations.containsKey(key)) {
+                return translations.get(key);
+            }
+            return defaultStrings.getOrDefault(key, key.fallback);
+        }
+    }
+
+    /**
+     * Refreshes localized client controls using the current locale and shared
+     * string configuration. Call this after changing shared strings to update
+     * an existing spreadsheet even when it has no other pending changes.
+     */
+    public void refreshLocalizedStrings() {
+        getState().sheetDeleteCaption = getLocalizedString(
+                LocalizableString.SHEET_DELETE_CAPTION);
+        markAsDirty();
+    }
+
+    protected void showSheetDeleteConfirmation(int sheetIndex) {
+        Window confirmation = new Window(getLocalizedString(
+                LocalizableString.SHEET_DELETE_CONFIRMATION_CAPTION));
+        confirmation.setIcon(VaadinIcons.WARNING);
+        confirmation.setModal(true);
+        confirmation.setResizable(false);
+        confirmation.setClosable(false);
+
+        Button deleteButton = new Button(getLocalizedString(
+            LocalizableString.SHEET_DELETE_CAPTION),
+                event -> {
+            if (!getState(false).workbookProtected) {
+                deleteSheetFromUI(sheetIndex);
+            }
+            confirmation.close();
+        });
+        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        Button cancelButton = new Button(getLocalizedString(
+            LocalizableString.SHEET_DELETE_CANCEL_CAPTION),
+                event -> confirmation.close());
+        
+        HorizontalLayout actions = new HorizontalLayout(cancelButton,
+            deleteButton);
+
+        String sheetName = workbook
+                .getSheetName(getVisibleSheetPOIIndex(sheetIndex));
+        VerticalLayout content = new VerticalLayout(
+            new Label(getLocalizedString(
+                LocalizableString.SHEET_DELETE_CONFIRMATION_MESSAGE)
+                .replace("{0}", sheetName)),
+                actions);
+        
+        content.setMargin(true);
+        content.setSpacing(true);
+        content.setComponentAlignment(actions, Alignment.MIDDLE_RIGHT);
+        confirmation.setContent(content);
+
+        getUI().addWindow(confirmation);
+        confirmation.center();
+        cancelButton.focus();
     }
 
     /**
@@ -3151,6 +3342,7 @@ public class Spreadsheet extends AbstractComponent
      */
     @Override
     public void beforeClientResponse(boolean initial) {
+        refreshLocalizedStrings();
         super.beforeClientResponse(initial);
         if (reload) {
             reload = false;

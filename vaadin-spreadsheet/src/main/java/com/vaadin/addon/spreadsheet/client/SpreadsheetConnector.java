@@ -324,6 +324,21 @@ public class SpreadsheetConnector extends AbstractHasComponentsConnector
             }
             loadStateChangeDataToWidget(stateChangeEvent);
         }
+        onLocalizedStringsChanged(stateChangeEvent);
+    }
+
+    /**
+     * Applies localized strings to client controls after the sheet tabs have
+     * been updated. Add handlers here as more client strings are localized.
+     *
+     * @param stateChangeEvent
+     *            the event identifying changed state properties
+     */
+    protected void onLocalizedStringsChanged(StateChangeEvent stateChangeEvent) {
+        if (stateChangeEvent.isInitialStateChange()
+                || stateChangeEvent.hasPropertyChanged("sheetDeleteCaption")) {
+            getWidget().setSheetDeleteCaption(getState().sheetDeleteCaption);
+        }
     }
 
     private void loadInitialStateDataToWidget(
