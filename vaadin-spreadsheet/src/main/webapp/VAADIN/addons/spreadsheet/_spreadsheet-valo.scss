@@ -866,11 +866,12 @@
           max-width: $spreadsheet-tab-max-width;
           min-width: $spreadsheet-tab-min-width;
           overflow: hidden;
-          padding: $spreadsheet-tab-padding-vertical 20px $spreadsheet-tab-padding-vertical $spreadsheet-tab-padding-horizontal;
+          padding: $spreadsheet-tab-padding-vertical $spreadsheet-tab-padding-horizontal;
           position: relative;
           text-align: center;
           text-overflow: ellipsis;
           top: -$spreadsheet-border-width;
+          transition: padding-right 150ms;
           z-index: inherit;
 
           .sheet-tabsheet-tab-label {
@@ -886,11 +887,13 @@
             height: 16px;
             line-height: 14px;
             opacity: 0;
+            pointer-events: none;
             position: absolute;
             right: 3px;
             top: 50%;
             transform: translateY(-50%);
-            transition: opacity 150ms, color 150ms, background-color 150ms;
+            transition: opacity 150ms, visibility 150ms, color 150ms, background-color 150ms;
+            visibility: hidden;
             width: 14px;
 
             &::before {
@@ -900,6 +903,8 @@
 
           &:hover .sheet-tabsheet-delete {
             opacity: .55;
+            pointer-events: auto;
+            visibility: visible;
           }
 
           &:hover .sheet-tabsheet-delete:hover {
@@ -931,6 +936,10 @@
             }
           }
         }
+      }
+
+      &:not(.readonly):not(.delete-disabled) .sheet-tabsheet-tab:hover {
+        padding-right: 20px;
       }
 
       &.readonly .sheet-tabsheet-delete,

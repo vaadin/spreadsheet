@@ -869,11 +869,12 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
           max-width: 200px;
           min-width: 50px;
           overflow: hidden;
-          padding: 4px 20px 0 8px;
+          padding: 4px 8px 0;
           position: relative;
           text-align: center;
           text-overflow: ellipsis;
           top: -1px;
+          transition: padding-right 150ms;
           z-index: inherit;
 
           .sheet-tabsheet-tab-label {
@@ -889,11 +890,13 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
             height: 16px;
             line-height: 14px;
             opacity: 0;
+            pointer-events: none;
             position: absolute;
             right: 3px;
             top: 50%;
             transform: translateY(-50%);
-            transition: opacity 150ms, color 150ms, background-color 150ms;
+            transition: opacity 150ms, visibility 150ms, color 150ms, background-color 150ms;
+            visibility: hidden;
             width: 14px;
 
             &::before {
@@ -903,6 +906,8 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
 
           &:hover .sheet-tabsheet-delete {
             opacity: .55;
+            pointer-events: auto;
+            visibility: visible;
           }
 
           &:hover .sheet-tabsheet-delete:hover {
@@ -934,6 +939,10 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
             }
           }
         }
+      }
+
+      &:not(.readonly):not(.delete-disabled) .sheet-tabsheet-tab:hover {
+        padding-right: 20px;
       }
 
       &.readonly .sheet-tabsheet-delete,
