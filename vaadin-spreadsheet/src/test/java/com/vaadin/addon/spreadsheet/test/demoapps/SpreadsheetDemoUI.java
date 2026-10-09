@@ -120,9 +120,9 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
     private HorizontalLayout options;
 
-    private NativeSelect<Locale> localeSelect;
+    private ComboBox<Locale> localeSelect;
     private Button loadFixtureBtn;
-    private NativeSelect<TestFixtures> fixtureSelect;
+    private ComboBox<TestFixtures> fixtureSelect;
 
     public SpreadsheetDemoUI() {
         super();
@@ -267,7 +267,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
             }
         }, "testsheet.xlsx")).extend(downloadButton);
 
-        localeSelect = new NativeSelect<>();
+        localeSelect = new ComboBox<>();
         localeSelect.setWidth("200px");
         localeSelect.setId("localeSelect");
 
@@ -279,7 +279,7 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
                 return o1.getDisplayName().compareTo(o2.getDisplayName());
             }
         });
-        localeSelect.setItems(locales);
+        localeSelect.setDataProvider(new ListDataProvider<>(locales));
         localeSelect.setItemCaptionGenerator(Locale::getDisplayName);
         localeSelect.addValueChangeListener(e -> updateLocale());
 
@@ -299,9 +299,10 @@ public class SpreadsheetDemoUI extends UI implements Receiver {
 
         spreadsheetFieldFactory = new SpreadsheetEditorComponentFactoryTest();
 
-        fixtureSelect = new NativeSelect<>();
+        fixtureSelect = new ComboBox<>();
         fixtureSelect.setId("fixtureSelect");
-        fixtureSelect.setItems(TestFixtures.values());
+        fixtureSelect.setDataProvider(new ListDataProvider<>(
+            Arrays.asList(TestFixtures.values())));
 
         loadFixtureBtn = new Button("Load");
         loadFixtureBtn.addClickListener(event -> {

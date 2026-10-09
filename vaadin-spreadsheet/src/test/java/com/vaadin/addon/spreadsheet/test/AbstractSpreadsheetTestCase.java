@@ -26,7 +26,7 @@ import com.vaadin.addon.spreadsheet.test.demoapps.SpreadsheetDemoUI;
 import com.vaadin.addon.spreadsheet.test.pageobjects.HeaderPage;
 import com.vaadin.addon.spreadsheet.test.tb3.MultiBrowserTest;
 import com.vaadin.addon.spreadsheet.test.testutil.SheetController;
-import com.vaadin.testbench.elements.NativeSelectElement;
+import com.vaadin.testbench.elements.ComboBoxElement;
 
 public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
 
@@ -75,10 +75,10 @@ public abstract class AbstractSpreadsheetTestCase extends MultiBrowserTest {
     }
 
     protected void setLocale(Locale locale) {
-        $(NativeSelectElement.class).id("localeSelect")
+        $(ComboBoxElement.class).id("localeSelect")
                 .selectByText(locale.getDisplayName());
         assertEquals("Unexpected locale,", locale.getDisplayName(),
-                $(NativeSelectElement.class).id("localeSelect").getValue());
+            $(ComboBoxElement.class).id("localeSelect").getValue());
     }
 
     /**
