@@ -882,25 +882,28 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
           }
 
           .sheet-tabsheet-delete {
-            border-radius: 2px;
+            align-items: center;
+            border-radius: 50%;
             color: inherit;
             cursor: pointer;
+            display: flex;
             font-size: 16px;
             font-weight: normal;
             height: 16px;
-            line-height: 14px;
+            justify-content: center;
+            line-height: 1;
             opacity: 0;
             pointer-events: none;
-            position: absolute;
+            position: absolute !important;
             right: 3px;
             top: 50%;
             transform: translateY(-50%);
             transition: opacity 150ms, visibility 150ms, color 150ms, background-color 150ms;
             visibility: hidden;
-            width: 14px;
+            width: 16px;
 
             &::before {
-              content: "\00d7";
+              content: "\2715";
             }
           }
 
