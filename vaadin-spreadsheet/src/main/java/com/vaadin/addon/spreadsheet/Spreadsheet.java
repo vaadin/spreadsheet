@@ -179,9 +179,17 @@ public class Spreadsheet extends AbstractComponent
 
     private boolean sheetDeleteEnabled = true;
 
-    private boolean protectedSheetDeleteButtonEnabled;
+    /**
+     * Whether or not the 'delete sheet' buttons should be shown by default
+     * for sheets with protection rules applied
+     */
+    private boolean protectedSheetDeleteButtonEnabled = false;
 
-    private boolean protectedWorkbookDeleteButtonEnabled;
+    /**
+     * Whether or not the 'delete sheet' buttons should be shown by default
+     * for any workbook with workbook protection enabled
+     */
+    private boolean protectedWorkbookDeleteButtonEnabled = false;
 
     /**
      * Map of autofitted column widths in points
