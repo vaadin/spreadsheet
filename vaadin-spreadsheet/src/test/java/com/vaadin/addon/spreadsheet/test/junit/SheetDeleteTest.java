@@ -13,11 +13,16 @@ package com.vaadin.addon.spreadsheet.test.junit;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.util.Locale;
 
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.SheetVisibility;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -91,7 +96,7 @@ public class SheetDeleteTest {
     }
 
     @Test
-    public void sheetDeleteEnabled_globalChanges_updateExistingAndNewClients() {
+    public void sheetDeleteEnabled_globalChanges_updateExistingAndNewPermissionArrays() {
         TestSpreadsheet existing = new TestSpreadsheet();
         Spreadsheet.setSheetDeleteButtonAllowed(false);
         TestSpreadsheet createdWhileDisabled = new TestSpreadsheet();
@@ -169,6 +174,38 @@ public class SheetDeleteTest {
     }
 
     @Test
+    public void sheetDeletePermissions_structureLockedWorkbook_appliesProtectionOverrides()
+            throws IOException {
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            workbook.createSheet("Protected").protectSheet("password");
+            workbook.createSheet("Unprotected");
+            workbook.lockStructure();
+            TestSpreadsheet spreadsheet = new TestSpreadsheet();
+
+            spreadsheet.setWorkbook(workbook);
+            spreadsheet.beforeClientResponse(true);
+
+            assertArrayEquals(new boolean[] { false, false },
+                    spreadsheet.getSheetDeleteButtonsEnabled());
+            spreadsheet.requestSheetDelete(1);
+            assertEquals(2, spreadsheet.getNumberOfSheets());
+            assertFalse(spreadsheet.isConfirmationShown());
+
+            spreadsheet.setProtectedWorkbookDeleteButtonEnabled(true);
+            assertArrayEquals(new boolean[] { false, true },
+                    spreadsheet.getSheetDeleteButtonsEnabled());
+
+            spreadsheet.setProtectedSheetDeleteButtonEnabled(true);
+            assertArrayEquals(new boolean[] { true, true },
+                    spreadsheet.getSheetDeleteButtonsEnabled());
+
+            spreadsheet.requestSheetDelete(1);
+            assertEquals(1, spreadsheet.getNumberOfSheets());
+            assertEquals("Protected", workbook.getSheetName(0));
+        }
+    }
+
+    @Test
     public void onSheetDelete_sheetIsEmptyAndUnprotected_deletesImmediately() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
 
@@ -181,11 +218,13 @@ public class SheetDeleteTest {
     @Test
     public void onSheetDelete_lastSheet_createsReplacementSheet() {
         TestSpreadsheet spreadsheet = new TestSpreadsheet();
+        Sheet originalSheet = spreadsheet.getActiveSheet();
 
         spreadsheet.requestSheetDelete(0);
 
         assertEquals(1, spreadsheet.getNumberOfSheets());
         assertEquals("Sheet1", spreadsheet.getWorkbook().getSheetName(0));
+        assertNotSame(originalSheet, spreadsheet.getActiveSheet());
         assertFalse(spreadsheet.isConfirmationShown());
     }
 
@@ -294,8 +333,8 @@ public class SheetDeleteTest {
         assertTrue(ui.getWindows().isEmpty());
     }
 
-        @Test
-        public void sheetProtection_inactiveSheetProtected_updatesOnlyItsTab() {
+    @Test
+    public void sheetDeletePermissions_inactiveSheetProtected_updatesOnlyItsEntry() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
 
         spreadsheet.setSheetProtected(0, "password");
@@ -303,22 +342,22 @@ public class SheetDeleteTest {
         assertFalse(spreadsheet.isActiveSheetProtected());
         assertArrayEquals(new boolean[] { false, true },
             spreadsheet.getSheetDeleteButtonsEnabled());
-        }
+    }
 
-        @Test
-        public void sheetProtection_activeSheetChanged_keepsPerTabProtection() {
+    @Test
+    public void sheetDeletePermissions_activeSheetChanged_keepsPerTabPermissions() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         spreadsheet.setSheetProtected(0, "password");
 
-            spreadsheet.setActiveSheetIndex(0);
+        spreadsheet.setActiveSheetIndex(0);
 
         assertTrue(spreadsheet.isActiveSheetProtected());
         assertArrayEquals(new boolean[] { false, true },
             spreadsheet.getSheetDeleteButtonsEnabled());
-        }
+    }
 
-        @Test
-        public void sheetProtection_removed_updatesTab() {
+    @Test
+    public void sheetDeletePermissions_protectionRemoved_updatesEntry() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         spreadsheet.setSheetProtected(0, "password");
 
@@ -326,10 +365,10 @@ public class SheetDeleteTest {
 
         assertArrayEquals(new boolean[] { true, true },
             spreadsheet.getSheetDeleteButtonsEnabled());
-        }
+    }
 
-        @Test
-        public void sheetProtection_hiddenSheets_keepsVisibleTabOrder() {
+    @Test
+    public void sheetDeletePermissions_hiddenSheets_keepsVisibleTabOrder() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         spreadsheet.createNewSheet("Third", 10, 10);
         spreadsheet.setSheetProtected(0, "password");
@@ -345,10 +384,10 @@ public class SheetDeleteTest {
 
         assertArrayEquals(new boolean[] { false, true },
             spreadsheet.getSheetDeleteButtonsEnabled());
-        }
+    }
 
-        @Test
-        public void sheetProtection_tabsAddedAndRemoved_keepsFlagsAligned() {
+    @Test
+    public void sheetDeletePermissions_tabsAddedAndRemoved_keepsEntriesAligned() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         spreadsheet.setSheetProtected(0, "password");
 
@@ -361,7 +400,7 @@ public class SheetDeleteTest {
 
         assertArrayEquals(new boolean[] { true, true },
             spreadsheet.getSheetDeleteButtonsEnabled());
-        }
+    }
 
     @Test
     public void onSheetDelete_deleteConfirmed_deletesSheet() {
@@ -418,6 +457,7 @@ public class SheetDeleteTest {
     @Test
     public void onSheetDelete_lastSheetDeleteConfirmed_createsReplacementSheet() {
         dialogSpreadsheet.createCell(0, 0, "Content");
+        Sheet originalSheet = dialogSpreadsheet.getActiveSheet();
 
         dialogSpreadsheet.requestSheetDelete(0);
         clickDialogButton(1);
@@ -425,6 +465,9 @@ public class SheetDeleteTest {
         assertEquals(1, dialogSpreadsheet.getNumberOfSheets());
         assertEquals("Sheet1",
                 dialogSpreadsheet.getWorkbook().getSheetName(0));
+        assertNotSame(originalSheet, dialogSpreadsheet.getActiveSheet());
+        assertNull(dialogSpreadsheet.getCell(0, 0));
+        assertTrue(ui.getWindows().isEmpty());
     }
 
     @Test
