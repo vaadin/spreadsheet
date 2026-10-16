@@ -1535,8 +1535,8 @@ public class Spreadsheet extends AbstractComponent
     /**
      * Enables or disables sheet delete buttons for this spreadsheet. The
      * default is {@code true}. The buttons are only allowed when the global
-    * setting is also enabled. Sheet and workbook protection also apply unless
-    * their respective delete button settings explicitly allow deletion.
+     * setting is also enabled. Sheet and workbook protection also apply unless
+     * their respective delete button settings explicitly allow deletion.
      * This setting does not affect programmatic calls to {@link #deleteSheet(int)}.
      *
      * @param enabled
@@ -1639,8 +1639,6 @@ public class Spreadsheet extends AbstractComponent
         }
     }
 
-    
-
     private void deleteSheetFromUI(int sheetIndex) {
         Sheet replacementSheet = null;
         boolean renameReplacement = false;
@@ -1678,9 +1676,9 @@ public class Spreadsheet extends AbstractComponent
      * been set for the current locale. If no default has been configured,
      * the enum value's fallback is used.
      * This configuration is shared by all spreadsheet instances. Existing
-    * client controls receive changes on their next client response. Call
-    * {@link #refreshLocalizedStrings()} on an existing instance to schedule
-    * that response when it has no other pending changes.
+     * client controls receive changes on their next client response. Call
+     * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+     * that response when it has no other pending changes.
      * For confirmation messages, the literal {@code {0}} is the sheet name.
      *
      * @param key
@@ -1698,9 +1696,9 @@ public class Spreadsheet extends AbstractComponent
      * and the default value are retained. For confirmation messages, the
      * literal {@code {0}} is replaced with the sheet name.
      * This configuration is shared by all spreadsheet instances. Existing
-    * client controls receive changes on their next client response. Call
-    * {@link #refreshLocalizedStrings()} on an existing instance to schedule
-    * that response when it has no other pending changes.
+     * client controls receive changes on their next client response. Call
+     * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+     * that response when it has no other pending changes.
      *
      * @param locale
      *            the locale for this text
