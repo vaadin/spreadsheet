@@ -944,12 +944,11 @@ $spreadsheet-freeze-pane-border: 1px solid $default-font-color !default;
         }
       }
 
-      &:not(.readonly):not(.delete-disabled) .sheet-tabsheet-tab:hover {
+      &:not(.readonly) .sheet-tabsheet-tab:not(.delete-disabled):hover {
         padding-right: 20px;
       }
 
-      &.readonly .sheet-tabsheet-delete,
-      &.delete-disabled .sheet-tabsheet-delete {
+      .sheet-tabsheet-container .sheet-tabsheet-tab.delete-disabled .sheet-tabsheet-delete {
         display: none;
       }
 

@@ -84,6 +84,8 @@ public class SheetTabSheet extends Widget {
 
     private boolean deleteEnabled = true;
 
+    private boolean[] protectedSheets = new boolean[0];
+
     private boolean editing;
 
     private String cachedSheetName = "";
@@ -194,7 +196,8 @@ public class SheetTabSheet extends Widget {
                             if (tab.isOrHasChild(target)) {
                                 if (target.hasClassName(
                                         DELETE_TAB_CLASSNAME)) {
-                                    if (!readOnly && deleteEnabled) {
+                                        if (!readOnly && deleteEnabled
+                                            && !tab.hasClassName("delete-disabled")) {
                                         handler.onSheetDelete(i);
                                     }
                                 } else if (i != selectedTabIndex) {
@@ -484,6 +487,7 @@ public class SheetTabSheet extends Widget {
             container.appendChild(e);
             tabs.push(e);
         }
+        updateDeleteButtons();
         showHideScrollIcons();
     }
 
@@ -513,6 +517,7 @@ public class SheetTabSheet extends Widget {
             selectedTabIndex = -1;
         }
 
+        updateDeleteButtons();
         showHideScrollIcons();
     }
 
@@ -558,14 +563,28 @@ public class SheetTabSheet extends Widget {
         }
         addNewSheet.getStyle()
                 .setDisplay(readOnly ? Display.NONE : Display.INLINE_BLOCK);
+        updateDeleteButtons();
     }
 
     public void setDeleteEnabled(boolean deleteEnabled) {
         this.deleteEnabled = deleteEnabled;
-        if (deleteEnabled) {
-            root.removeClassName("delete-disabled");
-        } else {
-            root.addClassName("delete-disabled");
+        updateDeleteButtons();
+    }
+
+    public void setProtectedSheets(boolean[] protectedSheets) {
+        this.protectedSheets = protectedSheets;
+        updateDeleteButtons();
+    }
+
+    private void updateDeleteButtons() {
+        for (int i = 0; i < tabs.length(); i++) {
+            Element tab = tabs.get(i).cast();
+            if (readOnly || !deleteEnabled
+                    || (i < protectedSheets.length && protectedSheets[i])) {
+                tab.addClassName("delete-disabled");
+            } else {
+                tab.removeClassName("delete-disabled");
+            }
         }
     }
 

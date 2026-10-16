@@ -1680,7 +1680,6 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     public void setSheetProtected(boolean sheetProtected) {
         if (this.sheetProtected != sheetProtected) {
             this.sheetProtected = sheetProtected;
-            sheetTabSheet.setDeleteEnabled(!sheetProtected);
             if (sheetProtected) {
                 addStyleName("protected");
             } else {
@@ -1720,6 +1719,14 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     @Override
     public boolean isRowProtected(int row) {
         return lockedRowIndexes.contains(row);
+    }
+
+    public void setProtectedSheets(boolean[] protectedSheets) {
+        sheetTabSheet.setProtectedSheets(protectedSheets);
+    }
+
+    public void setSheetDeleteEnabled(boolean enabled) {
+        sheetTabSheet.setDeleteEnabled(enabled);
     }
 
     public void setWorkbookProtected(boolean workbookProtected) {

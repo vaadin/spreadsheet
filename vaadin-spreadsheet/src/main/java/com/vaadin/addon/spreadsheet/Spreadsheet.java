@@ -175,6 +175,10 @@ public class Spreadsheet extends AbstractComponent
      */
     private static final int FILTER_BUTTON_PIXEL_PADDING = 2;
 
+    private static volatile boolean globalSheetDeleteEnabled = true;
+
+    private boolean sheetDeleteEnabled = true;
+
     /**
      * Map of autofitted column widths in points
      */
@@ -1217,6 +1221,7 @@ public class Spreadsheet extends AbstractComponent
         }
         workbook.getSheetAt(sheetPOIIndex).protectSheet(password);
         getState().sheetProtected = getActiveSheet().getProtect();
+        reloadSheetNames();
         // if the currently active sheet was protected, the protection for the
         // currently selected cell might have changed
         if (sheetPOIIndex == workbook.getActiveSheetIndex()) {
@@ -1493,13 +1498,61 @@ public class Spreadsheet extends AbstractComponent
     }
 
     /**
-     * This method is called when a request to delete a sheet has been made.
+     * Enables or disables sheet delete buttons globally. The default is
+     * {@code true}. Disabling this setting overrides every instance setting.
+     * Existing clients receive changes on their next response; call
+     * {@link #markAsDirty()} on an existing spreadsheet to request a response.
+     * This setting does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled
+     *            whether sheet delete buttons are allowed globally
+     */
+    public static void setSheetDeleteButtonAllowed(boolean enabled) {
+        globalSheetDeleteEnabled = enabled;
+    }
+
+    /**
+     * Returns whether sheet delete buttons are allowed globally.
+     *
+     * @return the global setting, {@code true} by default
+     */
+    public static boolean isSheetDeleteButtonAllowed() {
+        return globalSheetDeleteEnabled;
+    }
+
+    /**
+     * Enables or disables sheet delete buttons for this spreadsheet. The
+     * default is {@code true}. The buttons are only allowed when the global
+     * setting is also enabled, and sheet and workbook protection still apply.
+     * This setting does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled
+     *            whether sheet delete buttons are allowed for this instance
+     */
+    public void setSheetDeleteButtonEnabled(boolean enabled) {
+        sheetDeleteEnabled = enabled;
+        getState().sheetDeleteEnabled = isSheetDeleteButtonAllowed();
+    }
+
+    /**
+     * Returns whether the global and instance settings allow sheet delete
+     * buttons. Sheet and workbook protection may further restrict visibility.
+     *
+     * @return {@code true} if both settings are enabled
+     */
+    public boolean isSheetDeleteButtonEnabled() {
+        return globalSheetDeleteEnabled && sheetDeleteEnabled;
+    }
+
+    /**
+     * This method is called when a request to delete a sheet has been made
+     * from the client side.
      *
      * @param sheetIndex
      *            Index of the sheet to delete (among visible sheets).
      */
     protected void onSheetDelete(int sheetIndex) {
-        if (getState(false).workbookProtected) {
+        if (!isSheetDeleteButtonAllowed() || getState(false).workbookProtected) {
             return;
         }
 
@@ -1618,7 +1671,7 @@ public class Spreadsheet extends AbstractComponent
         Button deleteButton = new Button(getLocalizedString(
             LocalizableString.SHEET_DELETE_CAPTION),
                 event -> {
-            if (!getState(false).workbookProtected) {
+            if (isSheetDeleteButtonAllowed() && !getState(false).workbookProtected) {
                 deleteSheetFromUI(sheetIndex);
             }
             confirmation.close();
@@ -3188,14 +3241,20 @@ public class Spreadsheet extends AbstractComponent
 
     private void reloadSheetNames() {
         final ArrayList<String> sheetNamesList = new ArrayList<String>();
+        final ArrayList<Boolean> protectedSheets = new ArrayList<Boolean>();
 
         for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
             if (!workbook.isSheetVeryHidden(i) && !workbook.isSheetHidden(i)) {
                 sheetNamesList.add(workbook.getSheetName(i));
+                protectedSheets.add(workbook.getSheetAt(i).getProtect());
             }
         }
         getState().sheetNames = sheetNamesList
                 .toArray(new String[sheetNamesList.size()]);
+        getState().protectedSheets = new boolean[protectedSheets.size()];
+        for (int i = 0; i < protectedSheets.size(); i++) {
+            getState().protectedSheets[i] = protectedSheets.get(i);
+        }
     }
 
     /**
@@ -3343,6 +3402,7 @@ public class Spreadsheet extends AbstractComponent
     @Override
     public void beforeClientResponse(boolean initial) {
         refreshLocalizedStrings();
+        getState().sheetDeleteEnabled = isSheetDeleteButtonAllowed();
         super.beforeClientResponse(initial);
         if (reload) {
             reload = false;

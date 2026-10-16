@@ -68,6 +68,12 @@ public class SpreadsheetState extends TabIndexState {
 
     public String[] sheetNames = null;
 
+    @DelegateToWidget
+    public boolean[] protectedSheets = new boolean[0];
+
+    @DelegateToWidget
+    public boolean sheetDeleteEnabled = true;
+
     public String sheetDeleteCaption = "Delete sheet";
 
     @DelegateToWidget
