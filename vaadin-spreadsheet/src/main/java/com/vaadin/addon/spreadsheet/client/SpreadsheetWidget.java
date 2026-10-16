@@ -33,7 +33,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.vaadin.addon.spreadsheet.client.MergedRegionUtil.MergedRegionContainer;
 import com.vaadin.addon.spreadsheet.client.SheetTabSheet.SheetTabSheetHandler;
 import com.vaadin.addon.spreadsheet.client.SpreadsheetConnector.CommsTrigger;
-import com.vaadin.addon.spreadsheet.client.SpreadsheetWidget.SheetContextMenuHandler;
 import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.client.Focusable;
 import com.vaadin.client.ServerConnector;
@@ -280,6 +279,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
      */
     public void setInfoLabelValue(String value) {
         sheetTabSheet.setInfoLabelValue(value);
+    }
+
+    public void setSheetDeleteCaption(String caption) {
+        sheetTabSheet.setSheetDeleteCaption(caption);
     }
 
     /**
@@ -1308,6 +1311,11 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     }
 
     @Override
+    public void onSheetDelete(int sheetIndex) {
+        spreadsheetHandler.sheetDeleted(sheetIndex);
+    }
+
+    @Override
     public void onNewSheetCreated() {
         int scrollLeft = sheetWidget.getSheetScrollLeft();
         int scrollTop = sheetWidget.getSheetScrollTop();
@@ -1711,6 +1719,10 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
     @Override
     public boolean isRowProtected(int row) {
         return lockedRowIndexes.contains(row);
+    }
+
+    public void setSheetDeleteButtonsEnabled(boolean[] enabled) {
+        sheetTabSheet.setSheetDeleteButtonsEnabled(enabled);
     }
 
     public void setWorkbookProtected(boolean workbookProtected) {

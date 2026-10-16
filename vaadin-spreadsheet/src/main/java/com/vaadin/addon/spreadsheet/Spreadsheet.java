@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.EnumMap;
 import java.util.EventObject;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -85,15 +86,23 @@ import com.vaadin.addon.spreadsheet.shared.GroupingData;
 import com.vaadin.addon.spreadsheet.shared.SpreadsheetState;
 import com.vaadin.event.Action;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.event.SerializableEventListener;
 import com.vaadin.server.Resource;
 import com.vaadin.shared.Registration;
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Component.Focusable;
 import com.vaadin.ui.HasComponents;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.declarative.DesignAttributeHandler;
 import com.vaadin.ui.declarative.DesignContext;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.ReflectTools;
 
 /**
@@ -107,6 +116,29 @@ import com.vaadin.util.ReflectTools;
 @SuppressWarnings("serial")
 public class Spreadsheet extends AbstractComponent
         implements HasComponents, Action.Container, Focusable {
+
+    /**
+     * Identifies customizable user-facing strings in the spreadsheet.
+     * Each value defines a fallback used when neither a locale-specific value
+     * nor a configured default is available.
+     */
+    public enum LocalizableString {
+        SHEET_DELETE_CAPTION("Delete sheet"),
+        SHEET_DELETE_CONFIRMATION_CAPTION("Confirm sheet deletion"),
+        SHEET_DELETE_CANCEL_CAPTION("Cancel"),
+        SHEET_DELETE_CONFIRMATION_MESSAGE(
+                "Are you sure you want to delete sheet '{0}'?");
+
+        private final String fallback;
+
+        LocalizableString(String fallback) {
+            this.fallback = fallback;
+        }
+    }
+
+    private static final Map<Locale, Map<LocalizableString, String>> localizedStrings = new HashMap<>();
+    private static final Map<LocalizableString, String> defaultStrings = new EnumMap<>(
+            LocalizableString.class);
 
     /**
      * This is a style which hides the top (address and formula) bar.
@@ -142,6 +174,22 @@ public class Spreadsheet extends AbstractComponent
      * text when autofitting a column.
      */
     private static final int FILTER_BUTTON_PIXEL_PADDING = 2;
+
+    private static volatile boolean globalSheetDeleteEnabled = true;
+
+    private boolean sheetDeleteEnabled = true;
+
+    /**
+     * Whether or not the 'delete sheet' buttons should be shown by default
+     * for sheets with protection rules applied
+     */
+    private boolean protectedSheetDeleteButtonEnabled = false;
+
+    /**
+     * Whether or not the 'delete sheet' buttons should be shown by default
+     * for any workbook with workbook protection enabled
+     */
+    private boolean protectedWorkbookDeleteButtonEnabled = false;
 
     /**
      * Map of autofitted column widths in points
@@ -1002,6 +1050,7 @@ public class Spreadsheet extends AbstractComponent
     public void setLocale(Locale locale) {
         super.setLocale(locale);
         valueManager.updateLocale(locale);
+        refreshLocalizedStrings();
         refreshAllCellValues();
     }
 
@@ -1009,6 +1058,7 @@ public class Spreadsheet extends AbstractComponent
     public void attach() {
         super.attach();
         valueManager.updateLocale(getLocale());
+        refreshLocalizedStrings();
     }
 
     /**
@@ -1183,6 +1233,7 @@ public class Spreadsheet extends AbstractComponent
         }
         workbook.getSheetAt(sheetPOIIndex).protectSheet(password);
         getState().sheetProtected = getActiveSheet().getProtect();
+        reloadSheetNames();
         // if the currently active sheet was protected, the protection for the
         // currently selected cell might have changed
         if (sheetPOIIndex == workbook.getActiveSheetIndex()) {
@@ -1456,6 +1507,274 @@ public class Spreadsheet extends AbstractComponent
         // if excel doesn't keep these in history, neither will we
         setSheetNameWithPOIIndex(getVisibleSheetPOIIndex(sheetIndex),
                 sheetName);
+    }
+
+    /**
+     * Enables or disables sheet delete buttons globally. The default is
+     * {@code true}. Disabling this setting overrides every instance setting.
+     * Existing clients receive changes on their next response; call
+     * {@link #markAsDirty()} on an existing spreadsheet to request a response.
+     * This setting does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled
+     *            whether sheet delete buttons are allowed globally
+     */
+    public static void setSheetDeleteButtonAllowed(boolean enabled) {
+        globalSheetDeleteEnabled = enabled;
+    }
+
+    /**
+     * Returns whether sheet delete buttons are allowed globally.
+     *
+     * @return the global setting, {@code true} by default
+     */
+    public static boolean isSheetDeleteButtonAllowed() {
+        return globalSheetDeleteEnabled;
+    }
+
+    /**
+     * Enables or disables sheet delete buttons for this spreadsheet. The
+     * default is {@code true}. The buttons are only allowed when the global
+     * setting is also enabled. Sheet and workbook protection also apply unless
+     * their respective delete button settings explicitly allow deletion.
+     * This setting does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled
+     *            whether sheet delete buttons are allowed for this instance
+     */
+    public void setSheetDeleteButtonEnabled(boolean enabled) {
+        sheetDeleteEnabled = enabled;
+        refreshSheetDeleteButtons();
+    }
+
+    /**
+     * Returns whether the global and instance settings allow sheet delete
+    * buttons. Sheet and workbook protection settings may further restrict
+    * visibility.
+     *
+     * @return {@code true} if both settings are enabled
+     */
+    public boolean isSheetDeleteButtonEnabled() {
+        return globalSheetDeleteEnabled && sheetDeleteEnabled;
+    }
+
+    /**
+     * Sets whether protected sheets may have delete buttons. The default is
+     * {@code false}. Global and instance sheet deletion settings still apply.
+     * This does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled whether to allow delete buttons on protected sheets
+     */
+    public void setProtectedSheetDeleteButtonEnabled(boolean enabled) {
+        protectedSheetDeleteButtonEnabled = enabled;
+        refreshSheetDeleteButtons();
+    }
+
+    /**
+     * Returns whether delete buttons are enabled for protected sheets.
+     *
+     * @return the setting, {@code false} by default
+     */
+    public boolean isProtectedSheetDeleteButtonEnabled() {
+        return protectedSheetDeleteButtonEnabled;
+    }
+
+    /**
+     * Sets whether protected workbooks may have sheet delete buttons. The
+     * default is {@code false}. Global, instance and protected-sheet deletion
+     * settings still apply. Adding and renaming sheets remain restricted.
+     * This does not affect programmatic calls to {@link #deleteSheet(int)}.
+     *
+     * @param enabled whether to allow delete buttons in protected workbooks
+     */
+    public void setProtectedWorkbookDeleteButtonEnabled(boolean enabled) {
+        protectedWorkbookDeleteButtonEnabled = enabled;
+        refreshSheetDeleteButtons();
+    }
+
+    /**
+     * Returns whether sheet delete buttons are enabled for protected workbooks.
+     *
+     * @return the setting, {@code false} by default
+     */
+    public boolean isProtectedWorkbookDeleteButtonEnabled() {
+        return protectedWorkbookDeleteButtonEnabled;
+    }
+
+    /**
+     * Determine whether or not a given sheet should get a delete button or not.
+     */
+    private boolean canDeleteSheetFromUI(int sheetIndex) {
+        if (!isSheetDeleteButtonEnabled()) {
+            return false;
+        }
+        if (getState(false).workbookProtected
+                && !isProtectedWorkbookDeleteButtonEnabled()) {
+            return false;
+        }
+        Sheet sheet = workbook.getSheetAt(getVisibleSheetPOIIndex(sheetIndex));
+        if (sheet.getProtect() && !isProtectedSheetDeleteButtonEnabled()) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This method is called when a request to delete a sheet has been made
+     * from the client side.
+     *
+     * @param sheetIndex
+     *            Index of the sheet to delete (among visible sheets).
+     */
+    protected void onSheetDelete(int sheetIndex) {
+        if (!canDeleteSheetFromUI(sheetIndex)) {
+            return;
+        }
+
+        Sheet sheet = workbook.getSheetAt(getVisibleSheetPOIIndex(sheetIndex));
+        if (!sheet.getProtect() && !hasSheetContent(sheet)) {
+            deleteSheetFromUI(sheetIndex);
+        } else {
+            showSheetDeleteConfirmation(sheetIndex);
+        }
+    }
+
+    private void deleteSheetFromUI(int sheetIndex) {
+        Sheet replacementSheet = null;
+        boolean renameReplacement = false;
+        if (getNumberOfVisibleSheets() == 1) {
+            renameReplacement = workbook
+                    .getSheetName(getVisibleSheetPOIIndex(sheetIndex))
+                    .equals("Sheet1");
+            createNewSheet(renameReplacement ? null : "Sheet1",
+                    defaultNewSheetRows,
+                    defaultNewSheetColumns);
+            replacementSheet = getActiveSheet();
+        }
+        deleteSheet(sheetIndex);
+        if (renameReplacement) {
+            setSheetNameWithPOIIndex(workbook.getSheetIndex(replacementSheet),
+                    "Sheet1");
+        }
+    }
+
+    private boolean hasSheetContent(Sheet sheet) {
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                if (cell.getCellType() != CellType.BLANK
+                        || cell.getCellComment() != null
+                        || cell.getHyperlink() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Sets the default value of a localizable string, used when no value has
+     * been set for the current locale. If no default has been configured,
+     * the enum value's fallback is used.
+     * This configuration is shared by all spreadsheet instances. Existing
+     * client controls receive changes on their next client response. Call
+     * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+     * that response when it has no other pending changes.
+     * For confirmation messages, the literal {@code {0}} is the sheet name.
+     *
+     * @param key
+     *            the string to customize
+     * @param value
+     *            the default text
+     */
+    public static synchronized void setLocalizedString(LocalizableString key,
+            String value) {
+        defaultStrings.put(key, value);
+    }
+
+    /**
+     * Sets a localizable string for an exact locale. Values for other locales
+     * and the default value are retained. For confirmation messages, the
+     * literal {@code {0}} is replaced with the sheet name.
+     * This configuration is shared by all spreadsheet instances. Existing
+     * client controls receive changes on their next client response. Call
+     * {@link #refreshLocalizedStrings()} on an existing instance to schedule
+     * that response when it has no other pending changes.
+     *
+     * @param locale
+     *            the locale for this text
+     * @param key
+     *            the string to customize
+     * @param value
+     *            the localized text
+     */
+    public static synchronized void setLocalizedString(Locale locale,
+            LocalizableString key, String value) {
+        localizedStrings.computeIfAbsent(locale,
+                unused -> new EnumMap<>(LocalizableString.class)).put(key, value);
+    }
+
+    private String getLocalizedString(LocalizableString key) {
+        synchronized (Spreadsheet.class) {
+            Map<LocalizableString, String> translations = localizedStrings
+                    .get(getLocale());
+            if (translations != null && translations.containsKey(key)) {
+                return translations.get(key);
+            }
+            return defaultStrings.getOrDefault(key, key.fallback);
+        }
+    }
+
+    /**
+     * Refreshes localized client controls using the current locale and shared
+     * string configuration. Call this after changing shared strings to update
+     * an existing spreadsheet even when it has no other pending changes.
+     */
+    public void refreshLocalizedStrings() {
+        getState().sheetDeleteCaption = getLocalizedString(
+                LocalizableString.SHEET_DELETE_CAPTION);
+        markAsDirty();
+    }
+
+    protected void showSheetDeleteConfirmation(int sheetIndex) {
+        Window confirmation = new Window(getLocalizedString(
+                LocalizableString.SHEET_DELETE_CONFIRMATION_CAPTION));
+        confirmation.setIcon(VaadinIcons.WARNING);
+        confirmation.setModal(true);
+        confirmation.setResizable(false);
+        confirmation.setClosable(false);
+
+        Button deleteButton = new Button(getLocalizedString(
+            LocalizableString.SHEET_DELETE_CAPTION),
+                event -> {
+            if (canDeleteSheetFromUI(sheetIndex)) {
+                deleteSheetFromUI(sheetIndex);
+            }
+            confirmation.close();
+        });
+        deleteButton.addStyleName(ValoTheme.BUTTON_DANGER);
+        Button cancelButton = new Button(getLocalizedString(
+            LocalizableString.SHEET_DELETE_CANCEL_CAPTION),
+                event -> confirmation.close());
+        
+        HorizontalLayout actions = new HorizontalLayout(cancelButton,
+            deleteButton);
+
+        String sheetName = workbook
+                .getSheetName(getVisibleSheetPOIIndex(sheetIndex));
+        VerticalLayout content = new VerticalLayout(
+            new Label(getLocalizedString(
+                LocalizableString.SHEET_DELETE_CONFIRMATION_MESSAGE)
+                .replace("{0}", sheetName)),
+                actions);
+        
+        content.setMargin(true);
+        content.setSpacing(true);
+        content.setComponentAlignment(actions, Alignment.MIDDLE_RIGHT);
+        confirmation.setContent(content);
+
+        getUI().addWindow(confirmation);
+        confirmation.center();
+        cancelButton.focus();
     }
 
     /**
@@ -3005,6 +3324,15 @@ public class Spreadsheet extends AbstractComponent
         }
         getState().sheetNames = sheetNamesList
                 .toArray(new String[sheetNamesList.size()]);
+        refreshSheetDeleteButtons();
+    }
+
+    private void refreshSheetDeleteButtons() {
+        boolean[] enabled = new boolean[getNumberOfVisibleSheets()];
+        for (int sheetIndex = 0; sheetIndex < enabled.length; sheetIndex++) {
+            enabled[sheetIndex] = canDeleteSheetFromUI(sheetIndex);
+        }
+        getState().sheetDeleteButtonsEnabled = enabled;
     }
 
     /**
@@ -3151,6 +3479,8 @@ public class Spreadsheet extends AbstractComponent
      */
     @Override
     public void beforeClientResponse(boolean initial) {
+        refreshLocalizedStrings();
+        refreshSheetDeleteButtons();
         super.beforeClientResponse(initial);
         if (reload) {
             reload = false;

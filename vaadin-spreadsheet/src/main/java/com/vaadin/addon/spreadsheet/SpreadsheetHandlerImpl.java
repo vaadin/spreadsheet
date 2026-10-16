@@ -149,6 +149,11 @@ public class SpreadsheetHandlerImpl implements SpreadsheetServerRpc {
     }
 
     @Override
+    public void sheetDeleted(int sheetIndex) {
+        spreadsheet.onSheetDelete(sheetIndex);
+    }
+
+    @Override
     public void sheetCreated(int scrollLeft, int scrollTop) {
         spreadsheet.onNewSheetCreated(scrollLeft, scrollTop);
     }

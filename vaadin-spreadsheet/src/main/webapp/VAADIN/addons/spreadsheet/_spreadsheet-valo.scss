@@ -871,7 +871,50 @@
           text-align: center;
           text-overflow: ellipsis;
           top: -$spreadsheet-border-width;
+          transition: padding-right 150ms;
           z-index: inherit;
+
+          .sheet-tabsheet-tab-label {
+            pointer-events: none;
+          }
+
+          .sheet-tabsheet-delete {
+            align-items: center;
+            border-radius: 50%;
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            font-size: 16px;
+            font-weight: normal;
+            height: 16px;
+            justify-content: center;
+            line-height: 1;
+            opacity: 0;
+            pointer-events: none;
+            position: absolute !important;
+            right: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: opacity 150ms, visibility 150ms, color 150ms, background-color 150ms;
+            visibility: hidden;
+            width: 16px;
+
+            &::before {
+              content: "\2715";
+            }
+          }
+
+          &:hover .sheet-tabsheet-delete {
+            opacity: .55;
+            pointer-events: auto;
+            visibility: visible;
+          }
+
+          &:hover .sheet-tabsheet-delete:hover {
+            background-color: rgba(0, 0, 0, .1);
+            color: $spreadsheet-sheet-selection-border-color;
+            opacity: 1;
+          }
 
           &.selected-tab {
             background: $spreadsheet-active-tab-background;
@@ -896,6 +939,14 @@
             }
           }
         }
+      }
+
+      .sheet-tabsheet-tab:not(.delete-disabled):hover {
+        padding-right: 20px;
+      }
+
+      .sheet-tabsheet-container .sheet-tabsheet-tab.delete-disabled .sheet-tabsheet-delete {
+        display: none;
       }
 
       .sheet-tabsheet-temp {

@@ -69,6 +69,11 @@ public class SpreadsheetState extends TabIndexState {
     public String[] sheetNames = null;
 
     @DelegateToWidget
+    public boolean[] sheetDeleteButtonsEnabled = new boolean[0];
+
+    public String sheetDeleteCaption = "Delete sheet";
+
+    @DelegateToWidget
     public HashMap<Integer, String> cellStyleToCSSStyle = null;
     @DelegateToWidget
     public HashMap<Integer, Integer> rowIndexToStyleIndex = null;
