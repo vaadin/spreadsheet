@@ -1721,12 +1721,8 @@ public class SpreadsheetWidget extends Composite implements SheetHandler,
         return lockedRowIndexes.contains(row);
     }
 
-    public void setProtectedSheets(boolean[] protectedSheets) {
-        sheetTabSheet.setProtectedSheets(protectedSheets);
-    }
-
-    public void setSheetDeleteEnabled(boolean enabled) {
-        sheetTabSheet.setDeleteEnabled(enabled);
+    public void setSheetDeleteButtonsEnabled(boolean[] enabled) {
+        sheetTabSheet.setSheetDeleteButtonsEnabled(enabled);
     }
 
     public void setWorkbookProtected(boolean workbookProtected) {

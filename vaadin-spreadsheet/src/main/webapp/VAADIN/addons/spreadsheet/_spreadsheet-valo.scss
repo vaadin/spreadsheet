@@ -941,7 +941,7 @@
         }
       }
 
-      &:not(.readonly) .sheet-tabsheet-tab:not(.delete-disabled):hover {
+      .sheet-tabsheet-tab:not(.delete-disabled):hover {
         padding-right: 20px;
       }
 

@@ -57,7 +57,7 @@ public class SheetDeleteTest {
     public void sheetDeleteEnabled_newInstance_enabledByDefault() {
         TestSpreadsheet spreadsheet = new TestSpreadsheet();
 
-        assertTrue(spreadsheet.isSheetDeleteButtonAllowed());
+        assertTrue(spreadsheet.isSheetDeleteButtonEnabled());
         assertTrue(spreadsheet.isClientSheetDeleteEnabled());
     }
 
@@ -71,7 +71,7 @@ public class SheetDeleteTest {
                 spreadsheet.setSheetDeleteButtonEnabled(local);
 
                 assertEquals(global && local,
-                        spreadsheet.isSheetDeleteButtonAllowed());
+                    spreadsheet.isSheetDeleteButtonEnabled());
                 assertEquals(global && local,
                         spreadsheet.isClientSheetDeleteEnabled());
             }
@@ -85,8 +85,8 @@ public class SheetDeleteTest {
 
         disabled.setSheetDeleteButtonEnabled(false);
 
-        assertFalse(disabled.isSheetDeleteButtonAllowed());
-        assertTrue(enabled.isSheetDeleteButtonAllowed());
+        assertFalse(disabled.isSheetDeleteButtonEnabled());
+        assertTrue(enabled.isSheetDeleteButtonEnabled());
         assertTrue(enabled.isClientSheetDeleteEnabled());
     }
 
@@ -120,7 +120,7 @@ public class SheetDeleteTest {
         Spreadsheet.setSheetDeleteButtonAllowed(true);
         spreadsheet.beforeClientResponse(false);
 
-        assertFalse(spreadsheet.isSheetDeleteButtonAllowed());
+        assertFalse(spreadsheet.isSheetDeleteButtonEnabled());
         assertFalse(spreadsheet.isClientSheetDeleteEnabled());
     }
 
@@ -201,14 +201,97 @@ public class SheetDeleteTest {
     }
 
     @Test
-    public void onSheetDelete_sheetIsEmptyAndProtected_showsConfirmation() {
+    public void onSheetDelete_sheetIsEmptyAndProtected_doesNothingByDefault() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         spreadsheet.setSheetProtected(1, "password");
 
         spreadsheet.requestSheetDelete(1);
 
         assertEquals(2, spreadsheet.getNumberOfSheets());
+        assertFalse(spreadsheet.isConfirmationShown());
+        assertFalse(spreadsheet.isProtectedSheetDeleteButtonEnabled());
+        assertFalse(spreadsheet.isProtectedWorkbookDeleteButtonEnabled());
+    }
+
+    @Test
+    public void onSheetDelete_protectedSheetEnabled_showsConfirmation() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setSheetProtected(1, "password");
+        spreadsheet.setProtectedSheetDeleteButtonEnabled(true);
+
+        spreadsheet.requestSheetDelete(1);
+
+        assertTrue(spreadsheet.isProtectedSheetDeleteButtonEnabled());
         assertTrue(spreadsheet.isConfirmationShown());
+    }
+
+    @Test
+    public void onSheetDelete_protectionSettings_allRestrictionsMustAllow() {
+        for (boolean sheetEnabled : new boolean[] { false, true }) {
+            for (boolean workbookEnabled : new boolean[] { false, true }) {
+                TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+                spreadsheet.setSheetProtected(1, "password");
+                spreadsheet.setWorkbookReadOnly(true);
+                spreadsheet.setProtectedSheetDeleteButtonEnabled(sheetEnabled);
+                spreadsheet.setProtectedWorkbookDeleteButtonEnabled(workbookEnabled);
+
+                spreadsheet.beforeClientResponse(false);
+                assertArrayEquals(new boolean[] { workbookEnabled,
+                    sheetEnabled && workbookEnabled },
+                    spreadsheet.getSheetDeleteButtonsEnabled());
+
+                spreadsheet.requestSheetDelete(1);
+
+                assertEquals(sheetEnabled && workbookEnabled,
+                        spreadsheet.isConfirmationShown());
+                assertEquals(2, spreadsheet.getNumberOfSheets());
+            }
+        }
+    }
+
+    @Test
+    public void onSheetDelete_protectedWorkbookEnabled_deletesUnprotectedSheet() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setWorkbookReadOnly(true);
+        spreadsheet.setProtectedWorkbookDeleteButtonEnabled(true);
+
+        spreadsheet.requestSheetDelete(1);
+
+        assertTrue(spreadsheet.isProtectedWorkbookDeleteButtonEnabled());
+        assertEquals(1, spreadsheet.getNumberOfSheets());
+    }
+
+    @Test
+    public void onSheetDelete_protectionOverrides_doNotOverrideDeletionDisabled() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setSheetProtected(1, "password");
+        spreadsheet.setWorkbookReadOnly(true);
+        spreadsheet.setProtectedSheetDeleteButtonEnabled(true);
+        spreadsheet.setProtectedWorkbookDeleteButtonEnabled(true);
+
+        spreadsheet.setSheetDeleteButtonEnabled(false);
+        spreadsheet.requestSheetDelete(1);
+        assertFalse(spreadsheet.isConfirmationShown());
+
+        spreadsheet.setSheetDeleteButtonEnabled(true);
+        Spreadsheet.setSheetDeleteButtonAllowed(false);
+        spreadsheet.requestSheetDelete(1);
+        assertFalse(spreadsheet.isConfirmationShown());
+        assertEquals(2, spreadsheet.getNumberOfSheets());
+    }
+
+    @Test
+    public void onSheetDelete_protectedSheetDisabledAfterConfirmation_keepsSheet() {
+        dialogSpreadsheet.createNewSheet("Second", 10, 10);
+        dialogSpreadsheet.setSheetProtected(1, "password");
+        dialogSpreadsheet.setProtectedSheetDeleteButtonEnabled(true);
+        dialogSpreadsheet.requestSheetDelete(1);
+
+        dialogSpreadsheet.setProtectedSheetDeleteButtonEnabled(false);
+        clickDialogButton(1);
+
+        assertEquals(2, dialogSpreadsheet.getNumberOfSheets());
+        assertTrue(ui.getWindows().isEmpty());
     }
 
         @Test
@@ -218,8 +301,8 @@ public class SheetDeleteTest {
         spreadsheet.setSheetProtected(0, "password");
 
         assertFalse(spreadsheet.isActiveSheetProtected());
-        assertArrayEquals(new boolean[] { true, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { false, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
         }
 
         @Test
@@ -230,8 +313,8 @@ public class SheetDeleteTest {
             spreadsheet.setActiveSheetIndex(0);
 
         assertTrue(spreadsheet.isActiveSheetProtected());
-        assertArrayEquals(new boolean[] { true, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { false, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
         }
 
         @Test
@@ -241,8 +324,8 @@ public class SheetDeleteTest {
 
         spreadsheet.setSheetProtected(0, null);
 
-        assertArrayEquals(new boolean[] { false, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { true, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
         }
 
         @Test
@@ -255,13 +338,13 @@ public class SheetDeleteTest {
         spreadsheet.setSheetHidden(0, SheetVisibility.HIDDEN);
         spreadsheet.setSheetHidden(1, SheetVisibility.VERY_HIDDEN);
 
-        assertArrayEquals(new boolean[] { false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
 
         spreadsheet.setSheetHidden(1, SheetVisibility.VISIBLE);
 
-        assertArrayEquals(new boolean[] { true, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { false, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
         }
 
         @Test
@@ -271,13 +354,13 @@ public class SheetDeleteTest {
 
         spreadsheet.createNewSheet("Third", 10, 10);
 
-        assertArrayEquals(new boolean[] { true, false, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { false, true, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
 
         spreadsheet.deleteSheet(0);
 
-        assertArrayEquals(new boolean[] { false, false },
-            spreadsheet.getProtectedSheets());
+        assertArrayEquals(new boolean[] { true, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
         }
 
     @Test
@@ -344,6 +427,52 @@ public class SheetDeleteTest {
                 dialogSpreadsheet.getWorkbook().getSheetName(0));
     }
 
+    @Test
+    public void protectionOverrides_settingsAreIndependentPerInstance() {
+        TestSpreadsheet enabled = new TestSpreadsheet();
+        TestSpreadsheet defaults = new TestSpreadsheet();
+
+        enabled.setProtectedSheetDeleteButtonEnabled(true);
+        enabled.setProtectedWorkbookDeleteButtonEnabled(true);
+
+        assertTrue(enabled.isProtectedSheetDeleteButtonEnabled());
+        assertTrue(enabled.isProtectedWorkbookDeleteButtonEnabled());
+        assertFalse(defaults.isProtectedSheetDeleteButtonEnabled());
+        assertFalse(defaults.isProtectedWorkbookDeleteButtonEnabled());
+
+        enabled.setProtectedSheetDeleteButtonEnabled(false);
+        assertFalse(enabled.isProtectedSheetDeleteButtonEnabled());
+        assertTrue(enabled.isProtectedWorkbookDeleteButtonEnabled());
+    }
+
+    @Test
+    public void onSheetDelete_protectedSheetConfirmed_deletesSheet() {
+        dialogSpreadsheet.createNewSheet("Second", 10, 10);
+        dialogSpreadsheet.setSheetProtected(1, "password");
+        dialogSpreadsheet.setProtectedSheetDeleteButtonEnabled(true);
+
+        dialogSpreadsheet.requestSheetDelete(1);
+        clickDialogButton(1);
+
+        assertEquals(1, dialogSpreadsheet.getNumberOfSheets());
+        assertTrue(ui.getWindows().isEmpty());
+    }
+
+    @Test
+    public void onSheetDelete_workbookOverrideDisabledAfterConfirmation_keepsSheet() {
+        dialogSpreadsheet.createNewSheet("Second", 10, 10);
+        dialogSpreadsheet.createCell(0, 0, "Content");
+        dialogSpreadsheet.setWorkbookReadOnly(true);
+        dialogSpreadsheet.setProtectedWorkbookDeleteButtonEnabled(true);
+        dialogSpreadsheet.requestSheetDelete(1);
+
+        dialogSpreadsheet.setProtectedWorkbookDeleteButtonEnabled(false);
+        clickDialogButton(1);
+
+        assertEquals(2, dialogSpreadsheet.getNumberOfSheets());
+        assertTrue(ui.getWindows().isEmpty());
+    }
+
     private void clickDialogButton(int buttonIndex) {
         Window confirmation = ui.getWindows().iterator().next();
         VerticalLayout content = (VerticalLayout) confirmation.getContent();
@@ -368,12 +497,12 @@ public class SheetDeleteTest {
             getState().workbookProtected = readOnly;
         }
 
-        boolean[] getProtectedSheets() {
-            return getState(false).protectedSheets;
+        boolean[] getSheetDeleteButtonsEnabled() {
+            return getState(false).sheetDeleteButtonsEnabled;
         }
 
         boolean isClientSheetDeleteEnabled() {
-            return getState(false).sheetDeleteEnabled;
+            return getSheetDeleteButtonsEnabled()[0];
         }
 
         boolean isConfirmationShown() {
@@ -389,6 +518,10 @@ public class SheetDeleteTest {
     private static class DialogSpreadsheet extends Spreadsheet {
         void requestSheetDelete(int sheetIndex) {
             onSheetDelete(sheetIndex);
+        }
+
+        void setWorkbookReadOnly(boolean readOnly) {
+            getState().workbookProtected = readOnly;
         }
     }
 
