@@ -130,6 +130,103 @@ public class SheetDeleteTest {
     }
 
     @Test
+    public void setSheetDeleteButtonAllowed_toggled_updatesAllInstancesAndPreservesRestrictions() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setSheetProtected(0, "password");
+        TestSpreadsheet locallyDisabled = createSpreadsheetWithTwoSheets();
+        locallyDisabled.setSheetDeleteButtonEnabled(false);
+
+        for (boolean allowed : new boolean[] { false, true, false, true }) {
+            Spreadsheet.setSheetDeleteButtonAllowed(allowed);
+            spreadsheet.beforeClientResponse(false);
+            locallyDisabled.beforeClientResponse(false);
+
+            assertEquals(allowed, Spreadsheet.isSheetDeleteButtonAllowed());
+            assertEquals(allowed, spreadsheet.isSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, allowed },
+                spreadsheet.getSheetDeleteButtonsEnabled());
+            assertFalse(locallyDisabled.isSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, false },
+                locallyDisabled.getSheetDeleteButtonsEnabled());
+        }
+    }
+
+    @Test
+    public void setSheetDeleteButtonEnabled_toggled_updatesAllEntriesOnlyForThisInstance() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setSheetProtected(0, "password");
+        TestSpreadsheet other = createSpreadsheetWithTwoSheets();
+
+        for (boolean enabled : new boolean[] { false, true, false, true }) {
+            spreadsheet.setSheetDeleteButtonEnabled(enabled);
+
+            assertEquals(enabled, spreadsheet.isSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, enabled },
+                spreadsheet.getSheetDeleteButtonsEnabled());
+            assertTrue(Spreadsheet.isSheetDeleteButtonAllowed());
+            assertTrue(other.isSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { true, true },
+                other.getSheetDeleteButtonsEnabled());
+        }
+    }
+
+    @Test
+    public void setProtectedSheetDeleteButtonEnabled_toggled_updatesOnlyProtectedEntries() {
+        TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
+        spreadsheet.setSheetProtected(0, "password");
+        TestSpreadsheet other = createSpreadsheetWithTwoSheets();
+        other.setSheetProtected(0, "password");
+
+        assertFalse(spreadsheet.isProtectedSheetDeleteButtonEnabled());
+        assertArrayEquals(new boolean[] { false, true },
+            spreadsheet.getSheetDeleteButtonsEnabled());
+
+        for (boolean enabled : new boolean[] { true, false, true }) {
+            spreadsheet.setProtectedSheetDeleteButtonEnabled(enabled);
+
+            assertEquals(enabled,
+                spreadsheet.isProtectedSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { enabled, true },
+                spreadsheet.getSheetDeleteButtonsEnabled());
+            assertTrue(spreadsheet.getWorkbook().getSheetAt(0).getProtect());
+            assertFalse(other.isProtectedSheetDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, true },
+                other.getSheetDeleteButtonsEnabled());
+        }
+    }
+
+    @Test
+    public void setProtectedWorkbookDeleteButtonEnabled_toggled_preservesSheetProtectionAndOtherInstances()
+        throws IOException {
+        try (XSSFWorkbook workbook = new XSSFWorkbook()) {
+            workbook.createSheet("Protected").protectSheet("password");
+            workbook.createSheet("Unprotected");
+            workbook.lockStructure();
+            TestSpreadsheet spreadsheet = new TestSpreadsheet();
+            spreadsheet.setWorkbook(workbook);
+            spreadsheet.beforeClientResponse(true);
+            TestSpreadsheet other = createSpreadsheetWithTwoSheets();
+
+            assertFalse(spreadsheet.isProtectedWorkbookDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, false },
+                spreadsheet.getSheetDeleteButtonsEnabled());
+
+            for (boolean enabled : new boolean[] { true, false, true }) {
+            spreadsheet.setProtectedWorkbookDeleteButtonEnabled(enabled);
+
+            assertEquals(enabled,
+                spreadsheet.isProtectedWorkbookDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { false, enabled },
+                spreadsheet.getSheetDeleteButtonsEnabled());
+            assertTrue(workbook.isStructureLocked());
+            assertFalse(other.isProtectedWorkbookDeleteButtonEnabled());
+            assertArrayEquals(new boolean[] { true, true },
+                other.getSheetDeleteButtonsEnabled());
+            }
+        }
+    }
+
+    @Test
     public void onSheetDelete_globallyDisabled_doesNothing() {
         TestSpreadsheet spreadsheet = createSpreadsheetWithTwoSheets();
         Spreadsheet.setSheetDeleteButtonAllowed(false);
